@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CustomExtensions.Strings;
 using NUnit.Framework;
 
@@ -49,6 +50,35 @@ namespace UnitTests
 
                 Assert.IsNull(decrypted);
                 Assert.AreNotEqual(decrypted, TestText);
+            }
+        }
+
+        [TestFixture]
+        public class Right
+        {
+            private const string TestString = "abc123ABC456Test";
+
+            [Test]
+            public void RightString()
+            {
+                const string right = "Right";
+                const string testString = TestString + right;
+                const string expected = right;
+                var actual = testString.Right(right.Length);
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [Test]
+            public void LengthZero()
+            {
+                var expected = string.Empty;
+                var actual = TestString.Right(0);
+
+                Assert.AreEqual(expected, actual);
+
+                actual = TestString.Right(-1);
+                Assert.AreEqual(expected, actual);
             }
         }
     }

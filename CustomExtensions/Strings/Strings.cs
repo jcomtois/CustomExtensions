@@ -72,5 +72,18 @@ namespace CustomExtensions.Strings
             }
             
         }
+
+        /// <summary>
+        ///   Returns the last few characters of the string with a length specified by the given parameter. If the string's length is less than the given length the complete string is returned. If length is zero or less an empty string is returned
+        /// </summary>
+        /// <param name="s"> the string to process </param>
+        /// <param name="Length"> Number of characters to return </param>
+        /// <returns> </returns>
+        public static string Right(this string s, int Length)
+        {
+            Length = Math.Max(Length, 0);
+
+            return s.Length > Length ? s.Substring(s.Length - Length, Length) : s;
+        }
     }
 }
