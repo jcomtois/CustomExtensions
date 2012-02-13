@@ -44,7 +44,7 @@ namespace UnitTests
             [Test]
             public void WrongKey()
             {
-                const string wrongKey = TestKey+TestKey;
+                const string wrongKey = TestKey + TestKey;
                 var encrypted = TestText.Encrypt(TestKey);
                 var decrypted = encrypted.Decrypt(wrongKey);
 
@@ -54,49 +54,39 @@ namespace UnitTests
         }
 
         [TestFixture]
-        public class Right
+        public class IsValidUrl
         {
-            private const string TestString = "abc123ABC456Test";
-
             [Test]
-            public void RightString()
+            public void BadUrl()
             {
-                const string right = "Right";
-                const string testString = TestString + right;
-                const string expected = right;
-                var actual = testString.Right(right.Length);
+                var testString = string.Empty;
 
-                Assert.AreEqual(expected, actual);
+                Assert.IsFalse(testString.IsValidUrl(), testString);
+
+                testString = null;
+                Assert.IsFalse(testString.IsValidUrl(), testString);
+
+                testString = "Bad URL";
+                Assert.IsFalse(testString.IsValidUrl(), testString);
+
+                testString = @"www.google.com";
+
+                Assert.IsFalse(testString.IsValidUrl(), testString);
             }
 
             [Test]
-            public void LengthZero()
+            public void GoodUrl()
             {
-                var expected = string.Empty;
-                var actual = TestString.Right(0);
+                var testString = @"http://www.google.com";
 
-                Assert.AreEqual(expected, actual);
+                Assert.IsTrue(testString.IsValidUrl(), testString);
 
-                actual = TestString.Right(-1);
-                Assert.AreEqual(expected, actual);
-            }
+                testString = @"https://www.google.com/doodles/finder/2012/All%20doodles";
 
-            [Test]
-            public void EmptyString()
-            {
-                var expected = string.Empty;
-                var actual = string.Empty.Right(5);
+                Assert.IsTrue(testString.IsValidUrl(), testString);
 
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LongerString()
-            {
-                const string expected = TestString;
-                var actual = TestString.Right(TestString.Length*2);
-
-                Assert.AreEqual(expected, actual);
+                testString = @"mailto:me@example.com";
+                Assert.IsTrue(testString.IsValidUrl(), testString);
             }
         }
 
@@ -104,6 +94,15 @@ namespace UnitTests
         public class Left
         {
             private const string TestString = "abc123ABC456Test";
+
+            [Test]
+            public void EmptyString()
+            {
+                var expected = string.Empty;
+                var actual = string.Empty.Left(5);
+
+                Assert.AreEqual(expected, actual);
+            }
 
             [Test]
             public void LeftString()
@@ -129,15 +128,6 @@ namespace UnitTests
             }
 
             [Test]
-            public void EmptyString()
-            {
-                var expected = string.Empty;
-                var actual = string.Empty.Left(5);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
             public void LongerString()
             {
                 const string expected = TestString;
@@ -148,9 +138,127 @@ namespace UnitTests
         }
 
         [TestFixture]
+        public class Right
+        {
+            private const string TestString = "abc123ABC456Test";
+
+            [Test]
+            public void EmptyString()
+            {
+                var expected = string.Empty;
+                var actual = string.Empty.Right(5);
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [Test]
+            public void LengthZero()
+            {
+                var expected = string.Empty;
+                var actual = TestString.Right(0);
+
+                Assert.AreEqual(expected, actual);
+
+                actual = TestString.Right(-1);
+                Assert.AreEqual(expected, actual);
+            }
+
+            [Test]
+            public void LongerString()
+            {
+                const string expected = TestString;
+                var actual = TestString.Right(TestString.Length * 2);
+
+                Assert.AreEqual(expected, actual);
+            }
+
+            [Test]
+            public void RightString()
+            {
+                const string right = "Right";
+                const string testString = TestString + right;
+                const string expected = right;
+                var actual = testString.Right(right.Length);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [TestFixture]
+        public class ToNameValueCollection
+        {
+            private const string TestString = "param1=hello;param2=goodbye;param3=end;";
+
+            [Test]
+            public void InValidInput()
+            {
+                var testString = TestString + "=invalid";
+                var actual = testString.ToNameValueCollection(';', '=');
+
+                Assert.AreNotEqual(3, actual.Count);
+            }
+
+            [Test]
+            public void SameSeperators()
+            {
+                Assert.Throws<ArgumentException>(() => TestString.ToNameValueCollection(';', ';'));
+            }
+
+            [Test]
+            public void ValidInput()
+            {
+                var actual = TestString.ToNameValueCollection(';', '=');
+
+                Assert.AreEqual(3, actual.Count);
+                Assert.AreEqual("param1", actual.Keys[0]);
+                Assert.AreEqual("param2", actual.Keys[1]);
+                Assert.AreEqual("param3", actual.Keys[2]);
+                Assert.AreEqual("hello", actual.GetValues("param1").First());
+                Assert.AreEqual("goodbye", actual.GetValues("param2").First());
+                Assert.AreEqual("end", actual.GetValues("param3").First());
+            }
+        }
+
+        [TestFixture]
         public class Truncate
         {
             private const string TestString = "abc123";
+
+            [Test]
+            public void EmptyString()
+            {
+                var expected = string.Empty;
+                var actual = string.Empty.Truncate(5);
+
+                Assert.AreEqual(expected, actual);
+
+                expected = null;
+                actual = expected.Truncate(5);
+
+                Assert.IsNull(actual);
+                Assert.AreEqual(expected, actual);
+            }
+
+            [Test]
+            public void LengthZero()
+            {
+                const string expected = TestString;
+                var actual = TestString.Truncate(0);
+
+                Assert.AreEqual(expected, actual);
+
+                actual = TestString.Truncate(-1);
+                Assert.AreEqual(expected, actual);
+            }
+
+            [Test]
+            public void LongerThanString()
+            {
+                const string expected = TestString;
+                var actual = TestString.Truncate(TestString.Length * 2);
+
+                Assert.AreEqual(expected, actual);
+            }
 
             [Test]
             public void TruncateString()
@@ -177,115 +285,6 @@ namespace UnitTests
                 expected = "ab...";
                 actual = TestString.Truncate(5);
                 Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LengthZero()
-            {
-                const string expected = TestString;
-                var actual = TestString.Truncate(0);
-
-                Assert.AreEqual(expected, actual);
-
-                actual = TestString.Truncate(-1);
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void EmptyString()
-            {
-                var expected = string.Empty;
-                var actual = string.Empty.Truncate(5);
-
-                Assert.AreEqual(expected, actual);
-
-                expected = null;
-                actual = expected.Truncate(5);
-
-                Assert.IsNull(actual);
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LongerThanString()
-            {
-                const string expected = TestString;
-                var actual = TestString.Truncate(TestString.Length * 2);
-
-                Assert.AreEqual(expected, actual);
-            }
-        }
-
-        [TestFixture]
-        public class IsValidUrl
-        {
-            [Test]
-            public void GoodUrl()
-            {
-                var testString = @"http://www.google.com";
-
-                Assert.IsTrue(testString.IsValidUrl(), testString);
-
-                testString = @"https://www.google.com/doodles/finder/2012/All%20doodles";
-
-                Assert.IsTrue(testString.IsValidUrl(), testString);
-
-                testString = @"mailto:jcomtois@cfpwood.com";
-                Assert.IsTrue(testString.IsValidUrl(),testString);
-            }
-
-            [Test]
-            public void BadUrl()
-            {
-                var testString = string.Empty;
-
-                Assert.IsFalse(testString.IsValidUrl(),testString);
-
-                testString = null;
-                Assert.IsFalse(testString.IsValidUrl(),testString);
-
-                testString = "Bad URL";
-                Assert.IsFalse(testString.IsValidUrl(), testString);
-
-                testString = @"www.google.com";
-
-                Assert.IsFalse(testString.IsValidUrl(), testString);
-            }
-
-        }
-
-        [TestFixture]
-        public class ToNameValueCollection
-        {
-            private const string TestString = "param1=hello;param2=goodbye;param3=end;";
-
-            [Test]
-            public void ValidInput()
-            {
-                var actual = TestString.ToNameValueCollection(';', '=');
-
-                Assert.AreEqual(3,actual.Count);
-                Assert.AreEqual( "param1",actual.Keys[0]);
-                Assert.AreEqual( "param2",actual.Keys[1]);
-                Assert.AreEqual( "param3",actual.Keys[2]);
-                Assert.AreEqual( "hello",actual.GetValues("param1").First());
-                Assert.AreEqual( "goodbye",actual.GetValues("param2").First());
-                Assert.AreEqual( "end",actual.GetValues("param3").First());
-            }
-
-            [Test]
-            public void SameSeperators()
-            {
-                Assert.Throws<ArgumentException>(() => TestString.ToNameValueCollection(';', ';'));
-            }
-
-            [Test]
-            public void InValidInput()
-            {
-                var testString = TestString + "=invalid";
-                var actual = testString.ToNameValueCollection(';', '=');
-
-                Assert.AreNotEqual(3, actual.Count);
             }
         }
     }
