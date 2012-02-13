@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CustomExtensions.Strings
 {
@@ -87,14 +88,11 @@ namespace CustomExtensions.Strings
         }
 
         /// <summary>
-        /// Returns the first few characters of the string with a length
-        /// specified by the given parameter. If the string's length is less than the 
-        /// given length the complete string is returned. If length is zero or 
-        /// less an empty string is returned
+        ///   Returns the first few characters of the string with a length specified by the given parameter. If the string's length is less than the given length the complete string is returned. If length is zero or less an empty string is returned
         /// </summary>
-        /// <param name="s">the string to process</param>
-        /// <param name="Length">Number of characters to return</param>
-        /// <returns></returns>
+        /// <param name="s"> the string to process </param>
+        /// <param name="Length"> Number of characters to return </param>
+        /// <returns> </returns>
         public static string Left(this string s, int Length)
         {
             Length = Math.Max(Length, 0);
@@ -109,15 +107,20 @@ namespace CustomExtensions.Strings
         /// <returns> truncated string </returns>
         public static string Truncate(this string Text, int MaxLength)
         {
-            if (MaxLength <=0 || string.IsNullOrEmpty(Text) || Text.Length <= MaxLength )
+            if (MaxLength <= 0 || string.IsNullOrEmpty(Text) || Text.Length <= MaxLength)
             {
                 return Text;
             }
-            
+
             const string suffix = "...";
-            
+
             var strLength = MaxLength - suffix.Length;
             return strLength <= 0 ? Text : string.Format("{0}{1}", Text.Substring(0, strLength), suffix);
+        }
+
+        public static bool IsValidUrl(this string Text)
+        {
+            return Uri.IsWellFormedUriString(Text, UriKind.Absolute);
         }
     }
 }
