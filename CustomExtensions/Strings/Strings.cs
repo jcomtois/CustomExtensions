@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,7 +8,7 @@ namespace CustomExtensions.Strings
     public static class Strings
     {
         /// <summary>
-        /// Encryptes a string using the supplied key. Encoding is done using RSA encryption.
+        ///   Encryptes a string using the supplied key. Encoding is done using RSA encryption.
         /// </summary>
         /// <param name="StringToEncrypt"> String that must be encrypted. </param>
         /// <param name="Key"> Encryptionkey. </param>
@@ -30,12 +29,13 @@ namespace CustomExtensions.Strings
             var cspParameters = new CspParameters {KeyContainerName = Key};
             using (var rsaCryptoServiceProvider = new RSACryptoServiceProvider(cspParameters) {PersistKeyInCsp = true})
             {
-                return BitConverter.ToString(rsaCryptoServiceProvider.Encrypt(Encoding.UTF8.GetBytes(StringToEncrypt), true));
+                return
+                    BitConverter.ToString(rsaCryptoServiceProvider.Encrypt(Encoding.UTF8.GetBytes(StringToEncrypt), true));
             }
         }
 
         /// <summary>
-        /// Decryptes a string using the supplied key. Decoding is done using RSA encryption.
+        ///   Decryptes a string using the supplied key. Decoding is done using RSA encryption.
         /// </summary>
         /// <param name="StringToDecrypt"> String that must be decrypted. </param>
         /// <param name="Key"> Decryptionkey. </param>
@@ -57,12 +57,13 @@ namespace CustomExtensions.Strings
             try
             {
                 using (var rsaCryptoServiceProvider = new RSACryptoServiceProvider(cspParameters)
+                                                          {
+                                                              PersistKeyInCsp = true
+                                                          })
                 {
-                    PersistKeyInCsp = true
-                })
-                {
-                    var decryptArray = StringToDecrypt.Split(new[] { "-" }, StringSplitOptions.None);
-                    var decryptByteArray = Array.ConvertAll(decryptArray, (s => Convert.ToByte(byte.Parse(s, NumberStyles.HexNumber))));
+                    var decryptArray = StringToDecrypt.Split(new[] {"-"}, StringSplitOptions.None);
+                    var decryptByteArray = Array.ConvertAll(decryptArray,
+                                                            (s => Convert.ToByte(byte.Parse(s, NumberStyles.HexNumber))));
                     return Encoding.UTF8.GetString(rsaCryptoServiceProvider.Decrypt(decryptByteArray, true));
                 }
             }
@@ -70,7 +71,6 @@ namespace CustomExtensions.Strings
             {
                 return null;
             }
-            
         }
 
         /// <summary>
@@ -84,6 +84,25 @@ namespace CustomExtensions.Strings
             Length = Math.Max(Length, 0);
 
             return s.Length > Length ? s.Substring(s.Length - Length, Length) : s;
+        }
+
+        /// <summary>
+        ///   Truncates the string to a specified length and replace the truncated to a ...
+        /// </summary>
+        /// <param name="Text"> string that will be truncated </param>
+        /// <param name="MaxLength"> total length of characters to maintain before the truncate happens </param>
+        /// <returns> truncated string </returns>
+        public static string Truncate(this string Text, int MaxLength)
+        {
+            if (MaxLength <=0 || string.IsNullOrEmpty(Text) || Text.Length <= MaxLength )
+            {
+                return Text;
+            }
+            
+            const string suffix = "...";
+            
+            var strLength = MaxLength - suffix.Length;
+            return strLength <= 0 ? Text : string.Format("{0}{1}", Text.Substring(0, strLength), suffix);
         }
     }
 }
