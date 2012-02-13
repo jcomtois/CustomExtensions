@@ -253,5 +253,40 @@ namespace UnitTests
             }
 
         }
+
+        [TestFixture]
+        public class ToNameValueCollection
+        {
+            private const string TestString = "param1=hello;param2=goodbye;param3=end;";
+
+            [Test]
+            public void ValidInput()
+            {
+                var actual = TestString.ToNameValueCollection(';', '=');
+
+                Assert.AreEqual(3,actual.Count);
+                Assert.AreEqual( "param1",actual.Keys[0]);
+                Assert.AreEqual( "param2",actual.Keys[1]);
+                Assert.AreEqual( "param3",actual.Keys[2]);
+                Assert.AreEqual( "hello",actual.GetValues("param1").First());
+                Assert.AreEqual( "goodbye",actual.GetValues("param2").First());
+                Assert.AreEqual( "end",actual.GetValues("param3").First());
+            }
+
+            [Test]
+            public void SameSeperators()
+            {
+                Assert.Throws<ArgumentException>(() => TestString.ToNameValueCollection(';', ';'));
+            }
+
+            [Test]
+            public void InValidInput()
+            {
+                var testString = TestString + "=invalid";
+                var actual = testString.ToNameValueCollection(';', '=');
+
+                Assert.AreNotEqual(3, actual.Count);
+            }
+        }
     }
 }

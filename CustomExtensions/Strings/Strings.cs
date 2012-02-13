@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -121,6 +123,41 @@ namespace CustomExtensions.Strings
         public static bool IsValidUrl(this string Text)
         {
             return Uri.IsWellFormedUriString(Text, UriKind.Absolute);
+        }
+
+        /// <summary>
+        /// Splits a string into a NameValueCollection, where each "namevalue" is separated by
+        /// the "OuterSeparator". The parameter "NameValueSeparator" sets the split between Name and Value.
+        /// Example: 
+        ///             String str = "param1=value1;param2=value2";
+        ///             NameValueCollection nvOut = str.ToNameValueCollection(';', '=');
+        ///             
+        /// The result is a NameValueCollection where:
+        ///             key[0] is "param1" and value[0] is "value1"
+        ///             key[1] is "param2" and value[1] is "value2"
+        /// </summary>
+        /// <param name="Text">String to process</param>
+        /// <param name="OuterSeparator">Separator for each "NameValue"</param>
+        /// <param name="NameValueSeparator">Separator for Name/Value splitting</param>
+        /// <returns></returns>
+        public static NameValueCollection ToNameValueCollection(this string Text, char OuterSeparator, char NameValueSeparator)
+        {
+            if (OuterSeparator == NameValueSeparator)
+            {
+                throw new ArgumentException("Seperators must be different values.");
+            }
+
+            var nameValueCollection = new NameValueCollection();
+            if (!string.IsNullOrEmpty(Text))
+            {
+                var arrStrings = Text.TrimEnd(OuterSeparator).Split(OuterSeparator);
+
+                foreach (var strings in arrStrings.Select(s => s.Split(NameValueSeparator)))
+                {
+                    nameValueCollection.Add(strings.First(), strings.Last());
+                }
+            }
+            return nameValueCollection;
         }
     }
 }
