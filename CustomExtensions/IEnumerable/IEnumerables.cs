@@ -46,7 +46,7 @@ namespace CustomExtensions.IEnumerable
         /// <param name="source">A sequence of values to determine the maximum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="DefaultValue"> </param>
-        /// <returns>The nullable maximum value in the sequence or default value if provided.</returns>
+        /// <returns>The maximum value in the sequence or default value if provided.</returns>
         public static TResult MaxOrDefault <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult DefaultValue = default(TResult))
         {
             return source.IsEmpty() ? DefaultValue : source.Max(selector);
@@ -60,10 +60,111 @@ namespace CustomExtensions.IEnumerable
         /// <param name="source">A sequence of values to determine the minimum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="DefaultValue"> </param>
-        /// <returns>The nullable minimum value in the sequence or default value if provided.</returns>
+        /// <returns>The minimum value in the sequence or default value if provided.</returns>
         public static TResult MinOrDefault <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult DefaultValue = default(TResult))
         {
             return source.IsEmpty() ? DefaultValue : source.Min(selector);
+        }
+
+       
+        public static decimal AverageOrDefault(this IEnumerable<decimal> source, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static decimal? AverageOrDefault(this IEnumerable<decimal?> source, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault(this IEnumerable<double> source, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault(this IEnumerable<double?> source, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault(this IEnumerable<int> source, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault(this IEnumerable<int?> source, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault(this IEnumerable<long> source, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault(this IEnumerable<long?> source, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float AverageOrDefault(this IEnumerable<float> source, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float? AverageOrDefault(this IEnumerable<float?> source, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static decimal AverageOrDefault<TSource>(this IEnumerable<TSource> source,Func<TSource, decimal> selector, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();            
+        }
+
+        public static decimal? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
         }
 
         /// <summary>
