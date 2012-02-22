@@ -192,5 +192,10 @@ namespace CustomExtensions.IEnumerables
         {
             return source.IsEmpty() ? (TResult?)null : source.Min(selector);
         }
+
+        public static IEnumerable<T> ToEnumerable<T>(this T Input)
+        {
+            return new [] { Input }.AsEnumerable();
+        }
     }
 }

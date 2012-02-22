@@ -1,21 +1,107 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using CustomExtensions.IEnumerables;
+using CustomExtensions.PInvoke;
 
 namespace CustomExtensions.Strings
 {
     public static class Strings
     {
         /// <summary>
+        /// Attempts to convert a string to a guid.
+        /// </summary>
+        /// <param name="Input">The string to try to convert</param>
+        /// <param name="ResultGuid">Upon return will contain the Guid</param>
+        /// <returns>Returns true if successful, otherwise false</returns>
+        public static bool TryToGuid(this string Input, out Guid ResultGuid)
+        {
+            //ClsidFromString returns the empty guid for null strings   
+            if (string.IsNullOrEmpty(Input))
+            {
+                ResultGuid = Guid.Empty;
+                return false;
+            }
+
+            var hresult = COMInterop.CLSIDFromString(Input, out ResultGuid);
+            if (hresult >= 0)
+            {
+                return true;
+            }
+            ResultGuid = Guid.Empty;
+            return false;
+        }
+
+        /// <summary>
+        /// Checks input string for any occurence of given character
+        /// </summary>
+        /// <param name="Input">String to check</param>
+        /// <param name="Character">Character to look for</param>
+        /// <returns>True if character found</returns>
+        public static bool ContainsAny(this string Input, char Character)
+        {
+            return Input.ContainsAny(Character.ToEnumerable());
+        }
+
+        /// <summary>
+        /// Checks input stringfor any occurence of given character(s)
+        /// </summary>
+        /// <param name="Input">String to check</param>
+        /// <param name="Characters">Character(s) to look for</param>
+        /// <returns>True if any character(s) found</returns>
+        public static bool ContainsAny(this string Input, IEnumerable<char> Characters)
+        {
+            return !string.IsNullOrEmpty(Input) && Characters != null && Input.Any(Characters.Contains);
+        }
+
+        /// <summary>
+        /// Strips Input string of all occurences of specified character(s)
+        /// </summary>
+        /// <param name="Input">String to strip</param>
+        /// <param name="StripCharacters">IEnumerable containing characters to be stripped</param>
+        /// <returns>Stripped string</returns>
+        public static string Strip(this string Input, IEnumerable<char> StripCharacters)
+        {
+            return string.IsNullOrEmpty(Input) || StripCharacters == null ? Input : new string(Input.Where(c => !StripCharacters.Contains(c)).ToArray());
+        }
+
+        /// <summary>
+        /// Strips Input string of all occurences of specified character
+        /// </summary>
+        /// <param name="Input">String to strip</param>
+        /// <param name="StripCharacter">Character to strip from Input</param>
+        /// <returns>Stripped string</returns>
+        public static string Strip(this string Input, char StripCharacter)
+        {
+            return Input.Strip(StripCharacter.ToEnumerable());
+        }
+
+        /// <summary>
+        /// Strips Input sting of all occurences of specified substring
+        /// </summary>
+        /// <param name="Input">String to strip</param>
+        /// <param name="SubString">SubString to strip from Input</param>
+        /// <returns>Stripped String</returns>
+        public static string Strip(this string Input, string SubString)
+        {
+            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(SubString))
+            {
+                return Input;
+            }
+            return Input.Replace(SubString, string.Empty);
+        }
+        
+        /// <summary>
         /// Attempts to parse a string into specified type.
         /// </summary>
         /// <typeparam name="T">Type to convert to</typeparam>
         /// <param name="value">Input.  Null or empty returns Default for T</param>
-        /// <returns>Instance of T</returns>
+        /// <returns>Instance of T as represented by value</returns>
         public static T Parse<T>(this string value)
         {
             var result = default(T);
