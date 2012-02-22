@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -10,7 +11,24 @@ namespace CustomExtensions.Strings
     public static class Strings
     {
         /// <summary>
-        /// Decryptes a string using the supplied key. Decoding is done using RSA encryption.
+        /// Attempts to parse a string into specified type.
+        /// </summary>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <param name="value">Input.  Null or empty returns Default for T</param>
+        /// <returns>Instance of T</returns>
+        public static T Parse<T>(this string value)
+        {
+            var result = default(T);
+            if (!string.IsNullOrEmpty(value))
+            {
+                var tc = TypeDescriptor.GetConverter(typeof (T));
+                result = (T)tc.ConvertFrom(value);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.
         /// </summary>
         /// <param name="StringToDecrypt"> String that must be decrypted. </param>
         /// <param name="Key"> Decryptionkey. </param>
