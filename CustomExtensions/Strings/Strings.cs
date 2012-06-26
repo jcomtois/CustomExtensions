@@ -14,6 +14,16 @@ namespace CustomExtensions.Strings
     public static class Strings
     {
         /// <summary>
+        /// Readability improvement for String.IsNullOrEmpty()
+        /// </summary>
+        /// <param name="Input">The string to check</param>
+        /// <returns></returns>
+        public static bool IsNullOrEmpty(this string Input)
+        {
+            return string.IsNullOrEmpty(Input);
+        }
+
+        /// <summary>
         /// Attempts to convert a string to a guid.
         /// </summary>
         /// <param name="Input">The string to try to convert</param>
@@ -22,7 +32,7 @@ namespace CustomExtensions.Strings
         public static bool TryToGuid(this string Input, out Guid ResultGuid)
         {
             //ClsidFromString returns the empty guid for null strings   
-            if (string.IsNullOrEmpty(Input))
+            if (Input.IsNullOrEmpty())
             {
                 ResultGuid = Guid.Empty;
                 return false;
@@ -56,7 +66,7 @@ namespace CustomExtensions.Strings
         /// <returns>True if any character(s) found</returns>
         public static bool ContainsAny(this string Input, IEnumerable<char> Characters)
         {
-            return !string.IsNullOrEmpty(Input) && Characters != null && Input.Any(Characters.Contains);
+            return !Input.IsNullOrEmpty() && Characters != null && Input.Any(Characters.Contains);
         }
 
         /// <summary>
@@ -67,7 +77,7 @@ namespace CustomExtensions.Strings
         /// <returns>Stripped string</returns>
         public static string Strip(this string Input, IEnumerable<char> StripCharacters)
         {
-            return string.IsNullOrEmpty(Input) || StripCharacters == null ? Input : new string(Input.Where(c => !StripCharacters.Contains(c)).ToArray());
+            return Input.IsNullOrEmpty() || StripCharacters == null ? Input : new string(Input.Where(c => !StripCharacters.Contains(c)).ToArray());
         }
 
         /// <summary>
@@ -89,7 +99,7 @@ namespace CustomExtensions.Strings
         /// <returns>Stripped String</returns>
         public static string Strip(this string Input, string SubString)
         {
-            if (string.IsNullOrEmpty(Input) || string.IsNullOrEmpty(SubString))
+            if (Input.IsNullOrEmpty() || SubString.IsNullOrEmpty())
             {
                 return Input;
             }
@@ -105,7 +115,7 @@ namespace CustomExtensions.Strings
         public static T Parse<T>(this string value)
         {
             var result = default(T);
-            if (!string.IsNullOrEmpty(value))
+            if (!value.IsNullOrEmpty())
             {
                 var tc = TypeDescriptor.GetConverter(typeof (T));
                 result = (T)tc.ConvertFrom(value);
@@ -122,12 +132,12 @@ namespace CustomExtensions.Strings
         /// <exception cref="ArgumentException">Occurs when stringToDecrypt or key is null or empty.</exception>
         public static string Decrypt(this string StringToDecrypt, string Key)
         {
-            if (string.IsNullOrEmpty(StringToDecrypt))
+            if (StringToDecrypt.IsNullOrEmpty())
             {
                 throw new ArgumentException("An empty string value cannot be encrypted.");
             }
 
-            if (string.IsNullOrEmpty(Key))
+            if (Key.IsNullOrEmpty())
             {
                 throw new ArgumentException("Cannot decrypt using an empty key. Please supply a decryption key.");
             }
@@ -160,12 +170,12 @@ namespace CustomExtensions.Strings
         /// <exception cref="ArgumentException">Occurs when stringToEncrypt or key is null or empty.</exception>
         public static string Encrypt(this string StringToEncrypt, string Key)
         {
-            if (string.IsNullOrEmpty(StringToEncrypt))
+            if (StringToEncrypt.IsNullOrEmpty())
             {
                 throw new ArgumentException("An empty string value cannot be encrypted.");
             }
 
-            if (string.IsNullOrEmpty(Key))
+            if (Key.IsNullOrEmpty())
             {
                 throw new ArgumentException("Cannot encrypt using an empty key. Please supply an encryption key.");
             }
@@ -236,7 +246,7 @@ namespace CustomExtensions.Strings
             }
 
             var nameValueCollection = new NameValueCollection();
-            if (!string.IsNullOrEmpty(Text))
+            if (!Text.IsNullOrEmpty())
             {
                 var arrStrings = Text.TrimEnd(OuterSeparator).Split(OuterSeparator);
 
@@ -256,7 +266,7 @@ namespace CustomExtensions.Strings
         /// <returns> truncated string </returns>
         public static string Truncate(this string Text, int MaxLength)
         {
-            if (MaxLength <= 0 || string.IsNullOrEmpty(Text) || Text.Length <= MaxLength)
+            if (MaxLength <= 0 || Text.IsNullOrEmpty() || Text.Length <= MaxLength)
             {
                 return Text;
             }

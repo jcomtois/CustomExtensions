@@ -11,7 +11,7 @@ namespace CustomExtensions.Strings
             {
                 throw new ArgumentNullException();
             }
-            if (string.IsNullOrEmpty(NewText))
+            if (NewText.IsNullOrEmpty())
             {
                 Console.WriteLine();
                 return sb.AppendLine();
