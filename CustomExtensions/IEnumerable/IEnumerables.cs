@@ -10,6 +10,58 @@ namespace CustomExtensions.IEnumerables
     /// </summary>
     public static class IEnumerables
     {
+
+       /// <summary>
+       /// Returns random element from sequence
+       /// </summary>
+       /// <param name="source">Source sequence</param>
+       /// <param name="random">Random class instance</param>
+       /// <typeparam name="T">Type conained in collection</typeparam>
+       /// <returns>Random Elelemnt from sequence</returns>
+       /// <exception cref="ArgumentNullException"></exception>
+       /// <exception cref="InvalidOperationException"></exception>
+       public static T RandomElement<T>(this IEnumerable<T> source, Random random)
+       {
+           if (source == null)
+           {
+               throw new ArgumentNullException("source");
+           }
+           if (random == null)
+           {
+               throw new ArgumentNullException("random");
+           }
+
+           var collection = source as ICollection;
+           if (collection != null)
+           {
+               var count = collection.Count;
+               if (count == 0)
+               {
+                   throw new InvalidOperationException("Sequence was empty.");
+               }
+               var index = random.Next(count);
+               return source.ElementAt(index);
+           }
+           using (var iterator = source.GetEnumerator())
+           {
+               if (!iterator.MoveNext())
+               {
+                   throw new InvalidOperationException("Sequence was empty.");
+               }
+               var countSoFar = 1;
+               T current = iterator.Current;
+               while (iterator.MoveNext())
+               {
+                   countSoFar++;
+                   if (random.Next(countSoFar) == 0)
+                   {
+                       current = iterator.Current;
+                   }
+               }
+               return current;
+           }
+       }
+
         /// <summary>
         /// Determines whether or not IEnumerable is null or empty in an efficient way
         /// </summary>
