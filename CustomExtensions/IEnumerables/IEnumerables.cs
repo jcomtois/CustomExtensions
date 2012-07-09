@@ -35,20 +35,20 @@ namespace CustomExtensions.IEnumerables
         }
 
         /// <summary>
-        /// Appends and element to a collection
+        /// Appends and element to a source
         /// </summary>
         /// <typeparam name="T">Type of source IEnumerable</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="element">Element to append</param>
         /// <returns>IEnumerable of type T with element appended to the end</returns>
-        public static IEnumerable<T> Append <T>(this IEnumerable<T> collection, T element)
+        public static IEnumerable<T> Append <T>(this IEnumerable<T> source, T element)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
-            foreach (var t in collection)
+            foreach (var t in source)
             {
                 yield return t;
             }
@@ -156,50 +156,28 @@ namespace CustomExtensions.IEnumerables
         }
 
         /// <summary>
-        /// Checks to see if collection contains exactly count number of items that meets a condition
+        /// Checks to see if source contains exactly count number of items that meets a condition
         /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <typeparam name="T">Type contained in source</typeparam>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="count">Number of specified matches</param>
         /// <param name="predicate">Function to check each item for a match</param>
-        /// <returns>True if collection contains exact number of matches</returns>
-        public static bool ContainsExactly <T>(this IEnumerable<T> collection, int count, Func<T, bool> predicate)
+        /// <returns>True if source contains exact number of matches</returns>
+        public static bool ContainsExactly <T>(this IEnumerable<T> source, int count, Func<T, bool> predicate)
         {
             if (count == 1)
             {
-                return collection.ContainsOnlyOne(predicate);
+                return source.ContainsOnlyOne(predicate);
             }
 
             if (count == 0)
             {
-                return collection.ContainsNone(predicate);
+                return source.ContainsNone(predicate);
             }
 
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException("predicate");
-            }
-
-            return collection.Count(predicate).Equals(count);
-        }
-
-        /// <summary>
-        /// Checks to see if collection contains no instances of an item that meets a condition
-        /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
-        /// <param name="collection">Collection of type T</param>
-        /// <param name="predicate">Function to check each item for a match</param>
-        /// <returns>True if collection contains no item that matches</returns>
-        public static bool ContainsNone <T>(this IEnumerable<T> collection, Func<T, bool> predicate)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
             if (predicate == null)
@@ -207,21 +185,43 @@ namespace CustomExtensions.IEnumerables
                 throw new ArgumentNullException("predicate");
             }
 
-            return collection.All(i => !predicate(i));
+            return source.Count(predicate).Equals(count);
         }
 
         /// <summary>
-        /// Checks to see if collection contains exactly one instance of an item that meets a condition
+        /// Checks to see if source contains no instances of an item that meets a condition
         /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <typeparam name="T">Type contained in source</typeparam>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="predicate">Function to check each item for a match</param>
-        /// <returns>True if collection contains exactly one item that matches</returns>
-        public static bool ContainsOnlyOne <T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        /// <returns>True if source contains no item that matches</returns>
+        public static bool ContainsNone <T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            return source.All(i => !predicate(i));
+        }
+
+        /// <summary>
+        /// Checks to see if source contains exactly one instance of an item that meets a condition
+        /// </summary>
+        /// <typeparam name="T">Type contained in source</typeparam>
+        /// <param name="source">IEnumerable of type T</param>
+        /// <param name="predicate">Function to check each item for a match</param>
+        /// <returns>True if source contains exactly one item that matches</returns>
+        public static bool ContainsOnlyOne <T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
             }
 
             if (predicate == null)
@@ -230,7 +230,7 @@ namespace CustomExtensions.IEnumerables
             }
 
             var found = false;
-            foreach (var i in collection)
+            foreach (var i in source)
             {
                 if (predicate(i))
                 {
@@ -250,16 +250,16 @@ namespace CustomExtensions.IEnumerables
         /// <summary>
         /// Allows a projection comparison for IEquatable types 
         /// </summary>
-        /// <typeparam name="T">Type in collection</typeparam>
+        /// <typeparam name="T">Type in source</typeparam>
         /// <typeparam name="TId">Type of the value to be compared</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="projection">Function to evaluate IEquatable Type TId on item T</param>
-        /// <returns>Distinct elements that satisfy condition</returns>
-        public static IEnumerable<T> Distinct <T, TId>(this IEnumerable<T> collection, Func<T, TId> projection) where TId : IEquatable<TId>
+        /// <returns>IEnumerable of type T elements that satisfy condition</returns>
+        public static IEnumerable<T> Distinct <T, TId>(this IEnumerable<T> source, Func<T, TId> projection) where TId : IEquatable<TId>
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
             if (projection == null)
@@ -267,24 +267,24 @@ namespace CustomExtensions.IEnumerables
                 throw new ArgumentNullException("projection");
             }
 
-            return collection.Distinct(new ProjectingEqualityComparer<T, TId>(projection));
+            return source.Distinct(new ProjectingEqualityComparer<T, TId>(projection));
         }
 
         /// <summary>
-        /// Excludes and element from a collection
+        /// Excludes and element from a source
         /// </summary>
         /// <typeparam name="T">Type of source IEnumerable</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="element">Element to exclude</param>
         /// <returns>IEnumerable of type T excluding element</returns>
-        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> collection, T element)
+        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> source, T element)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
-            foreach (T t in collection)
+            foreach (T t in source)
             {
                 if (!t.Equals(element))
                 {
@@ -296,20 +296,20 @@ namespace CustomExtensions.IEnumerables
         /// <summary>
         /// Performs an action on each element in a sequence
         /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <typeparam name="T">Type contained in source</typeparam>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="function">Function with no parameters that returns void</param>
-        public static void ExecuteForEach <T>(this IEnumerable<T> collection, Action<T> function)
+        public static void ExecuteForEach <T>(this IEnumerable<T> source, Action<T> function)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
             if (function == null)
             {
                 throw new ArgumentNullException("function");
             }
-            foreach (var i in collection)
+            foreach (var i in source)
             {
                 function(i);
             }
@@ -318,23 +318,23 @@ namespace CustomExtensions.IEnumerables
         /// <summary>
         /// Executes action on every element of an IEnumerable
         /// </summary>
-        /// <typeparam name="T1">Type contained in collection</typeparam>
+        /// <typeparam name="T1">Type contained in source</typeparam>
         /// <typeparam name="T2">Type returned as result of function</typeparam>
-        /// <param name="collection">Collection of type T1</param>
-        /// <param name="function">Function to apply over each element in collection</param>
+        /// <param name="source">IEnumerable of type T1</param>
+        /// <param name="function">Function to apply over each element in source</param>
         /// <returns>IEnumerable of type T2</returns>
-        public static IEnumerable<T2> ExecuteForEach <T1, T2>(this IEnumerable<T1> collection,
+        public static IEnumerable<T2> ExecuteForEach <T1, T2>(this IEnumerable<T1> source,
                                                               Func<T1, T2> function)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
             if (function == null)
             {
                 throw new ArgumentNullException("function");
             }
-            return collection.Select(function).ToList().AsEnumerable();
+            return source.Select(function).ToList().AsEnumerable();
         }
 
         /// <summary>
@@ -420,7 +420,7 @@ namespace CustomExtensions.IEnumerables
         }
 
         /// <summary>
-        /// Prepends and element to a collection
+        /// Prepends and element to a source
         /// </summary>
         /// <typeparam name="T">Type of source IEnumerable</typeparam>
         /// <param name="collection">Collection of type T</param>
@@ -445,7 +445,7 @@ namespace CustomExtensions.IEnumerables
         /// </summary>
         /// <param name="source">Source sequence</param>
         /// <param name="random">Random class instance</param>
-        /// <typeparam name="T">Type conained in collection</typeparam>
+        /// <typeparam name="T">Type conained in source</typeparam>
         /// <returns>Random Elelemnt from sequence</returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
@@ -496,7 +496,7 @@ namespace CustomExtensions.IEnumerables
         /// </summary>
         /// <param name="source">Source sequence</param>
         /// <param name="random">Random class instance</param>
-        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <typeparam name="T">Type contained in source</typeparam>
         /// <returns>IEnumerable of shuffled elements</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static IEnumerable<T> Shuffle <T>(this IEnumerable<T> source, Random random)
@@ -528,9 +528,9 @@ namespace CustomExtensions.IEnumerables
         }
 
         /// <summary>
-        /// Creates a specified formatted listing for a collection
+        /// Creates a specified formatted listing for a source
         /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <typeparam name="T">Type contained in source</typeparam>
         /// <param name="collection">Collection of type T</param>
         /// <param name="StringElement">Function to apply to each element to return a string representation</param>
         /// <param name="separator">String to seperate each element in result string</param>
