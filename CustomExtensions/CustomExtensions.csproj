@@ -76,7 +76,7 @@
   <ItemGroup>
     <Compile Include="Datetime\Datetimes.cs" />
     <Compile Include="IConvertible\IConvertibles.cs" />
-    <Compile Include="IEnumerable\IEnumerables.cs" />
+    <Compile Include="IEnumerables\IEnumerables.cs" />
     <Compile Include="PInvoke\COMInterop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strings\StringBuilders.cs" />

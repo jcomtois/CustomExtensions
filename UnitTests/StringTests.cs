@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace UnitTests
 {
     public class StringTests
-    {
+    {       
         [TestFixture]
         public class EncryptAndDecrypt
         {

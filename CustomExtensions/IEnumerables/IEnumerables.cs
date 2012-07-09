@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CustomExtensions.Strings;
 
 namespace CustomExtensions.IEnumerables
 {
@@ -10,6 +11,195 @@ namespace CustomExtensions.IEnumerables
     /// </summary>
     public static class IEnumerables
     {
+        /// <summary>
+        /// Checks to see if collection contains exactly count number of items that meets a condition
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="count">Number of specified matches</param>
+        /// <param name="predicate">Function to check each item for a match</param>
+        /// <returns>True if collection contains exact number of matches</returns>
+        public static bool ContainsExactly <T>(this IEnumerable<T> collection, int count, Func<T, bool> predicate)
+        {
+            if (count == 1)
+            {
+                return collection.ContainsOnlyOne(predicate);
+            }
+
+            if (count == 0)
+            {
+                return collection.ContainsNone(predicate);
+            }
+
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            return collection.Count(predicate).Equals(count);
+        }
+
+        /// <summary>
+        /// Checks to see if collection contains exactly one instance of an item that meets a condition
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="predicate">Function to check each item for a match</param>
+        /// <returns>True if collection contains exactly one item that matches</returns>
+        public static bool ContainsOnlyOne <T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            var found = false;
+            foreach (var i in collection)
+            {
+                if (predicate(i))
+                {
+                    if (!found)
+                    {
+                        found = true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return found;
+        }
+
+        /// <summary>
+        /// Checks to see if collection contains no instances of an item that meets a condition
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="predicate">Function to check each item for a match</param>
+        /// <returns>True if collection contains no item that matches</returns>
+        public static bool ContainsNone <T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            return collection.All(i => !predicate(i));
+        }
+
+
+        /// <summary>
+        /// Performs an action on each element in a sequence
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="function">Function with no parameters that returns void</param>
+        public static void ExecuteForEach<T>(this IEnumerable<T> collection, Action<T> function)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+            if (function == null)
+            {
+                throw new ArgumentNullException("function");
+            }
+            foreach (var i in collection)
+            {
+                function(i);
+            }
+        }
+
+        /// <summary>
+        /// Executes action on every element of an IEnumerable
+        /// </summary>
+        /// <typeparam name="T1">Type contained in collection</typeparam>
+        /// <typeparam name="T2">Type returned as result of function</typeparam>
+        /// <param name="collection">Collection of type T1</param>
+        /// <param name="function">Function to apply over each element in collection</param>
+        /// <returns>IEnumerable of type T2</returns>
+        public static IEnumerable<T2> ExecuteForEach<T1, T2>(this IEnumerable<T1> collection,
+              Func<T1, T2> function)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+            if (function == null)
+            {
+                throw new ArgumentNullException("function");
+            }            
+            return collection.Select(function).ToList().AsEnumerable();
+        }
+
+
+        /// <summary>
+        /// Creates a specified formatted listing for a collection
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="StringElement">Function to apply to each element to return a string representation</param>
+        /// <param name="separator">String to seperate each element in result string</param>
+        /// <returns>String listing all elements</returns>
+        public static string ToString<T>(this IEnumerable<T> collection, Func<T, string> StringElement, string separator)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+            if (StringElement == null)
+            {
+                throw new ArgumentNullException("StringElement");
+            }
+            return string.Join(separator, collection.Select(StringElement).ToArray());
+        }
+        
+        /// <summary>
+        /// Returns lazily evaluated shuffle of input (uses Fisher-Yates)
+        /// </summary>
+        /// <param name="source">Source sequence</param>
+        /// <param name="random">Random class instance</param>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <returns>IEnumerable of shuffled elements</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IEnumerable<T> Shuffle <T>(this IEnumerable<T> source, Random random)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            if (random == null)
+            {
+                throw new ArgumentNullException("random");
+            }
+
+            var elements = source.ToArray();
+            for (var i = elements.Length - 1; i >= 0; i--)
+            {
+                // Swap element "i" with a random earlier element it (or itself)
+                // ... except we don't really need to swap it fully, as we can
+                // return it immediately, and afterwards it's irrelevant.
+                var swapIndex = random.Next(i + 1);
+                yield return elements[swapIndex];
+                elements[swapIndex] = elements[i];
+            }
+        }
 
        /// <summary>
        /// Returns random element from sequence
@@ -20,7 +210,7 @@ namespace CustomExtensions.IEnumerables
        /// <returns>Random Elelemnt from sequence</returns>
        /// <exception cref="ArgumentNullException"></exception>
        /// <exception cref="InvalidOperationException"></exception>
-       public static T RandomElement<T>(this IEnumerable<T> source, Random random)
+       public static T RandomElement <T>(this IEnumerable<T> source, Random random)
        {
            if (source == null)
            {

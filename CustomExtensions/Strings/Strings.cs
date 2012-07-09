@@ -158,7 +158,7 @@ namespace CustomExtensions.Strings
             catch (CryptographicException)
             {
                 return null;
-            }
+            }            
         }
 
         /// <summary>
