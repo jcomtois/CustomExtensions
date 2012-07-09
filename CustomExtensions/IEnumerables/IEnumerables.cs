@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using CustomExtensions.Strings;
 
 namespace CustomExtensions.IEnumerables
 {
@@ -11,6 +10,151 @@ namespace CustomExtensions.IEnumerables
     /// </summary>
     public static class IEnumerables
     {
+        private sealed class ProjectingEqualityComparer <T, TId> : IEqualityComparer<T> where TId : IEquatable<TId>
+        {
+            private readonly Func<T, TId> _projection;
+
+            public ProjectingEqualityComparer(Func<T, TId> projection)
+            {
+                _projection = projection;
+            }
+
+            #region IEqualityComparer<T> Members
+
+            public bool Equals(T x, T y)
+            {
+                return EqualityComparer<TId>.Default.Equals(_projection(x), _projection(y));
+            }
+
+            public int GetHashCode(T obj)
+            {
+                return EqualityComparer<TId>.Default.GetHashCode(_projection(obj));
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Appends and element to a collection
+        /// </summary>
+        /// <typeparam name="T">Type of source IEnumerable</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="element">Element to append</param>
+        /// <returns>IEnumerable of type T with element appended to the end</returns>
+        public static IEnumerable<T> Append <T>(this IEnumerable<T> collection, T element)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            foreach (var t in collection)
+            {
+                yield return t;
+            }
+            yield return element;
+        }
+
+        public static decimal AverageOrDefault(this IEnumerable<decimal> source, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static decimal? AverageOrDefault(this IEnumerable<decimal?> source, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault(this IEnumerable<double> source, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault(this IEnumerable<double?> source, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault(this IEnumerable<int> source, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault(this IEnumerable<int?> source, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault(this IEnumerable<long> source, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault(this IEnumerable<long?> source, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float AverageOrDefault(this IEnumerable<float> source, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float? AverageOrDefault(this IEnumerable<float?> source, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static decimal AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static decimal? AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector, decimal DefaultValue = default(decimal))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector, double DefaultValue = default(double))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector, int DefaultValue = default(int))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static double? AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector, long DefaultValue = default(long))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
+        public static float? AverageOrDefault <TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector, float DefaultValue = default(float))
+        {
+            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
+        }
+
         /// <summary>
         /// Checks to see if collection contains exactly count number of items that meets a condition
         /// </summary>
@@ -42,6 +186,28 @@ namespace CustomExtensions.IEnumerables
             }
 
             return collection.Count(predicate).Equals(count);
+        }
+
+        /// <summary>
+        /// Checks to see if collection contains no instances of an item that meets a condition
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="predicate">Function to check each item for a match</param>
+        /// <returns>True if collection contains no item that matches</returns>
+        public static bool ContainsNone <T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            return collection.All(i => !predicate(i));
         }
 
         /// <summary>
@@ -82,27 +248,50 @@ namespace CustomExtensions.IEnumerables
         }
 
         /// <summary>
-        /// Checks to see if collection contains no instances of an item that meets a condition
+        /// Allows a projection comparison for IEquatable types 
         /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <typeparam name="T">Type in collection</typeparam>
+        /// <typeparam name="TId">Type of the value to be compared</typeparam>
         /// <param name="collection">Collection of type T</param>
-        /// <param name="predicate">Function to check each item for a match</param>
-        /// <returns>True if collection contains no item that matches</returns>
-        public static bool ContainsNone <T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        /// <param name="projection">Function to evaluate IEquatable Type TId on item T</param>
+        /// <returns>Distinct elements that satisfy condition</returns>
+        public static IEnumerable<T> Distinct <T, TId>(this IEnumerable<T> collection, Func<T, TId> projection) where TId : IEquatable<TId>
         {
             if (collection == null)
             {
                 throw new ArgumentNullException("collection");
             }
 
-            if (predicate == null)
+            if (projection == null)
             {
-                throw new ArgumentNullException("predicate");
+                throw new ArgumentNullException("projection");
             }
 
-            return collection.All(i => !predicate(i));
+            return collection.Distinct(new ProjectingEqualityComparer<T, TId>(projection));
         }
 
+        /// <summary>
+        /// Excludes and element from a collection
+        /// </summary>
+        /// <typeparam name="T">Type of source IEnumerable</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="element">Element to exclude</param>
+        /// <returns>IEnumerable of type T excluding element</returns>
+        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> collection, T element)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            foreach (T t in collection)
+            {
+                if (!t.Equals(element))
+                {
+                    yield return t;
+                }
+            }
+        }
 
         /// <summary>
         /// Performs an action on each element in a sequence
@@ -110,7 +299,7 @@ namespace CustomExtensions.IEnumerables
         /// <typeparam name="T">Type contained in collection</typeparam>
         /// <param name="collection">Collection of type T</param>
         /// <param name="function">Function with no parameters that returns void</param>
-        public static void ExecuteForEach<T>(this IEnumerable<T> collection, Action<T> function)
+        public static void ExecuteForEach <T>(this IEnumerable<T> collection, Action<T> function)
         {
             if (collection == null)
             {
@@ -134,8 +323,8 @@ namespace CustomExtensions.IEnumerables
         /// <param name="collection">Collection of type T1</param>
         /// <param name="function">Function to apply over each element in collection</param>
         /// <returns>IEnumerable of type T2</returns>
-        public static IEnumerable<T2> ExecuteForEach<T1, T2>(this IEnumerable<T1> collection,
-              Func<T1, T2> function)
+        public static IEnumerable<T2> ExecuteForEach <T1, T2>(this IEnumerable<T1> collection,
+                                                              Func<T1, T2> function)
         {
             if (collection == null)
             {
@@ -144,113 +333,9 @@ namespace CustomExtensions.IEnumerables
             if (function == null)
             {
                 throw new ArgumentNullException("function");
-            }            
+            }
             return collection.Select(function).ToList().AsEnumerable();
         }
-
-
-        /// <summary>
-        /// Creates a specified formatted listing for a collection
-        /// </summary>
-        /// <typeparam name="T">Type contained in collection</typeparam>
-        /// <param name="collection">Collection of type T</param>
-        /// <param name="StringElement">Function to apply to each element to return a string representation</param>
-        /// <param name="separator">String to seperate each element in result string</param>
-        /// <returns>String listing all elements</returns>
-        public static string ToString<T>(this IEnumerable<T> collection, Func<T, string> StringElement, string separator)
-        {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
-            if (StringElement == null)
-            {
-                throw new ArgumentNullException("StringElement");
-            }
-            return string.Join(separator, collection.Select(StringElement).ToArray());
-        }
-        
-        /// <summary>
-        /// Returns lazily evaluated shuffle of input (uses Fisher-Yates)
-        /// </summary>
-        /// <param name="source">Source sequence</param>
-        /// <param name="random">Random class instance</param>
-        /// <typeparam name="T">Type contained in collection</typeparam>
-        /// <returns>IEnumerable of shuffled elements</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static IEnumerable<T> Shuffle <T>(this IEnumerable<T> source, Random random)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-            if (random == null)
-            {
-                throw new ArgumentNullException("random");
-            }
-
-            var elements = source.ToArray();
-            for (var i = elements.Length - 1; i >= 0; i--)
-            {
-                // Swap element "i" with a random earlier element it (or itself)
-                // ... except we don't really need to swap it fully, as we can
-                // return it immediately, and afterwards it's irrelevant.
-                var swapIndex = random.Next(i + 1);
-                yield return elements[swapIndex];
-                elements[swapIndex] = elements[i];
-            }
-        }
-
-       /// <summary>
-       /// Returns random element from sequence
-       /// </summary>
-       /// <param name="source">Source sequence</param>
-       /// <param name="random">Random class instance</param>
-       /// <typeparam name="T">Type conained in collection</typeparam>
-       /// <returns>Random Elelemnt from sequence</returns>
-       /// <exception cref="ArgumentNullException"></exception>
-       /// <exception cref="InvalidOperationException"></exception>
-       public static T RandomElement <T>(this IEnumerable<T> source, Random random)
-       {
-           if (source == null)
-           {
-               throw new ArgumentNullException("source");
-           }
-           if (random == null)
-           {
-               throw new ArgumentNullException("random");
-           }
-
-           var collection = source as ICollection;
-           if (collection != null)
-           {
-               var count = collection.Count;
-               if (count == 0)
-               {
-                   throw new InvalidOperationException("Sequence was empty.");
-               }
-               var index = random.Next(count);
-               return source.ElementAt(index);
-           }
-           using (var iterator = source.GetEnumerator())
-           {
-               if (!iterator.MoveNext())
-               {
-                   throw new InvalidOperationException("Sequence was empty.");
-               }
-               var countSoFar = 1;
-               T current = iterator.Current;
-               while (iterator.MoveNext())
-               {
-                   countSoFar++;
-                   if (random.Next(countSoFar) == 0)
-                   {
-                       current = iterator.Current;
-                   }
-               }
-               return current;
-           }
-       }
 
         /// <summary>
         /// Determines whether or not IEnumerable is null or empty in an efficient way
@@ -308,107 +393,6 @@ namespace CustomExtensions.IEnumerables
             return source.IsEmpty() ? DefaultValue : source.Min(selector);
         }
 
-       
-        public static decimal AverageOrDefault(this IEnumerable<decimal> source, decimal DefaultValue = default(decimal))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static decimal? AverageOrDefault(this IEnumerable<decimal?> source, decimal DefaultValue = default(decimal))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double AverageOrDefault(this IEnumerable<double> source, double DefaultValue = default(double))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double? AverageOrDefault(this IEnumerable<double?> source, double DefaultValue = default(double))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double AverageOrDefault(this IEnumerable<int> source, int DefaultValue = default(int))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double? AverageOrDefault(this IEnumerable<int?> source, int DefaultValue = default(int))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double AverageOrDefault(this IEnumerable<long> source, long DefaultValue = default(long))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double? AverageOrDefault(this IEnumerable<long?> source, long DefaultValue = default(long))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static float AverageOrDefault(this IEnumerable<float> source, float DefaultValue = default(float))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static float? AverageOrDefault(this IEnumerable<float?> source, float DefaultValue = default(float))
-        {
-            return source == null ? DefaultValue : source.DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static decimal AverageOrDefault<TSource>(this IEnumerable<TSource> source,Func<TSource, decimal> selector, decimal DefaultValue = default(decimal))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();            
-        }
-
-        public static decimal? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector, decimal DefaultValue = default(decimal))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector, double DefaultValue = default(double))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector, double DefaultValue = default(double))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector, int DefaultValue = default(int))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector, int DefaultValue = default(int))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector, long DefaultValue = default(long))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static double? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector, long DefaultValue = default(long))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static float AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector, float DefaultValue = default(float))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
-        public static float? AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector, float DefaultValue = default(float))
-        {
-            return source == null ? DefaultValue : source.Select(selector).DefaultIfEmpty(DefaultValue).Average();
-        }
-
         /// <summary>
         /// Invokes a transform function on each element of a generic sequence and returns the maximum resulting nullable value 
         /// </summary>
@@ -435,9 +419,168 @@ namespace CustomExtensions.IEnumerables
             return source.IsEmpty() ? (TResult?)null : source.Min(selector);
         }
 
-        public static IEnumerable<T> ToEnumerable<T>(this T Input)
+        /// <summary>
+        /// Prepends and element to a collection
+        /// </summary>
+        /// <typeparam name="T">Type of source IEnumerable</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="element">Element to append</param>
+        /// <returns>IEnumerable of type T with element appended to the end</returns>
+        public static IEnumerable<T> Prepend <T>(this IEnumerable<T> collection, T element)
         {
-            return new [] { Input }.AsEnumerable();
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            yield return element;
+            foreach (var t in collection)
+            {
+                yield return t;
+            }
+        }
+
+        /// <summary>
+        /// Returns random element from sequence
+        /// </summary>
+        /// <param name="source">Source sequence</param>
+        /// <param name="random">Random class instance</param>
+        /// <typeparam name="T">Type conained in collection</typeparam>
+        /// <returns>Random Elelemnt from sequence</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static T RandomElement <T>(this IEnumerable<T> source, Random random)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            if (random == null)
+            {
+                throw new ArgumentNullException("random");
+            }
+
+            var collection = source as ICollection;
+            if (collection != null)
+            {
+                var count = collection.Count;
+                if (count == 0)
+                {
+                    throw new InvalidOperationException("Sequence was empty.");
+                }
+                var index = random.Next(count);
+                return source.ElementAt(index);
+            }
+            using (var iterator = source.GetEnumerator())
+            {
+                if (!iterator.MoveNext())
+                {
+                    throw new InvalidOperationException("Sequence was empty.");
+                }
+                var countSoFar = 1;
+                T current = iterator.Current;
+                while (iterator.MoveNext())
+                {
+                    countSoFar++;
+                    if (random.Next(countSoFar) == 0)
+                    {
+                        current = iterator.Current;
+                    }
+                }
+                return current;
+            }
+        }
+
+        /// <summary>
+        /// Returns lazily evaluated shuffle of input (uses Fisher-Yates)
+        /// </summary>
+        /// <param name="source">Source sequence</param>
+        /// <param name="random">Random class instance</param>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <returns>IEnumerable of shuffled elements</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IEnumerable<T> Shuffle <T>(this IEnumerable<T> source, Random random)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            if (random == null)
+            {
+                throw new ArgumentNullException("random");
+            }
+
+            var elements = source.ToArray();
+            for (var i = elements.Length - 1; i >= 0; i--)
+            {
+                // Swap element "i" with a random earlier element it (or itself)
+                // ... except we don't really need to swap it fully, as we can
+                // return it immediately, and afterwards it's irrelevant.
+                var swapIndex = random.Next(i + 1);
+                yield return elements[swapIndex];
+                elements[swapIndex] = elements[i];
+            }
+        }
+
+        public static IEnumerable<T> ToEnumerable <T>(this T Input)
+        {
+            return new[] {Input}.AsEnumerable();
+        }
+
+        /// <summary>
+        /// Creates a specified formatted listing for a collection
+        /// </summary>
+        /// <typeparam name="T">Type contained in collection</typeparam>
+        /// <param name="collection">Collection of type T</param>
+        /// <param name="StringElement">Function to apply to each element to return a string representation</param>
+        /// <param name="separator">String to seperate each element in result string</param>
+        /// <returns>String listing all elements</returns>
+        public static string ToString <T>(this IEnumerable<T> collection, Func<T, string> StringElement, string separator)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+            if (StringElement == null)
+            {
+                throw new ArgumentNullException("StringElement");
+            }
+            return string.Join(separator, collection.Select(StringElement).ToArray());
+        }
+
+        /// <summary>
+        /// Implements Where(filter-lambda).Select(selector-lambda) in a single operation
+        /// </summary>
+        /// <typeparam name="TSrc">Type of source IEnumerable</typeparam>
+        /// <typeparam name="TResult">Resulting type</typeparam>
+        /// <param name="collection">Collection of type TSrc</param>
+        /// <param name="predicate">Expression to check for a match</param>
+        /// <param name="selector">Expression to convert from TSrc to TResult</param>
+        /// <returns>IEnumerable of type TResult that matches predicate</returns>
+        public static IEnumerable<TResult> WhereSelect <TSrc, TResult>(this IEnumerable<TSrc> collection, Predicate<TSrc> predicate, Converter<TSrc, TResult> selector)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            foreach (var t in collection)
+            {
+                if (predicate(t))
+                {
+                    yield return selector(t);
+                }
+            }
         }
     }
 }
