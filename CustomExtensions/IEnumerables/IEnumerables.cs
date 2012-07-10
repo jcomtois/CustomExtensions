@@ -423,18 +423,18 @@ namespace CustomExtensions.IEnumerables
         /// Prepends and element to a source
         /// </summary>
         /// <typeparam name="T">Type of source IEnumerable</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="element">Element to append</param>
         /// <returns>IEnumerable of type T with element appended to the end</returns>
-        public static IEnumerable<T> Prepend <T>(this IEnumerable<T> collection, T element)
+        public static IEnumerable<T> Prepend <T>(this IEnumerable<T> source, T element)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
             yield return element;
-            foreach (var t in collection)
+            foreach (var t in source)
             {
                 yield return t;
             }
@@ -531,21 +531,21 @@ namespace CustomExtensions.IEnumerables
         /// Creates a specified formatted listing for a source
         /// </summary>
         /// <typeparam name="T">Type contained in source</typeparam>
-        /// <param name="collection">Collection of type T</param>
+        /// <param name="source">IEnumerable of type T</param>
         /// <param name="StringElement">Function to apply to each element to return a string representation</param>
         /// <param name="separator">String to seperate each element in result string</param>
         /// <returns>String listing all elements</returns>
-        public static string ToString <T>(this IEnumerable<T> collection, Func<T, string> StringElement, string separator)
+        public static string ToString <T>(this IEnumerable<T> source, Func<T, string> StringElement, string separator)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
             if (StringElement == null)
             {
                 throw new ArgumentNullException("StringElement");
             }
-            return string.Join(separator, collection.Select(StringElement).ToArray());
+            return string.Join(separator, source.Select(StringElement).ToArray());
         }
 
         /// <summary>
@@ -553,15 +553,15 @@ namespace CustomExtensions.IEnumerables
         /// </summary>
         /// <typeparam name="TSrc">Type of source IEnumerable</typeparam>
         /// <typeparam name="TResult">Resulting type</typeparam>
-        /// <param name="collection">Collection of type TSrc</param>
+        /// <param name="source">IEnumerable of type TSrc</param>
         /// <param name="predicate">Expression to check for a match</param>
         /// <param name="selector">Expression to convert from TSrc to TResult</param>
         /// <returns>IEnumerable of type TResult that matches predicate</returns>
-        public static IEnumerable<TResult> WhereSelect <TSrc, TResult>(this IEnumerable<TSrc> collection, Predicate<TSrc> predicate, Converter<TSrc, TResult> selector)
+        public static IEnumerable<TResult> WhereSelect <TSrc, TResult>(this IEnumerable<TSrc> source, Predicate<TSrc> predicate, Converter<TSrc, TResult> selector)
         {
-            if (collection == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
             if (predicate == null)
@@ -574,7 +574,7 @@ namespace CustomExtensions.IEnumerables
                 throw new ArgumentNullException("selector");
             }
 
-            foreach (var t in collection)
+            foreach (var t in source)
             {
                 if (predicate(t))
                 {
