@@ -31,3 +31,9 @@ _ReSharper*/
 [Bb]uild[Ll]og.*
 *.[Pp]ublish.xml
 *.resharper
+[Pp]ackages/
+BuildProcessTemplates/*
+Published/*
+[Uu]pgradeLog*.[Xx][Mm][Ll]
+_[Uu]pgradeReport_Files*/
+*.build.csdef
