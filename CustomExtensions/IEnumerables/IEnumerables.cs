@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CustomExtensions.IEnumerables
 {
@@ -32,6 +33,16 @@ namespace CustomExtensions.IEnumerables
             }
 
             #endregion
+        }
+
+        /// <summary>
+        /// Converts IEnumerable of type string to a single string
+        /// </summary>
+        /// <param name="source">IEnumerable of type string</param>
+        /// <returns>String of appended strings, empty if null input</returns>
+        public static string FlattenStrings(this IEnumerable<string> source)
+        {
+            return source == null ? string.Empty : string.Join(string.Empty, source.ToArray());
         }
 
         /// <summary>

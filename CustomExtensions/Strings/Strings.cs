@@ -162,7 +162,7 @@ namespace CustomExtensions.Strings
         }
 
         /// <summary>
-        ///   Encryptes a string using the supplied key. Encoding is done using RSA encryption.
+        /// Encrypts a string using the supplied key. Encoding is done using RSA encryption.
         /// </summary>
         /// <param name="StringToEncrypt"> String that must be encrypted. </param>
         /// <param name="Key"> Encryptionkey. </param>
@@ -259,7 +259,7 @@ namespace CustomExtensions.Strings
         }
 
         /// <summary>
-        ///   Truncates the string to a specified length and replace the truncated to a ...
+        /// Truncates the string to a specified length and replace the truncated to a ...
         /// </summary>
         /// <param name="Text"> string that will be truncated </param>
         /// <param name="MaxLength"> total length of characters to maintain before the truncate happens </param>
