@@ -37,3 +37,4 @@ Published/*
 [Uu]pgradeLog*.[Xx][Mm][Ll]
 _[Uu]pgradeReport_Files*/
 *.build.csdef
+.nuget/[Nn]u[Gg]et.exe
