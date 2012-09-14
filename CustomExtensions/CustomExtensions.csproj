@@ -75,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datetime\Datetimes.cs" />
+    <Compile Include="ForStrings\AddLine.cs">
+      <DependentUpon>ForStringBuilders.cs</DependentUpon>
+    </Compile>
     <Compile Include="IConvertible\IConvertibles.cs" />
     <Compile Include="IEnumerables\IEnumerables.cs" />
     <Compile Include="PInvoke\COMInterop.cs" />
@@ -106,7 +109,7 @@
     <Compile Include="ForStrings\SHA1Hash.cs">
       <DependentUpon>ForStrings.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStrings\StringBuilders.cs" />
+    <Compile Include="ForStrings\ForStringBuilders.cs" />
     <Compile Include="ForStrings\ForStrings.cs" />
     <Compile Include="ForStrings\Strip.cs">
       <DependentUpon>ForStrings.cs</DependentUpon>
