@@ -23,12 +23,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\CustomExtensions.XML</DocumentationFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -78,10 +80,22 @@
     <Compile Include="ForDatetime\FormatyyyMMdd.cs">
       <DependentUpon>ForDateTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIConvertible\To.cs">
+      <DependentUpon>ForIConvertible.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForIConvertible\ToOrDefault.cs">
+      <DependentUpon>ForIConvertible.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForIConvertible\ToOrNull.cs">
+      <DependentUpon>ForIConvertible.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForIConvertible\ToOrOther.cs">
+      <DependentUpon>ForIConvertible.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStrings\AddLine.cs">
       <DependentUpon>ForStringBuilders.cs</DependentUpon>
     </Compile>
-    <Compile Include="IConvertible\IConvertibles.cs" />
+    <Compile Include="ForIConvertible\ForIConvertible.cs" />
     <Compile Include="IEnumerables\IEnumerables.cs" />
     <Compile Include="PInvoke\COMInterop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,7 +150,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\CustomExtensions.VersionNumber.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release copy "$(TargetDir)*.*" "$(SolutionDir)CurrentBuild\" /y</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release copy "$(TargetDir)*.*" "$(SolutionDir)CurrentBuild\" /y
+
+if $(ConfigurationName) == Release del  "$(SolutionDir)CurrentBuild\*.tmp"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
