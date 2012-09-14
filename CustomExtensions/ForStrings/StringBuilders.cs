@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace CustomExtensions.Strings
+namespace CustomExtensions.ForStrings
 {
     public static class StringBuilders
     {

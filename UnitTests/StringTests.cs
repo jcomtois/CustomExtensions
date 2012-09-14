@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CustomExtensions.Strings;
+using CustomExtensions.ForStrings;
 using NUnit.Framework;
 
 namespace UnitTests

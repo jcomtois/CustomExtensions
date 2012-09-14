@@ -38,3 +38,4 @@ Published/*
 _[Uu]pgradeReport_Files*/
 *.build.csdef
 .nuget/[Nn]u[Gg]et.exe
+CurrentBuild/CustomExtensions.dll
