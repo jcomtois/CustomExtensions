@@ -74,7 +74,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Datetime\Datetimes.cs" />
+    <Compile Include="ForDatetime\ForDateTime.cs" />
+    <Compile Include="ForDatetime\FormatyyyMMdd.cs">
+      <DependentUpon>ForDateTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStrings\AddLine.cs">
       <DependentUpon>ForStringBuilders.cs</DependentUpon>
     </Compile>
