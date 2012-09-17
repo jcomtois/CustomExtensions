@@ -5,45 +5,8 @@ using System.Linq;
 
 namespace CustomExtensions.ForIEnumerable
 {
-    /// <summary>
-    /// Extensions for IEnumerable members
-    /// </summary>
-    public static class ForIEnumerable
+   public static partial class ForIEnumerable
     {
-        private sealed class ProjectingEqualityComparer <T, TId> : IEqualityComparer<T> where TId : IEquatable<TId>
-        {
-            private readonly Func<T, TId> _projection;
-
-            public ProjectingEqualityComparer(Func<T, TId> projection)
-            {
-                _projection = projection;
-            }
-
-            #region IEqualityComparer<T> Members
-
-            public bool Equals(T x, T y)
-            {
-                return EqualityComparer<TId>.Default.Equals(_projection(x), _projection(y));
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return EqualityComparer<TId>.Default.GetHashCode(_projection(obj));
-            }
-
-            #endregion
-        }
-
-        /// <summary>
-        /// Converts IEnumerable of type string to a single string
-        /// </summary>
-        /// <param name="source">IEnumerable of type string</param>
-        /// <returns>String of appended strings, empty if null input</returns>
-        public static string FlattenStrings(this IEnumerable<string> source)
-        {
-            return source == null ? string.Empty : string.Join(string.Empty, source.ToArray());
-        }
-
         /// <summary>
         /// Appends and element to a source
         /// </summary>
@@ -591,6 +554,29 @@ namespace CustomExtensions.ForIEnumerable
                     yield return selector(t);
                 }
             }
+        }
+        private sealed class ProjectingEqualityComparer<T, TId> : IEqualityComparer<T> where TId : IEquatable<TId>
+        {
+            private readonly Func<T, TId> _projection;
+
+            public ProjectingEqualityComparer(Func<T, TId> projection)
+            {
+                _projection = projection;
+            }
+
+            #region IEqualityComparer<T> Members
+
+            public bool Equals(T x, T y)
+            {
+                return EqualityComparer<TId>.Default.Equals(_projection(x), _projection(y));
+            }
+
+            public int GetHashCode(T obj)
+            {
+                return EqualityComparer<TId>.Default.GetHashCode(_projection(obj));
+            }
+
+            #endregion
         }
     }
 }
