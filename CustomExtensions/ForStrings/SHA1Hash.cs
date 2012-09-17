@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using CustomExtensions.IEnumerables;
+using CustomExtensions.ForIEnumerable;
 
 namespace CustomExtensions.ForStrings
 {

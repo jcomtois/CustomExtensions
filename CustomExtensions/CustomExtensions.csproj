@@ -96,7 +96,7 @@
       <DependentUpon>ForStringBuilders.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIConvertible\ForIConvertible.cs" />
-    <Compile Include="IEnumerables\IEnumerables.cs" />
+    <Compile Include="ForIEnumerable\ForIEnumerable.cs" />
     <Compile Include="PInvoke\COMInterop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ForStrings\ConatainsAny.cs">

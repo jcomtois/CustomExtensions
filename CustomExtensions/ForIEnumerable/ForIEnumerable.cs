@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace CustomExtensions.IEnumerables
+namespace CustomExtensions.ForIEnumerable
 {
     /// <summary>
     /// Extensions for IEnumerable members
     /// </summary>
-    public static class IEnumerables
+    public static class ForIEnumerable
     {
         private sealed class ProjectingEqualityComparer <T, TId> : IEqualityComparer<T> where TId : IEquatable<TId>
         {

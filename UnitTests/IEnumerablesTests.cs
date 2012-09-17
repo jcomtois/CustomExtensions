@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CustomExtensions.IEnumerables;
+using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
 
 namespace UnitTests

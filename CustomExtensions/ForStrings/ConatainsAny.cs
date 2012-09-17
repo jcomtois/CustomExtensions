@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CustomExtensions.IEnumerables;
+using CustomExtensions.ForIEnumerable;
 
 namespace CustomExtensions.ForStrings
 {
