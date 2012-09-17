@@ -40,3 +40,4 @@ _[Uu]pgradeReport_Files*/
 .nuget/[Nn]u[Gg]et.exe
 CurrentBuild/CustomExtensions.dll
 CurrentBuild/CustomExtensions.XML
+CurrentBuild/MoreLinq.dll

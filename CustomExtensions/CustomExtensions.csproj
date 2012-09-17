@@ -147,6 +147,11 @@
     <Compile Include="ForStrings\TryToGuid.cs">
       <DependentUpon>ForStrings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Validation\MultiException.cs" />
+    <Compile Include="Validation\Validate.cs" />
+    <Compile Include="Validation\Validation.cs" />
+    <Compile Include="Validation\ValidationException.cs" />
+    <Compile Include="Validation\ValidationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomExtensions.key.pfx" />
