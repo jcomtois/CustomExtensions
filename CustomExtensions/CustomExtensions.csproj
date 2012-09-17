@@ -12,6 +12,8 @@
     <AssemblyName>CustomExtensions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,6 +70,9 @@
     <AssemblyOriginatorKeyFile>CustomExtensions.key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\morelinq.1.0\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -92,6 +97,7 @@
     <Compile Include="ForIConvertible\ToOrOther.cs">
       <DependentUpon>ForIConvertible.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\Append.cs" />
     <Compile Include="ForIEnumerable\FlattenStrings.cs" />
     <Compile Include="ForStrings\AddLine.cs">
       <DependentUpon>ForStringBuilders.cs</DependentUpon>
@@ -144,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomExtensions.key.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Generic\" />
@@ -155,6 +162,7 @@
 
 if $(ConfigurationName) == Release del  "$(SolutionDir)CurrentBuild\*.tmp"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
