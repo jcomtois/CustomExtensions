@@ -85,14 +85,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppendTest.cs" />
+    <Compile Include="ForIEnumerablesTests\AppendTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForIEnumerablesTests\AverageOrDefaultTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="BreakingSequence.cs" />
-    <Compile Include="FlattenStringsTest.cs" />
-    <Compile Include="IEnumerablesTests.cs" />
-    <Compile Include="StringTests.cs" />
+    <Compile Include="ForIEnumerablesTests\FlattenStringsTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForIEnumerablesTests\ForIEnumerablesTests.cs" />
+    <Compile Include="ForStringsTests\StringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToStringTest.cs">
-      <DependentUpon>IEnumerablesTests.cs</DependentUpon>
+    <Compile Include="ForIEnumerablesTests\ToStringTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

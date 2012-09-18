@@ -100,6 +100,7 @@
     <Compile Include="ForIEnumerable\Append.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\AverageOrDefault.cs" />
     <Compile Include="ForIEnumerable\FlattenStrings.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>

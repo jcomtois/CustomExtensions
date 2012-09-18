@@ -2,9 +2,9 @@
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
 
-namespace UnitTests
+namespace UnitTests.ForIEnumerablesTests
 {
-    public partial class IEnumerablesTests
+    public partial class ForIEnumerablesTests
     {
         [TestFixture]
         public class FlattenStringsTest

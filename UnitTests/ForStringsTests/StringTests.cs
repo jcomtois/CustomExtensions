@@ -3,7 +3,7 @@ using System.Linq;
 using CustomExtensions.ForStrings;
 using NUnit.Framework;
 
-namespace UnitTests
+namespace UnitTests.ForStringsTests
 {
     public class StringTests
     {       

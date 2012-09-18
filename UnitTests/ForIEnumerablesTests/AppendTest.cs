@@ -3,15 +3,21 @@ using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 
-namespace UnitTests
+namespace UnitTests.ForIEnumerablesTests
 {
-    public partial class IEnumerablesTests
+    public partial class ForIEnumerablesTests
     {
         [TestFixture]
         public class AppendTest
         {
             private readonly string[] _stringArray = new[] {"10", "20"};
             private const string ToAppend = "30";
+
+            [Test]
+            public void AppendIsLazy()
+            {
+                Assert.DoesNotThrow(() => new BreakingSequence<string>().Append(ToAppend));
+            }
 
             [Test]
             public void GoodInputAppendedToEmptySequence()
@@ -63,12 +69,6 @@ namespace UnitTests
                 const string toAppend = null;
                 string[] sequence = null;
                 Assert.Catch<ValidationException>(() => sequence.Append(toAppend));
-            }
-
-            [Test]
-            public void AppendIsLazy()
-            {
-                Assert.DoesNotThrow(() => new BreakingSequence<string>().Append(ToAppend));
             }
         }
     }
