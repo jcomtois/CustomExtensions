@@ -97,7 +97,9 @@
     <Compile Include="ForIConvertible\ToOrOther.cs">
       <DependentUpon>ForIConvertible.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIEnumerable\Append.cs" />
+    <Compile Include="ForIEnumerable\Append.cs">
+      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerable\FlattenStrings.cs" />
     <Compile Include="ForStrings\AddLine.cs">
       <DependentUpon>ForStringBuilders.cs</DependentUpon>

@@ -1,31 +1,32 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForIEnumerable
 {
     public static partial class ForIEnumerable
     {
         /// <summary>
-        /// Appends and element to a source
+        /// Appends an element to a source <see cref="IEnumerable"/>
         /// </summary>
-        /// <typeparam name="T">Type of source IEnumerable</typeparam>
-        /// <param name="source">IEnumerable of type T</param>
-        /// <param name="element">Element to append</param>
-        /// <returns>IEnumerable of type T with element appended to the end</returns>
+        /// <typeparam name="T">Type of source <see cref="IEnumerable"/></typeparam>
+        /// <param name="source"><see cref="IEnumerable"/> of type <typeparamref name="T"/></param>
+        /// <param name="element">Element of type <typeparamref name="T"/> to append</param>
+        /// <returns><paramref name="source"/> with element of type <typeparamref name="T"/> appended to the end</returns>
         public static IEnumerable<T> Append <T>(this IEnumerable<T> source, T element)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
+            Validate.Begin().IsNotNull(source, "source").CheckForExceptions();
 
-            foreach (var t in source)
-            {
-                yield return t;
-            }
-            yield return element;
+            return AppendImplementation(source, element);
+        }
+
+        private static IEnumerable<T> AppendImplementation <T>(this IEnumerable<T> source, T element)
+        {
+            Debug.Assert(source != null, "source cannot be null.");
+
+            return source.Concat(Enumerable.Repeat(element, 1));
         }
     }
 }
