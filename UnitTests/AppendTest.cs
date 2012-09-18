@@ -64,6 +64,12 @@ namespace UnitTests
                 string[] sequence = null;
                 Assert.Catch<ValidationException>(() => sequence.Append(toAppend));
             }
+
+            [Test]
+            public void AppendIsLazy()
+            {
+                Assert.DoesNotThrow(() => new BreakingSequence<string>().Append(ToAppend));
+            }
         }
     }
 }

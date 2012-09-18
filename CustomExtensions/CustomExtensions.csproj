@@ -100,7 +100,9 @@
     <Compile Include="ForIEnumerable\Append.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIEnumerable\FlattenStrings.cs" />
+    <Compile Include="ForIEnumerable\FlattenStrings.cs">
+      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStrings\AddLine.cs">
       <DependentUpon>ForStringBuilders.cs</DependentUpon>
     </Compile>
