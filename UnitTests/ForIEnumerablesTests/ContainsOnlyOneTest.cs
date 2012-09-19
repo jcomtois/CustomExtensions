@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
@@ -13,44 +14,35 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void InputContainsOnlyOneElment()
             {
-                var source = Enumerable.Repeat(default(int), 1);
-                const bool expected = true;
-                var actual = source.ContainsOnlyOne();
-                Assert.AreEqual(expected, actual);
+                var sequence = Enumerable.Repeat(default(int), 1);
+                Assert.That(sequence.ContainsOnlyOne(), Is.True);
             }
 
             [Test]
             public void InputContainsMoreThanOneElment()
             {
-                var source = Enumerable.Repeat(default(int), 2);
-                const bool expected = false;
-                var actual = source.ContainsOnlyOne();
-                Assert.AreEqual(expected, actual);
+                var sequence = Enumerable.Repeat(default(int), 2);
+                Assert.That(sequence.ContainsOnlyOne(), Is.False);
             }
 
             [Test]
             public void InputContainsLessThanOneElment()
             {
-                var source = Enumerable.Repeat(default(int), 0);
-                const bool expected = false;
-                var actual = source.ContainsOnlyOne();
-                Assert.AreEqual(expected, actual);
+                var sequence = Enumerable.Repeat(default(int), 0);
+                Assert.That(sequence.ContainsOnlyOne(), Is.False);
             }
 
             [Test]
             public void InputEmpty()
             {
-                var source = Enumerable.Empty<int>();
-                const bool expected = false;
-                var actual = source.ContainsOnlyOne();
-                Assert.AreEqual(expected, actual);
+                var sequence = Enumerable.Empty<int>();
+                Assert.That(sequence.ContainsOnlyOne(), Is.False);
             }
 
             [Test]
             public void InputNull()
             {
-                int[] source = null;
-                Assert.Throws<ValidationException>(() => source.ContainsOnlyOne());
+                Assert.That(() => ((IEnumerable<int>)null).ContainsOnlyOne(), Throws.TypeOf<ValidationException>());
             }
         }
     }

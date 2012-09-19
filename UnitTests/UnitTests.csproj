@@ -97,6 +97,7 @@
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerablesTests\ForIEnumerablesTests.cs" />
+    <Compile Include="ForIEnumerablesTests\NullSequence.cs" />
     <Compile Include="ForStringsTests\StringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ForIEnumerablesTests\ToStringTest.cs">

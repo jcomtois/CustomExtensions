@@ -54,51 +54,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void IntegerGoodInputNoDefault()
             {
-                var expected = _intArray.Average();
-                var actual = _intArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(), Is.EqualTo(_intArray.Average()));
             }
 
             [Test]
             public void IntegerGoodInputDefault()
             {
-                var expected = _intArray.Average();
-                var actual = _intArray.AverageOrDefault(DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(DefaultIntValue), Is.EqualTo(_intArray.Average()));
             }
 
             [Test]
             public void IntegerEmptyInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void IntegerEmptyInputNoDefault()
             {
-                const double expected = default(int);
-                var actual = Enumerable.Empty<int>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void IntegerNullInputDefault()
-            {
-                var expected = DefaultDoubleValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+            {                                
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void IntegerNullInputNoDefault()
             {
-                const double expected = default(int);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(), Is.EqualTo(default(int)));
             } 
             #endregion
 
@@ -106,51 +92,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableIntegerGoodInputNoDefault()
             {
-                var expected = _nullableIntArray.Average();
-                var actual = _nullableIntArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableIntArray.AverageOrDefault(), Is.EqualTo(_nullableIntArray.Average()));
             }
 
             [Test]
             public void NullableIntegerGoodInputDefault()
             {
-                var expected = _nullableIntArray.Average();
-                var actual = _nullableIntArray.AverageOrDefault(DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableIntArray.AverageOrDefault(DefaultIntValue), Is.EqualTo(_nullableIntArray.Average()));
             }
 
             [Test]
             public void NullableIntegerEmptyInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<int?>().AverageOrDefault(DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int?>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void NullableIntegerEmptyInputNoDefault()
             {
-                double? expected = default(int);
-                var actual = Enumerable.Empty<int?>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int?>().AverageOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void NullableIntegerNullInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                int?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int?>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void NullableIntegerNullInputNoDefault()
             {
-                double? expected = default(int);
-                int?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int?>().AverageOrDefault(), Is.EqualTo(default(int)));
             } 
             #endregion
 
@@ -158,51 +130,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void DecimalGoodInputNoDefault()
             {
-                var expected = _decimalArray.Average();
-                var actual = _decimalArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_decimalArray.AverageOrDefault(), Is.EqualTo(_decimalArray.Average()));
             }
 
             [Test]
             public void DecimalGoodInputDefault()
             {
-                var expected = _decimalArray.Average();
-                var actual = _decimalArray.AverageOrDefault(DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_decimalArray.AverageOrDefault(DefaultDecimalValue), Is.EqualTo(_decimalArray.Average()));
             }
 
             [Test]
             public void DecimalEmptyInputDefault()
             {
-                const decimal expected = DefaultDecimalValue;
-                var actual = Enumerable.Empty<decimal>().AverageOrDefault(DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<decimal>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void DecimalEmptyInputNoDefault()
             {
-                const decimal expected = default(decimal);
-                var actual = Enumerable.Empty<decimal>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<decimal>().AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
             public void DecimalNullInputDefault()
             {
-                const decimal expected = DefaultDecimalValue;
-                decimal[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<decimal>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void DecimalNullInputNoDefault()
             {
-                const decimal expected = default(decimal);
-                decimal[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<decimal>().AverageOrDefault(), Is.EqualTo(default(decimal)));
             }          
             #endregion
 
@@ -210,51 +168,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableDecimalGoodInputNoDefault()
             {
-                var expected = _nullableDecimalArray.Average();
-                var actual = _nullableDecimalArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableDecimalArray.AverageOrDefault(), Is.EqualTo(_nullableDecimalArray.Average()));
             }
 
             [Test]
             public void NullableDecimalGoodInputDefault()
             {
-                var expected = _nullableDecimalArray.Average();
-                var actual = _nullableDecimalArray.AverageOrDefault(DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableDecimalArray.AverageOrDefault(DefaultDecimalValue), Is.EqualTo(_nullableDecimalArray.Average()));
             }
 
             [Test]
             public void NullableDecimalEmptyInputDefault()
             {
-                decimal? expected = DefaultDecimalValue;
-                var actual = Enumerable.Empty<decimal?>().AverageOrDefault(DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<decimal?>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void NullableDecimalEmptyInputNoDefault()
             {
-                decimal? expected = default(decimal);
-                var actual = Enumerable.Empty<decimal?>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<decimal?>().AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
             public void NullableDecimalNullInputDefault()
             {
-                decimal? expected = DefaultDecimalValue;
-                decimal?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<decimal?>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void NullableDecimalNullInputNoDefault()
             {
-                decimal? expected = default(decimal);
-                decimal?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<decimal?>().AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
             #endregion
 
@@ -262,51 +206,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void DoubleGoodInputNoDefault()
             {
-                var expected = _doubleArray.Average();
-                var actual = _doubleArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_doubleArray.AverageOrDefault(), Is.EqualTo(_doubleArray.Average()));
             }
 
             [Test]
             public void DoubleGoodInputDefault()
             {
-                var expected = _doubleArray.Average();
-                var actual = _doubleArray.AverageOrDefault(DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_doubleArray.AverageOrDefault(DefaultDoubleValue), Is.EqualTo(_doubleArray.Average()));
             }
 
             [Test]
             public void DoubleEmptyInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<double>().AverageOrDefault(DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<double>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void DoubleEmptyInputNoDefault()
             {
-                const double expected = default(double);
-                var actual = Enumerable.Empty<double>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<double>().AverageOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
             public void DoubleNullInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                double[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<double>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void DoubleNullInputNoDefault()
             {
-                const double expected = default(double);
-                double[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<double>().AverageOrDefault(), Is.EqualTo(default(double)));
             }
             #endregion
 
@@ -314,51 +244,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableDoubleGoodInputNoDefault()
             {
-                var expected = _nullableDoubleArray.Average();
-                var actual = _nullableDoubleArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableDoubleArray.AverageOrDefault(), Is.EqualTo(_nullableDoubleArray.Average()));
             }
 
             [Test]
             public void NullableDoubleGoodInputDefault()
             {
-                var expected = _nullableDoubleArray.Average();
-                var actual = _nullableDoubleArray.AverageOrDefault(DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableDoubleArray.AverageOrDefault(DefaultDoubleValue), Is.EqualTo(_nullableDoubleArray.Average()));
             }
 
             [Test]
             public void NullableDoubleEmptyInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<double?>().AverageOrDefault(DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<double?>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void NullableDoubleEmptyInputNoDefault()
             {
-                double? expected = default(double);
-                var actual = Enumerable.Empty<double?>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<double?>().AverageOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
             public void NullableDoubleNullInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                double?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<double?>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void NullableDoubleNullInputNoDefault()
             {
-                double? expected = default(double);
-                double?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<double?>().AverageOrDefault(), Is.EqualTo(default(double)));
             }
             #endregion
 
@@ -366,51 +282,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void LongGoodInputNoDefault()
             {
-                var expected = _longArray.Average();
-                var actual = _longArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_longArray.AverageOrDefault(), Is.EqualTo(_longArray.Average()));
             }
 
             [Test]
             public void LongGoodInputDefault()
             {
-                var expected = _longArray.Average();
-                var actual = _longArray.AverageOrDefault(DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_longArray.AverageOrDefault(DefaultLongValue), Is.EqualTo(_longArray.Average()));
             }
 
             [Test]
             public void LongEmptyInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<long>().AverageOrDefault(DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<long>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void LongEmptyInputNoDefault()
             {
-                const double expected = default(long);
-                var actual = Enumerable.Empty<long>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<long>().AverageOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
             public void LongNullInputDefault()
             {
-                var expected = DefaultDoubleValue;
-                long[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<long>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void LongNullInputNoDefault()
             {
-                const double expected = default(long);
-                long[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<long>().AverageOrDefault(), Is.EqualTo(default(long)));
             }
             #endregion
 
@@ -418,51 +320,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableLongGoodInputNoDefault()
             {
-                var expected = _nullableLongArray.Average();
-                var actual = _nullableLongArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableLongArray.AverageOrDefault(), Is.EqualTo(_nullableLongArray.Average()));
             }
 
             [Test]
             public void NullableLongGoodInputDefault()
             {
-                var expected = _nullableLongArray.Average();
-                var actual = _nullableLongArray.AverageOrDefault(DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableLongArray.AverageOrDefault(DefaultLongValue), Is.EqualTo(_nullableLongArray.Average()));
             }
 
             [Test]
             public void NullableLongEmptyInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<long?>().AverageOrDefault(DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<long?>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void NullableLongEmptyInputNoDefault()
             {
-                double? expected = default(long);
-                var actual = Enumerable.Empty<long?>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<long?>().AverageOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
             public void NullableLongNullInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                long?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<long?>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void NullableLongNullInputNoDefault()
             {
-                double? expected = default(long);
-                long?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<long?>().AverageOrDefault(), Is.EqualTo(default(long)));
             }
             #endregion
 
@@ -470,51 +358,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void FloatGoodInputNoDefault()
             {
-                var expected = _floatArray.Average();
-                var actual = _floatArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_floatArray.AverageOrDefault(), Is.EqualTo(_floatArray.Average()));
             }
 
             [Test]
             public void FloatGoodInputDefault()
             {
-                var expected = _floatArray.Average();
-                var actual = _floatArray.AverageOrDefault(DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_floatArray.AverageOrDefault(DefaultFloatValue), Is.EqualTo(_floatArray.Average()));
             }
 
             [Test]
             public void FloatEmptyInputDefault()
             {
-                const float expected = DefaultFloatValue;
-                var actual = Enumerable.Empty<float>().AverageOrDefault(DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<float>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void FloatEmptyInputNoDefault()
             {
-                const float expected = default(float);
-                var actual = Enumerable.Empty<float>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<float>().AverageOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
             public void FloatNullInputDefault()
             {
-                var expected = DefaultFloatValue;
-                float[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<float>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void FloatNullInputNoDefault()
             {
-                const float expected = default(float);
-                float[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<float>().AverageOrDefault(), Is.EqualTo(default(float)));
             }
             #endregion
 
@@ -522,51 +396,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableFloatGoodInputNoDefault()
             {
-                var expected = _nullableFloatArray.Average();
-                var actual = _nullableFloatArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableFloatArray.AverageOrDefault(), Is.EqualTo(_nullableFloatArray.Average()));
             }
 
             [Test]
             public void NullableFloatGoodInputDefault()
             {
-                var expected = _nullableFloatArray.Average();
-                var actual = _nullableFloatArray.AverageOrDefault(DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_nullableFloatArray.AverageOrDefault(DefaultFloatValue), Is.EqualTo(_nullableFloatArray.Average()));
             }
 
             [Test]
             public void NullableFloatEmptyInputDefault()
             {
-                float? expected = DefaultFloatValue;
-                var actual = Enumerable.Empty<float?>().AverageOrDefault(DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<float?>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void NullableFloatEmptyInputNoDefault()
             {
-                float? expected = default(float);
-                var actual = Enumerable.Empty<float?>().AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<float?>().AverageOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
             public void NullableFloatNullInputDefault()
             {
-                float? expected = DefaultFloatValue;
-                float?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<float?>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void NullableFloatNullInputNoDefault()
             {
-                float? expected = default(float);
-                float?[] nullArray = null;
-                var actual = nullArray.AverageOrDefault();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<float?>().AverageOrDefault(), Is.EqualTo(default(float)));
             }
             #endregion
 
@@ -574,51 +434,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionDecimalGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_decimalFunc).Average();
-                var actual = _intArray.AverageOrDefault(_decimalFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_decimalFunc), Is.EqualTo(_intArray.Select(_decimalFunc).Average()));
             }
 
             [Test]
             public void ProjectionDecimalGoodInputDefault()
             {
-                var expected = _intArray.Select(_decimalFunc).Average();
-                var actual = _intArray.AverageOrDefault(_decimalFunc, DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_decimalFunc).Average()));
             }
 
             [Test]
             public void ProjectionDecimalEmptyInputDefault()
             {
-                const decimal expected = DefaultDecimalValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_decimalFunc, DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void ProjectionDecimalEmptyInputNoDefault()
             {
-                const decimal expected = default(decimal);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_decimalFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
             public void ProjectionDecimalNullInputDefault()
             {
-                const decimal expected = DefaultDecimalValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_decimalFunc, DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void ProjectionDecimalNullInputNoDefault()
             {
-                const decimal expected = default(decimal);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_decimalFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
             }
             #endregion
 
@@ -626,51 +472,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionNullableDecimalGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_nullableDecimalFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableDecimalFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableDecimalFunc), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableDecimalGoodInputDefault()
             {
-                var expected = _intArray.Select(_nullableDecimalFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableDecimalEmptyInputDefault()
             {
-                decimal? expected = DefaultDecimalValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void ProjectionNullableDecimalEmptyInputNoDefault()
             {
-                decimal? expected = default(decimal);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableDecimalFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
             public void ProjectionNullableDecimalNullInputDefault()
             {
-                decimal? expected = DefaultDecimalValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
             }
 
             [Test]
             public void ProjectionNullableDecimalNullInputNoDefault()
             {
-                decimal? expected = default(decimal);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableDecimalFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
             #endregion
 
@@ -678,51 +510,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionDoubleGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_doubleFunc).Average();
-                var actual = _intArray.AverageOrDefault(_doubleFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_doubleFunc), Is.EqualTo(_intArray.Select(_doubleFunc).Average()));
             }
 
             [Test]
             public void ProjectionDoubleGoodInputDefault()
             {
-                var expected = _intArray.Select(_doubleFunc).Average();
-                var actual = _intArray.AverageOrDefault(_doubleFunc, DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_doubleFunc).Average()));
             }
 
             [Test]
             public void ProjectionDoubleEmptyInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_doubleFunc, DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void ProjectionDoubleEmptyInputNoDefault()
             {
-                const double expected = default(double);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_doubleFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_doubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
             public void ProjectionDoubleNullInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_doubleFunc, DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void ProjectionDoubleNullInputNoDefault()
             {
-                const double expected = default(double);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_doubleFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_doubleFunc), Is.EqualTo(default(double)));
             }
             #endregion
 
@@ -730,51 +548,38 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionNullableDoubleGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_nullableDoubleFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableDoubleFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableDoubleFunc), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableDoubleGoodInputDefault()
             {
-                var expected = _intArray.Select(_nullableDoubleFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableDoubleEmptyInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void ProjectionNullableDoubleEmptyInputNoDefault()
             {
-                double? expected = default(double);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableDoubleFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
             public void ProjectionNullableDoubleNullInputDefault()
             {
-                double? expected = DefaultDoubleValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
             }
 
             [Test]
             public void ProjectionNullableDoubleNullInputNoDefault()
             {
-                double? expected = default(double);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableDoubleFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+
             }
             #endregion
 
@@ -782,51 +587,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionIntGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_intFunc).Average();
-                var actual = _intArray.AverageOrDefault(_intFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_intFunc), Is.EqualTo(_intArray.Select(_intFunc).Average()));
             }
 
             [Test]
             public void ProjectionIntGoodInputDefault()
             {
-                var expected = _intArray.Select(_intFunc).Average();
-                var actual = _intArray.AverageOrDefault(_intFunc, DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_intFunc).Average()));
             }
 
             [Test]
             public void ProjectionIntEmptyInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_intFunc, DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void ProjectionIntEmptyInputNoDefault()
             {
-                const double expected = default(int);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_intFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_intFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ProjectionIntNullInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_intFunc, DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void ProjectionIntNullInputNoDefault()
             {
-                const double expected = default(int);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_intFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_intFunc), Is.EqualTo(default(int)));
             }
             #endregion
 
@@ -834,51 +625,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionNullableIntGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_nullableIntFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableIntFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableIntFunc), Is.EqualTo(_intArray.Select(_nullableIntFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableIntGoodInputDefault()
             {
-                var expected = _intArray.Select(_nullableIntFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableIntFunc, DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_nullableIntFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableIntEmptyInputDefault()
             {
-                double? expected = DefaultIntValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableIntFunc, DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void ProjectionNullableIntEmptyInputNoDefault()
             {
-                double? expected = default(int);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableIntFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ProjectionNullableIntNullInputDefault()
             {
-                double? expected = DefaultIntValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableIntFunc, DefaultIntValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
             }
 
             [Test]
             public void ProjectionNullableIntNullInputNoDefault()
             {
-                double? expected = default(int);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableIntFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
             }
             #endregion
 
@@ -886,51 +663,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionLongGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_longFunc).Average();
-                var actual = _intArray.AverageOrDefault(_longFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_longFunc), Is.EqualTo(_intArray.Select(_longFunc).Average()));
             }
 
             [Test]
             public void ProjectionLongGoodInputDefault()
             {
-                var expected = _intArray.Select(_longFunc).Average();
-                var actual = _intArray.AverageOrDefault(_longFunc, DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_longFunc).Average()));
             }
 
             [Test]
             public void ProjectionLongEmptyInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_longFunc, DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void ProjectionLongEmptyInputNoDefault()
             {
-                const double expected = default(long);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_longFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_longFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
             public void ProjectionLongNullInputDefault()
             {
-                const double expected = DefaultDoubleValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_longFunc, DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void ProjectionLongNullInputNoDefault()
             {
-                const double expected = default(long);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_longFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_longFunc), Is.EqualTo(default(long)));
             }
             #endregion
 
@@ -938,51 +701,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionNullableLongGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_nullableLongFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableLongFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableLongFunc), Is.EqualTo(_intArray.Select(_nullableLongFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableLongGoodInputDefault()
             {
-                var expected = _intArray.Select(_nullableLongFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableLongFunc, DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_nullableLongFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableLongEmptyInputDefault()
             {
-                double? expected = DefaultLongValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableLongFunc, DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void ProjectionNullableLongEmptyInputNoDefault()
             {
-                double? expected = default(long);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableLongFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
             public void ProjectionNullableLongNullInputDefault()
             {
-                double? expected = DefaultLongValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableLongFunc, DefaultLongValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
             }
 
             [Test]
             public void ProjectionNullableLongNullInputNoDefault()
             {
-                double? expected = default(long);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableLongFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
             }
             #endregion
 
@@ -990,51 +739,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionFloatGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_floatFunc).Average();
-                var actual = _intArray.AverageOrDefault(_floatFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_floatFunc), Is.EqualTo(_intArray.Select(_floatFunc).Average()));
             }
 
             [Test]
             public void ProjectionFloatGoodInputDefault()
             {
-                var expected = _intArray.Select(_floatFunc).Average();
-                var actual = _intArray.AverageOrDefault(_floatFunc, DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_floatFunc).Average()));
             }
 
             [Test]
             public void ProjectionFloatEmptyInputDefault()
             {
-                const float expected = DefaultFloatValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_floatFunc, DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void ProjectionFloatEmptyInputNoDefault()
             {
-                const float expected = default(float);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_floatFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_floatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
             public void ProjectionFloatNullInputDefault()
             {
-                const float expected = DefaultFloatValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_floatFunc, DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void ProjectionFloatNullInputNoDefault()
             {
-                const float expected = default(float);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_floatFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_floatFunc), Is.EqualTo(default(float)));
             }
             #endregion
 
@@ -1042,51 +777,37 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ProjectionNullableFloatGoodInputNoDefault()
             {
-                var expected = _intArray.Select(_nullableFloatFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableFloatFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableFloatFunc), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableFloatGoodInputDefault()
             {
-                var expected = _intArray.Select(_nullableFloatFunc).Average();
-                var actual = _intArray.AverageOrDefault(_nullableFloatFunc, DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(_intArray.AverageOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Average()));
             }
 
             [Test]
             public void ProjectionNullableFloatEmptyInputDefault()
             {
-                float? expected = DefaultFloatValue;
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableFloatFunc, DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void ProjectionNullableFloatEmptyInputNoDefault()
             {
-                float? expected = default(float);
-                var actual = Enumerable.Empty<int>().AverageOrDefault(_nullableFloatFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
             public void ProjectionNullableFloatNullInputDefault()
             {
-                float? expected = DefaultFloatValue;
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableFloatFunc, DefaultFloatValue);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
             }
 
             [Test]
             public void ProjectionNullableFloatNullInputNoDefault()
             {
-                float? expected = default(float);
-                int[] nullArray = null;
-                var actual = nullArray.AverageOrDefault(_nullableFloatFunc);
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
             }
             #endregion
 

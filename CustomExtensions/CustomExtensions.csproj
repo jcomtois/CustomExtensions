@@ -104,7 +104,9 @@
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\ContainsExactly.cs" />
-    <Compile Include="ForIEnumerable\ContainsOnlyOne.cs" />
+    <Compile Include="ForIEnumerable\ContainsOnlyOne.cs">
+      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerable\FlattenStrings.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
