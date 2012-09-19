@@ -91,7 +91,7 @@
     <Compile Include="ForIEnumerablesTests\AverageOrDefaultTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="BreakingSequence.cs" />
+    <Compile Include="ForIEnumerablesTests\BreakingSequence.cs" />
     <Compile Include="ForIEnumerablesTests\ContainsOnlyOneTest.cs" />
     <Compile Include="ForIEnumerablesTests\FlattenStringsTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>

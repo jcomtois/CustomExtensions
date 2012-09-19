@@ -311,26 +311,7 @@ namespace CustomExtensions.ForIEnumerable
             return new[] {Input}.AsEnumerable();
         }
 
-        /// <summary>
-        /// Creates a specified formatted listing for a source
-        /// </summary>
-        /// <typeparam name="T">Type contained in source</typeparam>
-        /// <param name="source">IEnumerable of type T</param>
-        /// <param name="StringElement">Function to apply to each element to return a string representation</param>
-        /// <param name="separator">String to seperate each element in result string</param>
-        /// <returns>String listing all elements</returns>
-        public static string ToString <T>(this IEnumerable<T> source, Func<T, string> StringElement, string separator)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-            if (StringElement == null)
-            {
-                throw new ArgumentNullException("StringElement");
-            }
-            return string.Join(separator, source.Select(StringElement).ToArray());
-        }
+       
 
         /// <summary>
         /// Implements Where(filter-lambda).Select(selector-lambda) in a single operation

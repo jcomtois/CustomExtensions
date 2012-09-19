@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
@@ -11,57 +11,46 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class AppendTest
         {
-            private readonly string[] _stringArray = new[] {"10", "20"};
-            private const string ToAppend = "30";
-
             [Test]
             public void AppendIsLazy()
             {
-                Assert.That(() => new BreakingSequence<string>().Append(ToAppend), Throws.Nothing);
+                Assert.That(() => new BreakingSequence<string>().Append("A"), Throws.Nothing);
             }
 
             [Test]
             public void GoodInputAppendedToEmptySequence()
             {
-                var expected = Enumerable.Repeat(ToAppend, 1);
-                var actual = Enumerable.Empty<string>().Append(ToAppend);
-                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(Enumerable.Empty<string>().Append("A"), Is.EqualTo(Enumerable.Repeat("A", 1)));
             }
 
             [Test]
             public void GoodInputAppendedToGoodSequence()
             {
-                var expected = new[] {"10", "20", ToAppend};
-                var actual = _stringArray.Append(ToAppend);
-                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(Enumerable.Repeat("A", 2).Append("A"), Is.EqualTo(Enumerable.Repeat("A", 3)));
             }
 
             [Test]
             public void GoodInputAppendedToNullSequence()
             {
-                Assert.That(() => ((IEnumerable<string>)null).Append(ToAppend), Throws.TypeOf<ValidationException>());
+                Assert.That(() => NullSequence.Of<string>().Append("A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullInputAppendedToEmptySequence()
             {
-                var actual = Enumerable.Empty<string>().Append(null);
-
-                Assert.That(actual, Is.EqualTo(Enumerable.Repeat((string)null, 1)));
+                Assert.That(Enumerable.Empty<string>().Append(null), Is.EqualTo(Enumerable.Repeat<string>(null, 1)));
             }
 
             [Test]
             public void NullInputAppendedToGoodSequence()
             {
-                var expected = new[] {"10", "20", null};
-                var actual = _stringArray.Append(null);
-                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(Enumerable.Repeat("A", 2).Append(null), Is.EqualTo(new[] {"A", "A", null}));
             }
 
             [Test]
             public void NullInputAppendedToNullSequence()
             {
-                Assert.That(() => ((IEnumerable<string>)null).Append(null), Throws.TypeOf<ValidationException>());
+                Assert.That(() => NullSequence.Of<string>().Append(null), Throws.TypeOf<ValidationException>());
             }
         }
     }

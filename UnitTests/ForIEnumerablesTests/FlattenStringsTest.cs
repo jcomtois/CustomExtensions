@@ -9,33 +9,22 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class FlattenStringsTest
         {
-            private readonly string[] _stringArray = new[] {"10", "20", "30"};
-            private const string Flattened = "102030";
-
             [Test]
             public void EmptyInput()
             {
-                var expected = string.Empty;
-                var empty = Enumerable.Empty<string>();
-                var actual = empty.FlattenStrings();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Empty<string>().FlattenStrings(), Is.Empty);
             }
 
             [Test]
             public void GoodInput()
             {
-                var expected = Flattened;
-                var actual = _stringArray.FlattenStrings();
-                Assert.AreEqual(expected, actual);
+                Assert.That(Enumerable.Repeat("A", 3).FlattenStrings(), Is.EqualTo("AAA"));
             }
 
             [Test]
             public void NullInput()
             {
-                var expected = string.Empty;
-                string[] nullArray = null;
-                var actual = nullArray.FlattenStrings();
-                Assert.AreEqual(expected, actual);
+                Assert.That(NullSequence.Of<string>().FlattenStrings(), Is.Empty);
             }
         }
     }

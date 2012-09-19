@@ -110,6 +110,9 @@
     <Compile Include="ForIEnumerable\FlattenStrings.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\ToString.cs">
+      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStrings\AddLine.cs">
       <DependentUpon>ForStringBuilders.cs</DependentUpon>
     </Compile>

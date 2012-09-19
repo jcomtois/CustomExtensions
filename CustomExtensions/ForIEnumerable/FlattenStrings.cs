@@ -13,7 +13,7 @@ namespace CustomExtensions.ForIEnumerable
         /// <returns> <see cref="string"/> of appended strings, empty if null input</returns>
         public static string FlattenStrings(this IEnumerable<string> source)
         {
-            return source == null ? string.Empty : string.Join(string.Empty, source.ToArray());
+            return source == null ? string.Empty : ToStringImplementation(source, s => s, null);
         }
     }
 }
