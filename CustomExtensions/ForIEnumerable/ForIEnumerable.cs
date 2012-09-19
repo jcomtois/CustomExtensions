@@ -8,30 +8,6 @@ namespace CustomExtensions.ForIEnumerable
    public static partial class ForIEnumerable
     {       
         /// <summary>
-        /// Checks to see if source contains no instances of an item that meets a condition
-        /// </summary>
-        /// <typeparam name="T">Type contained in source</typeparam>
-        /// <param name="source">IEnumerable of type T</param>
-        /// <param name="predicate">Function to check each item for a match</param>
-        /// <returns>True if source contains no item that matches</returns>
-        public static bool ContainsNone <T>(this IEnumerable<T> source, Func<T, bool> predicate)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException("predicate");
-            }
-
-            return source.All(i => !predicate(i));
-        }
-
-       
-
-        /// <summary>
         /// Allows a projection comparison for IEquatable types 
         /// </summary>
         /// <typeparam name="T">Type in source</typeparam>

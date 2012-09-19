@@ -36,34 +36,15 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void SequenceNull()
+            public void SequenceEmptyProjectionGood()
             {
-                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceGoodProjectionNull()
-            {
-                Assert.That(() => Enumerable.Repeat("A", 1).ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => Enumerable.Empty<int>().ContainsOnlyOne(i => i == 1), Is.False);
             }
 
             [Test]
             public void SequenceEmptyProjectionNull()
             {
                 Assert.That(() => Enumerable.Empty<string>().ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionGood()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(s => true ), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(null), 
-                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
@@ -75,9 +56,28 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void SequenceEmptyProjectionGood()
+            public void SequenceGoodProjectionNull()
             {
-                Assert.That(() => Enumerable.Empty<int>().ContainsOnlyOne(i => i == 1), Is.False);
+                Assert.That(() => Enumerable.Repeat("A", 1).ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SequenceNull()
+            {
+                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SequenceNullProjectionGood()
+            {
+                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(s => true), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SequenceNullProjectionNull()
+            {
+                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(null),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
         }
     }
