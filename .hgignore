@@ -38,6 +38,6 @@ Published/*
 _[Uu]pgradeReport_Files*/
 *.build.csdef
 .nuget/[Nn]u[Gg]et.exe
-CurrentBuild/CustomExtensions.dll
-CurrentBuild/CustomExtensions.XML
-CurrentBuild/MoreLinq.dll
+CurrentBuild/*.[Dd][Ll][Ll]
+CurrentBuild/*.[Xx][Mm][Ll]
+CurrentBuild/*.[Pp][Dd][Bb]

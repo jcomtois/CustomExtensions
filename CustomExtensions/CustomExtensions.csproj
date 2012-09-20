@@ -185,7 +185,9 @@
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release copy "$(TargetDir)*.*" "$(SolutionDir)CurrentBuild\" /y
 
-if $(ConfigurationName) == Release del  "$(SolutionDir)CurrentBuild\*.tmp"</PostBuildEvent>
+if $(ConfigurationName) == Release del  "$(SolutionDir)CurrentBuild\*.tmp"
+
+if $(ConfigurationName) == Release del  "$(SolutionDir)CurrentBuild\*.pdb"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
