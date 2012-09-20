@@ -127,7 +127,7 @@
     </Compile>
     <Compile Include="ForIConvertible\ForIConvertible.cs" />
     <Compile Include="ForIEnumerable\ForIEnumerable.cs" />
-    <Compile Include="PInvoke\COMInterop.cs" />
+    <Compile Include="COMInterop\NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ForStrings\ConatainsAny.cs">
       <DependentUpon>ForStrings.cs</DependentUpon>

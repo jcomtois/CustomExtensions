@@ -1,5 +1,5 @@
 ﻿using System;
-using CustomExtensions.PInvoke;
+using CustomExtensions.COMInterop;
 
 namespace CustomExtensions.ForStrings
 {
@@ -20,7 +20,7 @@ namespace CustomExtensions.ForStrings
                 return false;
             }
 
-            var hresult = COMInterop.CLSIDFromString(source, out resultGuid);
+            var hresult = NativeMethods.CLSIDFromString(source, out resultGuid);
             if (hresult >= 0)
             {
                 return true;
