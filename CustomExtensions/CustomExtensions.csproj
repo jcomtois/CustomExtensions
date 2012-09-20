@@ -172,7 +172,7 @@
     </Compile>
     <Compile Include="Validation\MultiException.cs" />
     <Compile Include="Validation\Validate.cs" />
-    <Compile Include="Validation\Validation.cs" />
+    <Compile Include="Validation\Validator.cs" />
     <Compile Include="Validation\ValidationException.cs" />
     <Compile Include="Validation\ValidationExtensions.cs" />
   </ItemGroup>

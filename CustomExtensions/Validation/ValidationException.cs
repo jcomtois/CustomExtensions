@@ -6,7 +6,7 @@ namespace CustomExtensions.Validation
     // http://blog.getpaint.net/2008/12/06/a-fluent-approach-to-c-parameter-validation/
 
     /// <summary>
-    /// The exception that is thrown when an extension of <see cref="Validation"/> throws an exception
+    /// The exception that is thrown when an extension of <see cref="Validator"/> throws an exception
     /// </summary>
     public class ValidationException : Exception
     {

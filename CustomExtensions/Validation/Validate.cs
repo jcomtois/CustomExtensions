@@ -8,10 +8,10 @@
     public static class Validate
     {
         /// <summary>
-        /// Provides a null reference of <see cref="Validation"/> to access Extension Methods
+        /// Provides a null reference of <see cref="Validator"/> to access Extension Methods
         /// </summary>
-        /// <returns>A null <see cref="Validation"/> reference.</returns>
-        public static Validation Begin()
+        /// <returns>A null <see cref="Validator"/> reference.</returns>
+        public static Validator Begin()
         {
             return null;
         }
