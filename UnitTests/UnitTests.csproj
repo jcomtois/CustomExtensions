@@ -102,7 +102,9 @@
     <Compile Include="ForIEnumerablesTests\ContainsOnlyOneTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIEnumerablesTests\DistinctByTest.cs" />
+    <Compile Include="ForIEnumerablesTests\DistinctByTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerablesTests\FlattenStringsTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
