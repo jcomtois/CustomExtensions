@@ -103,7 +103,9 @@
     <Compile Include="ForIEnumerable\AverageOrDefault.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIEnumerable\ContainsExactly.cs" />
+    <Compile Include="ForIEnumerable\ContainsExactly.cs">
+      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerable\ContainsNone.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>

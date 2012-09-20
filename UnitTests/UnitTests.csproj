@@ -92,6 +92,9 @@
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerablesTests\BreakingSequence.cs" />
+    <Compile Include="ForIEnumerablesTests\ContainsExactlyTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerablesTests\ContainsNoneTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>

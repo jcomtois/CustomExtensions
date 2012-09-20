@@ -52,7 +52,7 @@ namespace CustomExtensions.ForIEnumerable
             Debug.Assert(source != null, "source cannot be null");
             Debug.Assert(predicate != null, "predicate cannot be null");
 
-            return !source.Any(predicate);
+            return ContainsExactlyImplementation(source, 0, predicate);
         }
     }
 }

@@ -45,29 +45,14 @@ namespace CustomExtensions.ForIEnumerable
             Debug.Assert(source != null, "source cannot be null.");
             Debug.Assert(predicate != null, "predicate cannot be null.");
 
-            var found = false;
-            foreach (var i in source)
-            {
-                if (predicate(i))
-                {
-                    if (!found)
-                    {
-                        found = true;
-                    }
-                    else
-                    {
-                        return false; // Hit twice
-                    }
-                }
-            }
-            return found;
+            return ContainsExactlyImplementation(source, 1, predicate);
         }
 
         internal static bool ContainsOnlyOneImplementation<T>(this IEnumerable<T> source)
         {
             Debug.Assert(source != null, "source cannot be null.");
 
-            return source.Take(2).Count() == 1;
+            return ContainsExactlyImplementation(source, 1);
         }
     }
 }
