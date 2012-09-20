@@ -8,29 +8,6 @@ namespace CustomExtensions.ForIEnumerable
    public static partial class ExtendIEnumerable
     {       
         /// <summary>
-        /// Allows a projection comparison for IEquatable types 
-        /// </summary>
-        /// <typeparam name="T">Type in source</typeparam>
-        /// <typeparam name="TId">Type of the value to be compared</typeparam>
-        /// <param name="source">IEnumerable of type T</param>
-        /// <param name="projection">Function to evaluate IEquatable Type TId on item T</param>
-        /// <returns>IEnumerable of type T elements that satisfy condition</returns>
-        public static IEnumerable<T> Distinct <T, TId>(this IEnumerable<T> source, Func<T, TId> projection) where TId : IEquatable<TId>
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
-            if (projection == null)
-            {
-                throw new ArgumentNullException("projection");
-            }
-
-            return source.Distinct(new ProjectingEqualityComparer<T, TId>(projection));
-        }
-
-        /// <summary>
         /// Excludes and element from a source
         /// </summary>
         /// <typeparam name="T">Type of source IEnumerable</typeparam>
@@ -322,29 +299,6 @@ namespace CustomExtensions.ForIEnumerable
                     yield return selector(t);
                 }
             }
-        }
-        private sealed class ProjectingEqualityComparer<T, TId> : IEqualityComparer<T> where TId : IEquatable<TId>
-        {
-            private readonly Func<T, TId> _projection;
-
-            public ProjectingEqualityComparer(Func<T, TId> projection)
-            {
-                _projection = projection;
-            }
-
-            #region IEqualityComparer<T> Members
-
-            public bool Equals(T x, T y)
-            {
-                return EqualityComparer<TId>.Default.Equals(_projection(x), _projection(y));
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return EqualityComparer<TId>.Default.GetHashCode(_projection(obj));
-            }
-
-            #endregion
         }
     }
 }
