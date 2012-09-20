@@ -70,8 +70,9 @@
     <AssemblyOriginatorKeyFile>CustomExtensions.key.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MoreLinq">
-      <HintPath>..\packages\morelinq.1.0\lib\net35\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq, Version=1.0.11729.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Downloaded\morelinq\MoreLinq\bin\Release\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -112,6 +113,7 @@
     <Compile Include="ForIEnumerable\ContainsOnlyOne.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\DistinctBy.cs" />
     <Compile Include="ForIEnumerable\FlattenStrings.cs">
       <DependentUpon>ForIEnumerable.cs</DependentUpon>
     </Compile>
@@ -174,7 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomExtensions.key.pfx" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Generic\" />
