@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace CustomExtensions.ForIConvertible
 {
@@ -19,14 +20,14 @@ namespace CustomExtensions.ForIConvertible
             if (!t.IsGenericType ||
                 (t.GetGenericTypeDefinition() != typeof (Nullable<>)))
             {
-                return (T)Convert.ChangeType(source, t);
+                return (T)Convert.ChangeType(source, t, CultureInfo.InvariantCulture);
             }
 
             if (source == null)
             {
                 return default(T);
             }
-            return (T)Convert.ChangeType(source, Nullable.GetUnderlyingType(t));
+            return (T)Convert.ChangeType(source, Nullable.GetUnderlyingType(t), CultureInfo.InvariantCulture);
         }
     }
 }

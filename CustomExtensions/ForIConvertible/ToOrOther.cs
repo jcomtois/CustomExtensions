@@ -35,11 +35,18 @@ namespace CustomExtensions.ForIConvertible
                 converted = To<T>(source);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                converted = other;
-                return false;
-            }
+                if (ex is InvalidCastException ||
+                    ex is FormatException ||
+                    ex is OverflowException ||
+                    ex is ArgumentNullException)
+                {
+                    converted = other;
+                    return false;
+                }
+                throw;
+            }           
         }
     }
 }
