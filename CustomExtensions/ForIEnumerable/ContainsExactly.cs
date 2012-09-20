@@ -19,7 +19,7 @@ namespace CustomExtensions.ForIEnumerable
         public static bool ContainsExactly <T>(this IEnumerable<T> source, int count, Func<T, bool> predicate)
         {
             Validate.Begin()
-                .IsNonNegative(count, "count")
+                .IsNotNegative(count, "count")
                 .IsNotNull(source, "source")
                 .IsNotNull(predicate, "predicate")
                 .CheckForExceptions();
@@ -37,7 +37,7 @@ namespace CustomExtensions.ForIEnumerable
         public static bool ContainsExactly <T>(this IEnumerable<T> source, int count)
         {
             Validate.Begin()
-                .IsNonNegative(count, "count")
+                .IsNotNegative(count, "count")
                 .IsNotNull(source, "source")
                 .CheckForExceptions();
 

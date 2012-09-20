@@ -8,6 +8,7 @@ namespace CustomExtensions.Validation
     /// <summary>
     /// The exception that is thrown when an extension of <see cref="Validator"/> throws an exception
     /// </summary>
+    [Serializable]
     public class ValidationException : Exception
     {
         /// <summary>

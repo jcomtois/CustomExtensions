@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace CustomExtensions.Validation
 {
@@ -26,7 +27,7 @@ namespace CustomExtensions.Validation
         /// Initializes a new instance of the <see cref="MultiException"/> class with a specified error message
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        public MultiException(string message)
+        public MultiException(string message) : base(message)
         {
         }
 
@@ -72,6 +73,13 @@ namespace CustomExtensions.Validation
 
         private MultiException(SerializationInfo info, StreamingContext context): base(info, context)
         {
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("InnerExceptions", _innerExceptions);
         }
 
         public override string ToString()

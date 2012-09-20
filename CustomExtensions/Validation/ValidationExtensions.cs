@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace CustomExtensions.Validation
@@ -35,13 +36,13 @@ namespace CustomExtensions.Validation
         /// <typeparam name="T">Type of object <paramref name="theObject"/>.  Must be a class.</typeparam>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
         /// <param name="theObject">Actual parameter being checked.</param>
-        /// <param name="paramterName">Name of parameter to include in exception message if necessary.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
-        public static Validator IsNotNull <T>(this Validator validator, T theObject, string paramterName) where T : class
+        public static Validator IsNotNull <T>(this Validator validator, T theObject, string parameterName) where T : class
         {
             return theObject != null 
                 ? validator 
-                : (validator ?? new Validator()).AddException(new ArgumentNullException(paramterName));
+                : (validator ?? new Validator()).AddException(new ArgumentNullException(parameterName));
         }
 
         /// <summary>
@@ -51,11 +52,11 @@ namespace CustomExtensions.Validation
         /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
-        public static Validator IsNonNegative(this Validator validator, long value, string parameterName)
+        public static Validator IsNotNegative(this Validator validator, long value, string parameterName)
         {
             return value >= 0 
                 ? validator 
-                : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format("Must be >= 0, but was {0}", value)));
+                : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
         }
     }
 }
