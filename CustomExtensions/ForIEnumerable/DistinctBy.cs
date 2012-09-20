@@ -6,7 +6,7 @@ using MoreLinq;
 
 namespace CustomExtensions.ForIEnumerable
 {
-    public static partial class ForIEnumerable
+    public static partial class ExtendIEnumerable
     {
         /// <summary>
         /// WRAPPER FOR MORELINQ.DISTINCTBY

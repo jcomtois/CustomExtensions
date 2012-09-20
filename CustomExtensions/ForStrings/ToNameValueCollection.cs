@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Splits a string into a NameValueCollection, where each "namevalue" is separated by

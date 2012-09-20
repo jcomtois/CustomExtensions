@@ -2,7 +2,7 @@
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Attempts to parse a string into specified type.

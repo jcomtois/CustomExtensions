@@ -6,7 +6,7 @@ using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForIEnumerable
 {
-    public static partial class ForIEnumerable
+    public static partial class ExtendIEnumerable
     {
         /// <summary>
         /// Checks to see if <paramref name="source"/> contains exactly one instance of an item that meets a predicate

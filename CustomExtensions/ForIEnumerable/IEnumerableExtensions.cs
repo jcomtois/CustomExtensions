@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CustomExtensions.ForIEnumerable
 {
-   public static partial class ForIEnumerable
+   public static partial class ExtendIEnumerable
     {       
         /// <summary>
         /// Allows a projection comparison for IEquatable types 

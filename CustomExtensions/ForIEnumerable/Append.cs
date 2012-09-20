@@ -6,7 +6,7 @@ using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForIEnumerable
 {
-    public static partial class ForIEnumerable
+    public static partial class ExtendIEnumerable
     {
         /// <summary>
         /// Appends an element to a source <see cref="IEnumerable"/>

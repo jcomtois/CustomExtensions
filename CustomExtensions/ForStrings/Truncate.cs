@@ -1,6 +1,6 @@
 ﻿namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Truncates the string to a specified length and replace the truncated to a ...

@@ -2,7 +2,7 @@
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Returns the last few characters of the string with a length specified by the given parameter. If the string'source length is less than the given length the complete string is returned. If length is zero or less an empty string is returned

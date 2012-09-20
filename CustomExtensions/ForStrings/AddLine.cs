@@ -3,7 +3,7 @@ using System.Text;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStringBuilders
+    public static partial class ExtendStringBuilder
     {
         /// <summary>
         /// Appends a line to given string builder and outputs that line to the console.

@@ -4,7 +4,7 @@ using CustomExtensions.ForIEnumerable;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Strips Input string of all occurences of specified character(s)

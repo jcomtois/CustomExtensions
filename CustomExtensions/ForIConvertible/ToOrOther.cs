@@ -2,7 +2,7 @@
 
 namespace CustomExtensions.ForIConvertible
 {
-    public static partial class ForIConvertible
+    public static partial class ExtendIConvertible
     {
         //http://stackoverflow.com/a/939498/213169
 

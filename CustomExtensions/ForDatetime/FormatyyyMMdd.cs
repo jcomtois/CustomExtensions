@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace CustomExtensions.ForDatetime
 {   
-    public static partial class ForDateTime
+    public static partial class ExtendDateTime
     {
         /// <summary>
         /// Formats <paramref name="source"/> to a string in yyyyMMdd pattern.  Uses en-US for <see cref="CultureInfo"/>

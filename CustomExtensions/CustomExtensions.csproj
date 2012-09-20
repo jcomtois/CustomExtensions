@@ -82,93 +82,93 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ForDatetime\ForDateTime.cs" />
+    <Compile Include="ForDatetime\ExtendDateTime.cs" />
     <Compile Include="ForDatetime\FormatyyyMMdd.cs">
-      <DependentUpon>ForDateTime.cs</DependentUpon>
+      <DependentUpon>ExtendDateTime.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIConvertible\To.cs">
-      <DependentUpon>ForIConvertible.cs</DependentUpon>
+      <DependentUpon>ExtendIConvertible.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIConvertible\ToOrDefault.cs">
-      <DependentUpon>ForIConvertible.cs</DependentUpon>
+      <DependentUpon>ExtendIConvertible.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIConvertible\ToOrNull.cs">
-      <DependentUpon>ForIConvertible.cs</DependentUpon>
+      <DependentUpon>ExtendIConvertible.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIConvertible\ToOrOther.cs">
-      <DependentUpon>ForIConvertible.cs</DependentUpon>
+      <DependentUpon>ExtendIConvertible.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\Append.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\AverageOrDefault.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\ContainsExactly.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\ContainsNone.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\ContainsOnlyOne.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\DistinctBy.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\FlattenStrings.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerable\ToString.cs">
-      <DependentUpon>ForIEnumerable.cs</DependentUpon>
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\AddLine.cs">
-      <DependentUpon>ForStringBuilders.cs</DependentUpon>
+      <DependentUpon>ExtendStringBuilder.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertible\ForIConvertible.cs" />
-    <Compile Include="ForIEnumerable\ForIEnumerable.cs" />
+    <Compile Include="ForIConvertible\ExtendIConvertible.cs" />
+    <Compile Include="ForIEnumerable\IEnumerableExtensions.cs" />
     <Compile Include="COMInterop\NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ForStrings\ConatainsAny.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\Decrypt.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\Encrypt.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\IsNullOrEmpty.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\IsValidUrl.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\Left.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\Parse.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\Right.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\SHA1Hash.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStrings\ForStringBuilders.cs" />
-    <Compile Include="ForStrings\ForStrings.cs" />
+    <Compile Include="ForStrings\ExtendStringBuilder.cs" />
+    <Compile Include="ForStrings\ExtendString.cs" />
     <Compile Include="ForStrings\Strip.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\ToNameValueCollection.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\Truncate.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\TryToGuid.cs">
-      <DependentUpon>ForStrings.cs</DependentUpon>
+      <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="Validation\MultiException.cs" />
     <Compile Include="Validation\Validate.cs" />

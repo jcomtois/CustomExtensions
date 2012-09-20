@@ -1,6 +1,6 @@
 ﻿namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Readability improvement for String.IsNullOrEmpty()

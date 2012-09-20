@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.

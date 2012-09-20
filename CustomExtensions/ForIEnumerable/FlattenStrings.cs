@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CustomExtensions.ForIEnumerable
 {
-    public static partial class ForIEnumerable
+    public static partial class ExtendIEnumerable
     {
         /// <summary>
         /// Converts <see cref="IEnumerable"/> of type <see cref="string"/> to a single string with all items appended

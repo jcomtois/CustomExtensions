@@ -2,7 +2,7 @@
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Returns bool indicating whether provided string is is valide as absolute Uri

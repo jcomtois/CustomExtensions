@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Encrypts a string using the supplied key. Encoding is done using RSA encryption.

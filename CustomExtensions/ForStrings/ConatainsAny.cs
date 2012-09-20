@@ -4,7 +4,7 @@ using CustomExtensions.ForIEnumerable;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Checks input string for any occurence of given character

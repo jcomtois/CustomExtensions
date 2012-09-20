@@ -6,7 +6,7 @@ using CustomExtensions.ForIEnumerable;
 
 namespace CustomExtensions.ForStrings
 {
-    public static partial class ForStrings
+    public static partial class ExtendString
     {
         /// <summary>
         /// Returns SHA1 Digest of ASCII reprensentation of input string
