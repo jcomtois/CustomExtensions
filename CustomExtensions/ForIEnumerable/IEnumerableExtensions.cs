@@ -8,29 +8,6 @@ namespace CustomExtensions.ForIEnumerable
    public static partial class ExtendIEnumerable
     {       
         /// <summary>
-        /// Excludes and element from a source
-        /// </summary>
-        /// <typeparam name="T">Type of source IEnumerable</typeparam>
-        /// <param name="source">IEnumerable of type T</param>
-        /// <param name="element">Element to exclude</param>
-        /// <returns>IEnumerable of type T excluding element</returns>
-        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> source, T element)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
-            foreach (T t in source)
-            {
-                if (!t.Equals(element))
-                {
-                    yield return t;
-                }
-            }
-        }
-
-        /// <summary>
         /// Performs an action on each element in a sequence
         /// </summary>
         /// <typeparam name="T">Type contained in source</typeparam>

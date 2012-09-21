@@ -12,7 +12,7 @@ namespace UnitTests
     {
         public IEnumerator<T> GetEnumerator()
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("GetEnumerator was accessed on a BreakingSequence!");
         }
 
         IEnumerator IEnumerable.GetEnumerator()

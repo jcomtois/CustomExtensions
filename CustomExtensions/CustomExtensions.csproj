@@ -116,6 +116,7 @@
     <Compile Include="ForIEnumerable\DistinctBy.cs">
       <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\Exclude.cs" />
     <Compile Include="ForIEnumerable\FlattenStrings.cs">
       <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
