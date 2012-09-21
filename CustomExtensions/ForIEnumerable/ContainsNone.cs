@@ -40,14 +40,14 @@ namespace CustomExtensions.ForIEnumerable
             return ContainsNoneImplementation(source);
         }
 
-        internal static bool ContainsNoneImplementation <T>(IEnumerable<T> source)
+        private static bool ContainsNoneImplementation <T>(IEnumerable<T> source)
         {
             Debug.Assert(source != null, "source cannot be null");
 
             return !source.Any();
         }
 
-        internal static bool ContainsNoneImplementation <T>(IEnumerable<T> source, Func<T, bool> predicate)
+        private static bool ContainsNoneImplementation <T>(IEnumerable<T> source, Func<T, bool> predicate)
         {
             Debug.Assert(source != null, "source cannot be null");
             Debug.Assert(predicate != null, "predicate cannot be null");

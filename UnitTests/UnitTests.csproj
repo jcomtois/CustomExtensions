@@ -111,6 +111,9 @@
     <Compile Include="ForIEnumerablesTests\FlattenStringsTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerablesTests\ForEachTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerablesTests\ForIEnumerablesTests.cs" />
     <Compile Include="ForIEnumerablesTests\NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\ReplaceTest.cs">

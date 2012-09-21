@@ -7,49 +7,9 @@ namespace CustomExtensions.ForIEnumerable
 {
    public static partial class ExtendIEnumerable
     {       
-        /// <summary>
-        /// Performs an action on each element in a sequence
-        /// </summary>
-        /// <typeparam name="T">Type contained in source</typeparam>
-        /// <param name="source">IEnumerable of type T</param>
-        /// <param name="function">Function with no parameters that returns void</param>
-        public static void ExecuteForEach <T>(this IEnumerable<T> source, Action<T> function)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-            if (function == null)
-            {
-                throw new ArgumentNullException("function");
-            }
-            foreach (var i in source)
-            {
-                function(i);
-            }
-        }
+        
 
-        /// <summary>
-        /// Executes action on every element of an IEnumerable
-        /// </summary>
-        /// <typeparam name="T1">Type contained in source</typeparam>
-        /// <typeparam name="T2">Type returned as result of function</typeparam>
-        /// <param name="source">IEnumerable of type T1</param>
-        /// <param name="function">Function to apply over each element in source</param>
-        /// <returns>IEnumerable of type T2</returns>
-        public static IEnumerable<T2> ExecuteForEach <T1, T2>(this IEnumerable<T1> source,
-                                                              Func<T1, T2> function)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-            if (function == null)
-            {
-                throw new ArgumentNullException("function");
-            }
-            return source.Select(function).ToList().AsEnumerable();
-        }
+       
 
         /// <summary>
         /// Determines whether or not IEnumerable is null or empty in an efficient way
