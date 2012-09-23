@@ -135,6 +135,9 @@
     <Compile Include="ValidationsTests\ValidationExceptionTest.cs">
       <DependentUpon>ValidataionTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValidationsTests\ValidateTest.cs">
+      <DependentUpon>ValidataionTests.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
