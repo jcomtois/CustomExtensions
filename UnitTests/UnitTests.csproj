@@ -128,8 +128,13 @@
     <Compile Include="ForIEnumerablesTests\ToStringTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValidationsTests\MultiExceptionTest.cs">
+      <DependentUpon>ValidataionTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ValidationsTests\ValidataionTests.cs" />
-    <Compile Include="ValidationsTests\ValidationExceptionTest.cs" />
+    <Compile Include="ValidationsTests\ValidationExceptionTest.cs">
+      <DependentUpon>ValidataionTests.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

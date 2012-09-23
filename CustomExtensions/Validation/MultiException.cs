@@ -36,8 +36,8 @@ namespace CustomExtensions.Validation
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
-        public MultiException(string message, Exception innerException) 
-            : this(message, innerException != null ? new [] {innerException} : new [] {new ArgumentNullException("innerException")})
+        public MultiException(string message, Exception innerException)
+            : this(message, innerException != null ? new[] {innerException} : new[] {new ArgumentNullException("innerException")})
         {
         }
 
@@ -68,23 +68,11 @@ namespace CustomExtensions.Validation
                     innerExceptions = new[] {ex};
                 }
             }
-            _innerExceptions = innerExceptions.Where(x => x != null).ToArray();            
+            _innerExceptions = innerExceptions.Where(x => x != null).ToArray();
         }
 
-        private MultiException(SerializationInfo info, StreamingContext context): base(info, context)
+        private MultiException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue("InnerExceptions", _innerExceptions);
-        }
-
-        public override string ToString()
-        {
-            return string.Join(Environment.NewLine, _innerExceptions.Select(x => x.Message).ToArray());
         }
 
         /// <summary>
@@ -102,6 +90,18 @@ namespace CustomExtensions.Validation
                     }
                 }
             }
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("InnerExceptions", _innerExceptions);
+            base.GetObjectData(info, context);
+        }
+
+        public override string ToString()
+        {
+            return string.Join(Environment.NewLine, InnerExceptions.Select(x => x.Message).ToArray());
         }
     }
 }

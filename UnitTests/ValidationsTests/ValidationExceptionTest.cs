@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 
@@ -36,10 +33,7 @@ namespace UnitTests.ValidationsTests
                 Assert.That(() => new ValidationException("Test Message", new ArgumentNullException()).InnerException, Is.TypeOf<ArgumentNullException>());
                 Assert.That(() => new ValidationException("Test Message", new Exception("Different Message")).Message, Is.EqualTo("Test Message"));
                 Assert.That(() => new ValidationException(null, new Exception("Has message")).Message, Is.EqualTo(new ValidationException().Message));
-
             }
-
         }
-
     }
 }
