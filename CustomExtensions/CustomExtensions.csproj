@@ -82,8 +82,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ForDatetime\ExtendDateTime.cs" />
-    <Compile Include="ForDatetime\FormatyyyMMdd.cs">
+    <Compile Include="ForDateTime\ExtendDateTime.cs" />
+    <Compile Include="ForDateTime\FormatyyyyMMdd.cs">
       <DependentUpon>ExtendDateTime.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIConvertible\To.cs">

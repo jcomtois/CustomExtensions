@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace CustomExtensions.ForDatetime
+namespace CustomExtensions.ForDateTime
 {   
     public static partial class ExtendDateTime
     {

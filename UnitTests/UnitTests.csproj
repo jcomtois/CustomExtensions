@@ -86,6 +86,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForDateTimesTests\FormatyyyyMMddTest.cs">
+      <DependentUpon>ForDateTimeTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerablesTests\AppendTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
@@ -111,6 +114,7 @@
     <Compile Include="ForIEnumerablesTests\FlattenStringsTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForDateTimesTests\ForDateTimeTests.cs" />
     <Compile Include="ForIEnumerablesTests\ForEachTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
@@ -133,6 +137,9 @@
       <Project>{0BC40698-7F15-4F4F-953B-269BFD3933B6}</Project>
       <Name>CustomExtensions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
