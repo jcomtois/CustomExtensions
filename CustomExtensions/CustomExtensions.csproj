@@ -188,9 +188,7 @@
   <ItemGroup>
     <None Include="CustomExtensions.key.pfx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Generic\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\CustomExtensions.VersionNumber.targets" />
   <PropertyGroup>

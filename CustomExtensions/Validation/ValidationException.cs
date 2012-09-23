@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace CustomExtensions.Validation
 {
@@ -32,15 +31,6 @@ namespace CustomExtensions.Validation
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
         public ValidationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, sets the <see cref="System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
-        /// </summary>
-        /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="System.Runtime.Serialization.SerializationInfo"/> that contains contextual information about the source or destination.</param>
-        protected ValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
