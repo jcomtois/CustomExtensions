@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CustomExtensions.Validation
 {
@@ -15,11 +16,11 @@ namespace CustomExtensions.Validation
             _exceptions = new List<Exception>(1); // optimize for only having 1 exception
         }
 
-        public Exception[] Exceptions
+        public IEnumerable<Exception> Exceptions
         {
             get
             {
-                return _exceptions.ToArray();
+                return _exceptions.AsReadOnly();
             }
         }
 

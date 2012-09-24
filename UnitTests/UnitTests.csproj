@@ -138,6 +138,7 @@
     <Compile Include="ValidationsTests\ValidateTest.cs">
       <DependentUpon>ValidataionTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValidationsTests\ValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

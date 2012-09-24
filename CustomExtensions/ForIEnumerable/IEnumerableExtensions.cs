@@ -198,7 +198,7 @@ namespace CustomExtensions.ForIEnumerable
 
         public static IEnumerable<T> ToEnumerable <T>(this T Input)
         {
-            return new[] {Input}.AsEnumerable();
+            return Enumerable.Repeat(Input, 1);
         }
 
        

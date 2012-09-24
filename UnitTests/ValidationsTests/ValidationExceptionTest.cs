@@ -10,6 +10,12 @@ namespace UnitTests.ValidationsTests
         public class ValidationExceptionTest
         {
             [Test]
+            public void ValidationExceptionIsSerializable()
+            {
+                Assert.That(new ValidationException(), Is.BinarySerializable);
+            }
+
+            [Test]
             public void ValidationExceptionEmptyConstructor()
             {
                 Assert.That(() => new ValidationException(), Throws.Nothing);

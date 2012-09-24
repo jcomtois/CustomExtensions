@@ -55,6 +55,12 @@ namespace UnitTests.ValidationsTests
             }
 
             [Test]
+            public void MultiExceptionSerializable()
+            {
+                Assert.That(new MultiException(), Is.BinarySerializable);
+            }
+
+            [Test]
             public void MultiExceptionToString()
             {
                 Assert.That(new MultiException().ToString(), Is.Empty);

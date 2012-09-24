@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace CustomExtensions.Validation
 {
@@ -14,6 +15,10 @@ namespace CustomExtensions.Validation
         /// Initializes a new instance of the <see cref="ValidationException"/> class
         /// </summary>
         public ValidationException()
+        {
+        }
+
+        protected ValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 
