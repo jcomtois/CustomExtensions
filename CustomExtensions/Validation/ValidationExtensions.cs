@@ -19,15 +19,31 @@ namespace CustomExtensions.Validation
         /// <returns>Either an instance or null reference to <see cref="Validator"/></returns>
         public static Validator CheckForExceptions(this Validator validator)
         {
-            if (validator == null)
+            if (validator == null ||
+                !validator.Exceptions.Any())
             {
                 return null;
             }
+
             if (validator.Exceptions.Take(2).Count() == 1) // Ensures exactly one
             {
-                throw new ValidationException("Single validation failure.", validator.Exceptions.First()); 
+                throw new ValidationException("Single validation failure.", validator.Exceptions.First());
             }
             throw new ValidationException("Multiple validation failure.", new MultiException(validator.Exceptions));
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is greater than or equal to 0
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotNegative(this Validator validator, long value, string parameterName)
+        {
+            return value >= 0
+                       ? validator
+                       : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
         }
 
         /// <summary>
@@ -40,23 +56,9 @@ namespace CustomExtensions.Validation
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsNotNull <T>(this Validator validator, T theObject, string parameterName) where T : class
         {
-            return theObject != null 
-                ? validator 
-                : (validator ?? new Validator()).AddException(new ArgumentNullException(parameterName));
-        }
-
-        /// <summary>
-        /// Adds exception to Validator if value is greater than or equal to 0
-        /// </summary>
-        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
-        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
-        /// <returns><see cref="Validator"/> reference or null.</returns>
-        public static Validator IsNotNegative(this Validator validator, long value, string parameterName)
-        {
-            return value >= 0 
-                ? validator 
-                : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
+            return theObject != null
+                       ? validator
+                       : (validator ?? new Validator()).AddException(new ArgumentNullException(parameterName));
         }
     }
 }

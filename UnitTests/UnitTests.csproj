@@ -138,7 +138,9 @@
     <Compile Include="ValidationsTests\ValidateTest.cs">
       <DependentUpon>ValidationTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ValidationsTests\ValidationExtensionsTests.cs" />
+    <Compile Include="ValidationsTests\ValidationExtensionsTests.cs">
+      <DependentUpon>ValidationTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ValidationsTests\ValidatorTest.cs">
       <DependentUpon>ValidationTests.cs</DependentUpon>
     </Compile>

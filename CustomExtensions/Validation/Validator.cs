@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CustomExtensions.Validation
 {
     // http://blog.getpaint.net/2008/12/06/a-fluent-approach-to-c-parameter-validation/
-
 
     public sealed class Validator
     {
