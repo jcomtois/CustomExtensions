@@ -6,7 +6,7 @@ using UnitTests.ForIEnumerablesTests;
 
 namespace UnitTests.ValidationsTests
 {
-    public partial class ValidataionTests
+    public partial class ValidationTests
     {
         [TestFixture]
         public class MultiExceptionTest

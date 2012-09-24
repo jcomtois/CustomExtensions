@@ -1,10 +1,9 @@
-﻿using System;
-using CustomExtensions.Validation;
+﻿using CustomExtensions.Validation;
 using NUnit.Framework;
 
 namespace UnitTests.ValidationsTests
 {
-    public partial class ValidataionTests
+    public partial class ValidationTests
     {
         [TestFixture]
         public class ValidateTest
@@ -14,8 +13,6 @@ namespace UnitTests.ValidationsTests
             {
                 Assert.That(Validate.Begin(), Is.Null);
             }
-
-            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace UnitTests.ValidationsTests
 {
-    public partial class ValidataionTests
+    public partial class ValidationTests
     {
     }
 }

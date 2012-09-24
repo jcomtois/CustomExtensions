@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace UnitTests.ValidationsTests
 {
-    public partial class ValidataionTests
+    public partial class ValidationTests
     {
         [TestFixture]
         public class ValidationExceptionTest

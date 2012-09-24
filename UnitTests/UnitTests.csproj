@@ -129,16 +129,19 @@
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ValidationsTests\MultiExceptionTest.cs">
-      <DependentUpon>ValidataionTests.cs</DependentUpon>
+      <DependentUpon>ValidationTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ValidationsTests\ValidataionTests.cs" />
+    <Compile Include="ValidationsTests\ValidationTests.cs" />
     <Compile Include="ValidationsTests\ValidationExceptionTest.cs">
-      <DependentUpon>ValidataionTests.cs</DependentUpon>
+      <DependentUpon>ValidationTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ValidationsTests\ValidateTest.cs">
-      <DependentUpon>ValidataionTests.cs</DependentUpon>
+      <DependentUpon>ValidationTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ValidationsTests\ValidatorTest.cs" />
+    <Compile Include="ValidationsTests\ValidationExtensionsTests.cs" />
+    <Compile Include="ValidationsTests\ValidatorTest.cs">
+      <DependentUpon>ValidationTests.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
