@@ -7,38 +7,6 @@ namespace CustomExtensions.ForIEnumerable
 {
    public static partial class ExtendIEnumerable
     {       
-        
-
-       
-
-        /// <summary>
-        /// Determines whether or not IEnumerable is null or empty in an efficient way
-        /// </summary>
-        /// <typeparam name="T">The Type of elements in IEnumerable</typeparam>
-        /// <param name="source">The sequence of values to examine</param>
-        /// <returns>True if <paramref name="source"/> is null or empty.</returns>
-        public static bool IsEmpty <T>(this IEnumerable<T> source)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
-            var genericCollection = source as ICollection<T>;
-            if (genericCollection != null)
-            {
-                return genericCollection.Count == 0;
-            }
-
-            var nonGenericCollection = source as ICollection;
-            if (nonGenericCollection != null)
-            {
-                return nonGenericCollection.Count == 0;
-            }
-
-            return !source.Any();
-        }
-
         /// <summary>
         /// Invokes a transform function on each element of a generic sequence and returns the maximum resulting value or default if empty
         /// </summary>
