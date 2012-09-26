@@ -16,7 +16,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="element">Element of type <typeparamref name="T"/> to be replaced</param>
         /// <param name="replacement">Element of type <typeparamref name="T"/> to replace <paramref name="element"/> </param>
         /// <returns><see cref="IEnumerable"/> of type <typeparamref name="T"/> replacing <paramref name="element"/> with <paramref name="replacement"/></returns>
-        public static IEnumerable<T> Replace <T>(this IEnumerable<T> source, T element, T replacement)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        public static IEnumerable<T> Replace<T>(this IEnumerable<T> source, T element, T replacement)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
@@ -33,7 +34,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="element">Element of type <typeparamref name="T"/> to be replaced</param>
         /// <param name="projection">Projection of type <typeparamref name="T"/> to type <typeparamref name="T"/> </param>
         /// <returns><see cref="IEnumerable"/> of type <typeparamref name="T"/> replacing <paramref name="element"/> with <paramref name="projection"/> of type <typeparamref name="T"/></returns>
-        public static IEnumerable<T> Replace <T>(this IEnumerable<T> source, T element, Func<T, T> projection)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="projection"/> is null</exception>
+        public static IEnumerable<T> Replace<T>(this IEnumerable<T> source, T element, Func<T, T> projection)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

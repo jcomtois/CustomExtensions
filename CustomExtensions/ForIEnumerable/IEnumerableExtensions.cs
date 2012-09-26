@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,36 +7,6 @@ namespace CustomExtensions.ForIEnumerable
    public static partial class ExtendIEnumerable
     {       
        
-        /// <summary>
-        /// Returns lazily evaluated shuffle of input (uses Fisher-Yates)
-        /// </summary>
-        /// <param name="source">Source sequence</param>
-        /// <param name="random">Random class instance</param>
-        /// <typeparam name="T">Type contained in source</typeparam>
-        /// <returns>IEnumerable of shuffled elements</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static IEnumerable<T> Shuffle <T>(this IEnumerable<T> source, Random random)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-            if (random == null)
-            {
-                throw new ArgumentNullException("random");
-            }
-
-            var elements = source.ToArray();
-            for (var i = elements.Length - 1; i >= 0; i--)
-            {
-                // Swap element "i" with a random earlier element it (or itself)
-                // ... except we don't really need to swap it fully, as we can
-                // return it immediately, and afterwards it's irrelevant.
-                var swapIndex = random.Next(i + 1);
-                yield return elements[swapIndex];
-                elements[swapIndex] = elements[i];
-            }
-        }
 
         public static IEnumerable<T> ToEnumerable <T>(this T Input)
         {

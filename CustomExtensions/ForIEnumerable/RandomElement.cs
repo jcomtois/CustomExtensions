@@ -13,11 +13,9 @@ namespace CustomExtensions.ForIEnumerable
         /// Returns random element from sequence
         /// </summary>
         /// <param name="source">Source sequence</param>
-        /// <param name="random">Random class instance</param>
-        /// <typeparam name="T">Type conained in source</typeparam>
-        /// <returns>Random Elelemnt from sequence</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
+        /// <param name="random"><see cref="Random"/> class instance</param>
+        /// <typeparam name="T">Type conained in <paramref name="source"/></typeparam>
+        /// <returns>Random element from sequence</returns>
         public static T RandomElement <T>(this IEnumerable<T> source, Random random)
         {
             Validate.Begin()

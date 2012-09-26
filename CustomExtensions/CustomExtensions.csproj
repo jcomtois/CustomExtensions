@@ -149,6 +149,9 @@
     <Compile Include="ForIEnumerable\Replace.cs">
       <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\Shuffle.cs">
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerable\ToString.cs">
       <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>

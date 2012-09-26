@@ -16,7 +16,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="count">Number of specified matches</param>
         /// <param name="predicate">Function to check each item for a match</param>
         /// <returns>True if <paramref name="source"/> contains exactly <paramref name="count"/> items that match <paramref name="predicate"/></returns>
-        public static bool ContainsExactly <T>(this IEnumerable<T> source, int count, Func<T, bool> predicate)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="count"/> is negative or <paramref name="predicate"/> is null</exception>
+        public static bool ContainsExactly<T>(this IEnumerable<T> source, int count, Func<T, bool> predicate)
         {
             Validate.Begin()
                 .IsNotNegative(count, "count")
@@ -34,7 +35,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <param name="count">Number of specified items</param>
         /// <returns>True if <paramref name="source"/> contains exactly <paramref name="count"/> items</returns>
-        public static bool ContainsExactly <T>(this IEnumerable<T> source, int count)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="count"/> is negative</exception>
+        public static bool ContainsExactly<T>(this IEnumerable<T> source, int count)
         {
             Validate.Begin()
                 .IsNotNegative(count, "count")
@@ -44,7 +46,7 @@ namespace CustomExtensions.ForIEnumerable
             return ContainsExactlyImplementation(source, count);
         }
 
-        internal static bool ContainsExactlyImplementation <T>(IEnumerable<T> source, int count)
+        private static bool ContainsExactlyImplementation <T>(IEnumerable<T> source, int count)
         {
             Debug.Assert(source != null, "source cannot be null.");
             Debug.Assert(count >= 0, "count must be non-negative.");
@@ -52,7 +54,7 @@ namespace CustomExtensions.ForIEnumerable
             return source.Count() == count;
         }
 
-        internal static bool ContainsExactlyImplementation <T>(IEnumerable<T> source, int count, Func<T, bool> predicate)
+        private static bool ContainsExactlyImplementation <T>(IEnumerable<T> source, int count, Func<T, bool> predicate)
         {
             Debug.Assert(source != null, "source cannot be null.");
             Debug.Assert(count >= 0, "count must be non-negative.");

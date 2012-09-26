@@ -17,7 +17,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <param name="defaultValue">Optional default value to retrun.  Uses type default if not specified.</param>
         /// <returns>The maximum value in the sequence or default value if provided.</returns>
-        public static TResult MaxOrDefault <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue = default(TResult))
+        /// <exception cref="ValidationException"> if <paramref name="selector"/> is null</exception>
+        public static TResult MaxOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue = default(TResult))
         {
             Validate.Begin()
                 .IsNotNull(selector, "selector")

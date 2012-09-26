@@ -15,7 +15,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <typeparam name="T">Type contained in <paramref name="source"/></typeparam>
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <param name="action"><see cref="Action"/> to be immediately applied to each element in <paramref name="source"/></param>
-        public static void ForEach <T>(this IEnumerable<T> source, Action<T> action)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="action"/> is null</exception>
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

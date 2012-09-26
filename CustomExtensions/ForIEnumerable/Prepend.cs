@@ -15,7 +15,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source"><see cref="IEnumerable"/> of type <typeparamref name="T"/></param>
         /// <param name="element">Element of type <typeparamref name="T"/> to append</param>
         /// <returns><paramref name="source"/> with element of type <typeparamref name="T"/> prepended to the beginning</returns>
-        public static IEnumerable<T> Prepend <T>(this IEnumerable<T> source, T element)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T element)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

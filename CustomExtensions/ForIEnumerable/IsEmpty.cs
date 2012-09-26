@@ -14,7 +14,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <typeparam name="T">Type contained in <paramref name="source"/></typeparam>
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <returns>True if <paramref name="source"/> contains no elements</returns>
-        public static bool IsEmpty <T>(this IEnumerable<T> source)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        public static bool IsEmpty<T>(this IEnumerable<T> source)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

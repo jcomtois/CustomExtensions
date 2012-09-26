@@ -144,6 +144,9 @@
     <Compile Include="ForIEnumerablesTests\ReplaceTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerablesTests\ShuffleTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStringsTests\StringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ForIEnumerablesTests\ToStringTest.cs">

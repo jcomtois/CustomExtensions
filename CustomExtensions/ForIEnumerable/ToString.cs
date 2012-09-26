@@ -17,7 +17,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="projection">Function to apply to each element to return a string representation</param>
         /// <param name="separator">String to seperate each element in result string</param>
         /// <returns>String listing all elements</returns>
-        public static string ToString <T>(this IEnumerable<T> source, Func<T, string> projection, string separator)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="projection"/> is null</exception>
+        public static string ToString<T>(this IEnumerable<T> source, Func<T, string> projection, string separator)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

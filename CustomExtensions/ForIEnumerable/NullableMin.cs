@@ -16,7 +16,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">A sequence of values to determine the maximum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The nullable minimum value in the sequence.</returns>
-        public static TResult? NullableMin <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="selector"/> is null</exception>
+        public static TResult? NullableMin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

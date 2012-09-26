@@ -24,7 +24,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="keySelector">Projection for determining "distinctness"</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
-        public static IEnumerable<TSource> DistinctBy <TSource, TKey>(this IEnumerable<TSource> source,
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="keySelector"/> is null</exception>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
                                                                       Func<TSource, TKey> keySelector)
         {
             Validate.Begin()
@@ -53,7 +54,8 @@ namespace CustomExtensions.ForIEnumerable
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
-        public static IEnumerable<TSource> DistinctBy <TSource, TKey>(this IEnumerable<TSource> source,
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="keySelector"/> is null</exception>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
                                                                       Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             Validate.Begin()

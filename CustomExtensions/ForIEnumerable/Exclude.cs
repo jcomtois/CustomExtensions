@@ -16,7 +16,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <param name="element">Element of type <typeparamref name="T"/> to exclude</param>
         /// <returns><see cref="IEnumerable"/> of type <typeparamref name="T"/> excluding <paramref name="element"/></returns>
-        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> source, T element)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        public static IEnumerable<T> Exclude<T>(this IEnumerable<T> source, T element)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
@@ -32,7 +33,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <param name="predicate">Function used to test for a match.  Matches will be excluded.</param>
         /// <returns><see cref="IEnumerable"/> of type <typeparamref name="T"/> excluding <paramref name="predicate"/> matches</returns>
-        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="predicate"/> is null</exception>
+        public static IEnumerable<T> Exclude<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
@@ -49,7 +51,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <param name="exclusions">Sequence of type <typeparamref name="T"/> to exclude each element of from <paramref name="source"/></param>
         /// <returns><see cref="IEnumerable"/> of type <typeparamref name="T"/> excluding <paramref name="exclusions"/> matches</returns>
-        public static IEnumerable<T> Exclude <T>(this IEnumerable<T> source, IEnumerable<T> exclusions)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="exclusions"/> is null</exception>
+        public static IEnumerable<T> Exclude<T>(this IEnumerable<T> source, IEnumerable<T> exclusions)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

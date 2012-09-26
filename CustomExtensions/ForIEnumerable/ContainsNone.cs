@@ -15,7 +15,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <param name="predicate">Function to check each item for a match</param>
         /// <returns>True if <paramref name="source"/> contains no items that matches <paramref name="predicate"/></returns>
-        public static bool ContainsNone <T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="predicate"/> is null</exception>
+        public static bool ContainsNone<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
@@ -31,7 +32,8 @@ namespace CustomExtensions.ForIEnumerable
         /// <typeparam name="T">Type contained in <paramref name="source"/></typeparam>
         /// <param name="source">Sequence of type <typeparamref name="T"/></param>
         /// <returns>True if <paramref name="source"/> contains no items</returns>
-        public static bool ContainsNone <T>(this IEnumerable<T> source)
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        public static bool ContainsNone<T>(this IEnumerable<T> source)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
