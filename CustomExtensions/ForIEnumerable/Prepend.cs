@@ -29,7 +29,7 @@ namespace CustomExtensions.ForIEnumerable
         {
             Debug.Assert(source != null, "source cannot be null.");
 
-            return Enumerable.Repeat(element, 1).Concat(source);
+            return element.ToEnumerable().Concat(source);
         }
     }
 }

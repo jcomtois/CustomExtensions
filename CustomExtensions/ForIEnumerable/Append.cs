@@ -16,9 +16,11 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="element">Element of type <typeparamref name="T"/> to append</param>
         /// <returns><paramref name="source"/> with element of type <typeparamref name="T"/> appended to the end</returns>
         /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> source, T element)
+        public static IEnumerable<T> Append <T>(this IEnumerable<T> source, T element)
         {
-            Validate.Begin().IsNotNull(source, "source").CheckForExceptions();
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .CheckForExceptions();
 
             return AppendImplementation(source, element);
         }
@@ -27,7 +29,7 @@ namespace CustomExtensions.ForIEnumerable
         {
             Debug.Assert(source != null, "source cannot be null.");
 
-            return source.Concat(Enumerable.Repeat(element, 1));
+            return source.Concat(element.ToEnumerable());
         }
     }
 }

@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CustomExtensions.ForIEnumerable
 {
    public static partial class ExtendIEnumerable
     {       
-       
-
-        public static IEnumerable<T> ToEnumerable <T>(this T Input)
-        {
-            return Enumerable.Repeat(Input, 1);
-        }
-
-       
-
         /// <summary>
         /// Implements Where(filter-lambda).Select(selector-lambda) in a single operation
         /// </summary>
