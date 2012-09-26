@@ -128,6 +128,9 @@
     <Compile Include="ForIEnumerable\IsEmpty.cs">
       <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerable\MaxOrDefault.cs">
+      <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerable\Replace.cs">
       <DependentUpon>IEnumerableExtensions.cs</DependentUpon>
     </Compile>
