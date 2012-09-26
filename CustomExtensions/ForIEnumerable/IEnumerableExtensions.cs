@@ -7,18 +7,6 @@ namespace CustomExtensions.ForIEnumerable
 {
    public static partial class ExtendIEnumerable
     {       
-        /// <summary>
-        /// Invokes a transform function on each element of a generic sequence and returns the maximum resulting nullable value 
-        /// </summary>
-        /// <typeparam name="TSource">The type of the value returned by <paramref name="selector"/>.</typeparam>
-        /// <typeparam name="TResult">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">A sequence of values to determine the maximum value of.</param>
-        /// <param name="selector">A transform function to apply to each element.</param>
-        /// <returns>The nullable maximum value in the sequence.</returns>
-        public static TResult? NullableMax <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
-        {
-            return source.IsEmpty() ? (TResult?)null : source.Max(selector);
-        }
 
         /// <summary>
         /// Invokes a transform function on each element of a generic sequence and returns the minimum resulting nullable value 

@@ -128,6 +128,9 @@
     <Compile Include="ForIEnumerablesTests\MinOrDefaultTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerablesTests\NullableMaxTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerablesTests\NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\ReplaceTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
