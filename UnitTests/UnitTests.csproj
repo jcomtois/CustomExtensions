@@ -138,6 +138,9 @@
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForIEnumerablesTests\RandomElementTest.cs">
+      <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForIEnumerablesTests\ReplaceTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
     </Compile>

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using CustomExtensions.ForIEnumerable;
 
 namespace CustomExtensions.Validation
 {
@@ -44,6 +46,20 @@ namespace CustomExtensions.Validation
             return value >= 0
                        ? validator
                        : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if sequence is empty
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="sequence">Actual <see cref="IEnumerable{T}"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotEmpty<T>(this Validator validator, IEnumerable<T> sequence, string parameterName)
+        {
+            return (sequence == null || sequence.IsEmpty())
+                       ? (validator ?? new Validator()).AddException(new ArgumentException("Sequence cannot be empty.", parameterName))
+                       : validator;
         }
 
         /// <summary>

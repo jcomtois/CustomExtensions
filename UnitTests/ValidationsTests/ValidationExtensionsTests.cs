@@ -2,6 +2,7 @@
 using System.Linq;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using UnitTests.ForIEnumerablesTests;
 
 namespace UnitTests.ValidationsTests
 {
@@ -59,6 +60,87 @@ namespace UnitTests.ValidationsTests
             {
                 Assert.That(() => ((Validator)null).CheckForExceptions(), Throws.Nothing);
                 Assert.That(() => ((Validator)null).CheckForExceptions(), Is.Null);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceEmptyParameterNameEmpty()
+            {
+                Assert.That(() => _validator.IsNotEmpty(Enumerable.Empty<int>(), string.Empty), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
+                Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
+                var ex = (ArgumentException)_validator.Exceptions.Single();
+                Assert.That(ex.ParamName, Is.Empty);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceEmptyParameterNameGood()
+            {
+                Assert.That(() => _validator.IsNotEmpty(Enumerable.Empty<int>(), "goodName"), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
+                Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
+                var ex = (ArgumentException)_validator.Exceptions.Single();
+                Assert.That(ex.ParamName, Is.EqualTo("goodName"));
+            }
+
+            [Test]
+            public void IsNotEmptySequenceEmptyParameterNameNull()
+            {
+                Assert.That(() => _validator.IsNotEmpty(Enumerable.Empty<int>(), null), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
+                Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
+                var ex = (ArgumentException)_validator.Exceptions.Single();
+                Assert.That(ex.ParamName, Is.Null);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceGoodParameterNameEmpty()
+            {
+                Assert.That(() => _validator.IsNotEmpty(Enumerable.Repeat(1, 2), "goodName"), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Is.Empty);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceGoodParameterNameGood()
+            {
+                Assert.That(() => _validator.IsNotEmpty(Enumerable.Repeat(1, 2), "goodName"), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Is.Empty);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceGoodParameterNameNull()
+            {
+                Assert.That(() => _validator.IsNotEmpty(Enumerable.Repeat(1, 2), null), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Is.Empty);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceNullParameterNameEmpty()
+            {
+                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), string.Empty), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
+                Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
+                var ex = (ArgumentException)_validator.Exceptions.Single();
+                Assert.That(ex.ParamName, Is.Empty);
+            }
+
+            [Test]
+            public void IsNotEmptySequenceNullParameterNameGood()
+            {
+                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), "goodName"), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
+                Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
+                var ex = (ArgumentException)_validator.Exceptions.Single();
+                Assert.That(ex.ParamName, Is.EqualTo("goodName"));
+            }
+
+            [Test]
+            public void IsNotEmptySequenceNullParameterNameNull()
+            {
+                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), null), Throws.Nothing);
+                Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
+                Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
+                var ex = (ArgumentException)_validator.Exceptions.Single();
+                Assert.That(ex.ParamName, Is.Null);
             }
 
             [Test]
