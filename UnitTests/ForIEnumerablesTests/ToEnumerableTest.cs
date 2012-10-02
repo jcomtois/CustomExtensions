@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
 
@@ -10,13 +9,35 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class ToEnumerableTest
         {
-            [Test]
-            public void ElementGood()
+            #region Setup/Teardown
+
+            [SetUp]
+            public void Setup()
             {
-                Assert.That(() => new object().ToEnumerable(), Throws.Nothing);
-                Assert.That(() => new object().ToEnumerable().ToList(), Throws.Nothing);
-                Assert.That(() => ((object)null).ToEnumerable(), Throws.Nothing);
-                Assert.That(() => new object().ToEnumerable(), Is.AssignableTo<IEnumerable<object>>());
+                _theObject = new object();
+            }
+
+            #endregion
+
+            private object _theObject;
+            private readonly object _nullObject;
+
+            [Test]
+            public void ToEnumerable_OnNullObject_CreatesEnumerable()
+            {
+                Assert.That(() => _nullObject.ToEnumerable(), Is.EquivalentTo(Enumerable.Repeat(_nullObject, 1)));
+            }
+
+            [Test]
+            public void ToEnumerable_OnObject_CreatesEnumerable()
+            {
+                Assert.That(() => _theObject.ToEnumerable(), Is.EquivalentTo(Enumerable.Repeat(_theObject, 1)));
+            }
+
+            [Test]
+            public void ToEnumerable_OnObject_EnumeratingThrowsNothing()
+            {
+                Assert.That(() => _theObject.ToEnumerable().ToList(), Throws.Nothing);
             }
         }
     }
