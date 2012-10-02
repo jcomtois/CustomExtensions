@@ -30,6 +30,13 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
+            public void ToOrDefaultInteger_OnNullNullableInteger_ReturnsDefaultInteger()
+            {
+                int? number = null;
+                Assert.That(() => number.ToOrDefault<int>(), Is.EqualTo(default(int)));
+            }
+
+            [Test]
             public void ToOrDefaultInteger_OnNullString_ReturnsDefaultInteger()
             {
                 string number = null;
@@ -97,6 +104,23 @@ namespace UnitTests.ForIConvertablesTests
             public void ToOrDefaultOutInteger_OnEmptyString_ReturnsFalse()
             {
                 string number = string.Empty;
+                int outParameter;
+                Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
+            }
+
+            [Test]
+            public void ToOrDefaultOutInteger_OnNullNullableInteger_ReturnsDefaultInteger()
+            {
+                int? number = null;
+                int outParameter;
+                number.ToOrDefault(out outParameter);
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
+            }
+
+            [Test]
+            public void ToOrDefaultOutInteger_OnNullNullableInteger_ReturnsFalse()
+            {
+                int? number = null;
                 int outParameter;
                 Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
             }

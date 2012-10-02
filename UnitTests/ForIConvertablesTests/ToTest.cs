@@ -9,14 +9,6 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToTest
         {
-
-            [Test]
-            public void ToInteger_OnMaxDouble_ThrowsOverFlowException()
-            {
-                double number = double.MaxValue;
-                Assert.That(() => number.To<int>(), Throws.TypeOf<OverflowException>());
-            }
-
             [Test]
             public void ToBool_OnString_ThrowsFormatException()
             {
@@ -63,6 +55,27 @@ namespace UnitTests.ForIConvertablesTests
             public void ToInteger_OnDecimal_ReturnsInteger()
             {
                 decimal number = 1.1m;
+                Assert.That(() => number.To<int>(), Is.EqualTo(1));
+            }
+
+            [Test]
+            public void ToInteger_OnMaxDouble_ThrowsOverFlowException()
+            {
+                double number = double.MaxValue;
+                Assert.That(() => number.To<int>(), Throws.TypeOf<OverflowException>());
+            }
+
+            [Test]
+            public void ToInteger_OnNullNullableInteger_ThrowsInvalidCastException()
+            {
+                int? number = null;
+                Assert.That(() => number.To<int>(), Throws.TypeOf<InvalidCastException>());
+            }
+
+            [Test]
+            public void ToInteger_OnNullableInteger_ReturnsInteger()
+            {
+                int? number = 1;
                 Assert.That(() => number.To<int>(), Is.EqualTo(1));
             }
 
