@@ -9,6 +9,14 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToTest
         {
+
+            [Test]
+            public void ToInteger_OnMaxDouble_ThrowsOverFlowException()
+            {
+                double number = double.MaxValue;
+                Assert.That(() => number.To<int>(), Throws.TypeOf<OverflowException>());
+            }
+
             [Test]
             public void ToBool_OnString_ThrowsFormatException()
             {
