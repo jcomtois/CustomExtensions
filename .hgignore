@@ -1,7 +1,7 @@
 # use glob syntax
 syntax: glob
 
-*.ncrunch*
+*_[Nn]crunch*
 *.obj
 *.pdb
 *.user
