@@ -91,6 +91,8 @@
     </Compile>
     <Compile Include="ForIConvertablesTests\ForIConvertibleTests.cs" />
     <Compile Include="ForIConvertablesTests\ToOrDefaultTest.cs" />
+    <Compile Include="ForIConvertablesTests\ToOrNullTest.cs" />
+    <Compile Include="ForIConvertablesTests\ToOrOtherTest.cs" />
     <Compile Include="ForIConvertablesTests\ToTest.cs" />
     <Compile Include="ForIEnumerablesTests\AppendTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>

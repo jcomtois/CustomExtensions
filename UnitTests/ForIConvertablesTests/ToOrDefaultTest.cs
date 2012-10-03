@@ -8,6 +8,18 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToOrDefaultTest
         {
+            #region Setup/Teardown
+
+            [SetUp]
+            public void SetUp()
+            {
+                _testObject = new TestObject();
+            }
+
+            #endregion
+
+            private TestObject _testObject;
+
             [Test]
             public void ToOrDefaultInt_OnDouble_ReturnsDefaultInteger()
             {
@@ -72,6 +84,21 @@ namespace UnitTests.ForIConvertablesTests
                 double number = double.MaxValue;
                 int outParameter;
                 Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
+            }
+
+            [Test]
+            public void ToOrDefaultOutInt_OnTestObject_ReturnsDefaultInt()
+            {
+                int outParameter;
+                _testObject.ToOrDefault(out outParameter);
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
+            }
+
+            [Test]
+            public void ToOrDefaultOutInt_OnTestObject_ReturnsFalse()
+            {
+                int outParameter;
+                Assert.That(() => _testObject.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
@@ -191,6 +218,38 @@ namespace UnitTests.ForIConvertablesTests
                 double number = double.MaxValue;
                 float outParameter;
                 Assert.That(() => number.ToOrDefault(out outParameter), Is.True);
+            }
+
+            [Test]
+            public void ToOrDefaultOutString_OnTestObject_ReturnsFalse()
+            {
+                string outParameter;
+                Assert.That(() => _testObject.ToOrDefault(out outParameter), Is.False);
+            }
+
+            [Test]
+            public void ToOrDefaultOutString_OnTestObject_ReturnsNull()
+            {
+                string outParameter;
+                _testObject.ToOrDefault(out outParameter);
+                Assert.That(() => outParameter, Is.Null);
+            }
+
+            [Test]
+            public void ToOrDefaultOutTestObject_OnInteger_ReturnsFalse()
+            {
+                int number = 0;
+                TestObject outParameter;
+                Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
+            }
+
+            [Test]
+            public void ToOrDefaultOutTestObject_OnInteger_ReturnsNull()
+            {
+                int number = 0;
+                TestObject outParameter;
+                number.ToOrDefault(out outParameter);
+                Assert.That(() => outParameter, Is.Null);
             }
         }
     }

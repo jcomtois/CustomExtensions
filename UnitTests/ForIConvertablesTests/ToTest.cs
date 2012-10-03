@@ -9,6 +9,18 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToTest
         {
+            #region Setup/Teardown
+
+            [SetUp]
+            public void SetUp()
+            {
+                _testObject = new TestObject();
+            }
+
+            #endregion
+
+            private TestObject _testObject;
+
             [Test]
             public void ToBool_OnString_ThrowsFormatException()
             {
@@ -127,6 +139,19 @@ namespace UnitTests.ForIConvertablesTests
             {
                 int number = 10;
                 Assert.That(() => number.To<string>(), Is.EqualTo("10"));
+            }
+
+            [Test]
+            public void ToString_OnTestObject_ThrowsInvalidCastException()
+            {
+                Assert.That(() => _testObject.To<string>(), Throws.TypeOf<InvalidCastException>());
+            }
+
+            [Test]
+            public void ToTestObject_OnString_ThrowsInvalidCastException()
+            {
+                string testString = "ABC";
+                Assert.That(() => testString.To<TestObject>(), Throws.TypeOf<InvalidCastException>());
             }
         }
     }
