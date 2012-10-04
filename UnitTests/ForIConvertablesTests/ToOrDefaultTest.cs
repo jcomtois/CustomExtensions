@@ -1,4 +1,6 @@
-﻿using CustomExtensions.ForIConvertible;
+﻿using System;
+using CustomExtensions.ForIConvertible;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.ForIConvertablesTests
@@ -8,17 +10,24 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToOrDefaultTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
+            [Test]
+            public void ToOrDefaultBadConvertible_OnInteger_ReturnsFalse()
             {
-                _testObject = new TestObject();
+                var mockConvertible = new Mock<IConvertible>();
+                int number = 0;
+                var outParameter = mockConvertible.Object;
+                Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
             }
 
-            #endregion
-
-            private TestObject _testObject;
+            [Test]
+            public void ToOrDefaultBadConvertible_OnInteger_ReturnsNull()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                int number = 0;
+                var outParameter = mockConvertible.Object;
+                var output = number.ToOrDefault(out outParameter);
+                Assert.That(() => outParameter, Is.Null);
+            }
 
             [Test]
             public void ToOrDefaultInt_OnDouble_ReturnsDefaultInteger()
@@ -70,6 +79,35 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
+            public void ToOrDefaultOutInt_OnBadConvertible_CallsToInt32()
+            {
+                var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
+                mockConvertible.Setup(c => c.ToInt32(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                int outParameter;
+                mockConvertible.Object.ToOrDefault(out outParameter);
+                mockConvertible.Verify(c => c.ToInt32(It.IsAny<IFormatProvider>()), Times.Once());
+            }
+
+            [Test]
+            public void ToOrDefaultOutInt_OnBadConvertible_ReturnsDefaultInt()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(c => c.ToInt32(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                int outParameter;
+                mockConvertible.Object.ToOrDefault(out outParameter);
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
+            }
+
+            [Test]
+            public void ToOrDefaultOutInt_OnBadConvertible_ReturnsFalse()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(c => c.ToInt32(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                int outParameter;
+                Assert.That(() => mockConvertible.Object.ToOrDefault(out outParameter), Is.False);
+            }
+
+            [Test]
             public void ToOrDefaultOutInt_OnDouble_ReturnsDefaultInteger()
             {
                 double number = double.MaxValue;
@@ -84,21 +122,6 @@ namespace UnitTests.ForIConvertablesTests
                 double number = double.MaxValue;
                 int outParameter;
                 Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
-            }
-
-            [Test]
-            public void ToOrDefaultOutInt_OnTestObject_ReturnsDefaultInt()
-            {
-                int outParameter;
-                _testObject.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(default(int)));
-            }
-
-            [Test]
-            public void ToOrDefaultOutInt_OnTestObject_ReturnsFalse()
-            {
-                int outParameter;
-                Assert.That(() => _testObject.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
@@ -221,34 +244,31 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToOrDefaultOutString_OnTestObject_ReturnsFalse()
+            public void ToOrDefaultOutString_OnBadConvertible_CallsToString()
             {
+                var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                Assert.That(() => _testObject.ToOrDefault(out outParameter), Is.False);
+                var output = mockConvertible.Object.ToOrDefault(out outParameter);
+                mockConvertible.Verify(m => m.ToString(It.IsAny<IFormatProvider>()), Times.Once());
             }
 
             [Test]
-            public void ToOrDefaultOutString_OnTestObject_ReturnsNull()
+            public void ToOrDefaultOutString_OnBadConvertible_ReturnsFalse()
             {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                _testObject.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.Null);
+                Assert.That(() => mockConvertible.Object.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
-            public void ToOrDefaultOutTestObject_OnInteger_ReturnsFalse()
+            public void ToOrDefaultOutString_OnBadConvertible_ReturnsNull()
             {
-                int number = 0;
-                TestObject outParameter;
-                Assert.That(() => number.ToOrDefault(out outParameter), Is.False);
-            }
-
-            [Test]
-            public void ToOrDefaultOutTestObject_OnInteger_ReturnsNull()
-            {
-                int number = 0;
-                TestObject outParameter;
-                number.ToOrDefault(out outParameter);
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                var output = mockConvertible.Object.ToOrDefault(out outParameter);
                 Assert.That(() => outParameter, Is.Null);
             }
         }

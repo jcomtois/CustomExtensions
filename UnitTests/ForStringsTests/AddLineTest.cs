@@ -25,25 +25,6 @@ namespace UnitTests.ForStringsTests
 
             private StringBuilder _stringBuilder;
 
-            private class TestLineWriter : ILineWriter
-            {
-                public string Ouput { get; private set; }
-
-                #region ILineWriter Members
-
-                public void WriteLine()
-                {
-                    Ouput = Environment.NewLine;
-                }
-
-                public void WriteLine(string value)
-                {
-                    Ouput = string.Format("{0}{1}", value, Environment.NewLine);
-                }
-
-                #endregion
-            }
-
             [Test]
             public void AddLine_OnGoodStringBuilderWithEmptyStringNoLineWriter_ReturnsStringBuilder()
             {
