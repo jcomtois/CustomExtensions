@@ -9,7 +9,7 @@ namespace UnitTests.ForIConvertablesTests
     {
         [TestFixture]
         public class ToOrDefaultTest
-        {
+        {            
             [Test]
             public void ToOrDefaultBadConvertible_OnInteger_ReturnsFalse()
             {

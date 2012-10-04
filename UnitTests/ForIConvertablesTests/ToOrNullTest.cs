@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomExtensions.ForIConvertible;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.ForIConvertablesTests
@@ -9,17 +10,24 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToOrNullTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
+            [Test]
+            public void ToOrNullBadConvertible_OnInteger_ReturnsFalse()
             {
-                _testObject = new TestObject();
+                var mockConvertible = new Mock<IConvertible>();
+                int number = 0;
+                var outParameter = mockConvertible.Object;
+                Assert.That(() => number.ToOrNull(out outParameter), Is.False);
             }
 
-            #endregion
-
-            private TestObject _testObject;
+            [Test]
+            public void ToOrNullBadConvertible_OnInteger_ReturnsNull()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                int number = 0;
+                var outParameter = mockConvertible.Object;
+                var output = number.ToOrNull(out outParameter);
+                Assert.That(() => outParameter, Is.Null);
+            }
 
             [Test]
             public void ToOrNullObject_OnEmptyString_ReturnsObject()
@@ -110,6 +118,35 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
+            public void ToOrNullOutString_OnBadConvertible_CallsToString()
+            {
+                var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                var output = mockConvertible.Object.ToOrNull(out outParameter);
+                mockConvertible.Verify(m => m.ToString(It.IsAny<IFormatProvider>()), Times.Once());
+            }
+
+            [Test]
+            public void ToOrNullOutString_OnBadConvertible_ReturnsFalse()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                Assert.That(() => mockConvertible.Object.ToOrNull(out outParameter), Is.False);
+            }
+
+            [Test]
+            public void ToOrNullOutString_OnBadConvertible_ReturnsNull()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                var output = mockConvertible.Object.ToOrNull(out outParameter);
+                Assert.That(() => outParameter, Is.Null);
+            }
+
+            [Test]
             public void ToOrNullOutString_OnEmptyString_ReturnsTrue()
             {
                 string testString = string.Empty;
@@ -118,50 +155,11 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToOrNullOutString_OnTestObject_ReturnsFalse()
-            {
-                string outParameter;
-                Assert.That(() => _testObject.ToOrNull(out outParameter), Is.False);
-            }
-
-            [Test]
-            public void ToOrNullOutString_OnTestObject_ReturnsNull()
-            {
-                string outParameter;
-                _testObject.ToOrNull(out outParameter);
-                Assert.That(() => outParameter, Is.Null);
-            }
-
-            [Test]
-            public void ToOrNullOutTestObject_OnInteger_ReturnsFalse()
-            {
-                int number = 0;
-                TestObject outParameter;
-                Assert.That(() => number.ToOrNull(out outParameter), Is.False);
-            }
-
-            [Test]
-            public void ToOrNullOutTestObject_OnInteger_ReturnsNull()
-            {
-                int number = 0;
-                TestObject outParameter;
-                number.ToOrNull(out outParameter);
-                Assert.That(() => outParameter, Is.Null);
-            }
-
-            [Test]
             public void ToOrNullString_OnDouble_ReturnsString()
             {
                 double number = 1d;
                 Assert.That(() => number.ToOrNull<string>(), Is.EqualTo("1"));
             }
-
-            [Test]
-            public void ToOrNullString_OnTestObject_ReturnsNull()
-            {
-                Assert.That(() => _testObject.ToOrNull<string>(), Is.Null);
-            }
         }
-
     }
 }
