@@ -18,6 +18,13 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
+            public void ToConvertible_OnString_ThrowsInvalidCastException()
+            {
+                string testString = "ABC";
+                Assert.That(() => testString.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
+            }
+
+            [Test]
             public void ToFloat_OnDecimal_ReturnsFloat()
             {
                 decimal number = 1.1m;
@@ -124,13 +131,6 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToString_OnInteger_ReturnsString()
-            {
-                int number = 10;
-                Assert.That(() => number.To<string>(), Is.EqualTo("10"));
-            }
-
-            [Test]
             public void ToString_OnBadConvertible_ThrowsInvalidCastException()
             {
                 var mockConvertible = new Mock<IConvertible>();
@@ -139,10 +139,10 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToConvertible_OnString_ThrowsInvalidCastException()
+            public void ToString_OnInteger_ReturnsString()
             {
-                string testString = "ABC";
-                Assert.That(() => testString.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
+                int number = 10;
+                Assert.That(() => number.To<string>(), Is.EqualTo("10"));
             }
         }
     }

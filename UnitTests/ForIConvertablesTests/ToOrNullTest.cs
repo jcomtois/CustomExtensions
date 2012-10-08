@@ -147,6 +147,15 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
+            public void ToOrNullOutString_OnBadConvertible_ThrowsUnexpectedExceptionType()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
+                string outParameter;
+                Assert.That(() => mockConvertible.Object.ToOrNull(out outParameter), Throws.Exception);
+            }
+
+            [Test]
             public void ToOrNullOutString_OnEmptyString_ReturnsTrue()
             {
                 string testString = string.Empty;

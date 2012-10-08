@@ -9,7 +9,7 @@ namespace UnitTests.ForIConvertablesTests
     {
         [TestFixture]
         public class ToOrDefaultTest
-        {            
+        {
             [Test]
             public void ToOrDefaultBadConvertible_OnInteger_ReturnsFalse()
             {
@@ -270,6 +270,15 @@ namespace UnitTests.ForIConvertablesTests
                 string outParameter;
                 var output = mockConvertible.Object.ToOrDefault(out outParameter);
                 Assert.That(() => outParameter, Is.Null);
+            }
+
+            [Test]
+            public void ToOrDefaultOutString_OnBadConvertible_ThrowsUnexpectedExceptionType()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
+                string outParameter;
+                Assert.That(() => mockConvertible.Object.ToOrDefault(out outParameter), Throws.Exception);
             }
         }
     }
