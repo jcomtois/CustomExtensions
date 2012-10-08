@@ -1,4 +1,6 @@
-﻿using CustomExtensions.ForIConvertible;
+﻿using System;
+using CustomExtensions.ForIConvertible;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.ForIConvertablesTests
@@ -8,18 +10,6 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToOrOtherTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
-            {
-                _testObject = new TestObject();
-            }
-
-            #endregion
-
-            private TestObject _testObject;
-
             [Test]
             public void ToOrOtherObject_OnEmptyString_ReturnsObject()
             {
@@ -45,11 +35,21 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToOrOtherObject_OnString_ReturnsObject()
+            public void ToOrOtherObject_OnString_ReturnsNewObject()
             {
                 string testString = "1";
                 object newObject = new object();
                 Assert.That(() => testString.ToOrOther(newObject), Is.Not.EqualTo(newObject));
+            }
+
+            [Test]
+            public void ToOrOtherOutBadConvertible_OnInteger_ReturnsBadConvertible()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                int number = 0;
+                var outParameter = mockConvertible.Object;
+                number.ToOrOther(out outParameter, mockConvertible.Object);
+                Assert.That(() => outParameter, Is.EqualTo(mockConvertible.Object));
             }
 
             [Test]
@@ -118,6 +118,26 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
+            public void ToOrOtherOutString_OnBadConvertible_ReturnsFalse()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, "TEST"), Is.False);
+            }
+
+            [Test]
+            public void ToOrOtherOutString_OnBadConvertible_ReturnsOther()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                string testString = "TEST";
+                mockConvertible.Object.ToOrOther(out outParameter, testString);
+                Assert.That(() => outParameter, Is.EqualTo(testString));
+            }
+
+            [Test]
             public void ToOrOtherOutString_OnEmptyString_ReturnsTrue()
             {
                 string testString = string.Empty;
@@ -127,36 +147,11 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToOrOtherOutString_OnTestObject_ReturnsFalse()
-            {
-                string outParameter;
-                Assert.That(() => _testObject.ToOrOther(out outParameter, "TEST"), Is.False);
-            }
-
-            [Test]
-            public void ToOrOtherOutString_OnTestObject_ReturnsNull()
-            {
-                string outParameter;
-                string testString = "TEST";
-                _testObject.ToOrOther(out outParameter, testString);
-                Assert.That(() => outParameter, Is.EqualTo(testString));
-            }
-
-            [Test]
             public void ToOrOtherOutTestObject_OnInteger_ReturnsFalse()
             {
                 int number = 0;
                 TestObject outParameter;
                 Assert.That(() => number.ToOrOther(out outParameter, new TestObject()), Is.False);
-            }
-
-            [Test]
-            public void ToOrOtherOutTestObject_OnInteger_ReturnsTestObject()
-            {
-                int number = 0;
-                TestObject outParameter;
-                number.ToOrOther(out outParameter, _testObject);
-                Assert.That(() => outParameter, Is.EqualTo(_testObject));
             }
 
             [Test]
@@ -169,8 +164,10 @@ namespace UnitTests.ForIConvertablesTests
             [Test]
             public void ToOrOtherString_OnTestObject_ReturnsString()
             {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string testString = "TEST";
-                Assert.That(() => _testObject.ToOrOther(testString), Is.EqualTo(testString));
+                Assert.That(() => mockConvertible.Object.ToOrOther(testString), Is.EqualTo(testString));
             }
         }
     }
