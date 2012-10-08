@@ -149,9 +149,10 @@ namespace UnitTests.ForIConvertablesTests
             [Test]
             public void ToOrOtherOutTestObject_OnInteger_ReturnsFalse()
             {
+                var mockConvertible = new Mock<IConvertible>();
                 int number = 0;
-                TestObject outParameter;
-                Assert.That(() => number.ToOrOther(out outParameter, new TestObject()), Is.False);
+                var outParameter = mockConvertible.Object;
+                Assert.That(() => number.ToOrOther(out outParameter, mockConvertible.Object), Is.False);
             }
 
             [Test]

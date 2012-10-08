@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomExtensions.ForIConvertible;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.ForIConvertablesTests
@@ -9,18 +10,6 @@ namespace UnitTests.ForIConvertablesTests
         [TestFixture]
         public class ToTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
-            {
-                _testObject = new TestObject();
-            }
-
-            #endregion
-
-            private TestObject _testObject;
-
             [Test]
             public void ToBool_OnString_ThrowsFormatException()
             {
@@ -142,16 +131,18 @@ namespace UnitTests.ForIConvertablesTests
             }
 
             [Test]
-            public void ToString_OnTestObject_ThrowsInvalidCastException()
+            public void ToString_OnBadConvertible_ThrowsInvalidCastException()
             {
-                Assert.That(() => _testObject.To<string>(), Throws.TypeOf<InvalidCastException>());
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                Assert.That(() => mockConvertible.Object.To<string>(), Throws.TypeOf<InvalidCastException>());
             }
 
             [Test]
-            public void ToTestObject_OnString_ThrowsInvalidCastException()
+            public void ToConvertible_OnString_ThrowsInvalidCastException()
             {
                 string testString = "ABC";
-                Assert.That(() => testString.To<TestObject>(), Throws.TypeOf<InvalidCastException>());
+                Assert.That(() => testString.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
             }
         }
     }
