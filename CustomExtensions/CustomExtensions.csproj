@@ -164,6 +164,7 @@
     <Compile Include="ForIConvertible\ExtendIConvertible.cs" />
     <Compile Include="ForIEnumerable\IEnumerableExtensions.cs" />
     <Compile Include="COMInterop\NativeMethods.cs" />
+    <Compile Include="Interfaces\IEncrypt.cs" />
     <Compile Include="Interfaces\ILineWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ForStrings\ContainsAny.cs">
