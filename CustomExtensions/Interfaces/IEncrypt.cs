@@ -1,7 +1,7 @@
 ﻿namespace CustomExtensions.Interfaces
 {
-    public interface IEncrypt
+    public interface IEncrypt : IAESCrypto
     {
-        string Encrypt(string source);
+        string EncryptAES(string source, string password);
     }
 }

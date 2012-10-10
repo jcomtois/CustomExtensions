@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using CustomExtensions.ForStrings;
 using CustomExtensions.Interfaces;
 using CustomExtensions.Validation;
@@ -11,15 +10,15 @@ namespace UnitTests.ForStringsTests
     public partial class StringTests
     {
         [TestFixture]
-        public class EncryptTest
+        public class EncryptTest : EncryptionTestBase
         {
             [Test]
             public void Encrypt_OnEmptyString_ThrowsValidationError()
             {
                 var mockEncryptor = new Mock<IEncrypt>();
-                mockEncryptor.Setup(m => m.Encrypt(It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = string.Empty;
-                string testKey = "Key";
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                string testString = EmptyTestString;
+                string testKey = ValidLengthKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
@@ -28,40 +27,64 @@ namespace UnitTests.ForStringsTests
             public void Encrypt_OnGoodStringWithEmptyKey_ThrowsValidationError()
             {
                 var mockEncryptor = new Mock<IEncrypt>();
-                mockEncryptor.Setup(m => m.Encrypt(It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = "Test";
-                string testKey = string.Empty;
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                string testString = ValidTestString;
+                string testKey = EmptyKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+            }
+
+            [Test]
+            public void Encrypt_OnGoodStringWithGoodKey_ChecksMinimumSize()
+            {
+                var mockEncryptor = new Mock<IEncrypt>();
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
+                var output = testString.Encrypt(testKey, mockEncryptor.Object);
+                mockEncryptor.VerifyGet(m => m.MinimumPasswordLength, Times.AtLeastOnce());
             }
 
             [Test]
             public void Encrypt_OnGoodStringWithNullKey_ThrowsValidationError()
             {
                 var mockEncryptor = new Mock<IEncrypt>();
-                mockEncryptor.Setup(m => m.Encrypt(It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = "Test";
-                string testKey = null;
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                string testString = ValidTestString;
+                string testKey = NullKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void Encrypt_OnGoodStringWithShortKey_ThrowsValidationError()
+            {
+                var mockEncryptor = new Mock<IEncrypt>();
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
+                string testString = ValidTestString;
+                string testKey = ShortKey;
+                Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
             }
 
             [Test]
             public void Encrypt_OnGoodString_EncryptIsCalled()
             {
                 var mockEncryptor = new Mock<IEncrypt>();
-                mockEncryptor.Setup(m => m.Encrypt(It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = "Test";
-                string testKey = "Key";
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey, mockEncryptor.Object);
-                mockEncryptor.Verify(m => m.Encrypt(It.IsAny<string>()), Times.Once());
+                mockEncryptor.Verify(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
             }
 
             [Test]
             public void Encrypt_OnGoodString_KeyIsCaseSensitive()
             {
-                string testString = "Test String";
-                string upperKey = "KEY";
+                string testString = ValidTestString;
+                string upperKey = ValidLengthKey;
                 string lowerKey = upperKey.ToLowerInvariant();
                 var encryptedWithUpper = testString.Encrypt(upperKey);
                 var encryptedWithLower = testString.Encrypt(lowerKey);
@@ -69,12 +92,23 @@ namespace UnitTests.ForStringsTests
             }
 
             [Test]
+            public void Encrypt_OnGoodString_OutputDecryptionReturnsNullWithWrongKey()
+            {
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
+                var encrypted = testString.Encrypt(testKey);
+                string wrongKey = testKey + testKey;
+                var decrypted = encrypted.Decrypt(wrongKey);
+                Assert.That(() => decrypted, Is.Null);
+            }
+
+            [Test]
             public void Encrypt_OnGoodString_OutputDecryptsImproperlyWithWrongKey()
             {
-                string testString = "The quick brown fox jumped over the lazy dog.  1234567890 !@#$%^&*()_+~~~~~~\\n\n\n";
-                string testKey = "YABBAdabb@d0o";
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
                 var encrypted = testString.Encrypt(testKey);
-                string wrongKey = "Oooops";
+                string wrongKey = testKey + testKey;
                 var decrypted = encrypted.Decrypt(wrongKey);
                 Assert.That(() => decrypted, Is.Not.EqualTo(testString));
             }
@@ -82,8 +116,8 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_OutputDecryptsProperlyWithGoodKey()
             {
-                string testString = "The quick brown fox jumped over the lazy dog.  1234567890 !@#$%^&*()_+~~~~~~\\n\n\n";
-                string testKey = "YABBAdabb@d0o";
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
                 var encrypted = testString.Encrypt(testKey);
                 var decrypted = encrypted.Decrypt(testKey);
                 Assert.That(() => decrypted, Is.EqualTo(testString));
@@ -92,20 +126,18 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_OutputIsInCorrectFormat()
             {
-                var validCharacters = new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '-'};
-                string testString = "Test";
-                string testKey = "Key";
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey);
-                var difference = output.ToUpperInvariant().Except(validCharacters);
-                Assert.That(() => difference, Is.Empty);
+                Assert.That(() => Convert.FromBase64String(output), Throws.Nothing);
             }
 
             [Test]
             public void Encrypt_OnGoodString_SourceIsCaseSensitive()
             {
-                string testStringUpper = "TEST STRING";
+                string testStringUpper = ValidTestString;
                 string testStringLower = testStringUpper.ToLowerInvariant();
-                string testKey = "KEY";
+                string testKey = ValidLengthKey;
                 var encryptedWithUpper = testStringUpper.Encrypt(testKey);
                 var encryptedWithLower = testStringLower.Encrypt(testKey);
                 Assert.That(() => encryptedWithUpper, Is.Not.EqualTo(encryptedWithLower));
@@ -114,8 +146,8 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_StringIsEncrypted()
             {
-                string testString = "Test";
-                string testKey = "Key";
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey);
                 Assert.That(() => output, Is.Not.EqualTo(testString));
             }
@@ -124,11 +156,29 @@ namespace UnitTests.ForStringsTests
             public void Encrypt_OnNullString_ThrowsValidationError()
             {
                 var mockEncryptor = new Mock<IEncrypt>();
-                mockEncryptor.Setup(m => m.Encrypt(It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = null;
-                string testKey = "Key";
+                mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                string testString = NullTestString;
+                string testKey = ValidLengthKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void Encrypt_OnRepeatedGoodString_OutputMutatesOnSubsequentCalls()
+            {
+                string testString = ValidTestString;
+                string testKey = ValidLengthKey;
+                var lastTry = testString.Encrypt(testKey);
+                string currentTry = null;
+                for (var i = 0; i < 10; i++)
+                {
+                    currentTry = testString.Encrypt(testKey);
+                    if (lastTry != currentTry)
+                    {
+                        break;
+                    }
+                }
+                Assert.That(() => lastTry, Is.Not.EqualTo(currentTry));
             }
         }
     }

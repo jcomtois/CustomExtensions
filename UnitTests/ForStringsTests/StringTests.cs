@@ -7,32 +7,7 @@ namespace UnitTests.ForStringsTests
 {
     public partial class StringTests
     {       
-        [TestFixture]
-        public class EncryptAndDecrypt
-        {
-            private const string TestText = "The quick brown fox jumped over the lazy dog.  1234567890";
-            private const string TestKey = "TESTKEY";
-
-            [Test]
-            public void StringEncryptAndDecrypt()
-            {
-                var encrypted = TestText.Encrypt(TestKey);
-                var decrypted = encrypted.Decrypt(TestKey);
-
-                Assert.AreEqual(decrypted, TestText);
-            }
-
-            [Test]
-            public void WrongKey()
-            {
-                const string wrongKey = TestKey + TestKey;
-                var encrypted = TestText.Encrypt(TestKey);
-                var decrypted = encrypted.Decrypt(wrongKey);
-
-                Assert.IsNull(decrypted);
-                Assert.AreNotEqual(decrypted, TestText);
-            }
-        }
+       
 
         [TestFixture]
         public class IsValidUrl

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Diagnostics;
 using CustomExtensions.Interfaces;
 using CustomExtensions.Validation;
 
@@ -9,63 +6,41 @@ namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
-        private class RSAEncryptor : IEncrypt
-        {
-            private readonly CspParameters _cspParameters;
-
-            public RSAEncryptor(string key)
-            {
-                Debug.Assert(key != null, "key != null");
-                Debug.Assert(key.Length > 0, "key cannot be empty");
-
-                _cspParameters = new CspParameters {KeyContainerName = key};
-            }
-
-            #region IEncrypt Members
-
-            public string Encrypt(string source)
-            {
-                Debug.Assert(source != null, "source != null");
-                Debug.Assert(source.Length > 0, "source cannot be empty");
-
-                using (var rsaCryptoServiceProvider = new RSACryptoServiceProvider(_cspParameters) {PersistKeyInCsp = true})
-                {
-                    return BitConverter.ToString(rsaCryptoServiceProvider.Encrypt(Encoding.UTF8.GetBytes(source), true));
-                }
-            }
-
-            #endregion
-        }
-
         /// <summary>
-        /// Encrypts a string using the supplied key. Default encoding is done using RSA encryption and UTF8 encoding.
+        /// Provides simple AES encryption via a key for a UTF8 Message.
+        /// Must be decrypted with corresponding <see cref="Decrypt"/> method
         /// </summary>
-        /// <param name="source"> String that must be encrypted.</param>
-        /// <param name="key"> Encryption key. </param>
-        /// <param name="encryptor">If none provided, RSACryptoServiceProvider will be used</param>
-        /// <returns> A hexadecimal string representing a byte array separated by a minus sign. </returns>
-        /// <exception cref="ValidationException">Occurs when <paramref name="source"/> or <paramref name="key"/> is null or empty.</exception>
+        /// <param name="source">UTF8 Encoded string to be encrypted</param>
+        /// <param name="key">Password to be used for encryption.  Default MinimumLength of 12 for default encryptor</param>
+        /// <param name="encryptor">Optional <see cref="IEncrypt"/> to use.  Uses default implementation if none supplied.</param>
+        /// <returns>Encrypted string.</returns>
+        /// <exception cref="ValidationException">Occurs when <paramref name="source"/>is null or empty, when <paramref name="key"/> 
+        /// is null or empty, when <paramref name="key"/> length is less than MinimumPasswordLength for <see cref="IEncrypt"/> to be used.
+        /// </exception>
         public static string Encrypt(this string source, string key, IEncrypt encryptor = null)
         {
+            var encryptorToUse = encryptor ?? new AESEncryption();
+
             Validate.Begin()
                 .IsNotNull(source, "source")
                 .IsNotEmpty(source, "source")
                 .IsNotNull(key, "key")
                 .IsNotEmpty(key, "key")
+                .HasAtLeast(encryptorToUse.MinimumPasswordLength, key, "key")
                 .CheckForExceptions();
 
-            var encryptorToUse = encryptor ?? new RSAEncryptor(key);
-
-            return EncryptImplementation(source, encryptorToUse);
+            return EncryptImplementation(source, key, encryptorToUse);
         }
 
-        private static string EncryptImplementation(string source, IEncrypt encryptor)
+        private static string EncryptImplementation(string source, string key, IEncrypt encryptor)
         {
             Debug.Assert(source != null, "source != null");
             Debug.Assert(source.Length > 0, "source cannot be empty");
             Debug.Assert(encryptor != null, "encryptor != null");
+            Debug.Assert(key != null, "key != null");
+            Debug.Assert(key.Length >= encryptor.MinimumPasswordLength, "key too short");
 
-            return encryptor.Encrypt(source);
+            return encryptor.EncryptAES(source, key);
         }
     }
 }

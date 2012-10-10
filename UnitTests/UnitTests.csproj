@@ -156,7 +156,15 @@
     <Compile Include="ForStringsTests\ContainsAnyTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStringsTests\EncryptTest.cs" />
+    <Compile Include="ForStringsTests\DecryptTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\EncryptionTestBase.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\EncryptTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>

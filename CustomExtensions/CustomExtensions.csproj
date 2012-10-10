@@ -164,9 +164,9 @@
     <Compile Include="ForIConvertible\ExtendIConvertible.cs" />
     <Compile Include="ForIEnumerable\IEnumerableExtensions.cs" />
     <Compile Include="COMInterop\NativeMethods.cs" />
-    <Compile Include="Interfaces\IEncrypt.cs" />
-    <Compile Include="Interfaces\ILineWriter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ForStrings\AESEncryption.cs">
+      <DependentUpon>ExtendString.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStrings\ContainsAny.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
@@ -176,6 +176,7 @@
     <Compile Include="ForStrings\Encrypt.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForStrings\ExtendString.cs" />
     <Compile Include="ForStrings\IsNullOrEmpty.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
@@ -194,8 +195,6 @@
     <Compile Include="ForStrings\SHA1Hash.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStrings\ExtendStringBuilder.cs" />
-    <Compile Include="ForStrings\ExtendString.cs" />
     <Compile Include="ForStrings\Strip.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
@@ -208,6 +207,12 @@
     <Compile Include="ForStrings\TryToGuid.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IAESCrypto.cs" />
+    <Compile Include="Interfaces\IDecrypt.cs" />
+    <Compile Include="Interfaces\IEncrypt.cs" />
+    <Compile Include="Interfaces\ILineWriter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ForStrings\ExtendStringBuilder.cs" />
     <Compile Include="Validation\MultiException.cs" />
     <Compile Include="Validation\Validate.cs" />
     <Compile Include="Validation\Validator.cs" />

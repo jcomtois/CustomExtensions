@@ -49,6 +49,21 @@ namespace CustomExtensions.Validation
         }
 
         /// <summary>
+        /// Adds exception to Validator if string is null or less than <paramref name="length"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="length">Minimum length of string.</param>
+        /// <param name="value">String to check.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator HasAtLeast(this Validator validator, int length, string value, string parameterName)
+        {
+            return (value == null || value.Length < length) 
+                ? (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException("parameterName", "Must not be null or < " + length))
+                : validator;
+        }
+
+        /// <summary>
         /// Adds exception to Validator if sequence is empty
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>

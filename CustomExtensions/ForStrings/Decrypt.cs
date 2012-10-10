@@ -1,48 +1,46 @@
-﻿using System;
-using System.Globalization;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Diagnostics;
+using CustomExtensions.Interfaces;
+using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
         /// <summary>
-        /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.
+        /// Provides simple AES decryption via a key for an encrypted Message.
+        /// Must be encrypted with corresponding <see cref="Encrypt"/> method
         /// </summary>
-        /// <param name="source"> String that must be decrypted. </param>
-        /// <param name="key"> Decryptionkey. </param>
-        /// <returns> The decrypted string or null if decryption failed. </returns>
-        /// <exception cref="ArgumentException">Occurs when stringToDecrypt or key is null or empty.</exception>
-        public static string Decrypt(this string source, string key)
+        /// <param name="source">Encrypted string to be decrypted</param>
+        /// <param name="key">Password to be used for decryption.  Default MinimumLength of 12 for default decryptor</param>
+        /// <param name="decryptor">Optional <see cref="IDecrypt"/> to use.  Uses default implementation if none supplied.</param>
+        /// <returns>Decrypted string.</returns>
+        /// <exception cref="ValidationException">Occurs when <paramref name="source"/>is null or empty, when <paramref name="key"/> 
+        /// is null or empty, when <paramref name="key"/> length is less than MinimumPasswordLength for <see cref="IEncrypt"/> to be used.
+        /// </exception>
+        public static string Decrypt(this string source, string key, IDecrypt decryptor = null)
         {
-            if (source.IsNullOrEmpty())
-            {
-                throw new ArgumentException("An empty string value cannot be encrypted.");
-            }
+            var decryptorToUse = decryptor ?? new AESEncryption();
+            
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .IsNotEmpty(source, "source")
+                .IsNotNull(key, "key")
+                .IsNotEmpty(key, "key")
+                .HasAtLeast(decryptorToUse.MinimumPasswordLength, key, "key")
+                .CheckForExceptions();
 
-            if (key.IsNullOrEmpty())
-            {
-                throw new ArgumentException("Cannot decrypt using an empty key. Please supply a decryption key.");
-            }
+            return DecryptImplementation(source, key, decryptorToUse);
+        }
 
-            var cspParameters = new CspParameters {KeyContainerName = key};
-            try
-            {
-                using (var rsaCryptoServiceProvider = new RSACryptoServiceProvider(cspParameters) {
-                                                                                                      PersistKeyInCsp = true
-                                                                                                  })
-                {
-                    var decryptArray = source.Split(new[] {"-"}, StringSplitOptions.None);
-                    var decryptByteArray = Array.ConvertAll(decryptArray,
-                                                            (s => Convert.ToByte(byte.Parse(s, NumberStyles.HexNumber))));
-                    return Encoding.UTF8.GetString(rsaCryptoServiceProvider.Decrypt(decryptByteArray, true));
-                }
-            }
-            catch (CryptographicException)
-            {
-                return null;
-            }
+        private static string DecryptImplementation(string source, string key, IDecrypt decryptor)
+        {
+            Debug.Assert(source != null, "source != null");
+            Debug.Assert(source.Length > 0, "source cannot be empty");
+            Debug.Assert(decryptor != null, "decryptor != null");
+            Debug.Assert(key != null, "key != null");
+            Debug.Assert(key.Length >= decryptor.MinimumPasswordLength, "key too short"); 
+
+            return decryptor.DecryptAES(source, key);
         }
     }
 }
