@@ -58,6 +58,11 @@ namespace CustomExtensions.Validation
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator HasAtLeast(this Validator validator, int length, string value, string parameterName)
         {
+            if (length < 0)
+            {
+                throw new ArgumentOutOfRangeException("length", length, "length must be >= 0");
+            }
+
             return (value == null || value.Length < length) 
                 ? (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException("parameterName", "Must not be null or < " + length))
                 : validator;
