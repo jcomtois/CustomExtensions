@@ -9,42 +9,6 @@ namespace UnitTests.ForStringsTests
     {       
        
 
-        [TestFixture]
-        public class IsValidUrl
-        {
-            [Test]
-            public void BadUrl()
-            {
-                var testString = string.Empty;
-
-                Assert.IsFalse(testString.IsValidUrl(), testString);
-
-                testString = null;
-                Assert.IsFalse(testString.IsValidUrl(), testString);
-
-                testString = "Bad URL";
-                Assert.IsFalse(testString.IsValidUrl(), testString);
-
-                testString = @"www.google.com";
-
-                Assert.IsFalse(testString.IsValidUrl(), testString);
-            }
-
-            [Test]
-            public void GoodUrl()
-            {
-                var testString = @"http://www.google.com";
-
-                Assert.IsTrue(testString.IsValidUrl(), testString);
-
-                testString = @"https://www.google.com/doodles/finder/2012/All%20doodles";
-
-                Assert.IsTrue(testString.IsValidUrl(), testString);
-
-                testString = @"mailto:me@example.com";
-                Assert.IsTrue(testString.IsValidUrl(), testString);
-            }
-        }
 
         [TestFixture]
         public class Left
