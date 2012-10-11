@@ -28,7 +28,7 @@ namespace UnitTests.ForStringsTests
             {
                 var mockEncryptor = new Mock<IEncrypt>();
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = EmptyKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
@@ -40,7 +40,7 @@ namespace UnitTests.ForStringsTests
                 var mockEncryptor = new Mock<IEncrypt>();
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey, mockEncryptor.Object);
                 mockEncryptor.VerifyGet(m => m.MinimumPasswordLength, Times.AtLeastOnce());
@@ -51,7 +51,7 @@ namespace UnitTests.ForStringsTests
             {
                 var mockEncryptor = new Mock<IEncrypt>();
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = NullKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
@@ -63,7 +63,7 @@ namespace UnitTests.ForStringsTests
                 var mockEncryptor = new Mock<IEncrypt>();
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ShortKey;
                 Assert.That(() => testString.Encrypt(testKey, mockEncryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
@@ -74,7 +74,7 @@ namespace UnitTests.ForStringsTests
             {
                 var mockEncryptor = new Mock<IEncrypt>();
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey, mockEncryptor.Object);
                 mockEncryptor.Verify(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
@@ -83,7 +83,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_KeyIsCaseSensitive()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string upperKey = ValidLengthKey;
                 string lowerKey = upperKey.ToLowerInvariant();
                 var encryptedWithUpper = testString.Encrypt(upperKey);
@@ -94,7 +94,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_OutputDecryptionReturnsNullWithWrongKey()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var encrypted = testString.Encrypt(testKey);
                 string wrongKey = testKey + testKey;
@@ -105,7 +105,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_OutputDecryptsImproperlyWithWrongKey()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var encrypted = testString.Encrypt(testKey);
                 string wrongKey = testKey + testKey;
@@ -116,7 +116,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_OutputDecryptsProperlyWithGoodKey()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var encrypted = testString.Encrypt(testKey);
                 var decrypted = encrypted.Decrypt(testKey);
@@ -126,7 +126,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_OutputIsInCorrectFormat()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey);
                 Assert.That(() => Convert.FromBase64String(output), Throws.Nothing);
@@ -135,7 +135,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_SourceIsCaseSensitive()
             {
-                string testStringUpper = ValidTestString;
+                string testStringUpper = TestStringLatin;
                 string testStringLower = testStringUpper.ToLowerInvariant();
                 string testKey = ValidLengthKey;
                 var encryptedWithUpper = testStringUpper.Encrypt(testKey);
@@ -146,7 +146,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnGoodString_StringIsEncrypted()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var output = testString.Encrypt(testKey);
                 Assert.That(() => output, Is.Not.EqualTo(testString));
@@ -166,7 +166,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Encrypt_OnRepeatedGoodString_OutputMutatesOnSubsequentCalls()
             {
-                string testString = ValidTestString;
+                string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
                 var lastTry = testString.Encrypt(testKey);
                 string currentTry = null;

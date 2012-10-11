@@ -13,8 +13,24 @@ namespace UnitTests.ForStringsTests
         [TestFixture]
         public class DecryptTest : EncryptionTestBase
         {
-            private static readonly string ValidEncryptedTestString = ValidTestString.Encrypt(ValidLengthKey);
+            private static readonly string ValidEncryptedTestString = TestStringLatin.Encrypt(ValidLengthKey);
             private const string BadEncryptedTestString = "$%^#&@*(*%(#&@^!*@#";
+
+            [Test]
+            public void Decrypt_OnBadStringWithGoodKey_DoesNotDecrypt()
+            {
+                string testString = BadEncryptedTestString;
+                string testKey = ValidLengthKey;
+                Assert.That(() => testString.Decrypt(testKey), Is.Not.EqualTo(TestStringLatin));
+            }
+
+            [Test]
+            public void Decrypt_OnBadStringWithGoodKey_ReturnsNull()
+            {
+                string testString = BadEncryptedTestString;
+                string testKey = ValidLengthKey;
+                Assert.That(() => testString.Decrypt(testKey), Is.Null);
+            }
 
             [Test]
             public void Decrypt_OnEmptyString_ThrowsValidationError()
@@ -25,17 +41,6 @@ namespace UnitTests.ForStringsTests
                 string testKey = ValidLengthKey;
                 Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
-            }
-
-            [Test]
-            public void Decrypt_OnNullString_ThrowsValidationError()
-            {
-                var mockDecryptor = new Mock<IDecrypt>();
-                mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = NullTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
@@ -59,6 +64,14 @@ namespace UnitTests.ForStringsTests
                 string testKey = ValidLengthKey;
                 var output = testString.Decrypt(testKey, mockDecryptor.Object);
                 mockDecryptor.VerifyGet(m => m.MinimumPasswordLength, Times.AtLeastOnce());
+            }
+
+            [Test]
+            public void Decrypt_OnGoodStringWithGoodKey_Decrypts()
+            {
+                string testString = ValidEncryptedTestString;
+                string testKey = ValidLengthKey;
+                Assert.That(() => testString.Decrypt(testKey), Is.EqualTo(TestStringLatin));
             }
 
             [Test]
@@ -89,53 +102,9 @@ namespace UnitTests.ForStringsTests
             {
                 string testString = ValidEncryptedTestString;
                 string testKey = ValidLengthKey + ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Not.EqualTo(ValidTestString));
+                Assert.That(() => testString.Decrypt(testKey), Is.Not.EqualTo(TestStringLatin));
             }
 
-            [Test]
-            public void Decrypt_OnTamperedStringWithGoodKey_DoesNotDecrypt()
-            {
-                var bytes = Convert.FromBase64String(ValidEncryptedTestString);
-                bytes[0]++;
-                string testString = Convert.ToBase64String(bytes);
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
-            }
-
-
-            [Test]
-            public void Decrypt_OnGoodStringWithGoodKey_Decrypts()
-            {
-                string testString = ValidEncryptedTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.EqualTo(ValidTestString));
-            }
-
-
-            [Test]
-            public void Decrypt_OnBadStringWithGoodKey_DoesNotDecrypt()
-            {
-                string testString = BadEncryptedTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Not.EqualTo(ValidTestString));
-            }
-
-            [Test]
-            public void Decrypt_OnBadStringWithGoodKey_ReturnsNull()
-            {
-                string testString = BadEncryptedTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
-            }
-
-            [Test]
-            public void Decrypt_OnShortStringWithGoodKey_ReturnsNull()
-            {
-                string testString = Convert.ToBase64String(Encoding.UTF8.GetBytes("b"));
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
-            }
-            
             [Test]
             public void Decrypt_OnGoodStringWithWrongKey_ReturnsNull()
             {
@@ -153,6 +122,35 @@ namespace UnitTests.ForStringsTests
                 string testKey = ValidLengthKey;
                 var output = testString.Decrypt(testKey, mockDecryptor.Object);
                 mockDecryptor.Verify(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+            }
+
+            [Test]
+            public void Decrypt_OnNullString_ThrowsValidationError()
+            {
+                var mockDecryptor = new Mock<IDecrypt>();
+                mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
+                string testString = NullTestString;
+                string testKey = ValidLengthKey;
+                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void Decrypt_OnShortStringWithGoodKey_ReturnsNull()
+            {
+                string testString = Convert.ToBase64String(Encoding.UTF8.GetBytes("b"));
+                string testKey = ValidLengthKey;
+                Assert.That(() => testString.Decrypt(testKey), Is.Null);
+            }
+
+            [Test]
+            public void Decrypt_OnTamperedStringWithGoodKey_DoesNotDecrypt()
+            {
+                var bytes = Convert.FromBase64String(ValidEncryptedTestString);
+                bytes[0]++;
+                string testString = Convert.ToBase64String(bytes);
+                string testKey = ValidLengthKey;
+                Assert.That(() => testString.Decrypt(testKey), Is.Null);
             }
         }
     }

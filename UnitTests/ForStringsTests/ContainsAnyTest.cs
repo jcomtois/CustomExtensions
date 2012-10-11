@@ -13,7 +13,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyCharacter_OnEmptyString_ReturnsFalse()
             {
-                string sourceString = string.Empty;
+                string sourceString = EmptyTestString;
                 char toFind = 'Z';
                 Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
             }
@@ -53,7 +53,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyCharacter_OnNullString_ThrowsValidationException()
             {
-                string sourceString = null;
+                string sourceString = NullTestString;
                 char toFind = 'Z';
                 Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -61,7 +61,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyCharacters_OnEmptyString_ReturnsFalse()
             {
-                string sourceString = string.Empty;
+                string sourceString = EmptyTestString;
                 char[] toFind = {'t', 'e'};
                 Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
             }
@@ -101,7 +101,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyCharacters_OnNullString_ThrowsValidationException()
             {
-                string sourceString = null;
+                string sourceString = NullTestString;
                 char[] toFind = {'t', 'e'};
                 Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -109,7 +109,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyEmptyCharacters_OnEmptyString_ReturnsFalse()
             {
-                string sourceString = string.Empty;
+                string sourceString = EmptyTestString;
                 char[] toFind = {};
                 Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
             }
@@ -117,7 +117,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyEmptyCharacters_OnGoodString_ReturnsFalse()
             {
-                string sourceString = "TEST";
+                string sourceString = TestStringLatin;
                 char[] toFind = {};
                 Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
             }
@@ -125,7 +125,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyNullCharacters_OnGoodString_ThrowsValidationException()
             {
-                string sourceString = "TEST";
+                string sourceString = TestStringLatin;
                 char[] toFind = null;
                 Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -133,7 +133,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void ContainsAnyNullCharacters_OnNullString_ThrowsValidationException()
             {
-                string sourceString = null;
+                string sourceString = NullTestString;
                 char[] toFind = null;
                 Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }

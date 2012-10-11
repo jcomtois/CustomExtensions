@@ -1,61 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using CustomExtensions.ForStrings;
 using NUnit.Framework;
 
 namespace UnitTests.ForStringsTests
 {
     public partial class StringTests
-    {       
-       
+    {
+        protected const string EmptyTestString = "";
+        protected const string NullTestString = null;
+        protected static readonly string TestStringLatin;
 
-
-        [TestFixture]
-        public class Left
-        {
-            private const string TestString = "abc123ABC456Test";
-
-            [Test]
-            public void EmptyString()
-            {
-                var expected = string.Empty;
-                var actual = string.Empty.Left(5);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LeftString()
-            {
-                const string left = "Left";
-                const string testString = left + TestString;
-                const string expected = left;
-                var actual = testString.Left(left.Length);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LengthZero()
-            {
-                var expected = string.Empty;
-                var actual = TestString.Left(0);
-
-                Assert.AreEqual(expected, actual);
-
-                actual = TestString.Left(-1);
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LongerString()
-            {
-                const string expected = TestString;
-                var actual = TestString.Left(TestString.Length * 2);
-
-                Assert.AreEqual(expected, actual);
-            }
-        }
 
         [TestFixture]
         public class Right
@@ -239,6 +196,12 @@ namespace UnitTests.ForStringsTests
                 actual = TestString.Truncate(5);
                 Assert.AreEqual(expected, actual);
             }
+        }
+
+        static StringTests()
+        {
+            TestStringLatin = new string(Enumerable.Range(0, 256).Select(i => (char)i).ToArray());
+            Debug.Assert(TestStringLatin.Length == 256);
         }
     }
 }

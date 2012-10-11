@@ -8,26 +8,22 @@ namespace UnitTests.ForStringsTests
         [TestFixture]
         public class IsNullOrEmptyTest
         {
-            private const string ValidString = "TestString";
-            private const string EmptyString = "";
-            private const string NullString = null;
-
             [Test]
             public void IsNullOrEmpty_OnEmptyString_ReturnsTrue()
             {
-                Assert.That(() => EmptyString.IsNullOrEmpty(), Is.True);
+                Assert.That(() => EmptyTestString.IsNullOrEmpty(), Is.True);
             }
 
             [Test]
             public void IsNullOrEmpty_OnNullString_ReturnsTrue()
             {
-                Assert.That(() => NullString.IsNullOrEmpty(), Is.True);
+                Assert.That(() => NullTestString.IsNullOrEmpty(), Is.True);
             }
 
             [Test]
             public void IsNullOrEmpty_OnValidString_ReturnsFalse()
             {
-                Assert.That(() => ValidString.IsNullOrEmpty(), Is.False);
+                Assert.That(() => TestStringLatin.IsNullOrEmpty(), Is.False);
             }
         }
     }

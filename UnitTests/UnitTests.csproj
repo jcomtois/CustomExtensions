@@ -171,6 +171,7 @@
     <Compile Include="ForStringsTests\IsValidUrlTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForStringsTests\LeftTest.cs" />
     <Compile Include="NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>

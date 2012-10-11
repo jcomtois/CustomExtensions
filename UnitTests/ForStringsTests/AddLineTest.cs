@@ -28,7 +28,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void AddLine_OnGoodStringBuilderWithEmptyStringNoLineWriter_ReturnsStringBuilder()
             {
-                string testText = string.Empty;
+                string testText = EmptyTestString;
                 var output = _stringBuilder.AddLine(testText);
                 Assert.That(() => output, Is.EqualTo(_stringBuilder));
             }
@@ -37,7 +37,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithEmptyString_CallsWriteLine()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = string.Empty;
+                string testText = EmptyTestString;
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 mockLineWriter.Verify(m => m.WriteLine(), Times.Once());
             }
@@ -46,7 +46,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithEmptyString_ReturnsStringBuilder()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = string.Empty;
+                string testText = EmptyTestString;
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 Assert.That(() => output, Is.EqualTo(_stringBuilder));
             }
@@ -55,7 +55,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithEmptyString_StringBuilderContainsNewLine()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = string.Empty;
+                string testText = EmptyTestString;
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 Assert.That(() => output.ToString(), Is.EqualTo(Environment.NewLine));
             }
@@ -63,7 +63,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void AddLine_OnGoodStringBuilderWithGoodStringNoLineWriter_ReturnsStringBuilder()
             {
-                string testText = "TEST";
+                string testText = TestStringLatin;
                 var output = _stringBuilder.AddLine(testText);
                 Assert.That(() => output, Is.EqualTo(_stringBuilder));
             }
@@ -71,7 +71,7 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void AddLine_OnGoodStringBuilderWithGoodString_CallsWriteLineWithString()
             {
-                string testText = "TEST";
+                string testText = TestStringLatin;
                 var mockLineWriter = new Mock<ILineWriter>();
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
 
@@ -83,14 +83,15 @@ namespace UnitTests.ForStringsTests
             {
                 var mockLineWriter = new Mock<ILineWriter>();
                 mockLineWriter.Setup(m => m.WriteLine(It.IsAny<string>()));
-                var output = _stringBuilder.AddLine(string.Empty, mockLineWriter.Object);
+                string testText = TestStringLatin;
+                var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 Assert.That(() => output, Is.EqualTo(_stringBuilder));
             }
 
             [Test]
             public void AddLine_OnGoodStringBuilderWithGoodString_StringBuilderContainsStringAndNewLine()
             {
-                string testText = "TEST";
+                string testText = TestStringLatin;
                 var mockLineWriter = new Mock<ILineWriter>();
                 mockLineWriter.Setup(m => m.WriteLine(testText));
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
@@ -101,7 +102,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithNullString_CallsWriteLine()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = null;
+                string testText = NullTestString;
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 mockLineWriter.Verify(m => m.WriteLine(), Times.Once());
             }
@@ -110,7 +111,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithNullString_ReturnsStringBuilder()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = null;
+                string testText = NullTestString;
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 Assert.That(() => output, Is.EqualTo(_stringBuilder));
             }
@@ -119,7 +120,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithNullString_StringBuilderContainsNewLine()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = null;
+                string testText = NullTestString;
                 var output = _stringBuilder.AddLine(testText, mockLineWriter.Object);
                 Assert.That(() => output.ToString(), Is.EqualTo(Environment.NewLine));
             }
@@ -128,7 +129,7 @@ namespace UnitTests.ForStringsTests
             public void AddLine_OnNullStringBuilderWithGoodString_ThrowsValidationException()
             {
                 var mockLineWriter = new Mock<ILineWriter>();
-                string testText = "TEST";
+                string testText = TestStringLatin;
                 StringBuilder testBuilder = null;
                 Assert.That(() => testBuilder.AddLine(testText, mockLineWriter.Object),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());

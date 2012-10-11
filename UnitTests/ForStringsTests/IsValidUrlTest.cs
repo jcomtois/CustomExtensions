@@ -8,13 +8,10 @@ namespace UnitTests.ForStringsTests
         [TestFixture]
         public class IsValidUrl
         {
-            private const string NullString = null;
-            private const string EmptyString = "";
-
             [Test]
             public void IsValidUrl_OnEmptyString_ReturnsFalse()
             {
-                Assert.That(() => EmptyString.IsValidUrl(), Is.False);
+                Assert.That(() => EmptyTestString.IsValidUrl(), Is.False);
             }
 
             [Test]
@@ -27,14 +24,14 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void IsValidUrl_OnNormalTextString_ReturnsFalse()
             {
-                var testString = "I'm a Bad URL.";
+                var testString = TestStringLatin;
                 Assert.That(() => testString.IsValidUrl(), Is.False);
             }
 
             [Test]
             public void IsValidUrl_OnNullString_ReturnsFalse()
             {
-                Assert.That(() => NullString.IsValidUrl(), Is.False);
+                Assert.That(() => NullTestString.IsValidUrl(), Is.False);
             }
 
             [Test]
