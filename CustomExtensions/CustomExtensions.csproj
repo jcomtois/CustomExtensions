@@ -71,8 +71,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MoreLinq, Version=1.0.11729.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Downloaded\morelinq\MoreLinq\bin\Release\MoreLinq.dll</HintPath>
+      <HintPath>..\External\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
