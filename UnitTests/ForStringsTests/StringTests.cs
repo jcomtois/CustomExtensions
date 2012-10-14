@@ -1,7 +1,25 @@
-﻿using System;
+﻿#region License and Terms
+
+// CustomExtensions - Custom Extension Methods For C#
+// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using CustomExtensions.ForStrings;
 using NUnit.Framework;
 
@@ -9,10 +27,38 @@ namespace UnitTests.ForStringsTests
 {
     public partial class StringTests
     {
-        protected const string EmptyTestString = "";
-        protected const string NullTestString = null;
-        protected static readonly string TestStringLatin;
+        [TestFixture]
+        public class Parse
+        {
+            [Test]
+            public void ValidInput()
+            {
+                var testString = "123";
 
+                Assert.AreEqual(testString.Parse<int>(), 123);
+                Assert.IsInstanceOf<int>(testString.Parse<int>());
+
+                Assert.AreEqual(testString.Parse<int?>(), 123);
+                Assert.IsInstanceOf<int?>(testString.Parse<int?>());
+
+                Assert.AreEqual(testString.Parse<double>(), 123.0);
+                Assert.IsInstanceOf<double>(testString.Parse<double>());
+
+                Assert.AreEqual(testString.Parse<double?>(), 123.0);
+                Assert.IsInstanceOf<double?>(testString.Parse<double?>());
+
+                Assert.AreEqual(testString.Parse<decimal>(), 123.0m);
+                Assert.IsInstanceOf<decimal>(testString.Parse<decimal>());
+
+                Assert.AreEqual(testString.Parse<decimal?>(), 123.0m);
+                Assert.IsInstanceOf<decimal?>(testString.Parse<decimal?>());
+
+                testString = "1/23/2012";
+
+                Assert.AreEqual(testString.Parse<DateTime>(), new DateTime(2012, 1, 23));
+                Assert.IsInstanceOf<DateTime>(testString.Parse<DateTime>());
+            }
+        }
 
         [TestFixture]
         public class Right
@@ -58,39 +104,6 @@ namespace UnitTests.ForStringsTests
                 var actual = testString.Right(right.Length);
 
                 Assert.AreEqual(expected, actual);
-            }
-        }
-
-        [TestFixture]
-        public class Parse
-        {
-            [Test]
-            public void ValidInput()
-            {
-                var testString = "123";
-                
-                Assert.AreEqual(testString.Parse<int>(), 123);
-                Assert.IsInstanceOf<int>(testString.Parse<int>());
-
-                Assert.AreEqual(testString.Parse<int?>(), 123);
-                Assert.IsInstanceOf<int?>(testString.Parse<int?>());
-
-                Assert.AreEqual(testString.Parse<double>(), 123.0);
-                Assert.IsInstanceOf<double>(testString.Parse<double>());
-
-                Assert.AreEqual(testString.Parse<double?>(), 123.0);
-                Assert.IsInstanceOf<double?>(testString.Parse<double?>());
-
-                Assert.AreEqual(testString.Parse<decimal>(), 123.0m);
-                Assert.IsInstanceOf<decimal>(testString.Parse<decimal>());
-
-                Assert.AreEqual(testString.Parse<decimal?>(), 123.0m);
-                Assert.IsInstanceOf<decimal?>(testString.Parse<decimal?>());
-
-                testString = "1/23/2012";
-
-                Assert.AreEqual(testString.Parse<DateTime>(), new DateTime(2012,1,23));
-                Assert.IsInstanceOf<DateTime>(testString.Parse<DateTime>());
             }
         }
 
@@ -197,6 +210,10 @@ namespace UnitTests.ForStringsTests
                 Assert.AreEqual(expected, actual);
             }
         }
+
+        protected const string EmptyTestString = "";
+        protected const string NullTestString = null;
+        protected static readonly string TestStringLatin;
 
         static StringTests()
         {

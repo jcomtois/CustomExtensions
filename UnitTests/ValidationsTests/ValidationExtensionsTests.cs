@@ -1,4 +1,23 @@
-﻿using System;
+﻿#region License and Terms
+
+// CustomExtensions - Custom Extension Methods For C#
+// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
 using System.Linq;
 using CustomExtensions.Validation;
 using NUnit.Framework;
@@ -68,6 +87,12 @@ namespace UnitTests.ValidationsTests
             }
 
             [Test]
+            public void HasAtLeast_EmptyParameterName_ThrowsNothing()
+            {
+                Assert.That(() => _validator.HasAtLeast(1, GoodTestString, TestParameterName), Throws.Nothing);
+            }
+
+            [Test]
             public void HasAtLeast_InputLengthEqualToStringLength_NoException()
             {
                 var length = GoodTestString.Length;
@@ -80,37 +105,6 @@ namespace UnitTests.ValidationsTests
                 var length = GoodTestString.Length + 1;
                 Assert.That(() => _validator.HasAtLeast(length, GoodTestString, TestParameterName).Exceptions.Single(), Is.TypeOf<ArgumentOutOfRangeException>());
             }
-
-            [Test]
-            public void HasAtLeast_ValueIsNull_AddsArgumentOutOfRangeException()
-            {
-                Assert.That(() => _validator.HasAtLeast(1, NullTestString, TestParameterName).Exceptions.Single(), Is.TypeOf<ArgumentOutOfRangeException>());                
-            }
-
-            [Test]
-            public void HasAtLeast_InputZeroEmptyString_NoException()
-            {
-                Assert.That(() => _validator.HasAtLeast(0, EmptyTestString, TestParameterName).Exceptions, Is.Empty);
-            }
-
-            [Test]
-            public void HasAtLeast_InputOneEmptyString_AddsArgumentOutOfRangeException()
-            {
-                Assert.That(() => _validator.HasAtLeast(1, EmptyTestString, TestParameterName).Exceptions.Single(), Is.TypeOf<ArgumentOutOfRangeException>());
-            }
-
-            [Test]
-            public void HasAtLeast_EmptyParameterName_ThrowsNothing()
-            {
-                Assert.That(() => _validator.HasAtLeast(1, GoodTestString, TestParameterName), Throws.Nothing);
-            }
-
-            [Test]
-            public void HasAtLeast_NullParameterName_ThrowsNothing()
-            {
-                Assert.That(() => _validator.HasAtLeast(1, GoodTestString, TestParameterName), Throws.Nothing);
-            }
-
 
             [Test]
             public void HasAtLeast_InputLengthLessThanStringLength_NoException()
@@ -134,6 +128,30 @@ namespace UnitTests.ValidationsTests
             public void HasAtLeast_InputLength_NegativeThrowsArgumentOutOfRangeException()
             {
                 Assert.That(() => _validator.HasAtLeast(-1, GoodTestString, TestParameterName), Throws.TypeOf<ArgumentOutOfRangeException>());
+            }
+
+            [Test]
+            public void HasAtLeast_InputOneEmptyString_AddsArgumentOutOfRangeException()
+            {
+                Assert.That(() => _validator.HasAtLeast(1, EmptyTestString, TestParameterName).Exceptions.Single(), Is.TypeOf<ArgumentOutOfRangeException>());
+            }
+
+            [Test]
+            public void HasAtLeast_InputZeroEmptyString_NoException()
+            {
+                Assert.That(() => _validator.HasAtLeast(0, EmptyTestString, TestParameterName).Exceptions, Is.Empty);
+            }
+
+            [Test]
+            public void HasAtLeast_NullParameterName_ThrowsNothing()
+            {
+                Assert.That(() => _validator.HasAtLeast(1, GoodTestString, TestParameterName), Throws.Nothing);
+            }
+
+            [Test]
+            public void HasAtLeast_ValueIsNull_AddsArgumentOutOfRangeException()
+            {
+                Assert.That(() => _validator.HasAtLeast(1, NullTestString, TestParameterName).Exceptions.Single(), Is.TypeOf<ArgumentOutOfRangeException>());
             }
 
             [Test]

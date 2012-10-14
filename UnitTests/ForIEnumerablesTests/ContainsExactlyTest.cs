@@ -1,4 +1,23 @@
-﻿using System;
+﻿#region License and Terms
+
+// CustomExtensions - Custom Extension Methods For C#
+// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
@@ -42,34 +61,16 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void SequenceNull()
+            public void SequenceEmptyProjectionGood()
             {
-                Assert.That(() => NullSequence.Of<string>().ContainsExactly(2), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceGoodProjectionNull()
-            {
-                Assert.That(() => Enumerable.Repeat("A", 1).ContainsExactly(1, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => Enumerable.Empty<int>().ContainsExactly(0, i => i == 1), Is.True);
+                Assert.That(() => Enumerable.Empty<int>().ContainsExactly(1, i => i == 1), Is.False);
             }
 
             [Test]
             public void SequenceEmptyProjectionNull()
             {
                 Assert.That(() => Enumerable.Empty<string>().ContainsExactly(0, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionGood()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsExactly(0, s => true ), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsExactly(0, null), 
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
@@ -85,10 +86,28 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void SequenceEmptyProjectionGood()
+            public void SequenceGoodProjectionNull()
             {
-                Assert.That(() => Enumerable.Empty<int>().ContainsExactly(0, i => i == 1), Is.True);
-                Assert.That(() => Enumerable.Empty<int>().ContainsExactly(1, i => i == 1), Is.False);
+                Assert.That(() => Enumerable.Repeat("A", 1).ContainsExactly(1, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SequenceNull()
+            {
+                Assert.That(() => NullSequence.Of<string>().ContainsExactly(2), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SequenceNullProjectionGood()
+            {
+                Assert.That(() => NullSequence.Of<string>().ContainsExactly(0, s => true), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SequenceNullProjectionNull()
+            {
+                Assert.That(() => NullSequence.Of<string>().ContainsExactly(0, null),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
         }
     }

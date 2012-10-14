@@ -1,4 +1,23 @@
-﻿using System;
+﻿#region License and Terms
+
+// CustomExtensions - Custom Extension Methods For C#
+// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
@@ -21,6 +40,87 @@ namespace CustomExtensions.ForStrings
                 public const int MinPasswordLength = 12;
                 public const int SaltBitSize = 64;
                 private static readonly RandomNumberGenerator Random = RandomNumberGenerator.Create();
+
+                /// <summary>
+                /// Simple Authentication (HMAC) and then Descryption (AES) of a UTF8 Message
+                /// using keys derived from a password.
+                /// </summary>
+                /// <param name="encryptedMessage">The encrypted message.</param>
+                /// <param name="password">The password.</param>
+                /// <returns>Decrypted Message</returns>
+                /// <remarks>Significantly less secure than using random binary keys. </remarks>
+                public static string SimpleDecryptWithPassword(string encryptedMessage, string password)
+                {
+                    Debug.Assert(password != null);
+                    Debug.Assert(password.Length >= MinPasswordLength);
+                    Debug.Assert(encryptedMessage != null);
+                    Debug.Assert(encryptedMessage.Length > 0);
+
+                    var salt = new byte[SaltBitSize / 8];
+                    var iters = new byte[8];
+
+                    var message = Convert.FromBase64String(encryptedMessage);
+
+                    if (message.Length < salt.Length + iters.Length)
+                    {
+                        throw new FormatException(); // Bogus Base64String
+                    }
+
+                    //Grab Salt And Iterations from Non-Secret Payload
+                    Array.Copy(message, salt, salt.Length);
+                    Array.Copy(message, salt.Length, iters, 0, iters.Length);
+                    var m = Math.Abs(BitConverter.ToInt32(iters, 0)) % 10;
+                    var a = Math.Abs(BitConverter.ToInt32(iters, 4)) % 10000;
+                    var iterations = 1000 * m + a + 5000;
+
+                    //Generate keys
+                    var generator = new Rfc2898DeriveBytes(password, salt, iterations);
+                    var cryptKey = generator.GetBytes(KeyBitSize / 8);
+                    var authKey = generator.GetBytes(KeyBitSize / 8);
+
+                    return SimpleDecrypt(encryptedMessage, cryptKey, authKey, salt.Length + iters.Length);
+                }
+
+                /// <summary>
+                /// Simple Encryption then Authentication of a UTF8 message
+                /// using Keys derived from a Password
+                /// </summary>
+                /// <param name="secretMesage">The secret mesage.</param>
+                /// <param name="password">The password.</param>
+                /// <returns>Encrypted Message</returns>
+                /// <remarks>Significantly less secure than using random binary keys.
+                ///  Adds additional non secret payload for key generation parameters. </remarks>
+                public static string SimpleEncryptWithPassword(string secretMesage, string password)
+                {
+                    Debug.Assert(password != null);
+                    Debug.Assert(password.Length >= MinPasswordLength);
+                    Debug.Assert(secretMesage != null);
+                    Debug.Assert(secretMesage.Length > 0);
+
+                    //iterations are not secret, nor does it need to change randomly
+                    //I'm just using random data because i prefer the non-secret payload looking
+                    //like random data
+                    var iters = new byte[8];
+                    Random.GetBytes(iters);
+                    var m = Math.Abs(BitConverter.ToInt32(iters, 0)) % 10;
+                    var a = Math.Abs(BitConverter.ToInt32(iters, 4)) % 10000;
+                    var iterations = 1000 * m + a + 5000;
+
+                    //Use Random Salt to prevent pre-generated weak password attacks.
+                    var generator = new Rfc2898DeriveBytes(password, SaltBitSize / 8, iterations);
+                    var salt = generator.Salt;
+
+                    //Generate Keys
+                    var cryptKey = generator.GetBytes(KeyBitSize / 8);
+                    var authKey = generator.GetBytes(KeyBitSize / 8);
+
+                    //Create Non Secret Payload
+                    var payload = new byte[salt.Length + iters.Length];
+                    Array.Copy(salt, payload, salt.Length);
+                    Array.Copy(iters, 0, payload, salt.Length, iters.Length);
+
+                    return SimpleEncrypt(secretMesage, cryptKey, authKey, payload);
+                }
 
                 /// <summary>
                 /// Simple Authentication (HMAC) then Decryption (AES) for a secrets UTF8 Message.
@@ -102,87 +202,6 @@ namespace CustomExtensions.ForStrings
                 }
 
                 /// <summary>
-                /// Simple Authentication (HMAC) and then Descryption (AES) of a UTF8 Message
-                /// using keys derived from a password.
-                /// </summary>
-                /// <param name="encryptedMessage">The encrypted message.</param>
-                /// <param name="password">The password.</param>
-                /// <returns>Decrypted Message</returns>
-                /// <remarks>Significantly less secure than using random binary keys. </remarks>
-                public static string SimpleDecryptWithPassword(string encryptedMessage, string password)
-                {
-                    Debug.Assert(password != null);
-                    Debug.Assert(password.Length >= MinPasswordLength);
-                    Debug.Assert(encryptedMessage != null);
-                    Debug.Assert(encryptedMessage.Length > 0);
-
-                    var salt = new byte[SaltBitSize / 8];
-                    var iters = new byte[8];
-
-                    var message = Convert.FromBase64String(encryptedMessage);
-
-                    if (message.Length < salt.Length + iters.Length)
-                    {
-                        throw new FormatException();  // Bogus Base64String
-                    }
-
-                    //Grab Salt And Iterations from Non-Secret Payload
-                    Array.Copy(message, salt, salt.Length);
-                    Array.Copy(message, salt.Length, iters, 0, iters.Length);
-                    var m = Math.Abs(BitConverter.ToInt32(iters, 0)) % 10;
-                    var a = Math.Abs(BitConverter.ToInt32(iters, 4)) % 10000;
-                    var iterations = 1000 * m + a + 5000;
-
-                    //Generate keys
-                    var generator = new Rfc2898DeriveBytes(password, salt, iterations);
-                    var cryptKey = generator.GetBytes(KeyBitSize / 8);
-                    var authKey = generator.GetBytes(KeyBitSize / 8);
-
-                    return SimpleDecrypt(encryptedMessage, cryptKey, authKey, salt.Length + iters.Length);
-                }
-
-                /// <summary>
-                /// Simple Encryption then Authentication of a UTF8 message
-                /// using Keys derived from a Password
-                /// </summary>
-                /// <param name="secretMesage">The secret mesage.</param>
-                /// <param name="password">The password.</param>
-                /// <returns>Encrypted Message</returns>
-                /// <remarks>Significantly less secure than using random binary keys.
-                ///  Adds additional non secret payload for key generation parameters. </remarks>
-                public static string SimpleEncryptWithPassword(string secretMesage, string password)
-                {
-                    Debug.Assert(password != null);
-                    Debug.Assert(password.Length >= MinPasswordLength);
-                    Debug.Assert(secretMesage != null);
-                    Debug.Assert(secretMesage.Length > 0);
-
-                    //iterations are not secret, nor does it need to change randomly
-                    //I'm just using random data because i prefer the non-secret payload looking
-                    //like random data
-                    var iters = new byte[8];
-                    Random.GetBytes(iters);
-                    var m = Math.Abs(BitConverter.ToInt32(iters, 0)) % 10;
-                    var a = Math.Abs(BitConverter.ToInt32(iters, 4)) % 10000;
-                    var iterations = 1000 * m + a + 5000;
-
-                    //Use Random Salt to prevent pre-generated weak password attacks.
-                    var generator = new Rfc2898DeriveBytes(password, SaltBitSize / 8, iterations);
-                    var salt = generator.Salt;
-
-                    //Generate Keys
-                    var cryptKey = generator.GetBytes(KeyBitSize / 8);
-                    var authKey = generator.GetBytes(KeyBitSize / 8);
-
-                    //Create Non Secret Payload
-                    var payload = new byte[salt.Length + iters.Length];
-                    Array.Copy(salt, payload, salt.Length);
-                    Array.Copy(iters, 0, payload, salt.Length, iters.Length);
-
-                    return SimpleEncrypt(secretMesage, cryptKey, authKey, payload);
-                }
-
-                /// <summary>
                 /// Simple Encryption(AES) then Authentication (HMAC) for a UTF8 Message.
                 /// </summary>
                 /// <param name="secretMessage">The secret message.</param>
@@ -258,6 +277,8 @@ namespace CustomExtensions.ForStrings
                 }
             }
 
+            #region IDecrypt Members
+
             public string DecryptAES(string source, string password)
             {
                 string decrypted;
@@ -272,6 +293,15 @@ namespace CustomExtensions.ForStrings
                 return decrypted;
             }
 
+            #endregion
+
+            #region IEncrypt Members
+
+            public string EncryptAES(string source, string password)
+            {
+                return AESEncryptionImplementation.SimpleEncryptWithPassword(source, password);
+            }
+
             public int MinimumPasswordLength
             {
                 get
@@ -280,10 +310,7 @@ namespace CustomExtensions.ForStrings
                 }
             }
 
-            public string EncryptAES(string source, string password)
-            {
-                return AESEncryptionImplementation.SimpleEncryptWithPassword(source, password);
-            }
+            #endregion
         }
     }
 }

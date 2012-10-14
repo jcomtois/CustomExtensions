@@ -47,6 +47,7 @@
 	<s:String x:Key="/Default/CodeInspection/Highlighting/CodeIssueFilter/IssueTypesToHide/=_003CStaticSeverity_0020Severity_003D_00222_0022_0020Title_003D_0022Structural_0020Search_0020Hints_0022_0020GroupId_003D_0022StructuralSearch_0022_0020_002F_003E/@EntryIndexedValue">DoHide</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeCleanup/Profiles/=New/@EntryIndexedValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;Profile name="New"&gt;&lt;AspOptimizeRegisterDirectives&gt;False&lt;/AspOptimizeRegisterDirectives&gt;&lt;HtmlReformatCode&gt;False&lt;/HtmlReformatCode&gt;&lt;CSArrangeThisQualifier&gt;True&lt;/CSArrangeThisQualifier&gt;&lt;CSRemoveCodeRedundancies&gt;True&lt;/CSRemoveCodeRedundancies&gt;&lt;CSUseAutoProperty&gt;True&lt;/CSUseAutoProperty&gt;&lt;CSMakeFieldReadonly&gt;True&lt;/CSMakeFieldReadonly&gt;&lt;CSUseVar&gt;&lt;BehavourStyle&gt;DISABLED&lt;/BehavourStyle&gt;&lt;LocalVariableStyle&gt;ALWAYS_IMPLICIT&lt;/LocalVariableStyle&gt;&lt;ForeachVariableStyle&gt;ALWAYS_IMPLICIT&lt;/ForeachVariableStyle&gt;&lt;/CSUseVar&gt;&lt;CSUpdateFileHeader&gt;True&lt;/CSUpdateFileHeader&gt;&lt;VBOptimizeImports&gt;False&lt;/VBOptimizeImports&gt;&lt;VBShortenReferences&gt;False&lt;/VBShortenReferences&gt;&lt;JsInsertSemicolon&gt;False&lt;/JsInsertSemicolon&gt;&lt;JsReformatCode&gt;False&lt;/JsReformatCode&gt;&lt;CssReformatCode&gt;False&lt;/CssReformatCode&gt;&lt;XMLReformatCode&gt;False&lt;/XMLReformatCode&gt;&lt;CSOptimizeUsings&gt;&lt;OptimizeUsings&gt;True&lt;/OptimizeUsings&gt;&lt;EmbraceInRegion&gt;False&lt;/EmbraceInRegion&gt;&lt;RegionName&gt;&lt;/RegionName&gt;&lt;/CSOptimizeUsings&gt;&lt;CSShortenReferences&gt;True&lt;/CSShortenReferences&gt;&lt;VBReformatCode&gt;False&lt;/VBReformatCode&gt;&lt;CSReformatCode&gt;True&lt;/CSReformatCode&gt;&lt;CSharpFormatDocComments&gt;False&lt;/CSharpFormatDocComments&gt;&lt;CSReorderTypeMembers&gt;True&lt;/CSReorderTypeMembers&gt;&lt;/Profile&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeCleanup/Profiles/=No_0020Reformat/@EntryIndexedValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;Profile name="No Reformat"&gt;&lt;AspOptimizeRegisterDirectives&gt;False&lt;/AspOptimizeRegisterDirectives&gt;&lt;HtmlReformatCode&gt;False&lt;/HtmlReformatCode&gt;&lt;CSArrangeThisQualifier&gt;True&lt;/CSArrangeThisQualifier&gt;&lt;CSRemoveCodeRedundancies&gt;True&lt;/CSRemoveCodeRedundancies&gt;&lt;CSUseAutoProperty&gt;True&lt;/CSUseAutoProperty&gt;&lt;CSMakeFieldReadonly&gt;True&lt;/CSMakeFieldReadonly&gt;&lt;CSUseVar&gt;&lt;BehavourStyle&gt;DISABLED&lt;/BehavourStyle&gt;&lt;LocalVariableStyle&gt;ALWAYS_IMPLICIT&lt;/LocalVariableStyle&gt;&lt;ForeachVariableStyle&gt;ALWAYS_IMPLICIT&lt;/ForeachVariableStyle&gt;&lt;/CSUseVar&gt;&lt;CSUpdateFileHeader&gt;False&lt;/CSUpdateFileHeader&gt;&lt;VBOptimizeImports&gt;False&lt;/VBOptimizeImports&gt;&lt;VBShortenReferences&gt;False&lt;/VBShortenReferences&gt;&lt;JsInsertSemicolon&gt;False&lt;/JsInsertSemicolon&gt;&lt;JsReformatCode&gt;False&lt;/JsReformatCode&gt;&lt;CssReformatCode&gt;False&lt;/CssReformatCode&gt;&lt;XMLReformatCode&gt;False&lt;/XMLReformatCode&gt;&lt;CSOptimizeUsings&gt;&lt;OptimizeUsings&gt;True&lt;/OptimizeUsings&gt;&lt;EmbraceInRegion&gt;False&lt;/EmbraceInRegion&gt;&lt;RegionName&gt;&lt;/RegionName&gt;&lt;/CSOptimizeUsings&gt;&lt;CSShortenReferences&gt;True&lt;/CSShortenReferences&gt;&lt;VBReformatCode&gt;False&lt;/VBReformatCode&gt;&lt;CSReformatCode&gt;False&lt;/CSReformatCode&gt;&lt;CSharpFormatDocComments&gt;False&lt;/CSharpFormatDocComments&gt;&lt;CSReorderTypeMembers&gt;True&lt;/CSReorderTypeMembers&gt;&lt;/Profile&gt;</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeCleanup/Profiles/=Update_0020File_0020Header/@EntryIndexedValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;Profile name="Update File Header"&gt;&lt;CSUpdateFileHeader&gt;True&lt;/CSUpdateFileHeader&gt;&lt;/Profile&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeCleanup/RecentlyUsedProfile/@EntryValue">New</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeCleanup/SilentCleanupProfile/@EntryValue">New</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_FIRST_ARG_BY_PAREN/@EntryValue">True</s:Boolean>
@@ -294,6 +295,21 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
 &#xD;
 &lt;/Patterns&gt;&#xD;
 </s:String>
+	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderRegionName/@EntryValue">License and Terms</s:String>
+	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">CustomExtensions - Custom Extension Methods For C#&#xD;
+Copyright (c) 2011 - $CURRENT_YEAR$ Jonathan Comtois. All rights reserved.&#xD;
+&#xD;
+Licensed under the Apache License, Version 2.0 (the "License");&#xD;
+you may not use this file except in compliance with the License.&#xD;
+You may obtain a copy of the License at&#xD;
+&#xD;
+    http://www.apache.org/licenses/LICENSE-2.0&#xD;
+&#xD;
+Unless required by applicable law or agreed to in writing, software&#xD;
+distributed under the License is distributed on an "AS IS" BASIS,&#xD;
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#xD;
+See the License for the specific language governing permissions and&#xD;
+limitations under the License.</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/Generate/=Constructor/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/Generate/=Constructor/Options/=XmlDocumentation/@EntryIndexedValue">False</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/Generate/=Equality/@KeyIndexDefined">True</s:Boolean>
