@@ -102,8 +102,9 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=1.0.11729.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\External\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\MoreLinq.0.10\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
