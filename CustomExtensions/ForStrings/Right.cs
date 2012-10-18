@@ -17,21 +17,35 @@
 
 #endregion
 
-using System;
+using System.Diagnostics;
+using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
         /// <summary>
-        /// Returns the last few characters of the string with a length specified by the given parameter. If the string'source length is less than the given length the complete string is returned. If length is zero or less an empty string is returned
+        /// Returns the last <paramref name="length"/> characters of a string.
+        /// If the string'source length is less than the given length the complete string is returned. If length is zero an empty string is returned.
         /// </summary>
         /// <param name="source"> the string to process </param>
-        /// <param name="length"> Number of characters to return </param>
-        /// <returns> </returns>
+        /// <param name="length"> Number of characters to return from right end of string</param>
+        /// <returns>Returns the last <paramref name="length"/> characters of a string.</returns>
+        /// <exception cref="ValidationException">Thrown if <paramref name="source"/> is null or <paramref name="length"/>is negative.</exception>
         public static string Right(this string source, int length)
         {
-            length = Math.Max(length, 0);
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .IsNotNegative(length, "length")
+                .CheckForExceptions();
+
+            return RightImplementation(source, length);
+        }
+
+        private static string RightImplementation(string source, int length)
+        {
+            Debug.Assert(source != null, "source != null");
+            Debug.Assert(length >= 0);
 
             return source.Length > length ? source.Substring(source.Length - length, length) : source;
         }

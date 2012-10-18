@@ -27,53 +27,7 @@ namespace UnitTests.ForStringsTests
 {
     public partial class StringTests
     {      
-        [TestFixture]
-        public class Right
-        {
-            private const string TestString = "abc123ABC456Test";
-
-            [Test]
-            public void EmptyString()
-            {
-                var expected = string.Empty;
-                var actual = string.Empty.Right(5);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LengthZero()
-            {
-                var expected = string.Empty;
-                var actual = TestString.Right(0);
-
-                Assert.AreEqual(expected, actual);
-
-                actual = TestString.Right(-1);
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LongerString()
-            {
-                const string expected = TestString;
-                var actual = TestString.Right(TestString.Length * 2);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void RightString()
-            {
-                const string right = "Right";
-                const string testString = TestString + right;
-                const string expected = right;
-                var actual = testString.Right(right.Length);
-
-                Assert.AreEqual(expected, actual);
-            }
-        }
-
+      
         [TestFixture]
         public class ToNameValueCollection
         {

@@ -69,7 +69,7 @@ namespace CustomExtensions.Validation
             }
 
             return (value == null || value.Length < length)
-                       ? (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException("parameterName", "Must not be null or < " + length))
+                       ? (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, "Must not be null or < " + length))
                        : validator;
         }
 
