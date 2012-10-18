@@ -26,40 +26,7 @@ using NUnit.Framework;
 namespace UnitTests.ForStringsTests
 {
     public partial class StringTests
-    {
-        [TestFixture]
-        public class Parse
-        {
-            [Test]
-            public void ValidInput()
-            {
-                var testString = "123";
-
-                Assert.AreEqual(testString.Parse<int>(), 123);
-                Assert.IsInstanceOf<int>(testString.Parse<int>());
-
-                Assert.AreEqual(testString.Parse<int?>(), 123);
-                Assert.IsInstanceOf<int?>(testString.Parse<int?>());
-
-                Assert.AreEqual(testString.Parse<double>(), 123.0);
-                Assert.IsInstanceOf<double>(testString.Parse<double>());
-
-                Assert.AreEqual(testString.Parse<double?>(), 123.0);
-                Assert.IsInstanceOf<double?>(testString.Parse<double?>());
-
-                Assert.AreEqual(testString.Parse<decimal>(), 123.0m);
-                Assert.IsInstanceOf<decimal>(testString.Parse<decimal>());
-
-                Assert.AreEqual(testString.Parse<decimal?>(), 123.0m);
-                Assert.IsInstanceOf<decimal?>(testString.Parse<decimal?>());
-
-                testString = "1/23/2012";
-
-                Assert.AreEqual(testString.Parse<DateTime>(), new DateTime(2012, 1, 23));
-                Assert.IsInstanceOf<DateTime>(testString.Parse<DateTime>());
-            }
-        }
-
+    {      
         [TestFixture]
         public class Right
         {

@@ -50,7 +50,20 @@ namespace CustomExtensions.ForStrings
             Debug.Assert(source.Length > 0);
 
             var typeConverter = TypeDescriptor.GetConverter(typeof (T));
-            return (T)typeConverter.ConvertFrom(source);
+            T result;
+            try
+            {
+                result = (T)typeConverter.ConvertFrom(source);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null && ex.InnerException is FormatException)
+                {
+                    throw new NotSupportedException("Invalid string format", ex.InnerException);
+                }
+                throw;
+            }
+            return result;
         }
     }
 }
