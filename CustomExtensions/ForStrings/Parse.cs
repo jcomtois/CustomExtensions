@@ -17,7 +17,10 @@
 
 #endregion
 
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForStrings
 {
@@ -26,18 +29,28 @@ namespace CustomExtensions.ForStrings
         /// <summary>
         /// Attempts to parse a string into specified type.
         /// </summary>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <param name="source">Input.  Null or empty returns Default for T</param>
-        /// <returns>Instance of T as represented by source</returns>
+        /// <typeparam name="T">Type to attempt to convert to</typeparam>
+        /// <param name="source">Input</param>
+        /// <returns>Instance of T as represented by source string</returns>
+        /// <exception cref="ValidationException">Thrown if <paramref name="source"/> is null or empty</exception>
+        /// <exception cref="NotSupportedException">Thrown if the conversion fails.</exception>
         public static T Parse <T>(this string source)
         {
-            var result = default(T);
-            if (!source.IsNullOrEmpty())
-            {
-                var tc = TypeDescriptor.GetConverter(typeof (T));
-                result = (T)tc.ConvertFrom(source);
-            }
-            return result;
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .IsNotEmpty(source, "source")
+                .CheckForExceptions();
+
+            return ParseImplementation<T>(source);            
+        }
+
+        private static T ParseImplementation<T>(string source)
+        {
+            Debug.Assert(source != null, "source != null");
+            Debug.Assert(source.Length > 0);
+
+            var typeConverter = TypeDescriptor.GetConverter(typeof (T));
+            return (T)typeConverter.ConvertFrom(source);
         }
     }
 }
