@@ -18,31 +18,76 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using CustomExtensions.ForIEnumerable;
+using CustomExtensions.Validation;
 
 namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
-        /// <summary>
-        /// Returns SHA1 Digest of ASCII reprensentation of input string
-        /// </summary>
-        /// <param name="source">String that will use ASCII endcoding</param>
-        /// <returns>SHA1 digest</returns>
-        public static string SHA1Hash(this string source)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
+        #region OutputFormat enum
 
+        public enum OutputFormat
+        {
+            Digit = 0,
+            Hex,
+            Base64,
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns SHA1 Digest of UTF8 representation of input string
+        /// </summary>
+        /// <param name="source">String that will use UTF8 encoding</param>
+        /// <param name="outputFormat">Formatting to be applied to output string.</param>
+        /// <returns>SHA1 digest in format specified by <paramref name="outputFormat"/></returns>
+        /// <exception cref="ValidationException">Thrown if <paramref name="source"/> is null or empty</exception>
+        public static string SHA1Hash(this string source, OutputFormat outputFormat = OutputFormat.Digit)
+        {
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .IsNotEmpty(source, "source")
+                .CheckForExceptions();
+
+            return SHA1HashImplementation(source, outputFormat);
+        }
+
+        private static string SHA1HashImplementation(string source, OutputFormat outputFormat)
+        {
+            Debug.Assert(source != null, "source != null");
+            Debug.Assert(source.Length > 0);
+
+            byte[] bytes;
             using (SHA1 sha = new SHA1Managed())
             {
-                return sha.ComputeHash(Encoding.ASCII.GetBytes(source)).Select(x => string.Format("{0:x2}", x)).FlattenStrings();
+                bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(source));
             }
+
+            if (outputFormat == OutputFormat.Base64)
+            {
+                return Convert.ToBase64String(bytes);
+            }
+
+            const string digitFormat = "{0:X2}";
+            const string hexFormat = "{0:D3}";
+
+            string formatString;
+            switch (outputFormat)
+            {
+                case OutputFormat.Hex:
+                    formatString = hexFormat;
+                    break;
+                default:
+                    formatString = digitFormat;
+                    break;
+            }
+
+            return bytes.Select(x => string.Format(formatString, x)).FlattenStrings();
         }
     }
 }
