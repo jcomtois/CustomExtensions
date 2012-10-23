@@ -26,7 +26,7 @@ namespace CustomExtensions.ForStrings
     {
         /// <summary>
         /// Returns the last <paramref name="length"/> characters of a string.
-        /// If the string'source length is less than the given length the complete string is returned. If length is zero an empty string is returned.
+        /// If the string's source length is less than the given length the complete string is returned. If length is zero an empty string is returned.
         /// </summary>
         /// <param name="source"> the string to process </param>
         /// <param name="length"> Number of characters to return from right end of string</param>
