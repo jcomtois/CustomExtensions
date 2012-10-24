@@ -41,11 +41,11 @@ namespace CustomExtensions.Validation
             }
         }
 
-        public Validator AddException(Exception ex)
+        public Validator AddException(Exception exception)
         {
             lock (_exceptions)
             {
-                _exceptions.Add(ex);
+                _exceptions.Add(exception);
             }
 
             return this;

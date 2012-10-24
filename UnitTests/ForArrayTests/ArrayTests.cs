@@ -25,7 +25,7 @@ namespace UnitTests.ForArrayTests
     {
         private static readonly byte[] NullByteArray = null;
         private static readonly byte[] EmptyByteArray = new byte[]{};
-        private static readonly byte[] ValidByteArray = Enumerable.Range(0, 256).Select(i => (byte)i).ToArray();
+        internal static readonly byte[] ValidByteArray = Enumerable.Range(0, 256).Select(i => (byte)i).ToArray();
         private static readonly byte[] SingleLowByteArray = new byte[] {0};
         private static readonly byte[] SingleHighByteArray = new byte[] {255};
 

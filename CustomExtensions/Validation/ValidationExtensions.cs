@@ -69,7 +69,7 @@ namespace CustomExtensions.Validation
             }
 
             return (value == null || value.Length < length)
-                       ? (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, "Must not be null or < " + length))
+                       ? validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, "Must not be null or < " + length))
                        : validator;
         }
 
@@ -83,7 +83,7 @@ namespace CustomExtensions.Validation
         public static Validator IsNotEmpty <T>(this Validator validator, IEnumerable<T> sequence, string parameterName)
         {
             return (sequence == null || sequence.IsEmpty())
-                       ? (validator ?? new Validator()).AddException(new ArgumentException("Sequence cannot be empty.", parameterName))
+                       ? validator.AddCustomException(new ArgumentException("Sequence cannot be empty.", parameterName))
                        : validator;
         }
 
@@ -98,7 +98,7 @@ namespace CustomExtensions.Validation
         {
             return value >= 0
                        ? validator
-                       : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
+                       : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
         }
 
         /// <summary>
@@ -113,7 +113,19 @@ namespace CustomExtensions.Validation
         {
             return theObject != null
                        ? validator
-                       : (validator ?? new Validator()).AddException(new ArgumentNullException(parameterName));
+                       : validator.AddCustomException(new ArgumentNullException(parameterName));
         }
+
+        /// <summary>
+        /// Used to add any <see cref="Exception"/> to Validator
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="exception">Instance of <see cref="Exception"/> or derived classes.  If null, <see cref="ArgumentNullException"/> will be added</param>
+        /// <returns><see cref="Validator"/> reference</returns>
+        public static Validator AddCustomException(this Validator validator, Exception exception)
+        {
+            return (validator ?? new Validator()).AddException(exception ?? new ArgumentNullException("exception"));
+        }
+
     }
 }

@@ -38,21 +38,25 @@ namespace CustomExtensions.ForStrings
         /// <exception cref="ValidationException">Thrown if <paramref name="source"/> contains invalid hex characters</exception>
         public static byte[] ToByteArray(this string source)
         {
-            var validator = Validate.Begin()
+            Validate.Begin()
                 .IsNotNull(source, "source")
                 .IsNotEmpty(source, "source")
                 .CheckForExceptions();
 
             if (source.Length % 2 != 0)
             {
-                validator.AddException(new FormatException("Invalid number of characters in string.")).CheckForExceptions();                
+                Validate.Begin()
+                    .AddCustomException(new FormatException("Invalid number of characters in string."))
+                    .CheckForExceptions();                
             }
 
             var checkCharacters = source.TakeWhile(c => CaseInsensitiveHexCharacters.Contains(c)).Count();
 
             if (checkCharacters != source.Length)
             {
-                validator.AddException(new FormatException("Source string is not a valid Hex string.")).CheckForExceptions();
+                Validate.Begin()
+                    .AddCustomException(new FormatException("Source string is not a valid Hex string."))
+                    .CheckForExceptions();
             }
 
             return ToByteArrayImplementation(source);

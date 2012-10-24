@@ -30,16 +30,12 @@ namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
-        #region OutputFormat enum
-
         public enum OutputFormat
         {
             Digit,
             Hex,
             Base64,
         }
-
-        #endregion
 
         /// <summary>
         /// Returns SHA1 Digest of UTF8 representation of input string
