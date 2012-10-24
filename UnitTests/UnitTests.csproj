@@ -221,6 +221,9 @@
     <Compile Include="ForStringsTests\SHA1HashTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForStringsTests\StripTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForStringsTests\ToByteArrayTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
