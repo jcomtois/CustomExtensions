@@ -46,9 +46,18 @@ namespace UnitTests.ForStringsTests
             {
                 var testString = "1234";
                 var knownHash = "7110eda4d09e062aa5e4a390b0a572ac0d2c0220"; // http://www.fileformat.info/tool/hash.htm?text=1234
-                Assert.That(() => testString.SHA1Hash(), Is.EqualTo(knownHash));
+                Assert.That(() => testString.SHA1Hash(ExtendString.OutputFormat.Hex), Is.EqualTo(knownHash));
             }
 
+
+            [Test]
+            public void SHA1Hash_OnStringWithBase64Encoding_HashesProperly()
+            {
+                var testString = "1234";
+                var knownHash = "7110eda4d09e062aa5e4a390b0a572ac0d2c0220"; // http://www.fileformat.info/tool/hash.htm?text=1234
+                
+                Assert.That(() => testString.SHA1Hash(ExtendString.OutputFormat.Base64), Is.EqualTo(knownHash));
+            }
 
         }
     }

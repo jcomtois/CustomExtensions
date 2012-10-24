@@ -24,7 +24,7 @@ namespace CustomExtensions.ForArrays
 {
     public static partial class ExtendArray
     {
-        private static readonly char[] HexCharacters = new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        internal static readonly char[] HexCharacters = new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
         /// <summary>
         /// Converts a byte array to a Hex String representation

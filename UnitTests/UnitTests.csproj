@@ -124,7 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ForArrayTests\ArrayTests.cs" />
-    <Compile Include="ForArrayTests\ToHexStringTest.cs" />
+    <Compile Include="ForArrayTests\ToHexStringTest.cs">
+      <DependentUpon>ArrayTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForDateTimesTests\FormatyyyyMMddTest.cs">
       <DependentUpon>ForDateTimeTests.cs</DependentUpon>
     </Compile>

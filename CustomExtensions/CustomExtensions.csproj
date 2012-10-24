@@ -128,7 +128,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ForArrays\ExtendArray.cs" />
-    <Compile Include="ForArrays\ToHexString.cs" />
+    <Compile Include="ForArrays\ToHexString.cs">
+      <DependentUpon>ExtendArray.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForDateTime\ExtendDateTime.cs" />
     <Compile Include="ForDateTime\FormatyyyyMMdd.cs">
       <DependentUpon>ExtendDateTime.cs</DependentUpon>
@@ -245,6 +247,7 @@
     <Compile Include="ForStrings\Strip.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForStrings\ToByteArray.cs" />
     <Compile Include="ForStrings\ToNameValueCollection.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>

@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using CustomExtensions.ForArrays;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 
@@ -68,26 +69,12 @@ namespace CustomExtensions.ForStrings
                 bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(source));
             }
 
-            if (outputFormat == OutputFormat.Base64)
+            if (outputFormat == OutputFormat.Hex)
             {
-                return Convert.ToBase64String(bytes);
+                return bytes.ToHexString();
             }
 
-            const string digitFormat = "{0:d3}";
-            const string hexFormat = "{0:x2}";
-
-            string formatString;
-            switch (outputFormat)
-            {
-                case OutputFormat.Digit:
-                    formatString = digitFormat;
-                    break;
-                default:
-                    formatString = hexFormat;
-                    break;
-            }
-
-            return bytes.Select(x => string.Format(formatString, x)).FlattenStrings();
+            return outputFormat == OutputFormat.Base64 ? Convert.ToBase64String(bytes) : bytes.Select(x => string.Format("{0:d3}", x)).FlattenStrings();
         }
     }
 }
