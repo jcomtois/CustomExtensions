@@ -127,6 +127,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForArrays\ExtendArray.cs" />
+    <Compile Include="ForArrays\ToHexString.cs" />
     <Compile Include="ForDateTime\ExtendDateTime.cs" />
     <Compile Include="ForDateTime\FormatyyyyMMdd.cs">
       <DependentUpon>ExtendDateTime.cs</DependentUpon>

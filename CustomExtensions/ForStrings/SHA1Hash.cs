@@ -33,7 +33,7 @@ namespace CustomExtensions.ForStrings
 
         public enum OutputFormat
         {
-            Digit = 0,
+            Digit,
             Hex,
             Base64,
         }
@@ -47,7 +47,7 @@ namespace CustomExtensions.ForStrings
         /// <param name="outputFormat">Formatting to be applied to output string.</param>
         /// <returns>SHA1 digest in format specified by <paramref name="outputFormat"/></returns>
         /// <exception cref="ValidationException">Thrown if <paramref name="source"/> is null or empty</exception>
-        public static string SHA1Hash(this string source, OutputFormat outputFormat = OutputFormat.Digit)
+        public static string SHA1Hash(this string source, OutputFormat outputFormat = OutputFormat.Hex)
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
@@ -73,17 +73,17 @@ namespace CustomExtensions.ForStrings
                 return Convert.ToBase64String(bytes);
             }
 
-            const string digitFormat = "{0:X2}";
-            const string hexFormat = "{0:D3}";
+            const string digitFormat = "{0:d3}";
+            const string hexFormat = "{0:x2}";
 
             string formatString;
             switch (outputFormat)
             {
-                case OutputFormat.Hex:
-                    formatString = hexFormat;
+                case OutputFormat.Digit:
+                    formatString = digitFormat;
                     break;
                 default:
-                    formatString = digitFormat;
+                    formatString = hexFormat;
                     break;
             }
 

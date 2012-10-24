@@ -123,6 +123,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForArrayTests\ArrayTests.cs" />
+    <Compile Include="ForArrayTests\ToHexStringTest.cs" />
     <Compile Include="ForDateTimesTests\FormatyyyyMMddTest.cs">
       <DependentUpon>ForDateTimeTests.cs</DependentUpon>
     </Compile>
@@ -214,6 +216,7 @@
     <Compile Include="ForStringsTests\RightTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForStringsTests\SHA1HashTest.cs" />
     <Compile Include="NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
