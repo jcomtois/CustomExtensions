@@ -29,21 +29,21 @@ namespace UnitTests.ForIEnumerablesTests
         public class FlattenStringsTest
         {
             [Test]
-            public void SequenceEmpty()
+            public void FlattenStrings_OnEmptyEnumerable_ReturnsEmptyString()
             {
                 Assert.That(Enumerable.Empty<string>().FlattenStrings(), Is.Empty);
             }
 
             [Test]
-            public void SequenceGood()
+            public void FlattenStrings_OnNullEnumerable_ReturnsEmptyString()
             {
-                Assert.That(Enumerable.Repeat("A", 3).FlattenStrings(), Is.EqualTo("AAA"));
+                Assert.That(NullSequence.Of<string>().FlattenStrings(), Is.Empty);
             }
 
             [Test]
-            public void SequenceNull()
+            public void FlattenStrings_OnValidEnumerable_ReturnsCorrectString()
             {
-                Assert.That(NullSequence.Of<string>().FlattenStrings(), Is.Empty);
+                Assert.That(Enumerable.Repeat("A", 3).FlattenStrings(), Is.EqualTo("AAA"));
             }
         }
     }

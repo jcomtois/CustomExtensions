@@ -30,10 +30,24 @@ namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
+        /// <summary>
+        /// Formatting style for SHA1Hash string
+        /// </summary>
         public enum OutputFormat
         {
+            /// <summary>
+            /// Each byte formatted as a left zero padded base 10 digit
+            /// </summary>
             Digit,
+
+            /// <summary>
+            /// Default formatting using lowercase hex output for bytes
+            /// </summary>
             Hex,
+
+            /// <summary>
+            /// Bytes formatted as a Base64 string
+            /// </summary>
             Base64,
         }
 

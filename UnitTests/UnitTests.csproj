@@ -218,8 +218,12 @@
     <Compile Include="ForStringsTests\RightTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStringsTests\SHA1HashTest.cs" />
-    <Compile Include="ForStringsTests\ToByteArrayTest.cs" />
+    <Compile Include="ForStringsTests\SHA1HashTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\ToByteArrayTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>

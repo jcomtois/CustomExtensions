@@ -1,4 +1,5 @@
 ﻿#region License and Terms
+
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
 // 
@@ -13,21 +14,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using CustomExtensions.ForArrays;
 using CustomExtensions.Validation;
-using System.Linq;
 
 namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
         internal static readonly char[] CaseInsensitiveHexCharacters = ExtendArray.HexCharacters.Union(ExtendArray.HexCharacters.Select(char.ToUpperInvariant)).ToArray();
-        
+
         /// <summary>
         /// Converts a valid hex string representation into its corresponding byte array
         /// </summary>
@@ -47,7 +49,7 @@ namespace CustomExtensions.ForStrings
             {
                 Validate.Begin()
                     .AddCustomException(new FormatException("Invalid number of characters in string."))
-                    .CheckForExceptions();                
+                    .CheckForExceptions();
             }
 
             var checkCharacters = source.TakeWhile(c => CaseInsensitiveHexCharacters.Contains(c)).Count();
@@ -74,7 +76,7 @@ namespace CustomExtensions.ForStrings
             {
                 for (var i = 0; i < numberChars; i++)
                 {
-                    bytes[i] = Convert.ToByte(new string(new[] { (char)stringReader.Read(), (char)stringReader.Read() }), 16);
+                    bytes[i] = Convert.ToByte(new string(new[] {(char)stringReader.Read(), (char)stringReader.Read()}), 16);
                 }
             }
             return bytes;
