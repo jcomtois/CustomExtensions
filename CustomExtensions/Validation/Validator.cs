@@ -49,6 +49,6 @@ namespace CustomExtensions.Validation
             }
 
             return this;
-        }
+        }       
     }
 }

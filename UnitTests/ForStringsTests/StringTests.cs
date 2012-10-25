@@ -17,88 +17,16 @@
 
 #endregion
 
-using System;
 using System.Diagnostics;
 using System.Linq;
-using CustomExtensions.ForStrings;
-using NUnit.Framework;
 
 namespace UnitTests.ForStringsTests
 {
     public partial class StringTests
-    {      
-        [TestFixture]
-        public class Truncate
-        {
-            private const string TestString = "abc123";
-
-            [Test]
-            public void EmptyString()
-            {
-                var expected = string.Empty;
-                var actual = string.Empty.Truncate(5);
-
-                Assert.AreEqual(expected, actual);
-
-                expected = null;
-                actual = expected.Truncate(5);
-
-                Assert.IsNull(actual);
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LengthZero()
-            {
-                const string expected = TestString;
-                var actual = TestString.Truncate(0);
-
-                Assert.AreEqual(expected, actual);
-
-                actual = TestString.Truncate(-1);
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void LongerThanString()
-            {
-                const string expected = TestString;
-                var actual = TestString.Truncate(TestString.Length * 2);
-
-                Assert.AreEqual(expected, actual);
-            }
-
-            [Test]
-            public void TruncateString()
-            {
-                var expected = TestString;
-                var actual = TestString.Truncate(1);
-
-                Assert.AreEqual(expected, actual);
-
-                expected = TestString;
-                actual = TestString.Truncate(2);
-
-                Assert.AreEqual(expected, actual);
-
-                expected = TestString;
-                actual = TestString.Truncate(3);
-
-                Assert.AreEqual(expected, actual);
-
-                expected = "a...";
-                actual = TestString.Truncate(4);
-                Assert.AreEqual(expected, actual);
-
-                expected = "ab...";
-                actual = TestString.Truncate(5);
-                Assert.AreEqual(expected, actual);
-            }
-        }
-
-        protected const string EmptyTestString = "";
-        protected const string NullTestString = null;
-        protected static readonly string TestStringLatin;
+    {
+        private const string EmptyTestString = "";
+        private const string NullTestString = null;
+        private static readonly string TestStringLatin;
 
         static StringTests()
         {

@@ -341,6 +341,43 @@ namespace UnitTests.ValidationsTests
                 Assert.That(() => _validator.IsNotNull(notNull, null), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Is.Empty);
             }
+
+            [Test]
+            public void IsAtLeast_OnNumberLessThanMinimum_AddsException()
+            {
+                const string parameterName = "someParameter";
+                Assert.That(() => _validator.IsAtLeast(0, -1, parameterName).CheckForExceptions(),
+                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                    .With.InnerException.Property("ParamName").EqualTo(parameterName));
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberLessThanMinimumNullParameterName_AddsExceptionWithNullParameterName()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, -1, NullTestString).CheckForExceptions(),
+                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                    .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberLessThanMinimumEmptyParameterName_AddsExceptionWithNullParameterName()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, -1, EmptyTestString).CheckForExceptions(),
+                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                    .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberEqualsMinimum_AddsNothing()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, 0, GoodTestString).CheckForExceptions(), Throws.Nothing);
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberGreaterThanMinimum_AddsNothing()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, 1, GoodTestString).CheckForExceptions(), Throws.Nothing);
+            }
         }
     }
 }

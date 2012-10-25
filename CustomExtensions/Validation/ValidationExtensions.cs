@@ -88,7 +88,7 @@ namespace CustomExtensions.Validation
         }
 
         /// <summary>
-        /// Adds exception to Validator if value is greater than or equal to 0
+        /// Adds exception to Validator if value is not greater than or equal to 0
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
         /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
@@ -96,9 +96,7 @@ namespace CustomExtensions.Validation
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsNotNegative(this Validator validator, long value, string parameterName)
         {
-            return value >= 0
-                       ? validator
-                       : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
+            return validator.IsAtLeast(0, value, parameterName);
         }
 
         /// <summary>
@@ -125,6 +123,21 @@ namespace CustomExtensions.Validation
         public static Validator AddCustomException(this Validator validator, Exception exception)
         {
             return (validator ?? new Validator()).AddException(exception ?? new ArgumentNullException("exception"));
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, long minimumValue, long value, string parameterName)
+        {
+            return value >= minimumValue
+                       ? validator
+                       : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= {0}, but was {1}", minimumValue, value)));
         }
 
     }
