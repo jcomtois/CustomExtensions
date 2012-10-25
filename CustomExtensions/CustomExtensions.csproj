@@ -248,9 +248,6 @@
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStrings\ToByteArray.cs" />
-    <Compile Include="ForStrings\ToNameValueCollection.cs">
-      <DependentUpon>ExtendString.cs</DependentUpon>
-    </Compile>
     <Compile Include="ForStrings\Truncate.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
