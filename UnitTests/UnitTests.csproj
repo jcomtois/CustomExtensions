@@ -227,7 +227,12 @@
     <Compile Include="ForStringsTests\ToByteArrayTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStringsTests\TruncateTest.cs" />
+    <Compile Include="ForStringsTests\TruncateTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\TryToGuidTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
