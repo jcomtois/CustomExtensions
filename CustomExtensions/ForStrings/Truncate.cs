@@ -58,11 +58,6 @@ namespace CustomExtensions.ForStrings
 
             var subStringLength = maxLength - Suffix.Length;
 
-            if (subStringLength <= 0)
-            {
-                return source.Substring(0, maxLength);
-            }
-
             return string.Format("{0}{1}", source.Substring(0, subStringLength), Suffix);
         }
     }

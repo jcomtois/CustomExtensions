@@ -110,7 +110,6 @@ namespace UnitTests.ForStringsTests
             [Test]
             public void Truncate_OnEqualStringLengthIsGreaterThanEllipses_ReturnsString()
             {
-                //TODO Need to add some more tests
                 Assert.That(() => EqualString.Truncate(ValidLength + 1), Is.EqualTo(EqualString));
             }
         }
