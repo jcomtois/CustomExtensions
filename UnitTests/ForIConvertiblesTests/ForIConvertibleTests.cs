@@ -17,9 +17,21 @@
 
 #endregion
 
-namespace UnitTests.ForIConvertablesTests
+namespace UnitTests.ForIConvertiblesTests
 {
     public partial class ForIConvertibleTests
     {
+        private const int DefaultInteger = default(int);
+        private const double MaxDouble = double.MaxValue;
+        private const string NonNumericString = "ABC";
+        private const string NullString = null;
+        private const decimal TestDecimal = 1.1m;
+        private const float TestFloat = (float)TestDecimal;
+        private const int TestInteger = 1;
+        private static readonly string EmptyString = string.Empty;
+        private static readonly string IntegerString = TestInteger.ToString();
+        private static readonly int? NonNullNullableInteger = TestInteger;
+        private static readonly int? NullNullableInteger;
+        private static readonly object TestObject = new object();
     }
 }

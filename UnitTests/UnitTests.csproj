@@ -130,17 +130,17 @@
     <Compile Include="ForDateTimesTests\FormatyyyyMMddTest.cs">
       <DependentUpon>ForDateTimeTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ForIConvertibleTests.cs" />
-    <Compile Include="ForIConvertablesTests\ToOrDefaultTest.cs">
+    <Compile Include="ForIConvertiblesTests\ForIConvertibleTests.cs" />
+    <Compile Include="ForIConvertiblesTests\ToOrDefaultTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ToOrNullTest.cs">
+    <Compile Include="ForIConvertiblesTests\ToOrNullTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ToOrOtherTest.cs">
+    <Compile Include="ForIConvertiblesTests\ToOrOtherTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ToTest.cs">
+    <Compile Include="ForIConvertiblesTests\ToTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerablesTests\AppendTest.cs">
