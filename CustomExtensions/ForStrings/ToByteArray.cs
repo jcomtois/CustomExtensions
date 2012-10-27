@@ -28,7 +28,7 @@ namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendString
     {
-        internal static readonly char[] CaseInsensitiveHexCharacters = ExtendArray.HexCharacters.Union(ExtendArray.HexCharacters.Select(char.ToUpperInvariant)).ToArray();
+        private static readonly char[] CaseInsensitiveHexCharacters = ExtendArray.HexCharacters.Union(ExtendArray.HexCharacters.Select(char.ToUpperInvariant)).ToArray();
 
         /// <summary>
         /// Converts a valid hex string representation into its corresponding byte array

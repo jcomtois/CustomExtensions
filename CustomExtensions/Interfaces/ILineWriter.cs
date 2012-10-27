@@ -24,7 +24,14 @@ namespace CustomExtensions.Interfaces
     /// </summary>
     public interface ILineWriter
     {
+        /// <summary>
+        /// Writes a new line
+        /// </summary>
         void WriteLine();
+        /// <summary>
+        /// Writes <paramref name="value"/> to a new line of text
+        /// </summary>
+        /// <param name="value">String to write</param>
         void WriteLine(string value);
     }
 }
