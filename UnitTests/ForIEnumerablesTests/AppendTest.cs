@@ -18,9 +18,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.ForIEnumerablesTests
@@ -30,46 +32,50 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class AppendTest
         {
+            private const string SingleLetterString = "A";
+            private const string NullString = null;
+            private static readonly IEnumerable<string> EmptyStringEnumerable = Enumerable.Empty<string>();
+
             [Test]
-            public void AppendIsLazy()
+            public void Append_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<string>().Append("A"), Throws.Nothing);
+                Assert.That(() => new BreakingSequence<string>().Append(It.IsAny<string>()), Throws.Nothing);
             }
 
             [Test]
-            public void SequenceEmptyElementGood()
+            public void Append_OnEmptySequence_WithNull_ReturnsSequenceWithSingleNull()
             {
-                Assert.That(Enumerable.Empty<string>().Append("A"), Is.EqualTo(Enumerable.Repeat("A", 1)));
+                Assert.That(EmptyStringEnumerable.Append(NullString), Is.EqualTo(Enumerable.Repeat(NullString, 1)));
             }
 
             [Test]
-            public void SequenceEmptyElementNull()
+            public void Append_OnEmptySequence_WithSingleElement_ReturnsSequenceWithSingleElement()
             {
-                Assert.That(Enumerable.Empty<string>().Append(null), Is.EqualTo(Enumerable.Repeat<string>(null, 1)));
+                Assert.That(EmptyStringEnumerable.Append(SingleLetterString), Is.EqualTo(Enumerable.Repeat(SingleLetterString, 1)));
             }
 
             [Test]
-            public void SequenceGoodElementGood()
+            public void Append_OnNullSequence_WithSingleLetterString_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Append("A"), Is.EqualTo(Enumerable.Repeat("A", 3)));
+                Assert.That(() => NullSequence.Of<string>().Append(SingleLetterString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNull()
+            public void Append_OnSequenceOfTwo_WithAnotherElement_ReturnsAppendedSequence()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Append(null), Is.EqualTo(new[] {"A", "A", null}));
+                Assert.That(Enumerable.Repeat(SingleLetterString, 2).Append(SingleLetterString), Is.EqualTo(Enumerable.Repeat(SingleLetterString, 3)));
             }
 
             [Test]
-            public void SequenceNullElelmentNull()
+            public void Append_OnSequenceOfTwo_WithNullElement_ReturnsAppendedSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Append(null), Throws.TypeOf<ValidationException>());
+                Assert.That(Enumerable.Repeat(SingleLetterString, 2).Append(NullString), Is.EqualTo(new[] {SingleLetterString, SingleLetterString, NullString}));
             }
 
             [Test]
-            public void SequenceNullElementGood()
+            public void Append_OnnNullSequence_WithNullString_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<string>().Append("A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => NullSequence.Of<string>().Append(NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
         }
     }
