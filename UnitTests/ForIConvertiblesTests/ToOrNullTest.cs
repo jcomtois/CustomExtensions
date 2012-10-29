@@ -21,6 +21,7 @@ using System;
 using CustomExtensions.ForIConvertible;
 using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIConvertiblesTests
 {
@@ -29,12 +30,20 @@ namespace UnitTests.ForIConvertiblesTests
         [TestFixture]
         public class ToOrNullTest
         {
+            private Fixture _fixture;
+
+            [SetUp]
+            public void SetUp()
+            {
+                _fixture = new Fixture();
+            }
+
             [Test]
             public void ToOrNull_ToBadConvertible_OnAnyInteger_OutNull()
             {
                 var mockConvertible = new Mock<IConvertible>();
                 var outParameter = mockConvertible.Object;
-                It.IsAny<int>().ToOrNull(out outParameter);
+                _fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
                 Assert.That(() => outParameter, Is.Null);
             }
 
@@ -43,7 +52,7 @@ namespace UnitTests.ForIConvertiblesTests
             {
                 var mockConvertible = new Mock<IConvertible>();
                 var outParameter = mockConvertible.Object;
-                Assert.That(() => It.IsAny<int>().ToOrNull(out outParameter), Is.False);
+                Assert.That(() => _fixture.CreateAnonymous<int>().ToOrNull(out outParameter), Is.False);
             }
 
             [Test]

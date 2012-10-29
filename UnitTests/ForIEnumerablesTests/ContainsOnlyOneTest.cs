@@ -18,11 +18,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,72 +31,76 @@ namespace UnitTests.ForIEnumerablesTests
         public class ContainsOnlyOneTest
         {
             [Test]
-            public void SequenceContainsLessThanOneElement()
+            public void ContainsOnlyOne_OnEmptyStringSequence_MeetsPredicate_ReturnsFalse()
             {
-                Assert.That(Enumerable.Repeat("A", 0).ContainsOnlyOne(), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsOnlyOne(Fixture.CreateAnonymous<Func<string, bool>>()), Is.False);
             }
 
             [Test]
-            public void SequenceContainsMoreThanOneElement()
+            public void ContainsOnlyOne_OnEmptyStringSequence_NullPredicate_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).ContainsOnlyOne(), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceContainsOnlyOneElement()
+            public void ContainsOnlyOne_OnEmptyStringSequence_ReturnsFalse()
             {
-                Assert.That(Enumerable.Repeat("A", 1).ContainsOnlyOne(), Is.True);
+                Assert.That(() => EmptyStringSequence.ContainsOnlyOne(), Is.False);
             }
 
             [Test]
-            public void SequenceEmpty()
+            public void ContainsOnlyOne_OnNullStringSequence_MeetsPredicate_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Empty<string>().ContainsOnlyOne(), Is.False);
+                Assert.That(() => NullStringSequence.ContainsOnlyOne(Fixture.CreateAnonymous<Func<string, bool>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptyProjectionGood()
+            public void ContainsOnlyOne_OnNullStringSequence_NullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().ContainsOnlyOne(i => i == 1), Is.False);
-            }
-
-            [Test]
-            public void SequenceEmptyProjectionNull()
-            {
-                Assert.That(() => Enumerable.Empty<string>().ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceGoodProjectionGood()
-            {
-                Assert.That(() => Enumerable.Range(1, 3).ContainsOnlyOne(i => i == 1), Is.True);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsOnlyOne(i => i > 1), Is.False);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsOnlyOne(i => i < 1), Is.False);
-            }
-
-            [Test]
-            public void SequenceGoodProjectionNull()
-            {
-                Assert.That(() => Enumerable.Repeat("A", 1).ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionGood()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(s => true), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsOnlyOne(null),
+                Assert.That(() => NullStringSequence.ContainsOnlyOne(null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnNullStringSequence_ThrowsValidationException()
+            {
+                Assert.That(() => NullStringSequence.ContainsOnlyOne(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnSequenceOfOne_NullPredicate_ThrowsValidationException()
+            {
+                Assert.That(() => SequenceOfOne.ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnSequenceOfOne_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOfOne.ContainsOnlyOne(), Is.True);
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnSequenceOneTwoThree_PredicateEqualsOne_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(i => i == 1), Is.True);
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnSequenceOneTwoThree_PredicateGreaterThanOne_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(i => i > 1), Is.False);
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnSequenceOneTwoThree_PredicateLessThanOne_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(i => i < 1), Is.False);
+            }
+
+            [Test]
+            public void ContainsOnlyOne_OnSequenceOneTwoThree_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(), Is.False);
             }
         }
     }

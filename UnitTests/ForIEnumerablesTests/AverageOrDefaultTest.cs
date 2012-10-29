@@ -27,7 +27,7 @@ namespace UnitTests.ForIEnumerablesTests
     {
         [TestFixture]
         public class AverageOrDefaultTest
-        {
+        {            
             [Test]
             public void AverageOrDefault_OnDecimalArray_ReturnsAverage()
             {

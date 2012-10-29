@@ -18,11 +18,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,83 +31,136 @@ namespace UnitTests.ForIEnumerablesTests
         public class ContainsExactlyTest
         {
             [Test]
-            public void SequenceContainsLessThanOneElement()
+            public void ContainsExactly_OnEmptySequence_OnOne_MeetsPredicate_ReturnsFalse()
             {
-                Assert.That(Enumerable.Repeat("A", 0).ContainsExactly(0), Is.True);
-                Assert.That(Enumerable.Repeat("A", 0).ContainsExactly(1), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsExactly(1, Fixture.CreateAnonymous<Func<string, bool>>()), Is.False);
             }
 
             [Test]
-            public void SequenceContainsMoreThanOneElement()
+            public void ContainsExactly_OnEmptySequence_OnOne_ReturnsFalse()
             {
-                Assert.That(Enumerable.Repeat("A", 2).ContainsExactly(1), Is.False);
-                Assert.That(Enumerable.Repeat("A", 2).ContainsExactly(2), Is.True);
-                Assert.That(Enumerable.Repeat("A", 2).ContainsExactly(3), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsExactly(1), Is.False);
             }
 
             [Test]
-            public void SequenceContainsOnlyOneElement()
+            public void ContainsExactly_OnEmptySequence_OnZero_MeetsPredicate_ReturnsTrue()
             {
-                Assert.That(Enumerable.Repeat("A", 1).ContainsExactly(1), Is.True);
-                Assert.That(Enumerable.Repeat("A", 1).ContainsExactly(0), Is.False);
-                Assert.That(Enumerable.Repeat("A", 1).ContainsExactly(2), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsExactly(0, Fixture.CreateAnonymous<Func<string, bool>>()), Is.True);
             }
 
             [Test]
-            public void SequenceEmpty()
+            public void ContainsExactly_OnEmptySequence_OnZero_PredicateNull_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Empty<string>().ContainsExactly(0), Is.True);
-                Assert.That(Enumerable.Empty<string>().ContainsExactly(1), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsExactly(0, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptyProjectionGood()
+            public void ContainsExactly_OnEmptySequence_OnZero_ReturnsTrue()
             {
-                Assert.That(() => Enumerable.Empty<int>().ContainsExactly(0, i => i == 1), Is.True);
-                Assert.That(() => Enumerable.Empty<int>().ContainsExactly(1, i => i == 1), Is.False);
+                Assert.That(() => EmptyStringSequence.ContainsExactly(0), Is.True);
             }
 
             [Test]
-            public void SequenceEmptyProjectionNull()
+            public void ContainsExactly_OnNullStringSequence_OnZero_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().ContainsExactly(0, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => NullStringSequence.ContainsExactly(0), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodProjectionGood()
+            public void ContainsExactly_OnNullStringSequence_OnZero_WithMeetsPredicate_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(0, i => i == 1), Is.False);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(1, i => i == 1), Is.True);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(2, i => i > 1), Is.True);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(1, i => i > 1), Is.False);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(3, i => i > 1), Is.False);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(0, i => i < 1), Is.True);
-                Assert.That(() => Enumerable.Range(1, 3).ContainsExactly(1, i => i < 1), Is.False);
+                Assert.That(() => NullStringSequence.ContainsExactly(0, Fixture.CreateAnonymous<Func<string, bool>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodProjectionNull()
+            public void ContainsExactly_OnNullStringSequence_OnZero_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 1).ContainsExactly(1, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsExactly(2), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionGood()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsExactly(0, s => true), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullProjectionNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ContainsExactly(0, null),
+                Assert.That(() => NullStringSequence.ContainsExactly(0, null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOfOne_OnOne_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOfOne.ContainsExactly(1), Is.True);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOfOne_OnTwo_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOfOne.ContainsExactly(2), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOfOne_OnZero_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOfOne.ContainsExactly(0), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnFour_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(4), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnOnThree_PredicatNull_ThrowsValidationException()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(3, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnOne_PredicateEqualToOne_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(1, i => i == 1), Is.True);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnOne_PredicateGreaterThanOne_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(1, i => i > 1), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnOne_PredicateLessThanOne_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(1, i => i < 1), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnThree_PredicateGreaterThanOne_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(3, i => i > 1), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnThree_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(3), Is.True);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnTwo_PredicateGreaterThanOne_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(2, i => i > 1), Is.True);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnTwo_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(2), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnZero_PredicateEqualToOne_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(0, i => i == 1), Is.False);
+            }
+
+            [Test]
+            public void ContainsExactly_OnSequenceOneTwoThree_OnZero_PredicateLessThanOne_ReturnsTrue()
+            {
+                Assert.That(() => SequenceOneTwoThree.ContainsExactly(0, i => i < 1), Is.True);
             }
         }
     }

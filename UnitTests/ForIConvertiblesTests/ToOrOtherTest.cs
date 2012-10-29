@@ -21,6 +21,8 @@ using System;
 using CustomExtensions.ForIConvertible;
 using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIConvertiblesTests
 {
@@ -29,12 +31,20 @@ namespace UnitTests.ForIConvertiblesTests
         [TestFixture]
         public class ToOrOtherTest
         {
+            private IFixture _fixture;
+
+            [SetUp]
+            public void SetUp()
+            {
+                _fixture = new Fixture().Customize(new AutoMoqCustomization());
+            }
+
             [Test]
             public void ToOrOther_ToBadConvertible_OnTestIntegerWithAnyBadConvertible_ReturnsFalse()
             {
                 var mockConvertible = new Mock<IConvertible>();
                 var outParameter = mockConvertible.Object;
-                Assert.That(() => TestInteger.ToOrOther(out outParameter, It.IsAny<IConvertible>()), Is.False);
+                Assert.That(() => TestInteger.ToOrOther(out outParameter, _fixture.CreateAnonymous<IConvertible>()), Is.False);
             }
 
             [Test]
@@ -72,7 +82,7 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnMaxDoubleWithAnyObject_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => MaxDouble.ToOrOther(out outParameter, It.IsAny<object>()), Is.True);
+                Assert.That(() => MaxDouble.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
             }
 
             [Test]
@@ -87,7 +97,7 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnNullNullableIntegerWithAnyObject_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => NullNullableInteger.ToOrOther(out outParameter, It.IsAny<object>()), Is.True);
+                Assert.That(() => NullNullableInteger.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
             }
 
             [Test]
@@ -108,7 +118,7 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnNullStringWithAnyObject_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => NullString.ToOrOther(out outParameter, It.IsAny<object>()), Is.True);
+                Assert.That(() => NullString.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
             }
 
             [Test]
@@ -129,7 +139,7 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, It.IsAny<string>()), Is.False);
+                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, _fixture.CreateAnonymous<string>()), Is.False);
             }
 
             [Test]
@@ -138,7 +148,7 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
                 string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, It.IsAny<string>()), Throws.Exception);
+                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, _fixture.CreateAnonymous<string>()), Throws.Exception);
             }
 
             [Test]
@@ -163,13 +173,13 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToString_OnEmptyStringWithAnyObject_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => EmptyString.ToOrOther(out outParameter, It.IsAny<object>()), Is.True);
+                Assert.That(() => EmptyString.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
             }
 
             [Test]
             public void ToOrOther_ToString_OnMaxDouble_ReturnsMaxDoubleString()
             {
-                Assert.That(() => MaxDouble.ToOrOther(It.IsAny<string>()), Is.EqualTo(MaxDouble.ToString()));
+                Assert.That(() => MaxDouble.ToOrOther(_fixture.CreateAnonymous<string>()), Is.EqualTo(MaxDouble.ToString()));
             }
         }
     }

@@ -18,11 +18,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,141 +32,153 @@ namespace UnitTests.ForIEnumerablesTests
         public class DistinctByTest
         {
             [Test]
-            public void DistinctByComparerIsLazy()
+            public void DistinctBy_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<int>().DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Throws.Nothing);
+                Assert.That(() => new BreakingSequence<string>().DistinctBy(Fixture.CreateAnonymous<Func<string, bool>>()), Throws.Nothing);
             }
 
             [Test]
-            public void DistinctByIsLazy()
+            public void DistinctBy_OnDoubledSequenceOneTwoThree_WithKeySelector_ReturnsSingleSequenceOnTwoThree()
             {
-                Assert.That(() => new BreakingSequence<string>().DistinctBy(s => s.Length), Throws.Nothing);
+                Assert.That(() => SequenceOneTwoThree.Concat(SequenceOneTwoThree).DistinctBy(i => i.ToString()), Is.EqualTo(SequenceOneTwoThree));
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorGood()
+            public void DistinctBy_OnDoubledSequenceOneTwoThree_WithKeySelector_WithEqualityComparer_ReturnsSingleSequenceOnTwoThree()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(i => i.ToString()), Is.Empty);
+                Assert.That(() => SequenceOneTwoThree.Concat(SequenceOneTwoThree).DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Is.EqualTo(SequenceOneTwoThree));
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorGoodComparerGood()
+            public void DistinctBy_OnDoubledSequenceOneTwoThree_WithKeySelector_WithNullEqualityComparer_ReturnsSingleSequenceOnTwoThree()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Is.Empty);
+                Assert.That(() => SequenceOneTwoThree.Concat(SequenceOneTwoThree).DistinctBy(i => i.ToString(), null), Is.EqualTo(SequenceOneTwoThree));
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorGoodComparerNull()
+            public void DistinctBy_OnEmptyStringSequence_WithKeySelector_ReturnsNoElements()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(i => i.ToString(), null), Is.Empty);
+                Assert.That(() => EmptyStringSequence.DistinctBy(Fixture.CreateAnonymous<Func<string, string>>()), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorNull()
+            public void DistinctBy_OnEmptyStringSequence_WithKeySelector_WithEqualityComparer_ReturnsNoElements()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy((Func<int, string>)null),
+                Assert.That(() => EmptyStringSequence.DistinctBy(Fixture.CreateAnonymous<Func<string, string>>(), StringComparer.OrdinalIgnoreCase), Is.Empty);
+            }
+
+            [Test]
+            public void DistinctBy_OnEmptyStringSequence_WithKeySelector_WithNullEqualityComparer_ReturnsNoElements()
+            {
+                Assert.That(() => EmptyStringSequence.DistinctBy(Fixture.CreateAnonymous<Func<string, string>>(), null), Is.Empty);
+            }
+
+            [Test]
+            public void DistinctBy_OnEmptyStringSequence_WithNullKeySelector_ThrowsValidationException()
+            {
+                Assert.That(() => EmptyStringSequence.DistinctBy((Func<string, string>)null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorNullComparerGood()
+            public void DistinctBy_OnEmptyStringSequence_WithNullKeySelector_WithEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(null, StringComparer.OrdinalIgnoreCase),
+                Assert.That(() => EmptyStringSequence.DistinctBy(null, StringComparer.OrdinalIgnoreCase),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorNullComparerNull()
+            public void DistinctBy_OnEmptyStringSequence_WithNullKeySelector_WithNullEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy((Func<int, string>)null, null),
+                Assert.That(() => EmptyStringSequence.DistinctBy((Func<string, string>)null, null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorGood()
+            public void DistinctBy_OnNullStringSequence_WithKeySelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(i => i.ToString()), Is.EqualTo(Enumerable.Repeat(1, 1)));
-                Assert.That(() => (Enumerable.Range(1, 3).Concat(Enumerable.Range(1, 3))).DistinctBy(i => i.ToString()),
-                            Is.EquivalentTo(Enumerable.Range(1, 3)));
-            }
-
-            [Test]
-            public void SequenceGoodKeySelectorGoodComparerGood()
-            {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Is.EqualTo(Enumerable.Repeat(1, 1)));
-                Assert.That(() => (Enumerable.Range(1, 3).Concat(Enumerable.Range(1, 3))).DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase),
-                            Is.EquivalentTo(Enumerable.Range(1, 3)));
-            }
-
-            [Test]
-            public void SequenceGoodKeySelectorGoodComparerNull()
-            {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(i => i.ToString(), null), Is.EqualTo(Enumerable.Repeat(1, 1)));
-                Assert.That(() => (Enumerable.Range(1, 3).Concat(Enumerable.Range(1, 3))).DistinctBy(i => i.ToString(), null),
-                            Is.EquivalentTo(Enumerable.Range(1, 3)));
-            }
-
-            [Test]
-            public void SequenceGoodKeySelectorNull()
-            {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy((Func<int, string>)null),
+                Assert.That(() => NullStringSequence.DistinctBy(Fixture.CreateAnonymous<Func<string, string>>()),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorNullComparerGood()
+            public void DistinctBy_OnNullStringSequence_WithKeySelector_WithEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(null, StringComparer.OrdinalIgnoreCase),
+                Assert.That(() => NullStringSequence.DistinctBy(Fixture.CreateAnonymous<Func<string, string>>(), StringComparer.OrdinalIgnoreCase),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorNullComparerNull()
+            public void DistinctBy_OnNullStringSequence_WithKeySelector_WithNullEqualityComparere_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy((Func<int, string>)null, null),
+                Assert.That(() => NullStringSequence.DistinctBy(Fixture.CreateAnonymous<Func<string, string>>(), null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullKeySelectorGood()
+            public void DistinctBy_OnNullStringSequence_WithNullKeySelector_ThrowsValidtationException()
             {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(i => i.ToString()),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullKeySelectorGoodComparerGood()
-            {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullKeySelectorGoodComparerNull()
-            {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(i => i.ToString(), null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullKeySelectorNull()
-            {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy((Func<int, string>)null),
+                Assert.That(() => NullStringSequence.DistinctBy((Func<string, string>)null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceNullKeySelectorNullComparerGood()
+            public void DistinctBy_OnNullStringSequence_WithNullKeySelector_WithEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(null, StringComparer.OrdinalIgnoreCase),
+                Assert.That(() => NullStringSequence.DistinctBy(null, StringComparer.OrdinalIgnoreCase),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceNullKeySelectorNullComparerNull()
+            public void DistinctBy_OnNullStringSequence_WithNullKeySelector_WithNullEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy((Func<int, string>)null, null),
+                Assert.That(() => NullStringSequence.DistinctBy((Func<string, string>)null, null),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void DistinctBy_OnSequenceOneOneOne_WithKeySelector_ReturnsSingleElement()
+            {
+                Assert.That(() => SequenceOneOneOne.DistinctBy(i => i.ToString()), Is.EqualTo(1.ToEnumerable()));
+            }
+
+            [Test]
+            public void DistinctBy_OnSequenceOneOneOne_WithKeySelector_WithEqualityComparer_ReturnsSingleElement()
+            {
+                Assert.That(() => SequenceOneOneOne.DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Is.EqualTo(1.ToEnumerable()));
+            }
+
+            [Test]
+            public void DistinctBy_OnSequenceOneOneOne_WithKeySelector_WithNullEqualityComparer_ReturnsSingleElement()
+            {
+                Assert.That(() => SequenceOneOneOne.DistinctBy(i => i.ToString(), null), Is.EqualTo(1.ToEnumerable()));
+            }
+
+            [Test]
+            public void DistinctBy_OnSequenceOneTwoThree_WithNullKeySelector_ThrowsValidationException()
+            {
+                Assert.That(() => SequenceOneTwoThree.DistinctBy((Func<int, string>)null),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void DistinctBy_OnSequenceOneTwoThree_WithNullKeySelector_WithEqualityComparer_ThrowsValidationException()
+            {
+                Assert.That(() => SequenceOneTwoThree.DistinctBy(null, StringComparer.OrdinalIgnoreCase),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void DistinctBy_OnSequenceOneTwoThree_WithNullKeySelector_WithNullEqualityComparer_ThrowsValidationException()
+            {
+                Assert.That(() => SequenceOneTwoThree.DistinctBy((Func<int, string>)null, null),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void DistinctBy_WithEqualityComparer_IsLazy()
+            {
+                Assert.That(() => new BreakingSequence<string>().DistinctBy(Fixture.CreateAnonymous<Func<string, string>>(), StringComparer.OrdinalIgnoreCase), Throws.Nothing);
             }
         }
     }

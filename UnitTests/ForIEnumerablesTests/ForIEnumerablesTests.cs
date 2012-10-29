@@ -20,6 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -35,7 +37,11 @@ namespace UnitTests.ForIEnumerablesTests
         private static readonly double[] DoubleArray = IntegerArray.Select(x => (double)x).ToArray();
         private static readonly decimal[] DecimalArray = IntegerArray.Select(x => (decimal)x).ToArray();
         private static readonly decimal?[] NullableDecimalArray = IntegerArray.Select(x => (decimal?)x).ToArray();
-        private static readonly IEnumerable<string> EmptyStringEnumerable = Enumerable.Empty<string>();
+        private static readonly IEnumerable<string> EmptyStringSequence = Enumerable.Empty<string>();
+        private static readonly IEnumerable<string> NullStringSequence = NullSequence.Of<string>();
+        private static readonly IEnumerable<int> SequenceOneTwoThree = Enumerable.Range(1, 3);
+        private static readonly IEnumerable<int> SequenceOfOne = Enumerable.Range(0, 1);
+        private static readonly IEnumerable<int> SequenceOneOneOne = Enumerable.Repeat(1, 3);
         private const int TestIntegerValue = 9999;
         private const double TestDoubleValue = TestIntegerValue;
         private const decimal TestDecimalValue = TestIntegerValue;
@@ -48,16 +54,17 @@ namespace UnitTests.ForIEnumerablesTests
         private const long DefaultLong = default(long);
         private const string SingleLetterString = "A";
         private const string NullString = null;
-        private static readonly Func<int, decimal> DecimalFunc = x => (decimal)x;
-        private static readonly Func<int, decimal?> NullableDecimalFunc = x => (decimal?)x;
-        private static readonly Func<int, double> DoubleFunc = x => (double)x;
-        private static readonly Func<int, double?> NullableDoubleFunc = x => (double?)x;
-        private static readonly Func<int, long> LongFunc = x => (long)x;
-        private static readonly Func<int, long?> NullableLongFunc = x => (long?)x;
-        private static readonly Func<int, float> FloatFunc = x => (float)x;
-        private static readonly Func<int, float?> NullableFloatFunc = x => (float?)x;
-        private static readonly Func<int, int> IntFunc = x => x + x;
-        private static readonly Func<int, int?> NullableIntFunc = x => (int?)(x + x);
+        private static readonly IFixture Fixture = new Fixture().Customize(new AutoMoqCustomization());
+        private static readonly Func<int, decimal> DecimalFunc = Fixture.CreateAnonymous<Func<int, decimal>>();
+        private static readonly Func<int, decimal?> NullableDecimalFunc = Fixture.CreateAnonymous<Func<int, decimal?>>();
+        private static readonly Func<int, double> DoubleFunc = Fixture.CreateAnonymous<Func<int, double>>();
+        private static readonly Func<int, double?> NullableDoubleFunc = Fixture.CreateAnonymous<Func<int, double?>>();
+        private static readonly Func<int, long> LongFunc = Fixture.CreateAnonymous<Func<int, long>>();
+        private static readonly Func<int, long?> NullableLongFunc = Fixture.CreateAnonymous<Func<int, long?>>();
+        private static readonly Func<int, float> FloatFunc = Fixture.CreateAnonymous<Func<int, float>>();
+        private static readonly Func<int, float?> NullableFloatFunc = Fixture.CreateAnonymous<Func<int, float?>>();
+        private static readonly Func<int, int> IntFunc = Fixture.CreateAnonymous<Func<int, int>>();
+        private static readonly Func<int, int?> NullableIntFunc = Fixture.CreateAnonymous<Func<int, int?>>();
         private static readonly IEnumerable<decimal> EmptyDecimalSequence = Enumerable.Empty<decimal>();
         private static readonly IEnumerable<double> EmptyDoubleSequence = Enumerable.Empty<double>();
         private static readonly IEnumerable<float> EmptyFloatSequence = Enumerable.Empty<float>();

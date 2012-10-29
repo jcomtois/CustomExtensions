@@ -21,8 +21,8 @@ using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
-using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -34,25 +34,25 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void Append_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<string>().Append(It.IsAny<string>()), Throws.Nothing);
+                Assert.That(() => new BreakingSequence<string>().Append(Fixture.CreateAnonymous<string>()), Throws.Nothing);
             }
 
             [Test]
             public void Append_OnEmptySequence_WithNull_ReturnsSequenceWithSingleNull()
             {
-                Assert.That(EmptyStringEnumerable.Append(NullString), Is.EqualTo(Enumerable.Repeat(NullString, 1)));
+                Assert.That(EmptyStringSequence.Append(NullString), Is.EqualTo(Enumerable.Repeat(NullString, 1)));
             }
 
             [Test]
             public void Append_OnEmptySequence_WithSingleElement_ReturnsSequenceWithSingleElement()
             {
-                Assert.That(EmptyStringEnumerable.Append(SingleLetterString), Is.EqualTo(Enumerable.Repeat(SingleLetterString, 1)));
+                Assert.That(EmptyStringSequence.Append(SingleLetterString), Is.EqualTo(Enumerable.Repeat(SingleLetterString, 1)));
             }
 
             [Test]
             public void Append_OnNullSequence_WithSingleLetterString_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<string>().Append(SingleLetterString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => NullStringSequence.Append(SingleLetterString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
@@ -70,7 +70,7 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void Append_OnnNullSequence_WithNullString_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<string>().Append(NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => NullStringSequence.Append(NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
         }
     }
