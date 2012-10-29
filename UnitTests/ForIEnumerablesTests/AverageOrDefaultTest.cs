@@ -17,7 +17,6 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
@@ -29,769 +28,724 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class AverageOrDefaultTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
-            {
-                _intArray = new[] {10, 20, 30};
-                _nullableIntArray = _intArray.Select(x => (int?)x).ToArray();
-                _nullableFloatArray = _intArray.Select(x => (float?)x).ToArray();
-                _floatArray = _intArray.Select(x => (float)x).ToArray();
-                _nullableDecimalArray = _intArray.Select(x => (decimal?)x).ToArray();
-                _decimalArray = _intArray.Select(x => (decimal)x).ToArray();
-                _nullableDoubleArray = _intArray.Select(x => (double?)x).ToArray();
-                _doubleArray = _intArray.Select(x => (double)x).ToArray();
-                _nullableLongArray = _intArray.Select(x => (long?)x).ToArray();
-                _longArray = _intArray.Select(x => (long)x).ToArray();
-            }
-
-            #endregion
-
-            private int[] _intArray;
-            private int?[] _nullableIntArray;
-            private const int DefaultIntValue = 9999;
-            private const double DefaultDoubleValue = DefaultIntValue;
-            private const decimal DefaultDecimalValue = DefaultIntValue;
-            private const long DefaultLongValue = DefaultIntValue;
-            private const float DefaultFloatValue = DefaultIntValue;
-            private long[] _longArray;
-            private long?[] _nullableLongArray;
-            private double[] _doubleArray;
-            private double?[] _nullableDoubleArray;
-            private decimal[] _decimalArray;
-            private decimal?[] _nullableDecimalArray;
-            private float[] _floatArray;
-            private float?[] _nullableFloatArray;
-            private readonly Func<int, decimal> _decimalFunc = x => (decimal)x;
-            private readonly Func<int, decimal?> _nullableDecimalFunc = x => (decimal?)x;
-            private readonly Func<int, double> _doubleFunc = x => (double)x;
-            private readonly Func<int, double?> _nullableDoubleFunc = x => (double?)x;
-            private readonly Func<int, long> _longFunc = x => (long)x;
-            private readonly Func<int, long?> _nullableLongFunc = x => (long?)x;
-            private readonly Func<int, float> _floatFunc = x => (float)x;
-            private readonly Func<int, float?> _nullableFloatFunc = x => (float?)x;
-            private readonly Func<int, int> _intFunc = x => x + x;
-            private readonly Func<int, int?> _nullableIntFunc = x => (int?)(x + x);
-
             [Test]
-            public void DecimalEmptyInputDefault()
+            public void AverageOrDefault_OnDecimalArray_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<decimal>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(DecimalArray.AverageOrDefault(), Is.EqualTo(DecimalArray.Average()));
             }
 
             [Test]
-            public void DecimalEmptyInputNoDefault()
+            public void AverageOrDefault_OnDecimalArray_WithTestDecimalValue_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<decimal>().AverageOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(DecimalArray.AverageOrDefault(TestDecimalValue), Is.EqualTo(DecimalArray.Average()));
             }
 
             [Test]
-            public void DecimalGoodInputDefault()
+            public void AverageOrDefault_OnDoubleArray_ReturnsDoubleArrayAverage()
             {
-                Assert.That(_decimalArray.AverageOrDefault(DefaultDecimalValue), Is.EqualTo(_decimalArray.Average()));
+                Assert.That(DoubleArray.AverageOrDefault(), Is.EqualTo(DoubleArray.Average()));
             }
 
             [Test]
-            public void DecimalGoodInputNoDefault()
+            public void AverageOrDefault_OnDoubleArray_WithTestDoubleValue_ReturnsDoubleArrayAverage()
             {
-                Assert.That(_decimalArray.AverageOrDefault(), Is.EqualTo(_decimalArray.Average()));
+                Assert.That(DoubleArray.AverageOrDefault(TestDoubleValue), Is.EqualTo(DoubleArray.Average()));
             }
 
             [Test]
-            public void DecimalNullInputDefault()
+            public void AverageOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<decimal>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void DecimalNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<decimal>().AverageOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void DoubleEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<double>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void DoubleEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<double>().AverageOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void DoubleGoodInputDefault()
+            public void AverageOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_doubleArray.AverageOrDefault(DefaultDoubleValue), Is.EqualTo(_doubleArray.Average()));
+                Assert.That(EmptyFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void DoubleGoodInputNoDefault()
+            public void AverageOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
             {
-                Assert.That(_doubleArray.AverageOrDefault(), Is.EqualTo(_doubleArray.Average()));
+                Assert.That(EmptyFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void DoubleNullInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<double>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void DoubleNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<double>().AverageOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void FloatEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<float>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void FloatEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<float>().AverageOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void FloatGoodInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_floatArray.AverageOrDefault(DefaultFloatValue), Is.EqualTo(_floatArray.Average()));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void FloatGoodInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(_floatArray.AverageOrDefault(), Is.EqualTo(_floatArray.Average()));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void FloatNullInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<float>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void FloatNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<float>().AverageOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void IntegerEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void IntegerEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(LongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void IntegerGoodInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_intArray.AverageOrDefault(DefaultIntValue), Is.EqualTo(_intArray.Average()));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void IntegerGoodInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(_intArray.AverageOrDefault(), Is.EqualTo(_intArray.Average()));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void IntegerNullInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void IntegerNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void LongEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDuoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<long>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void LongEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(Enumerable.Empty<long>().AverageOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void LongGoodInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_longArray.AverageOrDefault(DefaultLongValue), Is.EqualTo(_longArray.Average()));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void LongGoodInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(_longArray.AverageOrDefault(), Is.EqualTo(_longArray.Average()));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void LongNullInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<long>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void LongNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<long>().AverageOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(Enumerable.Empty<decimal?>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<decimal?>().AverageOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableDecimalGoodInputDefault()
+            public void AverageOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(_nullableDecimalArray.AverageOrDefault(DefaultDecimalValue), Is.EqualTo(_nullableDecimalArray.Average()));
+                Assert.That(EmptyLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableDecimalGoodInputNoDefault()
+            public void AverageOrDefault_OnEmptyLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_nullableDecimalArray.AverageOrDefault(), Is.EqualTo(_nullableDecimalArray.Average()));
+                Assert.That(EmptyLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableDecimalNullInputDefault()
+            public void AverageOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<decimal?>().AverageOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyNullableDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void NullableDecimalNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<decimal?>().AverageOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyNullableDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<double?>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyNullableDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<double?>().AverageOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyNullableDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void NullableDoubleGoodInputDefault()
+            public void AverageOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_nullableDoubleArray.AverageOrDefault(DefaultDoubleValue), Is.EqualTo(_nullableDoubleArray.Average()));
+                Assert.That(EmptyNullableFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableDoubleGoodInputNoDefault()
+            public void AverageOrDefault_OnEmptyNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_nullableDoubleArray.AverageOrDefault(), Is.EqualTo(_nullableDoubleArray.Average()));
+                Assert.That(EmptyNullableFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableDoubleNullInputDefault()
+            public void AverageOrDefault_OnEmptyNullableIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<double?>().AverageOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyNullableIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableDoubleNullInputNoDefault()
+            public void AverageOrDefault_OnEmptyNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<double?>().AverageOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyNullableIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableFloatEmptyInputDefault()
+            public void AverageOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(Enumerable.Empty<float?>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyNullableLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableFloatEmptyInputNoDefault()
+            public void AverageOrDefault_OnEmptyNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(Enumerable.Empty<float?>().AverageOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyNullableLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableFloatGoodInputDefault()
+            public void AverageOrDefault_OnFloatArray_ReturnsFloatArrayAverage()
             {
-                Assert.That(_nullableFloatArray.AverageOrDefault(DefaultFloatValue), Is.EqualTo(_nullableFloatArray.Average()));
+                Assert.That(FloatArray.AverageOrDefault(), Is.EqualTo(FloatArray.Average()));
             }
 
             [Test]
-            public void NullableFloatGoodInputNoDefault()
+            public void AverageOrDefault_OnFloatArray_WithTestFloatValue_ReturnsFloatArrayAverage()
             {
-                Assert.That(_nullableFloatArray.AverageOrDefault(), Is.EqualTo(_nullableFloatArray.Average()));
+                Assert.That(FloatArray.AverageOrDefault(TestFloatValue), Is.EqualTo(FloatArray.Average()));
             }
 
             [Test]
-            public void NullableFloatNullInputDefault()
+            public void AverageOrDefault_OnIntegerArray_ReturnsIntegerArrayAverage()
             {
-                Assert.That(NullSequence.Of<float?>().AverageOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(IntegerArray.AverageOrDefault(), Is.EqualTo(IntegerArray.Average()));
             }
 
             [Test]
-            public void NullableFloatNullInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithDecimalFunc_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<float?>().AverageOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(IntegerArray.AverageOrDefault(DecimalFunc), Is.EqualTo(IntegerArray.Select(DecimalFunc).Average()));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithDecimalFunc_WithTestDecimalvalue_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<int?>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(IntegerArray.AverageOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(DecimalFunc).Average()));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithDoubleFunc_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<int?>().AverageOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(IntegerArray.AverageOrDefault(DoubleFunc), Is.EqualTo(IntegerArray.Select(DoubleFunc).Average()));
             }
 
             [Test]
-            public void NullableIntegerGoodInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithDoubleFunc_WithTestDoubleValue_ReturnsAverage()
             {
-                Assert.That(_nullableIntArray.AverageOrDefault(DefaultIntValue), Is.EqualTo(_nullableIntArray.Average()));
+                Assert.That(IntegerArray.AverageOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(DoubleFunc).Average()));
             }
 
             [Test]
-            public void NullableIntegerGoodInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithFloatFunc_ReturnsAverage()
             {
-                Assert.That(_nullableIntArray.AverageOrDefault(), Is.EqualTo(_nullableIntArray.Average()));
+                Assert.That(IntegerArray.AverageOrDefault(FloatFunc), Is.EqualTo(IntegerArray.Select(FloatFunc).Average()));
             }
 
             [Test]
-            public void NullableIntegerNullInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithFloatFunc_WithTestFloatValue_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<int?>().AverageOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(IntegerArray.AverageOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(FloatFunc).Average()));
             }
 
             [Test]
-            public void NullableIntegerNullInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithIntFunc_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<int?>().AverageOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(IntegerArray.AverageOrDefault(IntFunc), Is.EqualTo(IntegerArray.Select(IntFunc).Average()));
             }
 
             [Test]
-            public void NullableLongEmptyInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithIntFunc_WithTestIntegerValue_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<long?>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(IntegerArray.AverageOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(IntFunc).Average()));
             }
 
             [Test]
-            public void NullableLongEmptyInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithLongFunc_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<long?>().AverageOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(IntegerArray.AverageOrDefault(LongFunc), Is.EqualTo(IntegerArray.Select(LongFunc).Average()));
             }
 
             [Test]
-            public void NullableLongGoodInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableDecimalFunc_ReturnsAverage()
             {
-                Assert.That(_nullableLongArray.AverageOrDefault(DefaultLongValue), Is.EqualTo(_nullableLongArray.Average()));
+                Assert.That(IntegerArray.AverageOrDefault(NullableDecimalFunc), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Average()));
             }
 
             [Test]
-            public void NullableLongGoodInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsAverage()
             {
-                Assert.That(_nullableLongArray.AverageOrDefault(), Is.EqualTo(_nullableLongArray.Average()));
+                Assert.That(IntegerArray.AverageOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Average()));
             }
 
             [Test]
-            public void NullableLongNullInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableDoubleFunc_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<long?>().AverageOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(IntegerArray.AverageOrDefault(NullableDoubleFunc), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Average()));
             }
 
             [Test]
-            public void NullableLongNullInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<long?>().AverageOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(IntegerArray.AverageOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableFloatFunc_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(IntegerArray.AverageOrDefault(NullableFloatFunc), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableFloatFunc_WithTestFloatValue_ReturnsAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(IntegerArray.AverageOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableIntFunc_ReturnsAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_decimalFunc).Average()));
+                Assert.That(IntegerArray.AverageOrDefault(NullableIntFunc), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableIntFunc_WithTestIntegerValue_ReturnsAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_decimalFunc), Is.EqualTo(_intArray.Select(_decimalFunc).Average()));
+                Assert.That(IntegerArray.AverageOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableLongFunc_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(IntegerArray.AverageOrDefault(NullableLongFunc), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputNoDefault()
+            public void AverageOrDefault_OnIntegerArray_WithNullableLongFunc_WithTestLongValue_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(IntegerArray.AverageOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Average()));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputDefault()
+            public void AverageOrDefault_OnIntegerArray_WithTestIntegerValue_ReturnsIntegerArrayAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(IntegerArray.AverageOrDefault(TestIntegerValue), Is.EqualTo(IntegerArray.Average()));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputNoDefault()
+            public void AverageOrDefault_OnLongArray_ReturnsLongArrayAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                Assert.That(LongArray.AverageOrDefault(), Is.EqualTo(LongArray.Average()));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputDefault()
+            public void AverageOrDefault_OnLongArray_WithTestLongValue_ReturnsLongArrayAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_doubleFunc).Average()));
+                Assert.That(LongArray.AverageOrDefault(TestLongValue), Is.EqualTo(LongArray.Average()));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputNoDefault()
+            public void AverageOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(_intArray.AverageOrDefault(_doubleFunc), Is.EqualTo(_intArray.Select(_doubleFunc).Average()));
+                Assert.That(NullDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputDefault()
+            public void AverageOrDefault_OnNullDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputNoDefault()
+            public void AverageOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputDefault()
+            public void AverageOrDefault_OnNullDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputDefault()
+            public void AverageOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
             {
-                Assert.That(_intArray.AverageOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_floatFunc).Average()));
+                Assert.That(NullFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(_intArray.AverageOrDefault(_floatFunc), Is.EqualTo(_intArray.Select(_floatFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionFloatNullInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionFloatNullInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_intFunc), Is.EqualTo(default(int)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionIntGoodInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.AverageOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_intFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionIntGoodInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_intArray.AverageOrDefault(_intFunc), Is.EqualTo(_intArray.Select(_intFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionIntNullInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionIntNullInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_intFunc), Is.EqualTo(default(int)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionLongEmptyInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(LongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionLongEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_longFunc), Is.EqualTo(default(long)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionLongGoodInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(_intArray.AverageOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_longFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionLongGoodInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(_intArray.AverageOrDefault(_longFunc), Is.EqualTo(_intArray.Select(_longFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionLongNullInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionLongNullInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_longFunc), Is.EqualTo(default(long)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableDecimalFunc), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Average()));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputNoDefault()
+            public void AverageOrDefault_OnNullIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(NullIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputDefault()
+            public void AverageOrDefault_OnNullLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputDefault()
+            public void AverageOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Average()));
+                Assert.That(NullNullableDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputNoDefault()
+            public void AverageOrDefault_OnNullNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableDoubleFunc), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Average()));
+                Assert.That(NullNullableDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputDefault()
+            public void AverageOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullNullableDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputNoDefault()
+            public void AverageOrDefault_OnNullNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullNullableDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputDefault()
+            public void AverageOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullNullableFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullNullableFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputDefault()
+            public void AverageOrDefault_OnNullNullableIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Average()));
+                Assert.That(NullNullableIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputNoDefault()
+            public void AverageOrDefault_OnNullNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableFloatFunc), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Average()));
+                Assert.That(NullNullableIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputDefault()
+            public void AverageOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullNullableLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputNoDefault()
+            public void AverageOrDefault_OnNullNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullNullableLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputDefault()
+            public void AverageOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullableDecimalArray.AverageOrDefault(), Is.EqualTo(NullableDecimalArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullableDecimalArray_WithTestDecimalValue_REturnsNullableDecimalArrayAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                Assert.That(NullableDecimalArray.AverageOrDefault(TestDecimalValue), Is.EqualTo(NullableDecimalArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputDefault()
+            public void AverageOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_nullableIntFunc).Average()));
+                Assert.That(NullableDoubleArray.AverageOrDefault(), Is.EqualTo(NullableDoubleArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputNoDefault()
+            public void AverageOrDefault_OnNullableDoubleArray_WithTestDoubleValue_ReturnsNullableDoubleArrayAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableIntFunc), Is.EqualTo(_intArray.Select(_nullableIntFunc).Average()));
+                Assert.That(NullableDoubleArray.AverageOrDefault(TestDoubleValue), Is.EqualTo(NullableDoubleArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputDefault()
+            public void AverageOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayAverage()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullableFloatArray.AverageOrDefault(), Is.EqualTo(NullableFloatArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputNoDefault()
+            public void AverageOrDefault_OnNullableFloatArray_WithTestFloatValue_ReturnsNullableFloatArrayAverage()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                Assert.That(NullableFloatArray.AverageOrDefault(TestFloatValue), Is.EqualTo(NullableFloatArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputDefault()
+            public void AverageOrDefault_OnNullableIntegerArray_RetunrsNullableIntegerArrayAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullableIntegerArray.AverageOrDefault(), Is.EqualTo(NullableIntegerArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputNoDefault()
+            public void AverageOrDefault_OnNullableIntegerArray_WithTestIntegerValue_ReturnsNullableIntegerArrayAverage()
             {
-                Assert.That(Enumerable.Empty<int>().AverageOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                Assert.That(NullableIntegerArray.AverageOrDefault(TestIntegerValue), Is.EqualTo(NullableIntegerArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputDefault()
+            public void AverageOrDefault_OnNullableLongArray_ReturnsNullableLongArrayAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_nullableLongFunc).Average()));
+                Assert.That(NullableLongArray.AverageOrDefault(), Is.EqualTo(NullableLongArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputNoDefault()
+            public void AverageOrDefault_OnNullableLongArray_WithTestLongValue_ReturnsNullableLongArrayAverage()
             {
-                Assert.That(_intArray.AverageOrDefault(_nullableLongFunc), Is.EqualTo(_intArray.Select(_nullableLongFunc).Average()));
+                Assert.That(NullableLongArray.AverageOrDefault(TestLongValue), Is.EqualTo(NullableLongArray.Average()));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputDefault()
+            public void AverageOrDefault_onNullIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullIntegerSequence.AverageOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputNoDefault()
+            public void AverageorDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsAverage()
             {
-                Assert.That(NullSequence.Of<int>().AverageOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                Assert.That(IntegerArray.AverageOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Average()));
             }
         }
     }

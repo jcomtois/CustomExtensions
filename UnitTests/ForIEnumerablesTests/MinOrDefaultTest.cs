@@ -17,10 +17,8 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
-using CustomExtensions.Validation;
 using NUnit.Framework;
 
 namespace UnitTests.ForIEnumerablesTests
@@ -30,861 +28,724 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class MinOrDefaultTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
-            {
-                _intArray = new[] {10, 20, 30};
-                _stringArray = new[] {"A", "B", "C"};
-                _nullableIntArray = _intArray.Select(x => (int?)x).ToArray();
-                _nullableFloatArray = _intArray.Select(x => (float?)x).ToArray();
-                _floatArray = _intArray.Select(x => (float)x).ToArray();
-                _nullableDecimalArray = _intArray.Select(x => (decimal?)x).ToArray();
-                _decimalArray = _intArray.Select(x => (decimal)x).ToArray();
-                _nullableDoubleArray = _intArray.Select(x => (double?)x).ToArray();
-                _doubleArray = _intArray.Select(x => (double)x).ToArray();
-                _nullableLongArray = _intArray.Select(x => (long?)x).ToArray();
-                _longArray = _intArray.Select(x => (long)x).ToArray();
-            }
-
-            #endregion
-
-            private int[] _intArray;
-            private string[] _stringArray;
-            private int?[] _nullableIntArray;
-            private const int DefaultIntValue = 9999;
-            private const double DefaultDoubleValue = DefaultIntValue;
-            private const decimal DefaultDecimalValue = DefaultIntValue;
-            private const long DefaultLongValue = DefaultIntValue;
-            private const float DefaultFloatValue = DefaultIntValue;
-            private long[] _longArray;
-            private long?[] _nullableLongArray;
-            private double[] _doubleArray;
-            private double?[] _nullableDoubleArray;
-            private decimal[] _decimalArray;
-            private decimal?[] _nullableDecimalArray;
-            private float[] _floatArray;
-            private float?[] _nullableFloatArray;
-            private readonly Func<int, decimal> _decimalFunc = x => (decimal)x;
-            private readonly Func<int, decimal?> _nullableDecimalFunc = x => (decimal?)x;
-            private readonly Func<int, double> _doubleFunc = x => (double)x;
-            private readonly Func<int, double?> _nullableDoubleFunc = x => (double?)x;
-            private readonly Func<int, long> _longFunc = x => (long)x;
-            private readonly Func<int, long?> _nullableLongFunc = x => (long?)x;
-            private readonly Func<int, float> _floatFunc = x => (float)x;
-            private readonly Func<int, float?> _nullableFloatFunc = x => (float?)x;
-            private readonly Func<int, int> _intFunc = x => x + x;
-            private readonly Func<int, int?> _nullableIntFunc = x => (int?)(x + x);
-
-            [Test]
-            public void DecimalEmptyInputDefault()
-            {
-                Assert.That(Enumerable.Empty<decimal>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
-            }
-
-            [Test]
-            public void DecimalEmptyInputNoDefault()
-            {
-                Assert.That(Enumerable.Empty<decimal>().MinOrDefault(), Is.EqualTo(default(decimal)));
-            }
-
-            [Test]
-            public void DecimalGoodInputDefault()
-            {
-                Assert.That(_decimalArray.MinOrDefault(DefaultDecimalValue), Is.EqualTo(_decimalArray.Min()));
-            }
-
-            [Test]
-            public void DecimalGoodInputNoDefault()
-            {
-                Assert.That(_decimalArray.MinOrDefault(), Is.EqualTo(_decimalArray.Min()));
-            }
-
-            [Test]
-            public void DecimalNullInputDefault()
-            {
-                Assert.That(NullSequence.Of<decimal>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
-            }
-
-            [Test]
-            public void DecimalNullInputNoDefault()
-            {
-                Assert.That(NullSequence.Of<decimal>().MinOrDefault(), Is.EqualTo(default(decimal)));
-            }
-
-            [Test]
-            public void DoubleEmptyInputDefault()
-            {
-                Assert.That(Enumerable.Empty<double>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
-            }
-
-            [Test]
-            public void DoubleEmptyInputNoDefault()
-            {
-                Assert.That(Enumerable.Empty<double>().MinOrDefault(), Is.EqualTo(default(double)));
-            }
-
-            [Test]
-            public void DoubleGoodInputDefault()
-            {
-                Assert.That(_doubleArray.MinOrDefault(DefaultDoubleValue), Is.EqualTo(_doubleArray.Min()));
-            }
-
-            [Test]
-            public void DoubleGoodInputNoDefault()
-            {
-                Assert.That(_doubleArray.MinOrDefault(), Is.EqualTo(_doubleArray.Min()));
-            }
-
-            [Test]
-            public void DoubleNullInputDefault()
-            {
-                Assert.That(NullSequence.Of<double>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
-            }
-
-            [Test]
-            public void DoubleNullInputNoDefault()
-            {
-                Assert.That(NullSequence.Of<double>().MinOrDefault(), Is.EqualTo(default(double)));
-            }
-
-            [Test]
-            public void FloatEmptyInputDefault()
-            {
-                Assert.That(Enumerable.Empty<float>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
-            }
-
-            [Test]
-            public void FloatEmptyInputNoDefault()
-            {
-                Assert.That(Enumerable.Empty<float>().MinOrDefault(), Is.EqualTo(default(float)));
-            }
-
             [Test]
-            public void FloatGoodInputDefault()
+            public void MinOrDefault_OnDecimalArray_ReturnsMin()
             {
-                Assert.That(_floatArray.MinOrDefault(DefaultFloatValue), Is.EqualTo(_floatArray.Min()));
+                Assert.That(DecimalArray.MinOrDefault(), Is.EqualTo(DecimalArray.Min()));
             }
 
             [Test]
-            public void FloatGoodInputNoDefault()
+            public void MinOrDefault_OnDecimalArray_WithTestDecimalValue_ReturnsMin()
             {
-                Assert.That(_floatArray.MinOrDefault(), Is.EqualTo(_floatArray.Min()));
+                Assert.That(DecimalArray.MinOrDefault(TestDecimalValue), Is.EqualTo(DecimalArray.Min()));
             }
 
             [Test]
-            public void FloatNullInputDefault()
+            public void MinOrDefault_OnDoubleArray_ReturnsDoubleArrayMin()
             {
-                Assert.That(NullSequence.Of<float>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(DoubleArray.MinOrDefault(), Is.EqualTo(DoubleArray.Min()));
             }
 
             [Test]
-            public void FloatNullInputNoDefault()
+            public void MinOrDefault_OnDoubleArray_WithTestDoubleValue_ReturnsDoubleArrayMin()
             {
-                Assert.That(NullSequence.Of<float>().MinOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(DoubleArray.MinOrDefault(TestDoubleValue), Is.EqualTo(DoubleArray.Min()));
             }
 
             [Test]
-            public void IntegerEmptyInputDefault()
+            public void MinOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyDecimalSequence.MinOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void IntegerEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyDecimalSequence.MinOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void IntegerGoodInputDefault()
+            public void MinOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MinOrDefault(DefaultIntValue), Is.EqualTo(_intArray.Min()));
+                Assert.That(EmptyDoubleSequence.MinOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void IntegerGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_intArray.MinOrDefault(), Is.EqualTo(_intArray.Min()));
+                Assert.That(EmptyDoubleSequence.MinOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void IntegerNullInputDefault()
+            public void MinOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyFloatSequence.MinOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void IntegerNullInputNoDefault()
+            public void MinOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyFloatSequence.MinOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void LongEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<long>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void LongEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<long>().MinOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void LongGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(_longArray.MinOrDefault(DefaultLongValue), Is.EqualTo(_longArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void LongGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_longArray.MinOrDefault(), Is.EqualTo(_longArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void LongNullInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(NullSequence.Of<long>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void LongNullInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<long>().MinOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(Enumerable.Empty<decimal?>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<decimal?>().MinOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableDecimalGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(_nullableDecimalArray.MinOrDefault(DefaultDecimalValue), Is.EqualTo(_nullableDecimalArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableDecimalGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(_nullableDecimalArray.MinOrDefault(), Is.EqualTo(_nullableDecimalArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(LongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableDecimalNullInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(NullSequence.Of<decimal?>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableDecimalNullInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<decimal?>().MinOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<double?>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<double?>().MinOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void NullableDoubleGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableDuoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_nullableDoubleArray.MinOrDefault(DefaultDoubleValue), Is.EqualTo(_nullableDoubleArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void NullableDoubleGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(_nullableDoubleArray.MinOrDefault(), Is.EqualTo(_nullableDoubleArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableDoubleNullInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<double?>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableDoubleNullInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<double?>().MinOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableFloatEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<float?>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableFloatEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(Enumerable.Empty<float?>().MinOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableFloatGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_nullableFloatArray.MinOrDefault(DefaultFloatValue), Is.EqualTo(_nullableFloatArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableFloatGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(_nullableFloatArray.MinOrDefault(), Is.EqualTo(_nullableFloatArray.Min()));
+                Assert.That(EmptyIntegerSequence.MinOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableFloatNullInputDefault()
+            public void MinOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<float?>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyLongSequence.MinOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableFloatNullInputNoDefault()
+            public void MinOrDefault_OnEmptyLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(NullSequence.Of<float?>().MinOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyLongSequence.MinOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputDefault()
+            public void MinOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int?>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyNullableDecimalSequence.MinOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(() => Enumerable.Empty<int?>().MinOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyNullableDecimalSequence.MinOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void NullableIntegerGoodInputDefault()
+            public void MinOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(_nullableIntArray.MinOrDefault(DefaultIntValue), Is.EqualTo(_nullableIntArray.Min()));
+                Assert.That(EmptyNullableDoubleSequence.MinOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void NullableIntegerGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_nullableIntArray.MinOrDefault(), Is.EqualTo(_nullableIntArray.Min()));
+                Assert.That(EmptyNullableDoubleSequence.MinOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void NullableIntegerNullInputDefault()
+            public void MinOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int?>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyNullableFloatSequence.MinOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableIntegerNullInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<int?>().MinOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyNullableFloatSequence.MinOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableLongEmptyInputDefault()
+            public void MinOrDefault_OnEmptyNullableIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<long?>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyNullableIntegerSequence.MinOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableLongEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<long?>().MinOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyNullableIntegerSequence.MinOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableLongGoodInputDefault()
+            public void MinOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(_nullableLongArray.MinOrDefault(DefaultLongValue), Is.EqualTo(_nullableLongArray.Min()));
+                Assert.That(EmptyNullableLongSequence.MinOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableLongGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_nullableLongArray.MinOrDefault(), Is.EqualTo(_nullableLongArray.Min()));
+                Assert.That(EmptyNullableLongSequence.MinOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableLongNullInputDefault()
+            public void MinOrDefault_OnFloatArray_ReturnsFloatArrayMin()
             {
-                Assert.That(NullSequence.Of<long?>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(FloatArray.MinOrDefault(), Is.EqualTo(FloatArray.Min()));
             }
 
             [Test]
-            public void NullableLongNullInputNoDefault()
+            public void MinOrDefault_OnFloatArray_WithTestFloatValue_ReturnsFloatArrayMin()
             {
-                Assert.That(NullSequence.Of<long?>().MinOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(FloatArray.MinOrDefault(TestFloatValue), Is.EqualTo(FloatArray.Min()));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputDefault()
+            public void MinOrDefault_OnIntegerArray_ReturnsIntegerArrayMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(IntegerArray.MinOrDefault(), Is.EqualTo(IntegerArray.Min()));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithDecimalFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(IntegerArray.MinOrDefault(DecimalFunc), Is.EqualTo(IntegerArray.Select(DecimalFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithDecimalFunc_WithTestDecimalvalue_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_decimalFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(DecimalFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithDoubleFunc_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_decimalFunc), Is.EqualTo(_intArray.Select(_decimalFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(DoubleFunc), Is.EqualTo(IntegerArray.Select(DoubleFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithDoubleFunc_WithTestDoubleValue_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(IntegerArray.MinOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(DoubleFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithFloatFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(IntegerArray.MinOrDefault(FloatFunc), Is.EqualTo(IntegerArray.Select(FloatFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithFloatFunc_WithTestFloatValue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(IntegerArray.MinOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(FloatFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithIntFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                Assert.That(IntegerArray.MinOrDefault(IntFunc), Is.EqualTo(IntegerArray.Select(IntFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithIntFunc_WithTestIntegerValue_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_doubleFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(IntFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithLongFunc_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_doubleFunc), Is.EqualTo(_intArray.Select(_doubleFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(LongFunc), Is.EqualTo(IntegerArray.Select(LongFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableDecimalFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(IntegerArray.MinOrDefault(NullableDecimalFunc), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Min()));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                Assert.That(IntegerArray.MinOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Min()));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableDoubleFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(IntegerArray.MinOrDefault(NullableDoubleFunc), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Min()));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                Assert.That(IntegerArray.MinOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Min()));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableFloatFunc_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_floatFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(NullableFloatFunc), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Min()));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableFloatFunc_WithTestFloatValue_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_floatFunc), Is.EqualTo(_intArray.Select(_floatFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Min()));
             }
 
             [Test]
-            public void ProjectionFloatNullInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableIntFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(IntegerArray.MinOrDefault(NullableIntFunc), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Min()));
             }
 
             [Test]
-            public void ProjectionFloatNullInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableIntFunc_WithTestIntegerValue_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                Assert.That(IntegerArray.MinOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Min()));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableLongFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(IntegerArray.MinOrDefault(NullableLongFunc), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Min()));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputNoDefault()
+            public void MinOrDefault_OnIntegerArray_WithNullableLongFunc_WithTestLongValue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_intFunc), Is.EqualTo(default(int)));
+                Assert.That(IntegerArray.MinOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Min()));
             }
 
             [Test]
-            public void ProjectionIntGoodInputDefault()
+            public void MinOrDefault_OnIntegerArray_WithTestIntegerValue_ReturnsIntegerArrayMin()
             {
-                Assert.That(_intArray.MinOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_intFunc).Min()));
+                Assert.That(IntegerArray.MinOrDefault(TestIntegerValue), Is.EqualTo(IntegerArray.Min()));
             }
 
             [Test]
-            public void ProjectionIntGoodInputNoDefault()
+            public void MinOrDefault_OnLongArray_ReturnsLongArrayMin()
             {
-                Assert.That(_intArray.MinOrDefault(_intFunc), Is.EqualTo(_intArray.Select(_intFunc).Min()));
+                Assert.That(LongArray.MinOrDefault(), Is.EqualTo(LongArray.Min()));
             }
 
             [Test]
-            public void ProjectionIntNullInputDefault()
+            public void MinOrDefault_OnLongArray_WithTestLongValue_ReturnsLongArrayMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(LongArray.MinOrDefault(TestLongValue), Is.EqualTo(LongArray.Min()));
             }
 
             [Test]
-            public void ProjectionIntNullInputNoDefault()
+            public void MinOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_intFunc), Is.EqualTo(default(int)));
+                Assert.That(NullDecimalSequence.MinOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionLongEmptyInputDefault()
+            public void MinOrDefault_OnNullDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullDecimalSequence.MinOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionLongEmptyInputNoDefault()
+            public void MinOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_longFunc), Is.EqualTo(default(long)));
+                Assert.That(NullDoubleSequence.MinOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionLongGoodInputDefault()
+            public void MinOrDefault_OnNullDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_intArray.MinOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_longFunc).Min()));
+                Assert.That(NullDoubleSequence.MinOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionLongGoodInputNoDefault()
+            public void MinOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MinOrDefault(_longFunc), Is.EqualTo(_intArray.Select(_longFunc).Min()));
+                Assert.That(NullFloatSequence.MinOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionLongNullInputDefault()
+            public void MinOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullFloatSequence.MinOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionLongNullInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_longFunc), Is.EqualTo(default(long)));
+                Assert.That(NullIntegerSequence.MinOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(NullIntegerSequence.MinOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Min()));
+                Assert.That(NullIntegerSequence.MinOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDecimalFunc), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Min()));
+                Assert.That(NullIntegerSequence.MinOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(NullIntegerSequence.MinOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullIntegerSequence.MinOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Min()));
+                Assert.That(NullIntegerSequence.MinOrDefault(LongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDoubleFunc), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Min()));
+                Assert.That(NullIntegerSequence.MinOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Min()));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableFloatFunc), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Min()));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                Assert.That(NullIntegerSequence.MinOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputDefault()
+            public void MinOrDefault_OnNullLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_nullableIntFunc).Min()));
+                Assert.That(NullLongSequence.MinOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputNoDefault()
+            public void MinOrDefault_OnNullLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableIntFunc), Is.EqualTo(_intArray.Select(_nullableIntFunc).Min()));
+                Assert.That(NullLongSequence.MinOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputDefault()
+            public void MinOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullNullableDecimalSequence.MinOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputNoDefault()
+            public void MinOrDefault_OnNullNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                Assert.That(NullNullableDecimalSequence.MinOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputDefault()
+            public void MinOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullNullableDoubleSequence.MinOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputNoDefault()
+            public void MinOrDefault_OnNullNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                Assert.That(NullNullableDoubleSequence.MinOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputDefault()
+            public void MinOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_nullableLongFunc).Min()));
+                Assert.That(NullNullableFloatSequence.MinOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputNoDefault()
+            public void MinOrDefault_OnNullNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableLongFunc), Is.EqualTo(_intArray.Select(_nullableLongFunc).Min()));
+                Assert.That(NullNullableFloatSequence.MinOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputDefault()
+            public void MinOrDefault_OnNullNullableIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullNullableIntegerSequence.MinOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputNoDefault()
+            public void MinOrDefault_OnNullNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                Assert.That(NullNullableIntegerSequence.MinOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void SequenceEmptyDefaultValueEmpty()
+            public void MinOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(), Is.EqualTo(default(string)));
+                Assert.That(NullNullableLongSequence.MinOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void SequenceEmptyDefaultValueGood()
+            public void MinOrDefault_OnNullNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault("Z"), Is.EqualTo("Z"));
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault((string)null), Is.Null);
+                Assert.That(NullNullableLongSequence.MinOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void SequenceEmptySelectorGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMin()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(s => s.First()), Is.EqualTo(default(char)));
+                Assert.That(NullableDecimalArray.MinOrDefault(), Is.EqualTo(NullableDecimalArray.Min()));
             }
 
             [Test]
-            public void SequenceEmptySelectorGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableDecimalArray_WithTestDecimalValue_REturnsNullableDecimalArrayMin()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(s => s.First(), 'Z'), Is.EqualTo('Z'));
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(s => s, null), Is.Null);
+                Assert.That(NullableDecimalArray.MinOrDefault(TestDecimalValue), Is.EqualTo(NullableDecimalArray.Min()));
             }
 
             [Test]
-            public void SequenceGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault(), Is.EqualTo("A"));
+                Assert.That(NullableDoubleArray.MinOrDefault(), Is.EqualTo(NullableDoubleArray.Min()));
             }
 
             [Test]
-            public void SequenceGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableDoubleArray_WithTestDoubleValue_ReturnsNullableDoubleArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault("Z"), Is.EqualTo("A"));
+                Assert.That(NullableDoubleArray.MinOrDefault(TestDoubleValue), Is.EqualTo(NullableDoubleArray.Min()));
             }
 
             [Test]
-            public void SequenceGoodSelectorGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault(s => s.First()), Is.EqualTo('A'));
+                Assert.That(NullableFloatArray.MinOrDefault(), Is.EqualTo(NullableFloatArray.Min()));
             }
 
             [Test]
-            public void SequenceGoodSelectorGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableFloatArray_WithTestFloatValue_ReturnsNullableFloatArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault(s => s.First(), 'Z'), Is.EqualTo('A'));
+                Assert.That(NullableFloatArray.MinOrDefault(TestFloatValue), Is.EqualTo(NullableFloatArray.Min()));
             }
 
             [Test]
-            public void SequenceNullDefaultValueEmpty()
+            public void MinOrDefault_OnNullableIntegerArray_RetunrsNullableIntegerArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(), Is.EqualTo(default(string)));
+                Assert.That(NullableIntegerArray.MinOrDefault(), Is.EqualTo(NullableIntegerArray.Min()));
             }
 
             [Test]
-            public void SequenceNullDefaultValueGood()
+            public void MinOrDefault_OnNullableIntegerArray_WithTestIntegerValue_ReturnsNullableIntegerArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault("Z"), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault("Z"), Is.EqualTo("Z"));
+                Assert.That(NullableIntegerArray.MinOrDefault(TestIntegerValue), Is.EqualTo(NullableIntegerArray.Min()));
             }
 
             [Test]
-            public void SequenceNullSelectorGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First()), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First()), Is.EqualTo(default(char)));
+                Assert.That(NullableLongArray.MinOrDefault(), Is.EqualTo(NullableLongArray.Min()));
             }
 
             [Test]
-            public void SequenceNullSelectorGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableLongArray_WithTestLongValue_ReturnsNullableLongArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First(), 'Z'), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First(), 'Z'), Is.EqualTo('Z'));
+                Assert.That(NullableLongArray.MinOrDefault(TestLongValue), Is.EqualTo(NullableLongArray.Min()));
             }
 
             [Test]
-            public void SequenceNullSelectorNullDefaultValueEmpty()
+            public void MinOrDefault_onNullIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault((Func<string, char>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(NullIntegerSequence.MinOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void SequenceNullSelectorNullDefaultValueGood()
+            public void MinorDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(null, 'Z'), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(IntegerArray.MinOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Min()));
             }
         }
     }

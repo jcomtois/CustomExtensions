@@ -18,7 +18,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
@@ -32,10 +31,6 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class AppendTest
         {
-            private const string SingleLetterString = "A";
-            private const string NullString = null;
-            private static readonly IEnumerable<string> EmptyStringEnumerable = Enumerable.Empty<string>();
-
             [Test]
             public void Append_IsLazy()
             {

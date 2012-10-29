@@ -17,10 +17,8 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
-using CustomExtensions.Validation;
 using NUnit.Framework;
 
 namespace UnitTests.ForIEnumerablesTests
@@ -30,861 +28,724 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class MaxOrDefaultTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
-            {
-                _intArray = new[] {10, 20, 30};
-                _stringArray = new[] {"A", "B", "C"};
-                _nullableIntArray = _intArray.Select(x => (int?)x).ToArray();
-                _nullableFloatArray = _intArray.Select(x => (float?)x).ToArray();
-                _floatArray = _intArray.Select(x => (float)x).ToArray();
-                _nullableDecimalArray = _intArray.Select(x => (decimal?)x).ToArray();
-                _decimalArray = _intArray.Select(x => (decimal)x).ToArray();
-                _nullableDoubleArray = _intArray.Select(x => (double?)x).ToArray();
-                _doubleArray = _intArray.Select(x => (double)x).ToArray();
-                _nullableLongArray = _intArray.Select(x => (long?)x).ToArray();
-                _longArray = _intArray.Select(x => (long)x).ToArray();
-            }
-
-            #endregion
-
-            private int[] _intArray;
-            private string[] _stringArray;
-            private int?[] _nullableIntArray;
-            private const int DefaultIntValue = 9999;
-            private const double DefaultDoubleValue = DefaultIntValue;
-            private const decimal DefaultDecimalValue = DefaultIntValue;
-            private const long DefaultLongValue = DefaultIntValue;
-            private const float DefaultFloatValue = DefaultIntValue;
-            private long[] _longArray;
-            private long?[] _nullableLongArray;
-            private double[] _doubleArray;
-            private double?[] _nullableDoubleArray;
-            private decimal[] _decimalArray;
-            private decimal?[] _nullableDecimalArray;
-            private float[] _floatArray;
-            private float?[] _nullableFloatArray;
-            private readonly Func<int, decimal> _decimalFunc = x => (decimal)x;
-            private readonly Func<int, decimal?> _nullableDecimalFunc = x => (decimal?)x;
-            private readonly Func<int, double> _doubleFunc = x => (double)x;
-            private readonly Func<int, double?> _nullableDoubleFunc = x => (double?)x;
-            private readonly Func<int, long> _longFunc = x => (long)x;
-            private readonly Func<int, long?> _nullableLongFunc = x => (long?)x;
-            private readonly Func<int, float> _floatFunc = x => (float)x;
-            private readonly Func<int, float?> _nullableFloatFunc = x => (float?)x;
-            private readonly Func<int, int> _intFunc = x => x + x;
-            private readonly Func<int, int?> _nullableIntFunc = x => (int?)(x + x);
-
-            [Test]
-            public void DecimalEmptyInputDefault()
-            {
-                Assert.That(Enumerable.Empty<decimal>().MaxOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
-            }
-
-            [Test]
-            public void DecimalEmptyInputNoDefault()
-            {
-                Assert.That(Enumerable.Empty<decimal>().MaxOrDefault(), Is.EqualTo(default(decimal)));
-            }
-
-            [Test]
-            public void DecimalGoodInputDefault()
-            {
-                Assert.That(_decimalArray.MaxOrDefault(DefaultDecimalValue), Is.EqualTo(_decimalArray.Max()));
-            }
-
-            [Test]
-            public void DecimalGoodInputNoDefault()
-            {
-                Assert.That(_decimalArray.MaxOrDefault(), Is.EqualTo(_decimalArray.Max()));
-            }
-
-            [Test]
-            public void DecimalNullInputDefault()
-            {
-                Assert.That(NullSequence.Of<decimal>().MaxOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
-            }
-
-            [Test]
-            public void DecimalNullInputNoDefault()
-            {
-                Assert.That(NullSequence.Of<decimal>().MaxOrDefault(), Is.EqualTo(default(decimal)));
-            }
-
-            [Test]
-            public void DoubleEmptyInputDefault()
-            {
-                Assert.That(Enumerable.Empty<double>().MaxOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
-            }
-
-            [Test]
-            public void DoubleEmptyInputNoDefault()
-            {
-                Assert.That(Enumerable.Empty<double>().MaxOrDefault(), Is.EqualTo(default(double)));
-            }
-
-            [Test]
-            public void DoubleGoodInputDefault()
-            {
-                Assert.That(_doubleArray.MaxOrDefault(DefaultDoubleValue), Is.EqualTo(_doubleArray.Max()));
-            }
-
-            [Test]
-            public void DoubleGoodInputNoDefault()
-            {
-                Assert.That(_doubleArray.MaxOrDefault(), Is.EqualTo(_doubleArray.Max()));
-            }
-
-            [Test]
-            public void DoubleNullInputDefault()
-            {
-                Assert.That(NullSequence.Of<double>().MaxOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
-            }
-
-            [Test]
-            public void DoubleNullInputNoDefault()
-            {
-                Assert.That(NullSequence.Of<double>().MaxOrDefault(), Is.EqualTo(default(double)));
-            }
-
-            [Test]
-            public void FloatEmptyInputDefault()
-            {
-                Assert.That(Enumerable.Empty<float>().MaxOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
-            }
-
-            [Test]
-            public void FloatEmptyInputNoDefault()
-            {
-                Assert.That(Enumerable.Empty<float>().MaxOrDefault(), Is.EqualTo(default(float)));
-            }
-
             [Test]
-            public void FloatGoodInputDefault()
+            public void MaxOrDefault_OnDecimalArray_ReturnsMax()
             {
-                Assert.That(_floatArray.MaxOrDefault(DefaultFloatValue), Is.EqualTo(_floatArray.Max()));
+                Assert.That(DecimalArray.MaxOrDefault(), Is.EqualTo(DecimalArray.Max()));
             }
 
             [Test]
-            public void FloatGoodInputNoDefault()
+            public void MaxOrDefault_OnDecimalArray_WithTestDecimalValue_ReturnsMax()
             {
-                Assert.That(_floatArray.MaxOrDefault(), Is.EqualTo(_floatArray.Max()));
+                Assert.That(DecimalArray.MaxOrDefault(TestDecimalValue), Is.EqualTo(DecimalArray.Max()));
             }
 
             [Test]
-            public void FloatNullInputDefault()
+            public void MaxOrDefault_OnDoubleArray_ReturnsDoubleArrayMax()
             {
-                Assert.That(NullSequence.Of<float>().MaxOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(DoubleArray.MaxOrDefault(), Is.EqualTo(DoubleArray.Max()));
             }
 
             [Test]
-            public void FloatNullInputNoDefault()
+            public void MaxOrDefault_OnDoubleArray_WithTestDoubleValue_ReturnsDoubleArrayMax()
             {
-                Assert.That(NullSequence.Of<float>().MaxOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(DoubleArray.MaxOrDefault(TestDoubleValue), Is.EqualTo(DoubleArray.Max()));
             }
 
             [Test]
-            public void IntegerEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void IntegerEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void IntegerGoodInputDefault()
+            public void MaxOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MaxOrDefault(DefaultIntValue), Is.EqualTo(_intArray.Max()));
+                Assert.That(EmptyDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void IntegerGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_intArray.MaxOrDefault(), Is.EqualTo(_intArray.Max()));
+                Assert.That(EmptyDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void IntegerNullInputDefault()
+            public void MaxOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void IntegerNullInputNoDefault()
+            public void MaxOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void LongEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<long>().MaxOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void LongEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<long>().MaxOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void LongGoodInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(_longArray.MaxOrDefault(DefaultLongValue), Is.EqualTo(_longArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void LongGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_longArray.MaxOrDefault(), Is.EqualTo(_longArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void LongNullInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(NullSequence.Of<long>().MaxOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void LongNullInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<long>().MaxOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(Enumerable.Empty<decimal?>().MaxOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<decimal?>().MaxOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableDecimalGoodInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(_nullableDecimalArray.MaxOrDefault(DefaultDecimalValue), Is.EqualTo(_nullableDecimalArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableDecimalGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(_nullableDecimalArray.MaxOrDefault(), Is.EqualTo(_nullableDecimalArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(LongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableDecimalNullInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(NullSequence.Of<decimal?>().MaxOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableDecimalNullInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<decimal?>().MaxOrDefault(), Is.EqualTo(default(decimal)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<double?>().MaxOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<double?>().MaxOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void NullableDoubleGoodInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDuoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_nullableDoubleArray.MaxOrDefault(DefaultDoubleValue), Is.EqualTo(_nullableDoubleArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void NullableDoubleGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(_nullableDoubleArray.MaxOrDefault(), Is.EqualTo(_nullableDoubleArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableDoubleNullInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<double?>().MaxOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableDoubleNullInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<double?>().MaxOrDefault(), Is.EqualTo(default(double)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableFloatEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<float?>().MaxOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableFloatEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(Enumerable.Empty<float?>().MaxOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableFloatGoodInputDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_nullableFloatArray.MaxOrDefault(DefaultFloatValue), Is.EqualTo(_nullableFloatArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableFloatGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(_nullableFloatArray.MaxOrDefault(), Is.EqualTo(_nullableFloatArray.Max()));
+                Assert.That(EmptyIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableFloatNullInputDefault()
+            public void MaxOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<float?>().MaxOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(EmptyLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableFloatNullInputNoDefault()
+            public void MaxOrDefault_OnEmptyLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(NullSequence.Of<float?>().MaxOrDefault(), Is.EqualTo(default(float)));
+                Assert.That(EmptyLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int?>().MaxOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyNullableDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(() => Enumerable.Empty<int?>().MaxOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyNullableDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void NullableIntegerGoodInputDefault()
+            public void MaxOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(_nullableIntArray.MaxOrDefault(DefaultIntValue), Is.EqualTo(_nullableIntArray.Max()));
+                Assert.That(EmptyNullableDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void NullableIntegerGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_nullableIntArray.MaxOrDefault(), Is.EqualTo(_nullableIntArray.Max()));
+                Assert.That(EmptyNullableDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void NullableIntegerNullInputDefault()
+            public void MaxOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int?>().MaxOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(EmptyNullableFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void NullableIntegerNullInputNoDefault()
+            public void MaxOrDefault_OnEmptyNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<int?>().MaxOrDefault(), Is.EqualTo(default(int)));
+                Assert.That(EmptyNullableFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void NullableLongEmptyInputDefault()
+            public void MaxOrDefault_OnEmptyNullableIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<long?>().MaxOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(EmptyNullableIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void NullableLongEmptyInputNoDefault()
+            public void MaxOrDefault_OnEmptyNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<long?>().MaxOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(EmptyNullableIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void NullableLongGoodInputDefault()
+            public void MaxOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(_nullableLongArray.MaxOrDefault(DefaultLongValue), Is.EqualTo(_nullableLongArray.Max()));
+                Assert.That(EmptyNullableLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void NullableLongGoodInputNoDefault()
+            public void MaxOrDefault_OnEmptyNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_nullableLongArray.MaxOrDefault(), Is.EqualTo(_nullableLongArray.Max()));
+                Assert.That(EmptyNullableLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void NullableLongNullInputDefault()
+            public void MaxOrDefault_OnFloatArray_ReturnsFloatArrayMax()
             {
-                Assert.That(NullSequence.Of<long?>().MaxOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(FloatArray.MaxOrDefault(), Is.EqualTo(FloatArray.Max()));
             }
 
             [Test]
-            public void NullableLongNullInputNoDefault()
+            public void MaxOrDefault_OnFloatArray_WithTestFloatValue_ReturnsFloatArrayMax()
             {
-                Assert.That(NullSequence.Of<long?>().MaxOrDefault(), Is.EqualTo(default(long)));
+                Assert.That(FloatArray.MaxOrDefault(TestFloatValue), Is.EqualTo(FloatArray.Max()));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputDefault()
+            public void MaxOrDefault_OnIntegerArray_ReturnsIntegerArrayMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(IntegerArray.MaxOrDefault(), Is.EqualTo(IntegerArray.Max()));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithDecimalFunc_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(IntegerArray.MaxOrDefault(DecimalFunc), Is.EqualTo(IntegerArray.Select(DecimalFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithDecimalFunc_WithTestDecimalvalue_ReturnsMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_decimalFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(DecimalFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithDoubleFunc_ReturnsMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_decimalFunc), Is.EqualTo(_intArray.Select(_decimalFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(DoubleFunc), Is.EqualTo(IntegerArray.Select(DoubleFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithDoubleFunc_WithTestDoubleValue_ReturnsMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(IntegerArray.MaxOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(DoubleFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithFloatFunc_ReturnsMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(IntegerArray.MaxOrDefault(FloatFunc), Is.EqualTo(IntegerArray.Select(FloatFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithFloatFunc_WithTestFloatValue_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(IntegerArray.MaxOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(FloatFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithIntFunc_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                Assert.That(IntegerArray.MaxOrDefault(IntFunc), Is.EqualTo(IntegerArray.Select(IntFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithIntFunc_WithTestIntegerValue_ReturnsMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_doubleFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(IntFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithLongFunc_ReturnsMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_doubleFunc), Is.EqualTo(_intArray.Select(_doubleFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(LongFunc), Is.EqualTo(IntegerArray.Select(LongFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableDecimalFunc_ReturnsMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(IntegerArray.MaxOrDefault(NullableDecimalFunc), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Max()));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                Assert.That(IntegerArray.MaxOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Max()));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableDoubleFunc_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(IntegerArray.MaxOrDefault(NullableDoubleFunc), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Max()));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                Assert.That(IntegerArray.MaxOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Max()));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableFloatFunc_ReturnsMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_floatFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(NullableFloatFunc), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Max()));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableFloatFunc_WithTestFloatValue_ReturnsMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_floatFunc), Is.EqualTo(_intArray.Select(_floatFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Max()));
             }
 
             [Test]
-            public void ProjectionFloatNullInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableIntFunc_ReturnsMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(IntegerArray.MaxOrDefault(NullableIntFunc), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Max()));
             }
 
             [Test]
-            public void ProjectionFloatNullInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableIntFunc_WithTestIntegerValue_ReturnsMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                Assert.That(IntegerArray.MaxOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Max()));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableLongFunc_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(IntegerArray.MaxOrDefault(NullableLongFunc), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Max()));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputNoDefault()
+            public void MaxOrDefault_OnIntegerArray_WithNullableLongFunc_WithTestLongValue_ReturnsMax()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_intFunc), Is.EqualTo(default(int)));
+                Assert.That(IntegerArray.MaxOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Max()));
             }
 
             [Test]
-            public void ProjectionIntGoodInputDefault()
+            public void MaxOrDefault_OnIntegerArray_WithTestIntegerValue_ReturnsIntegerArrayMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_intFunc).Max()));
+                Assert.That(IntegerArray.MaxOrDefault(TestIntegerValue), Is.EqualTo(IntegerArray.Max()));
             }
 
             [Test]
-            public void ProjectionIntGoodInputNoDefault()
+            public void MaxOrDefault_OnLongArray_ReturnsLongArrayMax()
             {
-                Assert.That(_intArray.MaxOrDefault(_intFunc), Is.EqualTo(_intArray.Select(_intFunc).Max()));
+                Assert.That(LongArray.MaxOrDefault(), Is.EqualTo(LongArray.Max()));
             }
 
             [Test]
-            public void ProjectionIntNullInputDefault()
+            public void MaxOrDefault_OnLongArray_WithTestLongValue_ReturnsLongArrayMax()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(LongArray.MaxOrDefault(TestLongValue), Is.EqualTo(LongArray.Max()));
             }
 
             [Test]
-            public void ProjectionIntNullInputNoDefault()
+            public void MaxOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_intFunc), Is.EqualTo(default(int)));
+                Assert.That(NullDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionLongEmptyInputDefault()
+            public void MaxOrDefault_OnNullDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionLongEmptyInputNoDefault()
+            public void MaxOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_longFunc), Is.EqualTo(default(long)));
+                Assert.That(NullDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionLongGoodInputDefault()
+            public void MaxOrDefault_OnNullDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_intArray.MaxOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_longFunc).Max()));
+                Assert.That(NullDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionLongGoodInputNoDefault()
+            public void MaxOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MaxOrDefault(_longFunc), Is.EqualTo(_intArray.Select(_longFunc).Max()));
+                Assert.That(NullFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionLongNullInputDefault()
+            public void MaxOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionLongNullInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_longFunc), Is.EqualTo(default(long)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Max()));
+                Assert.That(NullIntegerSequence.MaxOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableDecimalFunc), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Max()));
+                Assert.That(NullIntegerSequence.MaxOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Max()));
+                Assert.That(NullIntegerSequence.MaxOrDefault(LongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableDoubleFunc), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Max()));
+                Assert.That(NullIntegerSequence.MaxOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Max()));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableFloatFunc), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Max()));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputNoDefault()
+            public void MaxOrDefault_OnNullIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                Assert.That(NullIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputDefault()
+            public void MaxOrDefault_OnNullLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_nullableIntFunc).Max()));
+                Assert.That(NullLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputNoDefault()
+            public void MaxOrDefault_OnNullLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableIntFunc), Is.EqualTo(_intArray.Select(_nullableIntFunc).Max()));
+                Assert.That(NullLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputDefault()
+            public void MaxOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                Assert.That(NullNullableDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputNoDefault()
+            public void MaxOrDefault_OnNullNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                Assert.That(NullNullableDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputDefault()
+            public void MaxOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullNullableDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputNoDefault()
+            public void MaxOrDefault_OnNullNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().MaxOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                Assert.That(NullNullableDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputDefault()
+            public void MaxOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_nullableLongFunc).Max()));
+                Assert.That(NullNullableFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputNoDefault()
+            public void MaxOrDefault_OnNullNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
             {
-                Assert.That(_intArray.MaxOrDefault(_nullableLongFunc), Is.EqualTo(_intArray.Select(_nullableLongFunc).Max()));
+                Assert.That(NullNullableFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputDefault()
+            public void MaxOrDefault_OnNullNullableIntegerSequence_ReturnsDefaultInteger()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                Assert.That(NullNullableIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputNoDefault()
+            public void MaxOrDefault_OnNullNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
             {
-                Assert.That(NullSequence.Of<int>().MaxOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                Assert.That(NullNullableIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
             }
 
             [Test]
-            public void SequenceEmptyDefaultValueEmpty()
+            public void MaxOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(() => Enumerable.Empty<string>().MaxOrDefault(), Is.EqualTo(default(string)));
+                Assert.That(NullNullableLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void SequenceEmptyDefaultValueGood()
+            public void MaxOrDefault_OnNullNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
             {
-                Assert.That(() => Enumerable.Empty<string>().MaxOrDefault("Z"), Is.EqualTo("Z"));
-                Assert.That(() => Enumerable.Empty<string>().MaxOrDefault((string)null), Is.Null);
+                Assert.That(NullNullableLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
             }
 
             [Test]
-            public void SequenceEmptySelectorGoodDefaultValueEmpty()
+            public void MaxOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMax()
             {
-                Assert.That(() => Enumerable.Empty<string>().MaxOrDefault(s => s.First()), Is.EqualTo(default(char)));
+                Assert.That(NullableDecimalArray.MaxOrDefault(), Is.EqualTo(NullableDecimalArray.Max()));
             }
 
             [Test]
-            public void SequenceEmptySelectorGoodDefaultValueGood()
+            public void MaxOrDefault_OnNullableDecimalArray_WithTestDecimalValue_REturnsNullableDecimalArrayMax()
             {
-                Assert.That(() => Enumerable.Empty<string>().MaxOrDefault(s => s.First(), 'Z'), Is.EqualTo('Z'));
-                Assert.That(() => Enumerable.Empty<string>().MaxOrDefault(s => s, null), Is.Null);
+                Assert.That(NullableDecimalArray.MaxOrDefault(TestDecimalValue), Is.EqualTo(NullableDecimalArray.Max()));
             }
 
             [Test]
-            public void SequenceGoodDefaultValueEmpty()
+            public void MaxOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMax()
             {
-                Assert.That(() => _stringArray.MaxOrDefault(), Is.EqualTo("C"));
+                Assert.That(NullableDoubleArray.MaxOrDefault(), Is.EqualTo(NullableDoubleArray.Max()));
             }
 
             [Test]
-            public void SequenceGoodDefaultValueGood()
+            public void MaxOrDefault_OnNullableDoubleArray_WithTestDoubleValue_ReturnsNullableDoubleArrayMax()
             {
-                Assert.That(() => _stringArray.MaxOrDefault("Z"), Is.EqualTo("C"));
+                Assert.That(NullableDoubleArray.MaxOrDefault(TestDoubleValue), Is.EqualTo(NullableDoubleArray.Max()));
             }
 
             [Test]
-            public void SequenceGoodSelectorGoodDefaultValueEmpty()
+            public void MaxOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMax()
             {
-                Assert.That(() => _stringArray.MaxOrDefault(s => s.First()), Is.EqualTo('C'));
+                Assert.That(NullableFloatArray.MaxOrDefault(), Is.EqualTo(NullableFloatArray.Max()));
             }
 
             [Test]
-            public void SequenceGoodSelectorGoodDefaultValueGood()
+            public void MaxOrDefault_OnNullableFloatArray_WithTestFloatValue_ReturnsNullableFloatArrayMax()
             {
-                Assert.That(() => _stringArray.MaxOrDefault(s => s.First(), 'Z'), Is.EqualTo('C'));
+                Assert.That(NullableFloatArray.MaxOrDefault(TestFloatValue), Is.EqualTo(NullableFloatArray.Max()));
             }
 
             [Test]
-            public void SequenceNullDefaultValueEmpty()
+            public void MaxOrDefault_OnNullableIntegerArray_RetunrsNullableIntegerArrayMax()
             {
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(), Is.EqualTo(default(string)));
+                Assert.That(NullableIntegerArray.MaxOrDefault(), Is.EqualTo(NullableIntegerArray.Max()));
             }
 
             [Test]
-            public void SequenceNullDefaultValueGood()
+            public void MaxOrDefault_OnNullableIntegerArray_WithTestIntegerValue_ReturnsNullableIntegerArrayMax()
             {
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault("Z"), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault("Z"), Is.EqualTo("Z"));
+                Assert.That(NullableIntegerArray.MaxOrDefault(TestIntegerValue), Is.EqualTo(NullableIntegerArray.Max()));
             }
 
             [Test]
-            public void SequenceNullSelectorGoodDefaultValueEmpty()
+            public void MaxOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMax()
             {
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(s => s.First()), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(s => s.First()), Is.EqualTo(default(char)));
+                Assert.That(NullableLongArray.MaxOrDefault(), Is.EqualTo(NullableLongArray.Max()));
             }
 
             [Test]
-            public void SequenceNullSelectorGoodDefaultValueGood()
+            public void MaxOrDefault_OnNullableLongArray_WithTestLongValue_ReturnsNullableLongArrayMax()
             {
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(s => s.First(), 'Z'), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(s => s.First(), 'Z'), Is.EqualTo('Z'));
+                Assert.That(NullableLongArray.MaxOrDefault(TestLongValue), Is.EqualTo(NullableLongArray.Max()));
             }
 
             [Test]
-            public void SequenceNullSelectorNullDefaultValueEmpty()
+            public void MaxOrDefault_onNullIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault((Func<string, char>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(NullIntegerSequence.MaxOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
             }
 
             [Test]
-            public void SequenceNullSelectorNullDefaultValueGood()
+            public void MaxorDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsMax()
             {
-                Assert.That(() => NullSequence.Of<string>().MaxOrDefault(null, 'Z'), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(IntegerArray.MaxOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Max()));
             }
         }
     }
