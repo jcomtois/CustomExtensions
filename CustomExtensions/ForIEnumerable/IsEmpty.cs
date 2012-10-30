@@ -43,23 +43,75 @@ namespace CustomExtensions.ForIEnumerable
             return IsEmptyImplementation(source);
         }
 
+        /// <summary>
+        /// Determines whether or not <paramref name="source"/> is empty in an efficient way
+        /// </summary>
+        /// <param name="source">Non-Generic <see cref="IEnumerable"/></param>
+        /// <returns>True if <paramref name="source"/> contains no elements</returns>
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        public static bool IsEmpty(this IEnumerable source)
+        {
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .CheckForExceptions();
+
+            return IsEmptyImplementationIEnumerable(source);
+        }
+
+        /// <summary>
+        /// Determines whether or not <paramref name="source"/> is empty in an efficient way
+        /// </summary>
+        /// <param name="source">Non-Generic <see cref="ICollection"/></param>
+        /// <returns>True if <paramref name="source"/> contains no elements</returns>
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        /// <remarks>Included in ForEnumerables namespace because many IEnumerables implement ICollection and speed is better</remarks>
+        public static bool IsEmpty(this ICollection source)
+        {
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .CheckForExceptions();
+
+            return IsEmptyImplementationICollection(source);
+        }
+
+        /// <summary>
+        /// Determines whether or not <paramref name="source"/> is empty in an efficient way
+        /// </summary>
+        /// <typeparam name="T">Type contained in <paramref name="source"/></typeparam>
+        /// <param name="source">Collection of type <typeparamref name="T"/></param>
+        /// <returns>True if <paramref name="source"/> contains no elements</returns>
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>
+        /// <remarks>Included in ForEnumerables namespace because many IEnumerables implement ICollection and speed is better</remarks>       
+        public static bool IsEmpty <T>(this ICollection<T> source)
+        {
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .CheckForExceptions();
+
+            return IsEmptyImplementationICollectionT(source);
+        }
+
         private static bool IsEmptyImplementation <T>(IEnumerable<T> source)
         {
             Debug.Assert(source != null, "source != null");
-
-            var genericCollection = source as ICollection<T>;
-            if (genericCollection != null)
-            {
-                return genericCollection.Count == 0;
-            }
-
-            var nonGenericCollection = source as ICollection;
-            if (nonGenericCollection != null)
-            {
-                return nonGenericCollection.Count == 0;
-            }
-
             return !source.Any();
+        }
+
+        private static bool IsEmptyImplementationICollection(ICollection source)
+        {
+            Debug.Assert(source != null, "source != null");
+            return source.Count == 0;
+        }
+
+        private static bool IsEmptyImplementationICollectionT <T>(ICollection<T> source)
+        {
+            Debug.Assert(source != null, "source != null");
+            return source.Count == 0;
+        }
+
+        private static bool IsEmptyImplementationIEnumerable(IEnumerable source)
+        {
+            return IsEmptyImplementation(source.Cast<object>());
         }
     }
 }

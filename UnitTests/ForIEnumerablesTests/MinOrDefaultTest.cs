@@ -17,9 +17,13 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
+using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -86,6 +90,63 @@ namespace UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
             {
                 Assert.That(EmptyFloatSequence.MinOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_ReturnsDefault()
+            {
+                Assert.That(() => EmptyStringSequence.MinOrDefault(), Is.EqualTo(DefaultString));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_ReturnsDefault()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => EmptyStringSequence.MinOrDefault(defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => EmptyStringSequence.MinOrDefault(null, defaultValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsDefault()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => EmptyStringSequence.MinOrDefault(StringFunc, defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_ReturnsNull()
+            {
+                Assert.That(() => EmptyStringSequence.MinOrDefault(NullString), Is.Null);
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => EmptyStringSequence.MinOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsNull()
+            {
+                Assert.That(() => EmptyStringSequence.MinOrDefault(StringFunc, NullString), Is.Null);
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => EmptyStringSequence.MinOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithStringFunc_ReturnsDefault()
+            {
+                Assert.That(() => EmptyStringSequence.MinOrDefault(StringFunc), Is.EqualTo(DefaultString));
             }
 
             [Test]
@@ -305,6 +366,87 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
+            public void MinOrDefault_OnGenericEnumerable_ReturnsGenericEnumerableMin()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(), Is.EqualTo(genericEnumerable.Min()));
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithDefaultValue_ReturnsGenericEnumerableMin()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(fixture.CreateAnonymous<string>()), Is.EqualTo(genericEnumerable.Min()));
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(null, fixture.CreateAnonymous<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsGenericEnumerableMin()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(StringFunc, fixture.CreateAnonymous<string>()), Is.EqualTo(genericEnumerable.Min(StringFunc)));
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithNullDefaultValue_ReturnsGenericEnumerableMin()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(NullString), Is.EqualTo(genericEnumerable.Min()));
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsGenericEnumerableMin()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(StringFunc, NullString), Is.EqualTo(genericEnumerable.Min(StringFunc)));
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnGenericEnumerable_WithStringFunc_ReturnsGenericEnumerableMin()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MinOrDefault(StringFunc), Is.EqualTo(genericEnumerable.Min(StringFunc)));
+            }
+
+            [Test]
             public void MinOrDefault_OnIntegerArray_ReturnsIntegerArrayMin()
             {
                 Assert.That(IntegerArray.MinOrDefault(), Is.EqualTo(IntegerArray.Min()));
@@ -362,6 +504,12 @@ namespace UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntegerArray_WithLongFunc_ReturnsMin()
             {
                 Assert.That(IntegerArray.MinOrDefault(LongFunc), Is.EqualTo(IntegerArray.Select(LongFunc).Min()));
+            }
+
+            [Test]
+            public void MinOrDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsMin()
+            {
+                Assert.That(IntegerArray.MinOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Min()));
             }
 
             [Test]
@@ -476,6 +624,63 @@ namespace UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
             {
                 Assert.That(NullFloatSequence.MinOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_ReturnsDefault()
+            {
+                Assert.That(() => NullStringSequence.MinOrDefault(), Is.EqualTo(DefaultString));
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithDefaultValue_ReturnsDefaultValue()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => NullStringSequence.MinOrDefault(defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => NullStringSequence.MinOrDefault(null, defaultValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsDefaultValue()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => NullStringSequence.MinOrDefault(StringFunc, defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_ReturnsNull()
+            {
+                Assert.That(() => NullStringSequence.MinOrDefault(NullString), Is.Null);
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => NullStringSequence.MinOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsNull()
+            {
+                Assert.That(() => NullStringSequence.MinOrDefault(StringFunc, NullString), Is.Null);
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => NullStringSequence.MinOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MinOrDefault_OnNullGenericEnumerable_WithStringFunc_ReturnsDefault()
+            {
+                Assert.That(() => NullStringSequence.MinOrDefault(StringFunc), Is.EqualTo(DefaultString));
             }
 
             [Test]
@@ -740,12 +945,6 @@ namespace UnitTests.ForIEnumerablesTests
             public void MinOrDefault_onNullIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
                 Assert.That(NullIntegerSequence.MinOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MinorDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsMin()
-            {
-                Assert.That(IntegerArray.MinOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Min()));
             }
         }
     }

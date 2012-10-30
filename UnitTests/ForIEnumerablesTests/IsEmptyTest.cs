@@ -32,48 +32,112 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class IsEmptyTest
         {
-            //Class to test non-Generic ICollection
-            private sealed class TestObj <T> : ArrayList, IEnumerable<T>
+            [Test]
+            public void IsEmpty_OnGenericCollectionEmpty_ReturnsTrue()
             {
-                #region IEnumerable<T> Members
-
-                IEnumerator<T> IEnumerable<T>.GetEnumerator()
-                {
-                    return this.OfType<T>().GetEnumerator();
-                }
-
-                #endregion
+                ICollection<int> sequence = EmptyIntegerSequence.ToList();
+                Assert.That(() => sequence.IsEmpty(), Is.True);
             }
 
             [Test]
-            public void IsEmptySequenceNull()
+            public void IsEmpty_OnGenericCollectionMultipleItem_ReturnsFalse()
             {
-                Assert.That(() => NullSequence.Of<int>().IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                ICollection<int> sequence = SequenceOneTwoThree.ToList();
+                Assert.That(() => sequence.IsEmpty(), Is.False);
             }
 
             [Test]
-            public void IsEmptySourceContainsOneItem()
+            public void IsEmpty_OnGenericCollectionNull_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 1).IsEmpty(), Is.False); // IEnumerable
-                Assert.That(() => Enumerable.Repeat(1, 1).ToList().IsEmpty(), Is.False); // Generic collection
-                var testObj = new TestObj<int> {1};
-                Assert.That(() => testObj.IsEmpty(), Is.False); // Non-Generic collection
+                ICollection<int> nullCollection = null;
+                Assert.That(() => nullCollection.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void IsEmptySourceContainsZeroItems()
+            public void IsEmpty_OnGenericCollectionSingleItem_ReturnsFalse()
             {
-                Assert.That(() => Enumerable.Empty<int>().IsEmpty(), Is.True); // IEnumerable
-                Assert.That(() => Enumerable.Empty<int>().ToList().IsEmpty(), Is.True); // Generic collection
-                var testObj = new TestObj<int>();
-                Assert.That(() => testObj.IsEmpty(), Is.True); // Non-Generic collection
+                ICollection<int> sequence = SequenceOfOne.ToList();
+                Assert.That(() => sequence.IsEmpty(), Is.False);
             }
 
             [Test]
-            public void TestTestObj()
+            public void IsEmpty_OnGenericEnumerableEmpty_ReturnsTrue()
             {
-                var testObj = new TestObj<int> {1};
-                Assert.That(() => testObj.ToList(), Throws.Nothing);
+                Assert.That(() => EmptyIntegerSequence.IsEmpty(), Is.True);
+            }
+
+            [Test]
+            public void IsEmpty_OnGenericEnumerableMultipleItem_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOneTwoThree.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnGenericEnumerableNull_ThrowsValidationException()
+            {
+                Assert.That(() => NullIntegerSequence.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void IsEmpty_OnGenericEnumerableSingleItem_ReturnsFalse()
+            {
+                Assert.That(() => SequenceOfOne.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionEmpty_ReturnsTrue()
+            {
+                ICollection sequence = EmptyIntegerSequence.ToList();
+                Assert.That(() => sequence.IsEmpty(), Is.True);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionMultipleItem_ReturnsFalse()
+            {
+                ICollection sequence = SequenceOneTwoThree.ToList();
+                Assert.That(() => sequence.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionNull_ThrowsValidationException()
+            {
+                ICollection nullCollection = null;
+                Assert.That(() => nullCollection.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionSingleItem_ReturnsFalse()
+            {
+                ICollection sequence = SequenceOfOne.ToList();
+                Assert.That(() => sequence.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableEmpty_ReturnsTrue()
+            {
+                IEnumerable sequence = EmptyIntegerSequence;
+                Assert.That(() => sequence.IsEmpty(), Is.True);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableMultipleItem_ReturnsFalse()
+            {
+                IEnumerable sequence = SequenceOneTwoThree;
+                Assert.That(() => sequence.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableNull_ThrowsValidationException()
+            {
+                IEnumerable nullCollection = null;
+                Assert.That(() => nullCollection.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableSingleItem_ReturnsFalse()
+            {
+                IEnumerable sequence = SequenceOfOne;
+                Assert.That(() => sequence.IsEmpty(), Is.False);
             }
         }
     }

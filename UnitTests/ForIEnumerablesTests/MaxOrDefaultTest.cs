@@ -17,9 +17,13 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
+using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -86,6 +90,63 @@ namespace UnitTests.ForIEnumerablesTests
             public void MaxOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
             {
                 Assert.That(EmptyFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_ReturnsDefault()
+            {
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(), Is.EqualTo(DefaultString));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_ReturnsDefault()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(null, defaultValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsDefault()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(StringFunc, defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_ReturnsNull()
+            {
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(NullString), Is.Null);
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsNull()
+            {
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(StringFunc, NullString), Is.Null);
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => EmptyStringSequence.MaxOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnEmptyGenericEnumerable_WithStringFunc_ReturnsDefault()
+            {
+                Assert.That(() => EmptyStringSequence.MaxOrDefault(StringFunc), Is.EqualTo(DefaultString));
             }
 
             [Test]
@@ -305,6 +366,87 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
+            public void MaxOrDefault_OnGenericEnumerable_ReturnsGenericEnumerableMax()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(), Is.EqualTo(genericEnumerable.Max()));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithDefaultValue_ReturnsGenericEnumerableMax()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(fixture.CreateAnonymous<string>()), Is.EqualTo(genericEnumerable.Max()));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(null, fixture.CreateAnonymous<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsGenericEnumerableMax()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(StringFunc, fixture.CreateAnonymous<string>()), Is.EqualTo(genericEnumerable.Max(StringFunc)));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithNullDefaultValue_ReturnsGenericEnumerableMax()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(NullString), Is.EqualTo(genericEnumerable.Max()));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsGenericEnumerableMax()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(StringFunc, NullString), Is.EqualTo(genericEnumerable.Max(StringFunc)));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnGenericEnumerable_WithStringFunc_ReturnsGenericEnumerableMax()
+            {
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<string>());
+                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
+                Assert.That(() => genericEnumerable.MaxOrDefault(StringFunc), Is.EqualTo(genericEnumerable.Max(StringFunc)));
+            }
+
+            [Test]
             public void MaxOrDefault_OnIntegerArray_ReturnsIntegerArrayMax()
             {
                 Assert.That(IntegerArray.MaxOrDefault(), Is.EqualTo(IntegerArray.Max()));
@@ -476,6 +618,63 @@ namespace UnitTests.ForIEnumerablesTests
             public void MaxOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
             {
                 Assert.That(NullFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_ReturnsDefault()
+            {
+                Assert.That(() => NullStringSequence.MaxOrDefault(), Is.EqualTo(DefaultString));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithDefaultValue_ReturnsDefaultValue()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => NullStringSequence.MaxOrDefault(defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => NullStringSequence.MaxOrDefault(null, defaultValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsDefaultValue()
+            {
+                var defaultValue = Fixture.CreateAnonymous<string>();
+                Assert.That(() => NullStringSequence.MaxOrDefault(StringFunc, defaultValue), Is.EqualTo(defaultValue));
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_ReturnsNull()
+            {
+                Assert.That(() => NullStringSequence.MaxOrDefault(NullString), Is.Null);
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => NullStringSequence.MaxOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsNull()
+            {
+                Assert.That(() => NullStringSequence.MaxOrDefault(StringFunc, NullString), Is.Null);
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
+            {
+                Assert.That(() => NullStringSequence.MaxOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void MaxOrDefault_OnNullGenericEnumerable_WithStringFunc_ReturnsDefault()
+            {
+                Assert.That(() => NullStringSequence.MaxOrDefault(StringFunc), Is.EqualTo(DefaultString));
             }
 
             [Test]

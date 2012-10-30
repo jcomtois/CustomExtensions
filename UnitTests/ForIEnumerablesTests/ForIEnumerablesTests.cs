@@ -52,6 +52,7 @@ namespace UnitTests.ForIEnumerablesTests
         private const float DefaultFloat = default(float);
         private const int DefaultInteger = default(int);
         private const long DefaultLong = default(long);
+        private const string DefaultString = default(string);
         private const string SingleLetterString = "A";
         private const string NullString = null;
         private static readonly IFixture Fixture = new Fixture().Customize(new AutoMoqCustomization());
@@ -65,6 +66,7 @@ namespace UnitTests.ForIEnumerablesTests
         private static readonly Func<int, float?> NullableFloatFunc = Fixture.CreateAnonymous<Func<int, float?>>();
         private static readonly Func<int, int> IntFunc = Fixture.CreateAnonymous<Func<int, int>>();
         private static readonly Func<int, int?> NullableIntFunc = Fixture.CreateAnonymous<Func<int, int?>>();
+        private static readonly Func<string, string> StringFunc = Fixture.CreateAnonymous<Func<string, string>>();
         private static readonly IEnumerable<decimal> EmptyDecimalSequence = Enumerable.Empty<decimal>();
         private static readonly IEnumerable<double> EmptyDoubleSequence = Enumerable.Empty<double>();
         private static readonly IEnumerable<float> EmptyFloatSequence = Enumerable.Empty<float>();

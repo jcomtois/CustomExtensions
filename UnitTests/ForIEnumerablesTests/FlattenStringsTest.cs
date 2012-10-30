@@ -17,11 +17,10 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,21 +30,23 @@ namespace UnitTests.ForIEnumerablesTests
         public class FlattenStringsTest
         {
             [Test]
-            public void FlattenStrings_OnEmptyEnumerable_ReturnsEmptyString()
+            public void FlattenStrings_OnEmptyStringSequence_ReturnsEmptyString()
             {
-                Assert.That(Enumerable.Empty<string>().FlattenStrings(), Is.Empty);
+                Assert.That(EmptyStringSequence.FlattenStrings(), Is.Empty);
             }
 
             [Test]
-            public void FlattenStrings_OnNullEnumerable_ReturnsEmptyString()
+            public void FlattenStrings_OnNullStringSequence_ReturnsEmptyString()
             {
-                Assert.That(NullSequence.Of<string>().FlattenStrings(), Is.Empty);
+                Assert.That(NullStringSequence.FlattenStrings(), Is.Empty);
             }
 
             [Test]
             public void FlattenStrings_OnValidEnumerable_ReturnsCorrectString()
             {
-                Assert.That(Enumerable.Repeat("A", 3).FlattenStrings(), Is.EqualTo("AAA"));
+                var testStrings = Fixture.CreateMany<string>(5).ToList();
+                var expected = testStrings.Aggregate((result, current) => result + current);
+                Assert.That(testStrings.FlattenStrings(), Is.EqualTo(expected));
             }
         }
     }
