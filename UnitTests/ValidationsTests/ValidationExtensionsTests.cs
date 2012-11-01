@@ -208,7 +208,7 @@ namespace UnitTests.ValidationsTests
             [Test]
             public void IsNotEmptySequenceNullParameterNameEmpty()
             {
-                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), string.Empty), Throws.Nothing);
+                Assert.That(() => _validator.IsNotEmpty<int>(null, string.Empty), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
                 Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
                 var ex = (ArgumentException)_validator.Exceptions.Single();
@@ -218,7 +218,7 @@ namespace UnitTests.ValidationsTests
             [Test]
             public void IsNotEmptySequenceNullParameterNameGood()
             {
-                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), "goodName"), Throws.Nothing);
+                Assert.That(() => _validator.IsNotEmpty<int>(null, "goodName"), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
                 Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
                 var ex = (ArgumentException)_validator.Exceptions.Single();
@@ -228,7 +228,7 @@ namespace UnitTests.ValidationsTests
             [Test]
             public void IsNotEmptySequenceNullParameterNameNull()
             {
-                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), null), Throws.Nothing);
+                Assert.That(() => _validator.IsNotEmpty<int>(null, null), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
                 Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
                 var ex = (ArgumentException)_validator.Exceptions.Single();

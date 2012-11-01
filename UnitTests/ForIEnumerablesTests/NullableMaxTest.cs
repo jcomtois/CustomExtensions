@@ -23,6 +23,7 @@ using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,39 +33,43 @@ namespace UnitTests.ForIEnumerablesTests
         public class NullableMaxTest
         {
             [Test]
-            public void SequenceEmptySelectorGood()
+            public void NullableMax_OnEmptySequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().NullableMax(i => (decimal)i), Is.Null);
+                Assert.That(() => EmptyIntegerSequence.NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptySelectorNull()
+            public void NullableMax_OnEmptySequence_WithSelector_ReturnsNull()
             {
-                Assert.That(() => Enumerable.Empty<int>().NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => EmptyIntegerSequence.NullableMax(Fixture.CreateAnonymous<Func<int, int>>()), Is.Null);
             }
 
             [Test]
-            public void SequenceGoodSelectorGood()
+            public void NullableMax_OnNullSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Range(1, 10).NullableMax(i => (decimal)i), Is.EqualTo(10m));
+                Assert.That(() => NullIntegerSequence.NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceGoodSelectorNull()
+            public void NullableMax_OnNullSequence_WithSelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Range(1, 10).NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => NullIntegerSequence.NullableMax(Fixture.CreateAnonymous<Func<int, int>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullSelectorGood()
+            public void NullableMax_OnSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().NullableMax(i => (decimal)i), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => SequenceOneTwoThree.NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullSelectorNull()
+            public void NullableMax_OnSequence_WithSelector_ReturnsMax()
             {
-                Assert.That(() => NullSequence.Of<int>().NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<int>());
+                var integers = fixture.CreateAnonymous<IEnumerable<int>>().ToArray();
+                var func = fixture.CreateAnonymous<Func<int, decimal>>();
+                Assert.That(() => integers.NullableMax(func), Is.EqualTo(integers.Max(func)));
             }
         }
     }

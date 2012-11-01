@@ -23,6 +23,7 @@ using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,39 +33,43 @@ namespace UnitTests.ForIEnumerablesTests
         public class NullableMinTest
         {
             [Test]
-            public void SequenceEmptySelectorGood()
+            public void NullableMin_OnEmptySequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().NullableMin(i => (decimal)i), Is.Null);
+                Assert.That(() => EmptyIntegerSequence.NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptySelectorNull()
+            public void NullableMin_OnEmptySequence_WithSelector_ReturnsNull()
             {
-                Assert.That(() => Enumerable.Empty<int>().NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => EmptyIntegerSequence.NullableMin(Fixture.CreateAnonymous<Func<int, int>>()), Is.Null);
             }
 
             [Test]
-            public void SequenceGoodSelectorGood()
+            public void NullableMin_OnNullSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Range(1, 10).NullableMin(i => (decimal)i), Is.EqualTo(1m));
+                Assert.That(() => NullIntegerSequence.NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceGoodSelectorNull()
+            public void NullableMin_OnNullSequence_WithSelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Range(1, 10).NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => NullIntegerSequence.NullableMin(Fixture.CreateAnonymous<Func<int, int>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullSelectorGood()
+            public void NullableMin_OnSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().NullableMin(i => (decimal)i), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                Assert.That(() => SequenceOneTwoThree.NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullSelectorNull()
+            public void NullableMin_OnSequence_WithSelector_ReturnsMin()
             {
-                Assert.That(() => NullSequence.Of<int>().NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new Fixture();
+                fixture.Register(() => fixture.CreateMany<int>());
+                var integers = fixture.CreateAnonymous<IEnumerable<int>>().ToArray();
+                var func = fixture.CreateAnonymous<Func<int, decimal>>();
+                Assert.That(() => integers.NullableMin(func), Is.EqualTo(integers.Min(func)));
             }
         }
     }

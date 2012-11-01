@@ -36,7 +36,7 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The nullable maximum value in the sequence.</returns>
         /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="selector"/> is null</exception>
-        public static TResult? NullableMax <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
+        public static TResult? NullableMax <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct 
         {
             Validate.Begin()
                 .IsNotNull(source, "source")

@@ -34,10 +34,10 @@ namespace CustomExtensions.ForIEnumerable
         /// <typeparam name="TResult">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">A sequence of values to determine the maximum value of.</param>
         /// <param name="selector">A transform function to apply to each element.</param>
-        /// <param name="defaultValue">Optional default value to retrun.  Uses type default if not specified.</param>
+        /// <param name="defaultValue">Optional default value to return.  Uses type default if not specified.</param>
         /// <returns>The maximum value in the sequence or default value if provided.</returns>
         /// <exception cref="ValidationException"> if <paramref name="selector"/> is null</exception>
-        public static TResult MaxOrDefault <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue = default(TResult))
+        public static TResult MaxOrDefault <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue = default(TResult)) where TResult : IComparable<TResult> 
         {
             Validate.Begin()
                 .IsNotNull(selector, "selector")
@@ -51,9 +51,9 @@ namespace CustomExtensions.ForIEnumerable
         /// </summary>
         /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">A sequence of values to determine the maximum value of.</param>
-        /// <param name="defaultValue">Optional default value to retrun.  Uses type default if not specified.</param>
+        /// <param name="defaultValue">Optional default value to return.  Uses type default if not specified.</param>
         /// <returns>The maximum value in the sequence or default value if provided.</returns>
-        public static T MaxOrDefault <T>(this IEnumerable<T> source, T defaultValue = default(T))
+        public static T MaxOrDefault <T>(this IEnumerable<T> source, T defaultValue = default(T)) where T : IComparable<T>
         {
             return MaxOrDefaultImplementation(source, defaultValue);
         }
@@ -393,12 +393,12 @@ namespace CustomExtensions.ForIEnumerable
             return source == null ? defaultValue : source.Select(selector).DefaultIfEmpty(defaultValue).Max();
         }
 
-        private static T MaxOrDefaultImplementation <T>(IEnumerable<T> source, T defaultValue)
+        private static T MaxOrDefaultImplementation <T>(IEnumerable<T> source, T defaultValue) where T: IComparable<T>
         {
             return (source == null || source.IsEmpty()) ? defaultValue : source.Max();
         }
 
-        private static TResult MaxOrDefaultImplementation <TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue)
+        private static TResult MaxOrDefaultImplementation <TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue) where TResult: IComparable<TResult>
         {
             Debug.Assert(selector != null, "selector != null");
 

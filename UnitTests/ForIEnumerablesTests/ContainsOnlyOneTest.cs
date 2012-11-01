@@ -18,90 +18,133 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
     public partial class ForIEnumerablesTests
     {
-        [TestFixture]
-        public class ContainsOnlyOneTest
+        [Test]
+        public void ContainsOnlyOne_OnEmptySequence_MeetsPredicate_ReturnsFalse()
         {
-            [Test]
-            public void ContainsOnlyOne_OnEmptyStringSequence_MeetsPredicate_ReturnsFalse()
-            {
-                Assert.That(() => EmptyStringSequence.ContainsOnlyOne(Fixture.CreateAnonymous<Func<string, bool>>()), Is.False);
-            }
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptySequence = Enumerable.Empty<object>();
+            var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
-            [Test]
-            public void ContainsOnlyOne_OnEmptyStringSequence_NullPredicate_ThrowsValidationException()
-            {
-                Assert.That(() => EmptyStringSequence.ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
+            Assert.That(() => emptySequence.ContainsOnlyOne(predicate), Is.False);
+        }
 
-            [Test]
-            public void ContainsOnlyOne_OnEmptyStringSequence_ReturnsFalse()
-            {
-                Assert.That(() => EmptyStringSequence.ContainsOnlyOne(), Is.False);
-            }
+        [Test]
+        public void ContainsOnlyOne_OnEmptySequence_PredicateNull_ThrowsValidationException()
+        {
+            var emptySequence = Enumerable.Empty<object>();
+            Func<object, bool> nullPredicate = null;
 
-            [Test]
-            public void ContainsOnlyOne_OnNullStringSequence_MeetsPredicate_ThrowsValidationException()
-            {
-                Assert.That(() => NullStringSequence.ContainsOnlyOne(Fixture.CreateAnonymous<Func<string, bool>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
+            Assert.That(() => emptySequence.ContainsOnlyOne(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
 
-            [Test]
-            public void ContainsOnlyOne_OnNullStringSequence_NullPredicate_ThrowsValidationException()
-            {
-                Assert.That(() => NullStringSequence.ContainsOnlyOne(null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-            }
+        [Test]
+        public void ContainsOnlyOne_OnEmptySequence_ReturnsFalse()
+        {
+            var emptySequence = Enumerable.Empty<object>();
 
-            [Test]
-            public void ContainsOnlyOne_OnNullStringSequence_ThrowsValidationException()
-            {
-                Assert.That(() => NullStringSequence.ContainsOnlyOne(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
+            Assert.That(() => emptySequence.ContainsOnlyOne(), Is.False);
+        }
 
-            [Test]
-            public void ContainsOnlyOne_OnSequenceOfOne_NullPredicate_ThrowsValidationException()
-            {
-                Assert.That(() => SequenceOfOne.ContainsOnlyOne(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
+        [Test]
+        public void ContainsOnlyOne_OnNullSequence_ThrowsValidationException()
+        {
+            IEnumerable<object> nullSequence = null;
 
-            [Test]
-            public void ContainsOnlyOne_OnSequenceOfOne_ReturnsTrue()
-            {
-                Assert.That(() => SequenceOfOne.ContainsOnlyOne(), Is.True);
-            }
+            Assert.That(() => nullSequence.ContainsOnlyOne(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
 
-            [Test]
-            public void ContainsOnlyOne_OnSequenceOneTwoThree_PredicateEqualsOne_ReturnsTrue()
-            {
-                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(i => i == 1), Is.True);
-            }
+        [Test]
+        public void ContainsOnlyOne_OnNullSequence_WithMeetsPredicate_ThrowsValidationException()
+        {
+            IEnumerable<object> nullSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
-            [Test]
-            public void ContainsOnlyOne_OnSequenceOneTwoThree_PredicateGreaterThanOne_ReturnsFalse()
-            {
-                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(i => i > 1), Is.False);
-            }
+            Assert.That(() => nullSequence.ContainsOnlyOne(predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
 
-            [Test]
-            public void ContainsOnlyOne_OnSequenceOneTwoThree_PredicateLessThanOne_ReturnsFalse()
-            {
-                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(i => i < 1), Is.False);
-            }
+        [Test]
+        public void ContainsOnlyOne_OnNullSequence_WithNullPredicate_ThrowsValidationException()
+        {
+            IEnumerable<object> nullSequence = null;
+            Func<object, bool> predicate = null;
 
-            [Test]
-            public void ContainsOnlyOne_OnSequenceOneTwoThree_ReturnsFalse()
-            {
-                Assert.That(() => SequenceOneTwoThree.ContainsOnlyOne(), Is.False);
-            }
+            Assert.That(() => nullSequence.ContainsOnlyOne(predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+        }
+
+        [Test]
+        public void ContainsOnlyOne_OnSequenceOfOne_ReturnsTrue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var sequenceOfOne = fixture.CreateMany<object>(1);
+
+            Assert.That(() => sequenceOfOne.ContainsOnlyOne(), Is.True);
+        }
+
+        [Test]
+        public void ContainsOnlyOne_OnSequenceOfThree_AllMatchesPredicate_ReturnsFalse()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            fixture.RepeatCount = 3;
+            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            Func<object, bool> objectFunc = o => true;
+
+            Assert.That(() => sequenceOfThree.ContainsOnlyOne(objectFunc), Is.False);
+        }
+
+        [Test]
+        public void ContainsOnlyOne_OnSequenceOfThree_NoMatchesPredicate_ReturnsFalse()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            fixture.RepeatCount = 3;
+            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            Func<object, bool> objectFunc = o => false;
+
+            Assert.That(() => sequenceOfThree.ContainsOnlyOne(objectFunc), Is.False);
+        }
+
+        [Test]
+        public void ContainsOnlyOne_OnSequenceOfThree_OneMatchesPredicate_ReturnsTrue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            fixture.RepeatCount = 3;
+            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
+
+            Assert.That(() => sequenceOfThree.ContainsOnlyOne(objectFunc), Is.True);
+        }
+
+        [Test]
+        public void ContainsOnlyOne_OnSequenceOfThree_PredicateNull_ThrowsValidationException()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            fixture.RepeatCount = 3;
+            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            Func<object, bool> nullPredicate = null;
+
+            Assert.That(() => sequenceOfThree.ContainsOnlyOne(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void ContainsOnlyOne_OnSequenceOfThree_ReturnsFalse()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            fixture.RepeatCount = 3;
+            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+
+            Assert.That(() => sequenceOfThree.ContainsOnlyOne(), Is.False);
         }
     }
 }

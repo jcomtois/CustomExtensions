@@ -18,11 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,75 +34,116 @@ namespace UnitTests.ForIEnumerablesTests
         public class ExcludeTest
         {
             [Test]
-            public void Exclude_OnEmptyStringSequence_WithEnumerable_ReturnsEmptySequence()
+            public void Exclude_OnEmptySequence_WithSequence_ReturnsEmptySequence()
             {
-                Assert.That(() => EmptyStringSequence.Exclude(Fixture.CreateMany<string>()), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+
+                Assert.That(() => emptySequence.Exclude(sequence), Is.Empty);
             }
 
             [Test]
-            public void Exclude_OnEmptyStringSequence_WithNullPredicate_ThrowsValidationException()
+            public void Exclude_OnEmptySequence_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => EmptyStringSequence.Exclude((Func<string, bool>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => emptySequence.Exclude(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Exclude_OnEmptyStringSequence_WithNullSequence_ThrowsValidationException()
+            public void Exclude_OnEmptySequence_WithNullSequence_ThrowsValidationException()
             {
-                Assert.That(() => EmptyStringSequence.Exclude(NullStringSequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => emptySequence.Exclude(nullSequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Exclude_OnEmptyStringSequence_WithNullString_ReturnsEmptySequence()
+            public void Exclude_OnEmptySequence_WithNull_ReturnsEmptySequence()
             {
-                Assert.That(() => EmptyStringSequence.Exclude(NullString), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                object nullObject = null;
+
+                Assert.That(() => emptySequence.Exclude(nullObject), Is.Empty);
             }
 
             [Test]
-            public void Exclude_OnEmptyStringSequence_WithPredicate_ReturnsEmptySequence()
+            public void Exclude_OnEmptySequence_WithPredicate_ReturnsEmptySequence()
             {
-                Assert.That(() => EmptyStringSequence.Exclude(Fixture.CreateAnonymous<Func<string, bool>>()), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => emptySequence.Exclude(objectFunc), Is.Empty);
             }
 
             [Test]
-            public void Exclude_OnEmptyStringSequence_WithSingleElement_ReturnsEmptySequence()
+            public void Exclude_OnEmptySequence_WithSingleElement_ReturnsEmptySequence()
             {
-                Assert.That(() => EmptyStringSequence.Exclude(Fixture.CreateAnonymous<string>()), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => emptySequence.Exclude(objectValue), Is.Empty);
             }
 
             [Test]
-            public void Exclude_OnNullStringSequence_WithElementSequence_ThrowsValidationException()
+            public void Exclude_OnNullSequence_WithSequence_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.Exclude(Fixture.CreateMany<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+
+                Assert.That(() => nullSequence.Exclude(sequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Exclude_OnNullStringSequence_WithNullElementSequence_ThrowsValidationException()
+            public void Exclude_OnNullSequence_WithNullSequence_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.Exclude(NullStringSequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => nullSequence.Exclude(nullSequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Exclude_OnNullStringSequence_WithNullElement_ThrowsValidationException()
+            public void Exclude_OnNullSequence_WithNull_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.Exclude((string)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                object nullObject = null;
+
+                Assert.That(() => nullSequence.Exclude(nullObject), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Exclude_OnNullStringSequence_WithNullPredicate_ThrowsValidationException()
+            public void Exclude_OnNullSequence_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.Exclude((Func<string, bool>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<object> nullSequence = null;
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => nullSequence.Exclude(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Exclude_OnNullStringSequence_WithPredicate_ThrowsValidationException()
+            public void Exclude_OnNullSequence_WithPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.Exclude(Fixture.CreateAnonymous<Func<string, bool>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => nullSequence.Exclude(objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Exclude_OnNullStringSequence_WithSingleElement_ThrowsValidationException()
+            public void Exclude_OnNullSequence_WithElement_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.Exclude(Fixture.CreateAnonymous<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => nullSequence.Exclude(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
@@ -199,6 +242,7 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_OnSequenceOfStringsContainingNullValue_WithNullStringAsSequence_ReturnsSequenceWithoutNullValue()
             {
+                left offhere
                 Assert.That(new[] {"A", null, "B"}.Exclude(NullString.ToEnumerable()), Is.EquivalentTo(new[] {"A", "B"}));
             }
 

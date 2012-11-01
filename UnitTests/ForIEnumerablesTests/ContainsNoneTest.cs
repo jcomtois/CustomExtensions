@@ -18,10 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,76 +34,120 @@ namespace UnitTests.ForIEnumerablesTests
         public class ContainsNoneTest
         {
             [Test]
-            public void ContainsNone_OnEmptyStringSeqeuence_NullPredicate_ThrowsValidationException()
+            public void ContainsNone_OnEmptySequence_MeetsPredicate_ReturnsTrue()
             {
-                Assert.That(() => EmptyStringSequence.ContainsNone(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptySequence = Enumerable.Empty<object>();
+                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => emptySequence.ContainsNone(predicate), Is.True);
             }
 
             [Test]
-            public void ContainsNone_OnEmptyStringSequence_MeetsPredictate_ReturnsTrue()
+            public void ContainsNone_OnEmptySequence_PredicateNull_ThrowsValidationException()
             {
-                Assert.That(() => EmptyStringSequence.ContainsNone(Fixture.CreateAnonymous<Func<string, bool>>()), Is.True);
+                var emptySequence = Enumerable.Empty<object>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => emptySequence.ContainsNone(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsNone_OnEmptyStringSequence_ReturnsTrue()
+            public void ContainsNone_OnEmptySequence_ReturnsTrue()
             {
-                Assert.That(() => EmptyStringSequence.ContainsNone(), Is.True);
+                var emptySequence = Enumerable.Empty<object>();
+
+                Assert.That(() => emptySequence.ContainsNone(), Is.True);
             }
 
             [Test]
-            public void ContainsNone_OnNullStringSequence_MeetsPredicate_ThrowsValidationException()
+            public void ContainsNone_OnNullSequence_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ContainsNone(Fixture.CreateAnonymous<Func<string, bool>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => nullSequence.ContainsNone(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsNone_OnNullStringSequence_NullPredicate_ThrowsValidationException()
+            public void ContainsNone_OnNullSequence_WithMeetsPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ContainsNone(null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => nullSequence.ContainsNone(predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsNone_OnNullStringSequence_ThrowsValidationException()
+            public void ContainsNone_OnNullSequence_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ContainsNone(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => nullSequence.ContainsNone(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void ContainsNone_OnSequenceOfOne_ReturnsFalse()
             {
-                Assert.That(() => SequenceOfOne.ContainsNone(), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequenceOfOne = fixture.CreateMany<object>(1);
+
+                Assert.That(() => sequenceOfOne.ContainsNone(), Is.False);
             }
 
             [Test]
-            public void ContainsNone_OnSequenceOneTwoThree_NullPredicate_ThrowsValidationException()
+            public void ContainsNone_OnSequenceOfThree_AllMatchesPredicate_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsNone(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => true;
+
+                Assert.That(() => sequenceOfThree.ContainsNone(objectFunc), Is.False);
             }
 
             [Test]
-            public void ContainsNone_OnSequenceOneTwoThree_PredicateEqualsOne_ReturnsFalse()
+            public void ContainsNone_OnSequenceOfThree_NoMatchesPredicate_ReturnsTrue()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsNone(i => i == 1), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => false;
+
+                Assert.That(() => sequenceOfThree.ContainsNone(objectFunc), Is.True);
             }
 
             [Test]
-            public void ContainsNone_OnSequenceOneTwoThree_PredicateGreaterThansOne_ReturnsFalse()
+            public void ContainsNone_OnSequenceOfThree_OneMatchesPredicate_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsNone(i => i > 1), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
+
+                Assert.That(() => sequenceOfThree.ContainsNone(objectFunc), Is.False);
             }
 
             [Test]
-            public void ContainsNone_OnSequenceOneTwoThree_PredicateLessThansOne_ReturnsTrue()
+            public void ContainsNone_OnSequenceOfThree_PredicateNull_ThrowsValidationException()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsNone(i => i < 1), Is.True);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => sequenceOfThree.ContainsNone(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsNone_OnSequenceOneTwoThree_ReturnsFalse()
+            public void ContainsNone_OnSequenceOfThree_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsNone(), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+
+                Assert.That(() => sequenceOfThree.ContainsNone(), Is.False);
             }
         }
     }

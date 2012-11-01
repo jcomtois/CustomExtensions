@@ -18,11 +18,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,45 +32,49 @@ namespace UnitTests.ForIEnumerablesTests
         public class PrependTest
         {
             [Test]
-            public void PrependIsLazy()
+            public void Prepend_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<string>().Prepend("A"), Throws.Nothing);
+                Assert.That(() => new BreakingSequence<string>().Prepend(Fixture.CreateAnonymous<string>()), Throws.Nothing);
             }
 
             [Test]
-            public void SequenceEmptyElementGood()
+            public void Prepend_OnEmptySequence_WithElement_ReturnsSequenceOfElement()
             {
-                Assert.That(Enumerable.Empty<string>().Prepend("A"), Is.EqualTo(Enumerable.Repeat("A", 1)));
+                var element = Fixture.CreateAnonymous<string>();
+                Assert.That(EmptyStringSequence.Prepend(element), Is.EqualTo(element.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceEmptyElementNull()
+            public void Prepend_OnEmptySequence_WithNullElement_ReturnsSequenceOfNullElement()
             {
-                Assert.That(Enumerable.Empty<string>().Prepend(null), Is.EqualTo(Enumerable.Repeat<string>(null, 1)));
+                Assert.That(EmptyStringSequence.Prepend(null), Is.EqualTo(NullString.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceGoodElementGood()
+            public void Prepend_OnNullSequence_WithElement_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Prepend("A"), Is.EqualTo(Enumerable.Repeat("A", 3)));
+                Assert.That(() => NullStringSequence.Prepend(Fixture.CreateAnonymous<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNull()
+            public void Prepend_OnNullSequence_WithNullElement_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Prepend(null), Is.EqualTo(new[] {null, "A", "A"}));
+                Assert.That(() => NullStringSequence.Prepend(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullElelmentNull()
+            public void Prepend_OnSequence_WithElement_ReturnsElementPrependedToSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Prepend(null), Throws.TypeOf<ValidationException>());
+                var sequence = Fixture.CreateMany<string>().ToArray();
+                var element = Fixture.CreateAnonymous<string>();
+                Assert.That(sequence.Prepend(element), Is.EqualTo(element.ToEnumerable().Concat(sequence)));
             }
 
             [Test]
-            public void SequenceNullElementGood()
+            public void Prepend_OnSequence_WithNullElement_ReturnsNullElelemntPrependedToSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Prepend("A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var sequence = Fixture.CreateMany<string>().ToArray();
+                Assert.That(sequence.Prepend(NullString), Is.EqualTo(NullString.ToEnumerable().Concat(sequence)));
             }
         }
     }

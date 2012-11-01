@@ -17,9 +17,13 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -27,725 +31,1225 @@ namespace UnitTests.ForIEnumerablesTests
     {
         [TestFixture]
         public class AverageOrDefaultTest
-        {            
+        {
             [Test]
             public void AverageOrDefault_OnDecimalArray_ReturnsAverage()
             {
-                Assert.That(DecimalArray.AverageOrDefault(), Is.EqualTo(DecimalArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArrayAverage = decimalArray.Average();
+
+                Assert.That(() => decimalArray.AverageOrDefault(), Is.EqualTo(decimalArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnDecimalArray_WithTestDecimalValue_ReturnsAverage()
+            public void AverageOrDefault_OnDecimalArray_WithDecimalValue_ReturnsAverage()
             {
-                Assert.That(DecimalArray.AverageOrDefault(TestDecimalValue), Is.EqualTo(DecimalArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArrayAverage = decimalArray.Average();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => decimalArray.AverageOrDefault(decimalValue), Is.EqualTo(decimalArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnDoubleArray_ReturnsDoubleArrayAverage()
             {
-                Assert.That(DoubleArray.AverageOrDefault(), Is.EqualTo(DoubleArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArrayAverage = doubleArray.Average();
+
+                Assert.That(() => doubleArray.AverageOrDefault(), Is.EqualTo(doubleArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnDoubleArray_WithTestDoubleValue_ReturnsDoubleArrayAverage()
+            public void AverageOrDefault_OnDoubleArray_WithDoubleValue_ReturnsAverage()
             {
-                Assert.That(DoubleArray.AverageOrDefault(TestDoubleValue), Is.EqualTo(DoubleArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArrayAverage = doubleArray.Average();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => doubleArray.AverageOrDefault(doubleValue), Is.EqualTo(doubleArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(EmptyDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
+                var emtpyDecimalSequence = Enumerable.Empty<decimal>();
+
+                Assert.That(() => emtpyDecimalSequence.AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnEmptyDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(EmptyDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emtpyDecimalSequence = Enumerable.Empty<decimal>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emtpyDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(EmptyDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
+                var emptyDoubleSequence = Enumerable.Empty<double>();
+
+                Assert.That(() => emptyDoubleSequence.AverageOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnEmptyDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(EmptyDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyDoubleSequence = Enumerable.Empty<double>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(EmptyFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
+                var emptyFloatSequence = Enumerable.Empty<float>();
+
+                Assert.That(() => emptyFloatSequence.AverageOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
+            public void AverageOrDefault_OnEmptyFloatSequence_WithFloatValue_ReturnsFloatvalue()
             {
-                Assert.That(EmptyFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyFloatSequence = Enumerable.Empty<float>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnEmptyIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
+                var emptyIntSequence = Enumerable.Empty<int>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
+            public void AverageOrDefault_OnEmptyIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
+            public void AverageOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var emptyIntSequence = Enumerable.Empty<int>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(doubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(doubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
+            public void AverageOrDefault_OnEmptyIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnEmptyIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(intFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithLongFunc_ReturnsDefaultLong()
+            public void AverageOrDefault_OnEmptyIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(LongFunc), Is.EqualTo(DefaultLong));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(longFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
+            public void AverageOrDefault_OnEmptyIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableDuoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableDuoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnEmptyIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(EmptyIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyIntSequence.AverageOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(EmptyLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
+                var emptyLongSequence = Enumerable.Empty<long>();
+
+                Assert.That(() => emptyLongSequence.AverageOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyLongSequence_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnEmptyLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(EmptyLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyLongSequence = Enumerable.Empty<long>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(EmptyNullableDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
+                var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
+
+                Assert.That(() => emptyNullableDecimalSequence.AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnEmptyNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(EmptyNullableDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emptyNullableDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(EmptyNullableDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
+                var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
+
+                Assert.That(() => emptyNullableDoubleSequence.AverageOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnEmptyNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(EmptyNullableDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyNullableDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(EmptyNullableFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
+                var emptyNullableFloatSequence = Enumerable.Empty<float?>();
+
+                Assert.That(() => emptyNullableFloatSequence.AverageOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
+            public void AverageOrDefault_OnEmptyNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(EmptyNullableFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableFloatSequence = Enumerable.Empty<float?>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyNullableFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyNullableIntegerSequence_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnEmptyNullableIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(EmptyNullableIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
+                var emptyNullableIntSequence = Enumerable.Empty<int?>();
+
+                Assert.That(() => emptyNullableIntSequence.AverageOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnEmptyNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(EmptyNullableIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableIntSequence = Enumerable.Empty<int?>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyNullableIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
             public void AverageOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(EmptyNullableLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
+                var emptyNullableLongSequnce = Enumerable.Empty<long?>();
+
+                Assert.That(() => emptyNullableLongSequnce.AverageOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnEmptyNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnEmptyNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(EmptyNullableLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableLongSequnce = Enumerable.Empty<long?>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyNullableLongSequnce.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
             public void AverageOrDefault_OnFloatArray_ReturnsFloatArrayAverage()
             {
-                Assert.That(FloatArray.AverageOrDefault(), Is.EqualTo(FloatArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArrayAverage = floatArray.Average();
+
+                Assert.That(() => floatArray.AverageOrDefault(), Is.EqualTo(floatArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnFloatArray_WithTestFloatValue_ReturnsFloatArrayAverage()
+            public void AverageOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayAverage()
             {
-                Assert.That(FloatArray.AverageOrDefault(TestFloatValue), Is.EqualTo(FloatArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArrayAverage = floatArray.Average();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => floatArray.AverageOrDefault(floatValue), Is.EqualTo(floatArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_ReturnsIntegerArrayAverage()
+            public void AverageOrDefault_OnIntArray_ReturnsIntArrayAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(), Is.EqualTo(IntegerArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intArrayAverage = intArray.Average();
+
+                Assert.That(() => intArray.AverageOrDefault(), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithDecimalFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithDecimalFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(DecimalFunc), Is.EqualTo(IntegerArray.Select(DecimalFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArrayAverage = intArray.Average(decimalFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(decimalFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithDecimalFunc_WithTestDecimalvalue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(DecimalFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArrayAverage = intArray.Average(decimalFunc);
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => intArray.AverageOrDefault(decimalFunc, decimalValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithDoubleFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithDoubleFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(DoubleFunc), Is.EqualTo(IntegerArray.Select(DoubleFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArrayAverage = intArray.Average(doubleFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(doubleFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithDoubleFunc_WithTestDoubleValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(DoubleFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArrayAverage = intArray.Average(doubleFunc);
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => intArray.AverageOrDefault(doubleFunc, doubleValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithFloatFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithFloatFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(FloatFunc), Is.EqualTo(IntegerArray.Select(FloatFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArrayAverage = intArray.Average(floatFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(floatFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithFloatFunc_WithTestFloatValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(FloatFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArrayAverage = intArray.Average(floatFunc);
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => intArray.AverageOrDefault(floatFunc, floatValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithIntFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithIntFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(IntFunc), Is.EqualTo(IntegerArray.Select(IntFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArrayAverage = intArray.Average(intFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(intFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithIntFunc_WithTestIntegerValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(IntFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArrayAverage = intArray.Average(intFunc);
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => intArray.AverageOrDefault(intFunc, intValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithLongFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(LongFunc), Is.EqualTo(IntegerArray.Select(LongFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intValue = fixture.CreateAnonymous<int>();
+                var intArrayAverage = intArray.Average();
+
+                Assert.That(() => intArray.AverageOrDefault(intValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableDecimalFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithLongFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableDecimalFunc), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var intArrayAverage = intArray.Average(longFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(longFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArrayAverage = intArray.Average(nullableDecimalFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableDoubleFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableDoubleFunc), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArrayAverage = intArray.Average(nullableDecimalFunc);
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => intArray.AverageOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArrayAverage = intArray.Average(nullableDoubleFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableFloatFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableFloatFunc), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArrayAverage = intArray.Average(nullableDoubleFunc);
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => intArray.AverageOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableFloatFunc_WithTestFloatValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArrayAverage = intArray.Average(nullableFloatFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(nullableFloatFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableIntFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableIntFunc), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArrayAverage = intArray.Average(nullableFloatFunc);
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => intArray.AverageOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableIntFunc_WithTestIntegerValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableIntFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArrayAverage = intArray.Average(nullableIntFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(nullableIntFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableLongFunc_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableLongFunc), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArrayAverage = intArray.Average(nullableIntFunc);
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => intArray.AverageOrDefault(nullableIntFunc, intValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithNullableLongFunc_WithTestLongValue_ReturnsAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableLongFunc_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArrayAverage = intArray.Average(nullableLongFunc);
+
+                Assert.That(() => intArray.AverageOrDefault(nullableLongFunc), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnIntegerArray_WithTestIntegerValue_ReturnsIntegerArrayAverage()
+            public void AverageOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsAverage()
             {
-                Assert.That(IntegerArray.AverageOrDefault(TestIntegerValue), Is.EqualTo(IntegerArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArrayAverage = intArray.Average(nullableLongFunc);
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => intArray.AverageOrDefault(nullableLongFunc, longValue), Is.EqualTo(intArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnLongArray_ReturnsLongArrayAverage()
             {
-                Assert.That(LongArray.AverageOrDefault(), Is.EqualTo(LongArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArrayAverage = longArray.Average();
+
+                Assert.That(() => longArray.AverageOrDefault(), Is.EqualTo(longArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnLongArray_WithTestLongValue_ReturnsLongArrayAverage()
+            public void AverageOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayAverage()
             {
-                Assert.That(LongArray.AverageOrDefault(TestLongValue), Is.EqualTo(LongArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArrayAverage = longArray.Average();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => longArray.AverageOrDefault(longValue), Is.EqualTo(longArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
+                IEnumerable<decimal> nullDecimalSequence = null;
+
+                Assert.That(() => nullDecimalSequence.AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnNullDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(NullDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                IEnumerable<decimal> nullDecimalSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(NullDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
+                IEnumerable<double> nullDoubleSequence = null;
+
+                Assert.That(() => nullDoubleSequence.AverageOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnNullDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                IEnumerable<double> nullDoubleSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
+                IEnumerable<float> nullFloatSequence = null;
+
+                Assert.That(() => nullFloatSequence.AverageOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
+            public void AverageOrDefault_OnNullFloatSequence_WithFloatValue_RetursFloatValue()
             {
-                Assert.That(NullFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+                IEnumerable<float> nullFloatSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnNullIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
+                IEnumerable<int> nullIntSequence = null;
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
+            public void AverageOrDefault_OnNullIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnNullIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
+            public void AverageOrDefault_OnNullIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(doubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnNullIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubeValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(doubleFunc, doubeValue), Is.EqualTo(doubeValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
+            public void AverageOrDefault_OnNullIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
+            public void AverageOrDefault_OnNullIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnNullIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(intFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnNullIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithLongFunc_ReturnsDefaultLong()
+            public void AverageOrDefault_OnNullIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(LongFunc), Is.EqualTo(DefaultLong));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnNullIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(longFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
+            public void AverageOrDefault_OnNullIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnNullIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                IEnumerable<int> nullIntSequence = null;
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
+            }
+
+            [Test]
+            public void AverageOrDefault_OnNullIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
+            {
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullIntSequence.AverageOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
+                IEnumerable<long> nullLongSequence = null;
+
+                Assert.That(() => nullLongSequence.AverageOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullLongSequence_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnNullLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
+                IEnumerable<long> nullLongSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullNullableDecimalSequence.AverageOrDefault(), Is.EqualTo(DefaultDecimal));
+                IEnumerable<decimal> nullDecimalSequence = null;
+
+                Assert.That(() => nullDecimalSequence.AverageOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
+            public void AverageOrDefault_OnNullNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(NullNullableDecimalSequence.AverageOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
+                IEnumerable<decimal?> nullNullableDecimalSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullNullableDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(NullNullableDoubleSequence.AverageOrDefault(), Is.EqualTo(DefaultDouble));
+                IEnumerable<double?> nullNullableDoubleSequence = null;
+
+                Assert.That(() => nullNullableDoubleSequence.AverageOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
+            public void AverageOrDefault_OnNullNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullNullableDoubleSequence.AverageOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
+                IEnumerable<double?> nullNullableDoubleSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullNullableDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullNullableFloatSequence.AverageOrDefault(), Is.EqualTo(DefaultFloat));
+                IEnumerable<float?> nullNullableFloatSequence = null;
+
+                Assert.That(() => nullNullableFloatSequence.AverageOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
+            public void AverageOrDefault_OnNullNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(NullNullableFloatSequence.AverageOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
+                IEnumerable<float?> nullNullableFloatSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullNullableFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullNullableIntegerSequence_ReturnsDefaultInteger()
+            public void AverageOrDefault_OnNullNullableIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(NullNullableIntegerSequence.AverageOrDefault(), Is.EqualTo(DefaultInteger));
+                IEnumerable<int?> nullNullableIntSequence = null;
+
+                Assert.That(() => nullNullableIntSequence.AverageOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
+            public void AverageOrDefault_OnNullNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(NullNullableIntegerSequence.AverageOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
+                IEnumerable<int?> nullNullableIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullNullableIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullNullableLongSequence.AverageOrDefault(), Is.EqualTo(DefaultLong));
+                IEnumerable<long?> nullNullableLongSequence = null;
+
+                Assert.That(() => nullNullableLongSequence.AverageOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
+            public void AverageOrDefault_OnNullNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullNullableLongSequence.AverageOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
+                IEnumerable<long?> nullNullableLongSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullNullableLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
             public void AverageOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayAverage()
             {
-                Assert.That(NullableDecimalArray.AverageOrDefault(), Is.EqualTo(NullableDecimalArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+                var nullableDecimalArrayAverage = nullableDecimalArray.Average();
+
+                Assert.That(() => nullableDecimalArray.AverageOrDefault(), Is.EqualTo(nullableDecimalArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullableDecimalArray_WithTestDecimalValue_REturnsNullableDecimalArrayAverage()
+            public void AverageOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayAverage()
             {
-                Assert.That(NullableDecimalArray.AverageOrDefault(TestDecimalValue), Is.EqualTo(NullableDecimalArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalArrayAverage = nullableDecimalArray.Average();
+
+                Assert.That(() => nullableDecimalArray.AverageOrDefault(decimalValue), Is.EqualTo(nullableDecimalArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayAverage()
             {
-                Assert.That(NullableDoubleArray.AverageOrDefault(), Is.EqualTo(NullableDoubleArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArrayAverage = nullableDoubleArray.Average();
+
+                Assert.That(() => nullableDoubleArray.AverageOrDefault(), Is.EqualTo(nullableDoubleArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullableDoubleArray_WithTestDoubleValue_ReturnsNullableDoubleArrayAverage()
+            public void AverageOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayAverage()
             {
-                Assert.That(NullableDoubleArray.AverageOrDefault(TestDoubleValue), Is.EqualTo(NullableDoubleArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArrayAverage = nullableDoubleArray.Average();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullableDoubleArray.AverageOrDefault(doubleValue), Is.EqualTo(nullableDoubleArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayAverage()
             {
-                Assert.That(NullableFloatArray.AverageOrDefault(), Is.EqualTo(NullableFloatArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArrayAverage = nullableFloatArray.Average();
+
+                Assert.That(() => nullableFloatArray.AverageOrDefault(), Is.EqualTo(nullableFloatArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullableFloatArray_WithTestFloatValue_ReturnsNullableFloatArrayAverage()
+            public void AverageOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayAverage()
             {
-                Assert.That(NullableFloatArray.AverageOrDefault(TestFloatValue), Is.EqualTo(NullableFloatArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArrayAverage = nullableFloatArray.Average();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullableFloatArray.AverageOrDefault(floatValue), Is.EqualTo(nullableFloatArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullableIntegerArray_RetunrsNullableIntegerArrayAverage()
+            public void AverageOrDefault_OnNullableIntArray_RetunrsNullableIntArrayAverage()
             {
-                Assert.That(NullableIntegerArray.AverageOrDefault(), Is.EqualTo(NullableIntegerArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArrayAverage = nullableIntArray.Average();
+
+                Assert.That(() => nullableIntArray.AverageOrDefault(), Is.EqualTo(nullableIntArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullableIntegerArray_WithTestIntegerValue_ReturnsNullableIntegerArrayAverage()
+            public void AverageOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayAverage()
             {
-                Assert.That(NullableIntegerArray.AverageOrDefault(TestIntegerValue), Is.EqualTo(NullableIntegerArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArrayAverage = nullableIntArray.Average();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullableIntArray.AverageOrDefault(intValue), Is.EqualTo(nullableIntArrayAverage));
             }
 
             [Test]
             public void AverageOrDefault_OnNullableLongArray_ReturnsNullableLongArrayAverage()
             {
-                Assert.That(NullableLongArray.AverageOrDefault(), Is.EqualTo(NullableLongArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArrayAverage = nullableLongArray.Average();
+
+                Assert.That(() => nullableLongArray.AverageOrDefault(), Is.EqualTo(nullableLongArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_OnNullableLongArray_WithTestLongValue_ReturnsNullableLongArrayAverage()
+            public void AverageOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayAverage()
             {
-                Assert.That(NullableLongArray.AverageOrDefault(TestLongValue), Is.EqualTo(NullableLongArray.Average()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArrayAverage = nullableLongArray.Average();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullableLongArray.AverageOrDefault(longValue), Is.EqualTo(nullableLongArrayAverage));
             }
 
             [Test]
-            public void AverageOrDefault_onNullIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
+            public void AverageOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsAverage()
             {
-                Assert.That(NullIntegerSequence.AverageOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
-            }
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longValue = fixture.CreateAnonymous<long>();
+                var intArrayAverage = intArray.Average(longFunc);
 
-            [Test]
-            public void AverageorDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsAverage()
-            {
-                Assert.That(IntegerArray.AverageOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Average()));
+                Assert.That(() => intArray.AverageOrDefault(longFunc, longValue), Is.EqualTo(intArrayAverage));
             }
         }
     }

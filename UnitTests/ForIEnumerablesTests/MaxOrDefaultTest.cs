@@ -24,928 +24,1497 @@ using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
     public partial class ForIEnumerablesTests
     {
-        [TestFixture]
-        public class MaxOrDefaultTest
+        [Test]
+        public void MaxOrDefault_OnDecimalArray_ReturnsMax()
         {
-            [Test]
-            public void MaxOrDefault_OnDecimalArray_ReturnsMax()
-            {
-                Assert.That(DecimalArray.MaxOrDefault(), Is.EqualTo(DecimalArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnDecimalArray_WithTestDecimalValue_ReturnsMax()
-            {
-                Assert.That(DecimalArray.MaxOrDefault(TestDecimalValue), Is.EqualTo(DecimalArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnDoubleArray_ReturnsDoubleArrayMax()
-            {
-                Assert.That(DoubleArray.MaxOrDefault(), Is.EqualTo(DoubleArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnDoubleArray_WithTestDoubleValue_ReturnsDoubleArrayMax()
-            {
-                Assert.That(DoubleArray.MaxOrDefault(TestDoubleValue), Is.EqualTo(DoubleArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
-            {
-                Assert.That(EmptyDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(EmptyDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
-            {
-                Assert.That(EmptyDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(EmptyDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
-            {
-                Assert.That(EmptyFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyFloatSequence_WithTestFloatValue_ReturnsTestFloatvalue()
-            {
-                Assert.That(EmptyFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_ReturnsDefault()
-            {
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(), Is.EqualTo(DefaultString));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_ReturnsDefault()
-            {
-                var defaultValue = Fixture.CreateAnonymous<string>();
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(defaultValue), Is.EqualTo(defaultValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
-            {
-                var defaultValue = Fixture.CreateAnonymous<string>();
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(null, defaultValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsDefault()
-            {
-                var defaultValue = Fixture.CreateAnonymous<string>();
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(StringFunc, defaultValue), Is.EqualTo(defaultValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_ReturnsNull()
-            {
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(NullString), Is.Null);
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
-            {
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsNull()
-            {
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(StringFunc, NullString), Is.Null);
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
-            {
-                Assert.That(() => EmptyStringSequence.MaxOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyGenericEnumerable_WithStringFunc_ReturnsDefault()
-            {
-                Assert.That(() => EmptyStringSequence.MaxOrDefault(StringFunc), Is.EqualTo(DefaultString));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_ReturnsDefaultInteger()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithLongFunc_ReturnsDefaultLong()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(LongFunc), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableDuoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(EmptyIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
-            {
-                Assert.That(EmptyLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyLongSequence_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(EmptyLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
-            {
-                Assert.That(EmptyNullableDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(EmptyNullableDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
-            {
-                Assert.That(EmptyNullableDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(EmptyNullableDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
-            {
-                Assert.That(EmptyNullableFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
-            {
-                Assert.That(EmptyNullableFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableIntegerSequence_ReturnsDefaultInteger()
-            {
-                Assert.That(EmptyNullableIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(EmptyNullableIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
-            {
-                Assert.That(EmptyNullableLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnEmptyNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(EmptyNullableLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnFloatArray_ReturnsFloatArrayMax()
-            {
-                Assert.That(FloatArray.MaxOrDefault(), Is.EqualTo(FloatArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnFloatArray_WithTestFloatValue_ReturnsFloatArrayMax()
-            {
-                Assert.That(FloatArray.MaxOrDefault(TestFloatValue), Is.EqualTo(FloatArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_ReturnsGenericEnumerableMax()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(), Is.EqualTo(genericEnumerable.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithDefaultValue_ReturnsGenericEnumerableMax()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(fixture.CreateAnonymous<string>()), Is.EqualTo(genericEnumerable.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(null, fixture.CreateAnonymous<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsGenericEnumerableMax()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(StringFunc, fixture.CreateAnonymous<string>()), Is.EqualTo(genericEnumerable.Max(StringFunc)));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithNullDefaultValue_ReturnsGenericEnumerableMax()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(NullString), Is.EqualTo(genericEnumerable.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsGenericEnumerableMax()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(StringFunc, NullString), Is.EqualTo(genericEnumerable.Max(StringFunc)));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnGenericEnumerable_WithStringFunc_ReturnsGenericEnumerableMax()
-            {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<string>());
-                IEnumerable<string> genericEnumerable = fixture.CreateAnonymous<IEnumerable<string>>().ToArray();
-                Assert.That(() => genericEnumerable.MaxOrDefault(StringFunc), Is.EqualTo(genericEnumerable.Max(StringFunc)));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_ReturnsIntegerArrayMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(), Is.EqualTo(IntegerArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithDecimalFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(DecimalFunc), Is.EqualTo(IntegerArray.Select(DecimalFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithDecimalFunc_WithTestDecimalvalue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(DecimalFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithDoubleFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(DoubleFunc), Is.EqualTo(IntegerArray.Select(DoubleFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithDoubleFunc_WithTestDoubleValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(DoubleFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithFloatFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(FloatFunc), Is.EqualTo(IntegerArray.Select(FloatFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithFloatFunc_WithTestFloatValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(FloatFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithIntFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(IntFunc), Is.EqualTo(IntegerArray.Select(IntFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithIntFunc_WithTestIntegerValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(IntFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithLongFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(LongFunc), Is.EqualTo(IntegerArray.Select(LongFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableDecimalFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableDecimalFunc), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(IntegerArray.Select(NullableDecimalFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableDoubleFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableDoubleFunc), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(IntegerArray.Select(NullableDoubleFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableFloatFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableFloatFunc), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableFloatFunc_WithTestFloatValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(IntegerArray.Select(NullableFloatFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableIntFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableIntFunc), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableIntFunc_WithTestIntegerValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(IntegerArray.Select(NullableIntFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableLongFunc_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableLongFunc), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithNullableLongFunc_WithTestLongValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(NullableLongFunc).Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnIntegerArray_WithTestIntegerValue_ReturnsIntegerArrayMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(TestIntegerValue), Is.EqualTo(IntegerArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnLongArray_ReturnsLongArrayMax()
-            {
-                Assert.That(LongArray.MaxOrDefault(), Is.EqualTo(LongArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnLongArray_WithTestLongValue_ReturnsLongArrayMax()
-            {
-                Assert.That(LongArray.MaxOrDefault(TestLongValue), Is.EqualTo(LongArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
-            {
-                Assert.That(NullDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(NullDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
-            {
-                Assert.That(NullDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(NullDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
-            {
-                Assert.That(NullFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullFloatSequence_WithTestFloatValue_RetursTestFloatValue()
-            {
-                Assert.That(NullFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_ReturnsDefault()
-            {
-                Assert.That(() => NullStringSequence.MaxOrDefault(), Is.EqualTo(DefaultString));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithDefaultValue_ReturnsDefaultValue()
-            {
-                var defaultValue = Fixture.CreateAnonymous<string>();
-                Assert.That(() => NullStringSequence.MaxOrDefault(defaultValue), Is.EqualTo(defaultValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithDefaultValue_WithNullStringFunc_ThrowsValidationException()
-            {
-                var defaultValue = Fixture.CreateAnonymous<string>();
-                Assert.That(() => NullStringSequence.MaxOrDefault(null, defaultValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithDefaultValue_WithStringFunc_ReturnsDefaultValue()
-            {
-                var defaultValue = Fixture.CreateAnonymous<string>();
-                Assert.That(() => NullStringSequence.MaxOrDefault(StringFunc, defaultValue), Is.EqualTo(defaultValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_ReturnsNull()
-            {
-                Assert.That(() => NullStringSequence.MaxOrDefault(NullString), Is.Null);
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_WithNullStringFunc_ThrowsValidationException()
-            {
-                Assert.That(() => NullStringSequence.MaxOrDefault(null, NullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithNullDefaultValue_WithStringFunc_ReturnsNull()
-            {
-                Assert.That(() => NullStringSequence.MaxOrDefault(StringFunc, NullString), Is.Null);
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithNullStringFunc_ThrowsValidationException()
-            {
-                Assert.That(() => NullStringSequence.MaxOrDefault((Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullGenericEnumerable_WithStringFunc_ReturnsDefault()
-            {
-                Assert.That(() => NullStringSequence.MaxOrDefault(StringFunc), Is.EqualTo(DefaultString));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_ReturnsDefaultInteger()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithDecimalFunc_ReturnsDefaultDecimal()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(DecimalFunc), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(DecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithDoubleFunc_ReturnsDefaultDouble()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(DoubleFunc), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(DoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithFloatFunc_ReturnsDefaultFloat()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(FloatFunc), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(FloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithIntFunc_ReturnsDefaultInteger()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(IntFunc), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(IntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithLongFunc_ReturnsDefaultLong()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(LongFunc), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithLongFunc_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(LongFunc, TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDecimalFunc), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDecimalFunc_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDecimalFunc, TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDoubleFunc), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableDoubleFunc_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableDoubleFunc, TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableFloatFunc), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableFloatFunc_WithTestFloatValue_ReturnsTestFloatValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableFloatFunc, TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableIntFunc_ReturnsDefaultInteger()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableIntFunc), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableIntFunc_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableIntFunc, TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithNullableLongFunc_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableLongFunc, TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullLongSequence_ReturnsDefaultLong()
-            {
-                Assert.That(NullLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullLongSequence_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(NullLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
-            {
-                Assert.That(NullNullableDecimalSequence.MaxOrDefault(), Is.EqualTo(DefaultDecimal));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableDecimalSequence_WithTestDecimalValue_ReturnsTestDecimalValue()
-            {
-                Assert.That(NullNullableDecimalSequence.MaxOrDefault(TestDecimalValue), Is.EqualTo(TestDecimalValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
-            {
-                Assert.That(NullNullableDoubleSequence.MaxOrDefault(), Is.EqualTo(DefaultDouble));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableDoubleSequence_WithTestDoubleValue_ReturnsTestDoubleValue()
-            {
-                Assert.That(NullNullableDoubleSequence.MaxOrDefault(TestDoubleValue), Is.EqualTo(TestDoubleValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
-            {
-                Assert.That(NullNullableFloatSequence.MaxOrDefault(), Is.EqualTo(DefaultFloat));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableFloatSequence_WithTestFloatValue_ReturnsTestFloatValue()
-            {
-                Assert.That(NullNullableFloatSequence.MaxOrDefault(TestFloatValue), Is.EqualTo(TestFloatValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableIntegerSequence_ReturnsDefaultInteger()
-            {
-                Assert.That(NullNullableIntegerSequence.MaxOrDefault(), Is.EqualTo(DefaultInteger));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableIntegerSequence_WithTestIntegerValue_ReturnsTestIntegerValue()
-            {
-                Assert.That(NullNullableIntegerSequence.MaxOrDefault(TestIntegerValue), Is.EqualTo(TestIntegerValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
-            {
-                Assert.That(NullNullableLongSequence.MaxOrDefault(), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullNullableLongSequence_WithTestLongValue_ReturnsTestLongValue()
-            {
-                Assert.That(NullNullableLongSequence.MaxOrDefault(TestLongValue), Is.EqualTo(TestLongValue));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMax()
-            {
-                Assert.That(NullableDecimalArray.MaxOrDefault(), Is.EqualTo(NullableDecimalArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableDecimalArray_WithTestDecimalValue_REturnsNullableDecimalArrayMax()
-            {
-                Assert.That(NullableDecimalArray.MaxOrDefault(TestDecimalValue), Is.EqualTo(NullableDecimalArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMax()
-            {
-                Assert.That(NullableDoubleArray.MaxOrDefault(), Is.EqualTo(NullableDoubleArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableDoubleArray_WithTestDoubleValue_ReturnsNullableDoubleArrayMax()
-            {
-                Assert.That(NullableDoubleArray.MaxOrDefault(TestDoubleValue), Is.EqualTo(NullableDoubleArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMax()
-            {
-                Assert.That(NullableFloatArray.MaxOrDefault(), Is.EqualTo(NullableFloatArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableFloatArray_WithTestFloatValue_ReturnsNullableFloatArrayMax()
-            {
-                Assert.That(NullableFloatArray.MaxOrDefault(TestFloatValue), Is.EqualTo(NullableFloatArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableIntegerArray_RetunrsNullableIntegerArrayMax()
-            {
-                Assert.That(NullableIntegerArray.MaxOrDefault(), Is.EqualTo(NullableIntegerArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableIntegerArray_WithTestIntegerValue_ReturnsNullableIntegerArrayMax()
-            {
-                Assert.That(NullableIntegerArray.MaxOrDefault(TestIntegerValue), Is.EqualTo(NullableIntegerArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMax()
-            {
-                Assert.That(NullableLongArray.MaxOrDefault(), Is.EqualTo(NullableLongArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_OnNullableLongArray_WithTestLongValue_ReturnsNullableLongArrayMax()
-            {
-                Assert.That(NullableLongArray.MaxOrDefault(TestLongValue), Is.EqualTo(NullableLongArray.Max()));
-            }
-
-            [Test]
-            public void MaxOrDefault_onNullIntegerSequence_WithNullableLongFunc_ReturnsDefaultLong()
-            {
-                Assert.That(NullIntegerSequence.MaxOrDefault(NullableLongFunc), Is.EqualTo(DefaultLong));
-            }
-
-            [Test]
-            public void MaxorDefault_OnIntegerArray_WithLongfunc_WithTestLongValue_ReturnsMax()
-            {
-                Assert.That(IntegerArray.MaxOrDefault(LongFunc, TestLongValue), Is.EqualTo(IntegerArray.Select(LongFunc).Max()));
-            }
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var decimalArray = fixture.CreateAnonymous<decimal[]>();
+            var decimalArrayMax = decimalArray.Max();
+
+            Assert.That(() => decimalArray.MaxOrDefault(), Is.EqualTo(decimalArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnDecimalArray_WithDecimalValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var decimalArray = fixture.CreateAnonymous<decimal[]>();
+            var decimalArrayMax = decimalArray.Max();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => decimalArray.MaxOrDefault(decimalValue), Is.EqualTo(decimalArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnDoubleArray_ReturnsDoubleArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleArray = fixture.CreateAnonymous<double[]>();
+            var doubleArrayMax = doubleArray.Max();
+
+            Assert.That(() => doubleArray.MaxOrDefault(), Is.EqualTo(doubleArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnDoubleArray_WithDoubleValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleArray = fixture.CreateAnonymous<double[]>();
+            var doubleArrayMax = doubleArray.Max();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => doubleArray.MaxOrDefault(doubleValue), Is.EqualTo(doubleArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
+        {
+            var emtpyDecimalSequence = Enumerable.Empty<decimal>();
+
+            Assert.That(() => emtpyDecimalSequence.MaxOrDefault(), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emtpyDecimalSequence = Enumerable.Empty<decimal>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => emtpyDecimalSequence.MaxOrDefault(decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
+        {
+            var emptyDoubleSequence = Enumerable.Empty<double>();
+
+            Assert.That(() => emptyDoubleSequence.MaxOrDefault(), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyDoubleSequence = Enumerable.Empty<double>();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => emptyDoubleSequence.MaxOrDefault(doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
+        {
+            var emptyFloatSequence = Enumerable.Empty<float>();
+
+            Assert.That(() => emptyFloatSequence.MaxOrDefault(), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyFloatSequence_WithFloatValue_ReturnsFloatvalue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyFloatSequence = Enumerable.Empty<float>();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => emptyFloatSequence.MaxOrDefault(floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_ReturnsDefault()
+        {
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(), Is.EqualTo(default(GenericComparable)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithFunc_ReturnsDefault()
+        {
+            //BUG: NCrunch
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullFunc_ThrowsValidationException()
+        {
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullValue_ReturnsNull()
+        {
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            var nullComparable = (GenericComparable)null;
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(nullComparable), Is.Null);
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullValue_WithFunc_ReturnsNull()
+        {
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            GenericComparable nullComparable = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(comparableFunc, nullComparable), Is.Null);
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
+        {
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            GenericComparable nullComparable = null;
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(nullFunc, nullComparable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithValue_ReturnsValue()
+        {
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(comparableValue), Is.EqualTo(comparableValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithValue_WithFunc_ReturnsValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+            Assert.That(() => emptyGenericEnumerable.MaxOrDefault(null, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_ReturnsDefaultInt()
+        {
+            var emptyIntSequence = Enumerable.Empty<int>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+            var emptyIntSequence = Enumerable.Empty<int>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(doubleFunc), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(doubleFunc, doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithFloatFunc_ReturnsDefaultFloat()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(floatFunc), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithIntFunc_ReturnsDefaultInt()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(intFunc), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(intFunc, intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithIntValue_ReturnsIntValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithLongFunc_ReturnsDefaultLong()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(longFunc), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(longFunc, longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableDuoubleFunc_WithDoubleValue_ReturnsDoubleValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyIntSequence = Enumerable.Empty<int>();
+            var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => emptyIntSequence.MaxOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
+        {
+            var emptyLongSequence = Enumerable.Empty<long>();
+
+            Assert.That(() => emptyLongSequence.MaxOrDefault(), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyLongSequence_WithLongValue_ReturnsLongValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyLongSequence = Enumerable.Empty<long>();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => emptyLongSequence.MaxOrDefault(longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
+        {
+            var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
+
+            Assert.That(() => emptyNullableDecimalSequence.MaxOrDefault(), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => emptyNullableDecimalSequence.MaxOrDefault(decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
+        {
+            var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
+
+            Assert.That(() => emptyNullableDoubleSequence.MaxOrDefault(), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => emptyNullableDoubleSequence.MaxOrDefault(doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
+        {
+            var emptyNullableFloatSequence = Enumerable.Empty<float?>();
+
+            Assert.That(() => emptyNullableFloatSequence.MaxOrDefault(), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyNullableFloatSequence = Enumerable.Empty<float?>();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => emptyNullableFloatSequence.MaxOrDefault(floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableIntSequence_ReturnsDefaultInt()
+        {
+            var emptyNullableIntSequence = Enumerable.Empty<int?>();
+
+            Assert.That(() => emptyNullableIntSequence.MaxOrDefault(), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableIntSequence_WithIntValue_ReturnsIntValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyNullableIntSequence = Enumerable.Empty<int?>();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => emptyNullableIntSequence.MaxOrDefault(intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
+        {
+            var emptyNullableLongSequnce = Enumerable.Empty<long?>();
+
+            Assert.That(() => emptyNullableLongSequnce.MaxOrDefault(), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnEmptyNullableLongSequence_WithLongValue_ReturnsLongValue()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var emptyNullableLongSequnce = Enumerable.Empty<long?>();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => emptyNullableLongSequnce.MaxOrDefault(longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnFloatArray_ReturnsFloatArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var floatArray = fixture.CreateAnonymous<float[]>();
+            var floatArrayMax = floatArray.Max();
+
+            Assert.That(() => floatArray.MaxOrDefault(), Is.EqualTo(floatArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var floatArray = fixture.CreateAnonymous<float[]>();
+            var floatArrayMax = floatArray.Max();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => floatArray.MaxOrDefault(floatValue), Is.EqualTo(floatArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_ReturnsGenericEnumerableMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            var comparableArrayMax = comparableArray.Max();
+
+            Assert.That(() => comparableArray.MaxOrDefault(), Is.EqualTo(comparableArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithFunc_ReturnsGenericEnumerableMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+            var comparableArrayMax = comparableArray.Max(comparableFunc);
+
+            Assert.That(() => comparableArray.MaxOrDefault(comparableFunc), Is.EqualTo(comparableArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithNullFunc_ThrowsValidationException()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => comparableArray.MaxOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithNullValue_ReturnsGenericEnumerableMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            GenericComparable nullComparable = null;
+            var comparableArrayMax = comparableArray.Max();
+
+            Assert.That(() => comparableArray.MaxOrDefault(nullComparable), Is.EqualTo(comparableArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithNullValue_WithFunc_ReturnsGenericEnumerableMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            GenericComparable nullComparable = null;
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+            var comparableArrayMax = comparableArray.Max(comparableFunc);
+
+            Assert.That(() => comparableArray.MaxOrDefault(comparableFunc, nullComparable), Is.EqualTo(comparableArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            GenericComparable nullComparable = null;
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => comparableArray.MaxOrDefault(nullFunc, nullComparable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithValue_ReturnsGenericEnumerableMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            var comparableArrayMax = comparableArray.Max();
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+            Assert.That(() => comparableArray.MaxOrDefault(comparableValue), Is.EqualTo(comparableArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithValue_WithFunc_ReturnsGenericEnumerableMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+            var comparableArrayMax = comparableArray.Max(comparableFunc);
+
+            Assert.That(() => comparableArray.MaxOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => comparableArray.MaxOrDefault(nullFunc, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_ReturnsIntArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var intArrayMax = intArray.Max();
+
+            Assert.That(() => intArray.MaxOrDefault(), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithDecimalFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+            var intArrayMax = intArray.Max(decimalFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(decimalFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+            var intArrayMax = intArray.Max(decimalFunc);
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => intArray.MaxOrDefault(decimalFunc, decimalValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithDoubleFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+            var intArrayMax = intArray.Max(doubleFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(doubleFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+            var intArrayMax = intArray.Max(doubleFunc);
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => intArray.MaxOrDefault(doubleFunc, doubleValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithFloatFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+            var intArrayMax = intArray.Max(floatFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(floatFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+            var intArrayMax = intArray.Max(floatFunc);
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => intArray.MaxOrDefault(floatFunc, floatValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithIntFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+            var intArrayMax = intArray.Max(intFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(intFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+            var intArrayMax = intArray.Max(intFunc);
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => intArray.MaxOrDefault(intFunc, intValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var intValue = fixture.CreateAnonymous<int>();
+            var intArrayMax = intArray.Max();
+
+            Assert.That(() => intArray.MaxOrDefault(intValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithLongFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+            var intArrayMax = intArray.Max(longFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(longFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+            var longValue = fixture.CreateAnonymous<long>();
+            var intArrayMax = intArray.Max(longFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(longFunc, longValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+            var intArrayMax = intArray.Max(nullableDecimalFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(nullableDecimalFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+            var intArrayMax = intArray.Max(nullableDecimalFunc);
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => intArray.MaxOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+            var intArrayMax = intArray.Max(nullableDoubleFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(nullableDoubleFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+            var intArrayMax = intArray.Max(nullableDoubleFunc);
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => intArray.MaxOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+            var intArrayMax = intArray.Max(nullableFloatFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(nullableFloatFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+            var intArrayMax = intArray.Max(nullableFloatFunc);
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => intArray.MaxOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableIntFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+            var intArrayMax = intArray.Max(nullableIntFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(nullableIntFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+            var intArrayMax = intArray.Max(nullableIntFunc);
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => intArray.MaxOrDefault(nullableIntFunc, intValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableLongFunc_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+            var intArrayMax = intArray.Max(nullableLongFunc);
+
+            Assert.That(() => intArray.MaxOrDefault(nullableLongFunc), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intArray = fixture.CreateAnonymous<int[]>();
+            var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+            var intArrayMax = intArray.Max(nullableLongFunc);
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => intArray.MaxOrDefault(nullableLongFunc, longValue), Is.EqualTo(intArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnLongArray_ReturnsLongArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var longArray = fixture.CreateAnonymous<long[]>();
+            var longArrayMax = longArray.Max();
+
+            Assert.That(() => longArray.MaxOrDefault(), Is.EqualTo(longArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var longArray = fixture.CreateAnonymous<long[]>();
+            var longArrayMax = longArray.Max();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => longArray.MaxOrDefault(longValue), Is.EqualTo(longArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
+        {
+            IEnumerable<decimal> nullDecimalSequence = null;
+
+            Assert.That(() => nullDecimalSequence.MaxOrDefault(), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
+        {
+            IEnumerable<decimal> nullDecimalSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => nullDecimalSequence.MaxOrDefault(decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
+        {
+            IEnumerable<double> nullDoubleSequence = null;
+
+            Assert.That(() => nullDoubleSequence.MaxOrDefault(), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
+        {
+            IEnumerable<double> nullDoubleSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => nullDoubleSequence.MaxOrDefault(doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
+        {
+            IEnumerable<float> nullFloatSequence = null;
+
+            Assert.That(() => nullFloatSequence.MaxOrDefault(), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullFloatSequence_WithFloatValue_RetursFloatValue()
+        {
+            IEnumerable<float> nullFloatSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => nullFloatSequence.MaxOrDefault(floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithFunc_ReturnsDefault()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithNullFunc_ThrowsValidationException()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithNullValue_ReturnsNull()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            GenericComparable nullComparable = null;
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(nullComparable), Is.Null);
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithNullValue_WithFunc_ReturnsNull()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            GenericComparable nullComparable = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(comparableFunc, nullComparable), Is.Null);
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            GenericComparable nullComparable = null;
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(nullFunc, nullComparable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithValue_ReturnsValue()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(comparableValue), Is.EqualTo(comparableValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithValue_WithFunc_ReturnsValue()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+            var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
+        {
+            IEnumerable<GenericComparable> nullComparableEnumerable = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+            Func<GenericComparable, GenericComparable> nullFunc = null;
+
+            Assert.That(() => nullComparableEnumerable.MaxOrDefault(nullFunc, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_ReturnsDefaultInt()
+        {
+            IEnumerable<int> nullIntSequence = null;
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(doubleFunc), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+            var doubeValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(doubleFunc, doubeValue), Is.EqualTo(doubeValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithFloatFunc_ReturnsDefaultFloat()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(floatFunc), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithIntFunc_ReturnsDefaultInt()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(intFunc), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(intFunc, intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithIntValue_ReturnsIntValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithLongFunc_ReturnsDefaultLong()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(longFunc), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(longFunc, longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            IEnumerable<int> nullIntSequence = null;
+            var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
+        {
+            IEnumerable<int> nullIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => nullIntSequence.MaxOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullLongSequence_ReturnsDefaultLong()
+        {
+            IEnumerable<long> nullLongSequence = null;
+
+            Assert.That(() => nullLongSequence.MaxOrDefault(), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullLongSequence_WithLongValue_ReturnsLongValue()
+        {
+            IEnumerable<long> nullLongSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => nullLongSequence.MaxOrDefault(longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
+        {
+            IEnumerable<decimal> nullDecimalSequence = null;
+
+            Assert.That(() => nullDecimalSequence.MaxOrDefault(), Is.EqualTo(default(decimal)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
+        {
+            IEnumerable<decimal?> nullNullableDecimalSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+
+            Assert.That(() => nullNullableDecimalSequence.MaxOrDefault(decimalValue), Is.EqualTo(decimalValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
+        {
+            IEnumerable<double?> nullNullableDoubleSequence = null;
+
+            Assert.That(() => nullNullableDoubleSequence.MaxOrDefault(), Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
+        {
+            IEnumerable<double?> nullNullableDoubleSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => nullNullableDoubleSequence.MaxOrDefault(doubleValue), Is.EqualTo(doubleValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
+        {
+            IEnumerable<float?> nullNullableFloatSequence = null;
+
+            Assert.That(() => nullNullableFloatSequence.MaxOrDefault(), Is.EqualTo(default(float)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
+        {
+            IEnumerable<float?> nullNullableFloatSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => nullNullableFloatSequence.MaxOrDefault(floatValue), Is.EqualTo(floatValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableIntSequence_ReturnsDefaultInt()
+        {
+            IEnumerable<int?> nullNullableIntSequence = null;
+
+            Assert.That(() => nullNullableIntSequence.MaxOrDefault(), Is.EqualTo(default(int)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableIntSequence_WithIntValue_ReturnsIntValue()
+        {
+            IEnumerable<int?> nullNullableIntSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => nullNullableIntSequence.MaxOrDefault(intValue), Is.EqualTo(intValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
+        {
+            IEnumerable<long?> nullNullableLongSequence = null;
+
+            Assert.That(() => nullNullableLongSequence.MaxOrDefault(), Is.EqualTo(default(long)));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullNullableLongSequence_WithLongValue_ReturnsLongValue()
+        {
+            IEnumerable<long?> nullNullableLongSequence = null;
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => nullNullableLongSequence.MaxOrDefault(longValue), Is.EqualTo(longValue));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+            var nullableDecimalArrayMax = nullableDecimalArray.Max();
+
+            Assert.That(() => nullableDecimalArray.MaxOrDefault(), Is.EqualTo(nullableDecimalArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+            var decimalValue = fixture.CreateAnonymous<decimal>();
+            var nullableDecimalArrayMax = nullableDecimalArray.Max();
+
+            Assert.That(() => nullableDecimalArray.MaxOrDefault(decimalValue), Is.EqualTo(nullableDecimalArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+            var nullableDoubleArrayMax = nullableDoubleArray.Max();
+
+            Assert.That(() => nullableDoubleArray.MaxOrDefault(), Is.EqualTo(nullableDoubleArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+            var nullableDoubleArrayMax = nullableDoubleArray.Max();
+            var doubleValue = fixture.CreateAnonymous<double>();
+
+            Assert.That(() => nullableDoubleArray.MaxOrDefault(doubleValue), Is.EqualTo(nullableDoubleArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+            var nullableFloatArrayMax = nullableFloatArray.Max();
+
+            Assert.That(() => nullableFloatArray.MaxOrDefault(), Is.EqualTo(nullableFloatArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+            var nullableFloatArrayMax = nullableFloatArray.Max();
+            var floatValue = fixture.CreateAnonymous<float>();
+
+            Assert.That(() => nullableFloatArray.MaxOrDefault(floatValue), Is.EqualTo(nullableFloatArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableIntArray_RetunrsNullableIntArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+            var nullableIntArrayMax = nullableIntArray.Max();
+
+            Assert.That(() => nullableIntArray.MaxOrDefault(), Is.EqualTo(nullableIntArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+            var nullableIntArrayMax = nullableIntArray.Max();
+            var intValue = fixture.CreateAnonymous<int>();
+
+            Assert.That(() => nullableIntArray.MaxOrDefault(intValue), Is.EqualTo(nullableIntArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+            var nullableLongArrayMax = nullableLongArray.Max();
+
+            Assert.That(() => nullableLongArray.MaxOrDefault(), Is.EqualTo(nullableLongArrayMax));
+        }
+
+        [Test]
+        public void MaxOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayMax()
+        {
+            var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+            var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+            var nullableLongArrayMax = nullableLongArray.Max();
+            var longValue = fixture.CreateAnonymous<long>();
+
+            Assert.That(() => nullableLongArray.MaxOrDefault(longValue), Is.EqualTo(nullableLongArrayMax));
         }
     }
 }

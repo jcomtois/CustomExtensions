@@ -18,10 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -33,134 +36,197 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnEmptySequence_OnOne_MeetsPredicate_ReturnsFalse()
             {
-                Assert.That(() => EmptyStringSequence.ContainsExactly(1, Fixture.CreateAnonymous<Func<string, bool>>()), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptySequence = Enumerable.Empty<object>();
+                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => emptySequence.ContainsExactly(1, predicate), Is.False);
             }
 
             [Test]
             public void ContainsExactly_OnEmptySequence_OnOne_ReturnsFalse()
             {
-                Assert.That(() => EmptyStringSequence.ContainsExactly(1), Is.False);
+                var emptySequence = Enumerable.Empty<object>();
+
+                Assert.That(() => emptySequence.ContainsExactly(1), Is.False);
             }
 
             [Test]
             public void ContainsExactly_OnEmptySequence_OnZero_MeetsPredicate_ReturnsTrue()
             {
-                Assert.That(() => EmptyStringSequence.ContainsExactly(0, Fixture.CreateAnonymous<Func<string, bool>>()), Is.True);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptySequence = Enumerable.Empty<object>();
+                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => emptySequence.ContainsExactly(0, predicate), Is.True);
             }
 
             [Test]
             public void ContainsExactly_OnEmptySequence_OnZero_PredicateNull_ThrowsValidationException()
             {
-                Assert.That(() => EmptyStringSequence.ContainsExactly(0, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => emptySequence.ContainsExactly(0, nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void ContainsExactly_OnEmptySequence_OnZero_ReturnsTrue()
             {
-                Assert.That(() => EmptyStringSequence.ContainsExactly(0), Is.True);
+                var emptySequence = Enumerable.Empty<object>();
+
+                Assert.That(() => emptySequence.ContainsExactly(0), Is.True);
             }
 
             [Test]
-            public void ContainsExactly_OnNullStringSequence_OnZero_ThrowsValidationException()
+            public void ContainsExactly_OnNullSequence_OnZero_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ContainsExactly(0), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => nullSequence.ContainsExactly(0), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsExactly_OnNullStringSequence_OnZero_WithMeetsPredicate_ThrowsValidationException()
+            public void ContainsExactly_OnNullSequence_OnZero_WithMeetsPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ContainsExactly(0, Fixture.CreateAnonymous<Func<string, bool>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => nullSequence.ContainsExactly(0, predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsExactly_OnNullStringSequence_OnZero_WithNullPredicate_ThrowsValidationException()
+            public void ContainsExactly_OnNullSequence_OnZero_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ContainsExactly(0, null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<object> nullSequence = null;
+                Func<object, bool> predicate = null;
+
+                Assert.That(() => nullSequence.ContainsExactly(0, predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void ContainsExactly_OnSequenceOfOne_OnOne_ReturnsTrue()
             {
-                Assert.That(() => SequenceOfOne.ContainsExactly(1), Is.True);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequenceOfOne = fixture.CreateMany<object>(1);
+
+                Assert.That(() => sequenceOfOne.ContainsExactly(1), Is.True);
             }
 
             [Test]
             public void ContainsExactly_OnSequenceOfOne_OnTwo_ReturnsFalse()
             {
-                Assert.That(() => SequenceOfOne.ContainsExactly(2), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequenceOfOne = fixture.CreateMany<object>(1);
+
+                Assert.That(() => sequenceOfOne.ContainsExactly(2), Is.False);
             }
 
             [Test]
             public void ContainsExactly_OnSequenceOfOne_OnZero_ReturnsFalse()
             {
-                Assert.That(() => SequenceOfOne.ContainsExactly(0), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequenceOfOne = fixture.CreateMany<object>(1);
+
+                Assert.That(() => sequenceOfOne.ContainsExactly(0), Is.False);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnFour_ReturnsFalse()
+            public void ContainsExactly_OnSequenceOfThree_OnFour_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(4), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(4), Is.False);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnOnThree_PredicatNull_ThrowsValidationException()
+            public void ContainsExactly_OnSequenceOfThree_OnOnThree_PredicateNull_ThrowsValidationException()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(3, null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(3, nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnOne_PredicateEqualToOne_ReturnsTrue()
+            public void ContainsExactly_OnSequenceOfThree_OnOne_AllMatchesPredicate_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(1, i => i == 1), Is.True);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => true;
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(1, objectFunc), Is.False);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnOne_PredicateGreaterThanOne_ReturnsFalse()
+            public void ContainsExactly_OnSequenceOfThree_OnOne_NoMatchesPredicate_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(1, i => i > 1), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => false;
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(1, objectFunc), Is.False);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnOne_PredicateLessThanOne_ReturnsFalse()
+            public void ContainsExactly_OnSequenceOfThree_OnOne_OneMatchesPredicate_ReturnsTrue()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(1, i => i < 1), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(1, objectFunc), Is.True);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnThree_PredicateGreaterThanOne_ReturnsFalse()
+            public void ContainsExactly_OnSequenceOfThree_OnThree_AllMatchesPredicate_ReturnsTrue()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(3, i => i > 1), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => true;
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(3, objectFunc), Is.True);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnThree_ReturnsTrue()
+            public void ContainsExactly_OnSequenceOfThree_OnThree_NoMatchesPredicate_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(3), Is.True);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => false;
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(3, objectFunc), Is.False);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnTwo_PredicateGreaterThanOne_ReturnsTrue()
+            public void ContainsExactly_OnSequenceOfThree_OnThree_OneMatchesPredicate_ReturnsFalse()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(2, i => i > 1), Is.True);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
+
+                Assert.That(() => sequenceOfThree.ContainsExactly(3, objectFunc), Is.False);
             }
 
             [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnTwo_ReturnsFalse()
+            public void ContainsExactly_OnSequenceOfThree_OnThree_ReturnsTrue()
             {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(2), Is.False);
-            }
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
 
-            [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnZero_PredicateEqualToOne_ReturnsFalse()
-            {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(0, i => i == 1), Is.False);
-            }
-
-            [Test]
-            public void ContainsExactly_OnSequenceOneTwoThree_OnZero_PredicateLessThanOne_ReturnsTrue()
-            {
-                Assert.That(() => SequenceOneTwoThree.ContainsExactly(0, i => i < 1), Is.True);
+                Assert.That(() => sequenceOfThree.ContainsExactly(3), Is.True);
             }
         }
     }
