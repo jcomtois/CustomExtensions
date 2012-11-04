@@ -21,6 +21,7 @@ using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,20 +33,26 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void FlattenStrings_OnEmptyStringSequence_ReturnsEmptyString()
             {
-                Assert.That(EmptyStringSequence.FlattenStrings(), Is.Empty);
+                var emptyStringSequence = string.Empty.ToEnumerable();
+
+                Assert.That(emptyStringSequence.FlattenStrings(), Is.Empty);
             }
 
             [Test]
             public void FlattenStrings_OnNullStringSequence_ReturnsEmptyString()
             {
-                Assert.That(NullStringSequence.FlattenStrings(), Is.Empty);
+                var nullStringSequence = ((string)null).ToEnumerable();
+
+                Assert.That(nullStringSequence.FlattenStrings(), Is.Empty);
             }
 
             [Test]
             public void FlattenStrings_OnValidEnumerable_ReturnsCorrectString()
             {
-                var testStrings = Fixture.CreateMany<string>(5).ToList();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));                
+                var testStrings = fixture.CreateMany<string>(5).ToList();
                 var expected = testStrings.Aggregate((result, current) => result + current);
+
                 Assert.That(testStrings.FlattenStrings(), Is.EqualTo(expected));
             }
         }
