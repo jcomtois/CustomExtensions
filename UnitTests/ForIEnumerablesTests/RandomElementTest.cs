@@ -34,6 +34,45 @@ namespace UnitTests.ForIEnumerablesTests
         public class RandomElementTest
         {
             [Test]
+            public void RandomElement_OnCollectionSequence_EventuallyChoosesEachItem()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 10;
+                var checkList = fixture.CreateMany<object>().ToArray();
+                var dic = checkList.ToDictionary(i => i, e => 0);
+                var random = fixture.CreateAnonymous<Random>();
+                var maxIterations = 1000 * checkList.Count();
+                var iterations = 0;
+
+                while (dic.ContainsValue(0))
+                {
+                    dic[checkList.RandomElement(random)]++;
+                    var i = iterations++;
+                    Assert.That(() => i, Is.LessThan(maxIterations), string.Format("Dictionary contains {0} items", dic.Values.Sum()));
+                }
+            }
+
+            [Test]
+            public void RandomElement_OnCollectionSequence_ProducesRepeatableOutput_BasedOnKnownSeed()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var seed = fixture.CreateAnonymous<int>();
+                const int numberItemsToCheck = 100;
+                var random = new Random(seed);
+                var integersFromSeed = Enumerable.Range(0, numberItemsToCheck).Select(i => random.Next(numberItemsToCheck)).ToArray();
+
+                fixture.RepeatCount = numberItemsToCheck;
+                var checkList = fixture.CreateAnonymous<object[]>();
+
+                random = new Random(seed);
+
+                foreach (var i in integersFromSeed)
+                {
+                    Assert.That(() => checkList.RandomElement(random), Is.EqualTo(checkList[i]));
+                }
+            }
+
+            [Test]
             public void RandomElement_OnEmptySequence_ThrowsValidationException()
             {
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
@@ -50,6 +89,42 @@ namespace UnitTests.ForIEnumerablesTests
                 Random nullRandom = null;
 
                 Assert.That(() => emptySequence.RandomElement(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void RandomElement_OnNonCollectionSequence_EventuallyChoosesEachItem()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 10;
+                IEnumerable<object> checkList = fixture.CreateMany<object>().ToArray().Select(o => o);
+                var dic = checkList.ToDictionary(i => i, e => 0);
+                var random = fixture.CreateAnonymous<Random>();
+                var maxIterations = 1000 * checkList.Count();
+                var iterations = 0;
+
+                while (dic.ContainsValue(0))
+                {
+                    dic[checkList.RandomElement(random)]++;
+                    var i = iterations++;
+                    Assert.That(() => i, Is.LessThan(maxIterations), string.Format("Dictionary contains {0} items", dic.Values.Sum()));
+                }
+            }
+
+            [Test]
+            public void RandomElement_OnNonCollectionSequence_ProducesRepeatableOutput_BasedOnKnownSeed()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var seed = fixture.CreateAnonymous<int>();
+                const int numberItemsToCheck = 100;
+                fixture.RepeatCount = numberItemsToCheck;
+                IEnumerable<int> checkList = fixture.CreateAnonymous<int[]>().Select(o => o);
+
+                var random = new Random(seed);
+                var trial1 = Enumerable.Range(0, numberItemsToCheck).Select(r => checkList.RandomElement(random)).ToArray();
+                random = new Random(seed);
+                var trial2 = Enumerable.Range(0, numberItemsToCheck).Select(r => checkList.RandomElement(random)).ToArray();
+
+                Assert.That(() => trial1, Is.EqualTo(trial2));
             }
 
             [Test]
@@ -86,25 +161,6 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void RandomElement_OnSequence_EventuallyChoosesEachItem()
-            {
-                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
-                fixture.RepeatCount = 10;
-                var checkList = fixture.CreateMany<object>().ToArray();
-                var dic = checkList.ToDictionary(i => i, e => 0);
-                var random = fixture.CreateAnonymous<Random>();
-                var maxIterations = 1000 * checkList.Count();
-                var iterations = 0;
-
-                while (dic.ContainsValue(0))
-                {
-                    dic[checkList.RandomElement(random)]++;
-                    var i = iterations++;
-                    Assert.That(() => i, Is.LessThan(maxIterations), string.Format("Dictionary contains {0} items", dic.Values.Sum()));
-                }
-            }
-
-            [Test]
             public void RandomElement_OnSequence_WithNullRandom_ThrowsValidationException()
             {
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
@@ -112,26 +168,6 @@ namespace UnitTests.ForIEnumerablesTests
                 Random nullRandom = null;
 
                 Assert.That(() => sequence.RandomElement(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void RandomElement_ProducesRepeatableOutput_BasedOnKnownSeed()
-            {
-                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
-                var seed = fixture.CreateAnonymous<int>();
-                const int numberItemsToCheck = 100;
-                var random = new Random(seed);
-                var integersFromSeed = Enumerable.Range(0, numberItemsToCheck).Select(i => random.Next(numberItemsToCheck)).ToArray();
-
-                fixture.RepeatCount = numberItemsToCheck;
-                var checkList = fixture.CreateAnonymous<object[]>();
-
-                random = new Random(seed);
-
-                foreach (var i in integersFromSeed)
-                {
-                    Assert.That(() => checkList.RandomElement(random), Is.EqualTo(checkList[i]));
-                }
             }
         }
     }

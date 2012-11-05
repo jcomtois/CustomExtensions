@@ -37,8 +37,9 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void DistinctBy_IsLazy()
             {
-                var breakingSequence = new BreakingSequence<object>();
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
 
                 Assert.That(() => breakingSequence.DistinctBy(objectFunc), Throws.Nothing);
@@ -217,8 +218,8 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void DistinctBy_WithEqualityComparer_IsLazy()
             {
-                var breakingSequence = new BreakingSequence<object>();
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
                 var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
 

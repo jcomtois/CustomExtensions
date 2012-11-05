@@ -18,9 +18,10 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -29,35 +30,21 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class ToEnumerableTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void Setup()
-            {
-                _theObject = new object();
-            }
-
-            #endregion
-
-            private object _theObject;
-            private readonly object _nullObject;
-
             [Test]
             public void ToEnumerable_OnNullObject_CreatesEnumerable()
             {
-                Assert.That(() => _nullObject.ToEnumerable(), Is.EquivalentTo(Enumerable.Repeat(_nullObject, 1)));
+                object nullObject = null;
+
+                Assert.That(() => nullObject.ToEnumerable(), Is.InstanceOf<IEnumerable<object>>());
             }
 
             [Test]
             public void ToEnumerable_OnObject_CreatesEnumerable()
             {
-                Assert.That(() => _theObject.ToEnumerable(), Is.EquivalentTo(Enumerable.Repeat(_theObject, 1)));
-            }
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
 
-            [Test]
-            public void ToEnumerable_OnObject_EnumeratingThrowsNothing()
-            {
-                Assert.That(() => _theObject.ToEnumerable().ToList(), Throws.Nothing);
+                Assert.That(() => objectValue.ToEnumerable(), Is.InstanceOf<IEnumerable<object>>());
             }
         }
     }

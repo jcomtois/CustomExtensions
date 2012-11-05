@@ -36,11 +36,11 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void Append_IsLazy()
             {
-                var breakingSequnce = new BreakingSequence<object>();
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var objectValue = fixture.CreateAnonymous<object>();
 
-                Assert.That(() => breakingSequnce.Append(objectValue), Throws.Nothing);
+                Assert.That(() => breakingSequence.Append(objectValue), Throws.Nothing);
             }
 
             [Test]
