@@ -61,10 +61,6 @@ namespace UnitTests.ForIEnumerablesTests
             }
         }
 
-
-        private static readonly IEnumerable<string> EmptyStringSequence = Enumerable.Empty<string>();
-        private static readonly IEnumerable<string> NullStringSequence;
-        private const string NullString = null;
         private static readonly IFixture Fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
         private static readonly IEnumerable<int> EmptyIntegerSequence = Enumerable.Empty<int>();
     }

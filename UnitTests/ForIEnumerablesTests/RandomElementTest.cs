@@ -24,6 +24,7 @@ using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,109 +33,104 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class RandomElementTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
-            {
-                _random = new Random(Seed);
-            }
-
-            #endregion
-
-            private Random _random;
-            private const int Seed = 1;
-            private readonly IList<int> _first10RandomIntegersFromSeed;
-
-            public RandomElementTest()
-            {
-                var rand = new Random(Seed);
-                _first10RandomIntegersFromSeed = Enumerable.Range(0, 10).Select(i => rand.Next(10)).ToList();
-            }
-
             [Test]
-            public void RadomElement_OnEmptySequence_ThrowsValidationException()
+            public void RandomElement_OnEmptySequence_ThrowsValidationException()
             {
-                Assert.That(() => EmptyIntegerSequence.RandomElement(Fixture.CreateAnonymous<Random>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var random = fixture.CreateAnonymous<Random>();
+                var emptySequence = Enumerable.Empty<object>();
+
+                Assert.That(() => emptySequence.RandomElement(random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
 
             [Test]
             public void RandomElement_OnEmptySequence_WithNullRandom_ThrowsValidationException()
             {
-                Assert.That(() =>EmptyIntegerSequence.RandomElement(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());                
+                var emptySequence = Enumerable.Empty<object>();
+                Random nullRandom = null;
+
+                Assert.That(() => emptySequence.RandomElement(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            [Timeout(2000)]
-            public void RandomElement_OnSequence_EventuallyChosesEachItem()
+            public void RandomElement_OnNullSequence_ThrowsValidationException()
             {
-                var checkList = Fixture.CreateMany<string>().ToArray();
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var random = fixture.CreateAnonymous<Random>();
+
+                Assert.That(() => nullSequence.RandomElement(random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void RandomElement_OnNullSequence_WithNullRandom_ThrowsValidationException()
+            {
+                IEnumerable<object> nullSequence = null;
+                Random nullRandom = null;
+
+                Assert.That(() => nullSequence.RandomElement(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void RandomElement_OnSequence_EventuallyChoosesEachItem()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 10;
+                var checkList = fixture.CreateMany<object>().ToArray();
                 var dic = checkList.ToDictionary(i => i, e => 0);
+                var random = fixture.CreateAnonymous<Random>();
+                var maxIterations = 1000 * checkList.Count();
+                var iterations = 0;
+
                 while (dic.ContainsValue(0))
                 {
-                    dic[checkList.RandomElement(_random)]++;
+                    dic[checkList.RandomElement(random)]++;
+                    var i = iterations++;
+                    Assert.That(() => i, Is.LessThan(maxIterations), string.Format("Dictionary contains {0} items", dic.Values.Sum()));
                 }
-                Console.WriteLine("Dictionary contains {0} items", dic.Values.Sum());
+            }
+
+            [Test]
+            public void RandomElement_OnSequenceOfOne_AlwaysChoosesSameItem()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                var sequenceOfOne = objectValue.ToEnumerable();
+                var random = fixture.CreateAnonymous<Random>();
+
+                for (var i = 0; i < 10000; i++)
+                {
+                    Assert.That(() => sequenceOfOne.RandomElement(random), Is.EqualTo(objectValue));
+                }
             }
 
             [Test]
             public void RandomElement_OnSequence_WithNullRandom_ThrowsValidationException()
             {
-                Assert.That(() => Fixture.CreateMany<int>().RandomElement(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+                Random nullRandom = null;
+
+                Assert.That(() => sequence.RandomElement(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodTypeOfICollection()
+            public void RandomElement_ProducesRepeatableOutput_BasedOnKnownSeed()
             {
-                var checkList = Enumerable.Range(0, 10).ToList();
-                foreach (var i in _first10RandomIntegersFromSeed)
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var seed = fixture.CreateAnonymous<int>();
+                const int numberItemsToCheck = 100;
+                var random = new Random(seed);                
+                var integersFromSeed = Enumerable.Range(0, numberItemsToCheck).Select(i => random.Next(numberItemsToCheck)).ToArray();
+                
+                fixture.RepeatCount = numberItemsToCheck;
+                var checkList = fixture.CreateAnonymous<object[]>();
+                
+                random = new Random(seed);
+                
+                foreach (var i in integersFromSeed)
                 {
-                    Assert.That(() => checkList.RandomElement(_random), Is.EqualTo(checkList[i]));
-                }
-            }
-
-            [Test]
-            public void SequenceNull()
-            {
-                Assert.That(() => NullSequence.Of<int>().RandomElement(_random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-                try
-                {
-                    NullSequence.Of<int>().RandomElement(_random);
-                    Assert.Fail();
-                }
-                catch (ValidationException vex)
-                {
-                    var multiException = vex.InnerException as MultiException;
-                    if (multiException == null)
-                    {
-                        Assert.Fail();
-                    }
-                    Assert.That(() => multiException.InnerExceptions.ToList(), Has.Count.EqualTo(2));
-                    Assert.That(() => multiException.InnerExceptions, Has.Some.InstanceOf<ArgumentNullException>());
-                    Assert.That(() => multiException.InnerExceptions, Has.Some.InstanceOf<ArgumentException>());
-                }
-            }
-
-            [Test]
-            public void SequenceNullRandomNull()
-            {
-                Assert.That(() => NullSequence.Of<int>().RandomElement(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-                try
-                {
-                    NullSequence.Of<int>().RandomElement(null);
-                    Assert.Fail();
-                }
-                catch (ValidationException vex)
-                {
-                    var multiException = vex.InnerException as MultiException;
-                    if (multiException == null)
-                    {
-                        Assert.Fail();
-                    }
-                    Assert.That(() => multiException.InnerExceptions.ToList(), Has.Count.EqualTo(3));
-                    Assert.That(() => multiException.InnerExceptions, Has.Some.InstanceOf<ArgumentNullException>());
-                    Assert.That(() => multiException.InnerExceptions.OfType<ArgumentNullException>().ToList(), Has.Count.EqualTo(2));
-                    Assert.That(() => multiException.InnerExceptions, Has.Some.InstanceOf<ArgumentException>());
+                    Assert.That(() => checkList.RandomElement(random), Is.EqualTo(checkList[i]));
                 }
             }
         }
