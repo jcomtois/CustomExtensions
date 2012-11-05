@@ -24,6 +24,7 @@ using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -35,41 +36,60 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableMax_OnEmptySequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => EmptyIntegerSequence.NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<GenericComparableStruct>();
+                Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
+
+                Assert.That(() => emptySequence.NullableMax(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullableMax_OnEmptySequence_WithSelector_ReturnsNull()
             {
-                Assert.That(() => EmptyIntegerSequence.NullableMax(Fixture.CreateAnonymous<Func<int, int>>()), Is.Null);
+                var emptySequence = Enumerable.Empty<GenericComparableStruct>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+
+                Assert.That(() => emptySequence.NullableMax(selector), Is.Null);
             }
 
             [Test]
             public void NullableMax_OnNullSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => NullIntegerSequence.NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<GenericComparableStruct> nullSequence = null;
+                Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
+
+                Assert.That(() => nullSequence.NullableMax(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void NullableMax_OnNullSequence_WithSelector_ThrowsValidationException()
             {
-                Assert.That(() => NullIntegerSequence.NullableMax(Fixture.CreateAnonymous<Func<int, int>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<GenericComparableStruct> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+
+                Assert.That(() => nullSequence.NullableMax(selector), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullableMax_OnSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => SequenceOneTwoThree.NullableMax<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<GenericComparableStruct>>();
+                Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
+
+                Assert.That(() => sequence.NullableMax(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullableMax_OnSequence_WithSelector_ReturnsMax()
             {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<int>());
-                var integers = fixture.CreateAnonymous<IEnumerable<int>>().ToArray();
-                var func = fixture.CreateAnonymous<Func<int, decimal>>();
-                Assert.That(() => integers.NullableMax(func), Is.EqualTo(integers.Max(func)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<GenericComparableStruct>>();
+                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var max = sequence.Max(selector);
+
+                Assert.That(() => sequence.NullableMax(selector), Is.EqualTo(max));
             }
         }
     }

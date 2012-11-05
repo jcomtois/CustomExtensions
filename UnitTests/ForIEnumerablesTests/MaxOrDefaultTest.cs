@@ -136,7 +136,6 @@ namespace UnitTests.ForIEnumerablesTests
         [Test]
         public void MaxOrDefault_OnEmptyGenericEnumerable_WithFunc_ReturnsDefault()
         {
-            //BUG: NCrunch
             var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
             var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
             var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();

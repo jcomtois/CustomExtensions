@@ -46,15 +46,26 @@ namespace UnitTests.ForIEnumerablesTests
             #endregion
         }
 
+        private struct GenericComparableStruct : IComparable<GenericComparableStruct>
+        {
+            private int _id;
+
+            public GenericComparableStruct(int id)
+            {
+                _id = id;
+            }
+
+            public int CompareTo(GenericComparableStruct other)
+            {
+                return _id.CompareTo(other._id);
+            }
+        }
+
 
         private static readonly IEnumerable<string> EmptyStringSequence = Enumerable.Empty<string>();
         private static readonly IEnumerable<string> NullStringSequence;
-        private static readonly IEnumerable<int> SequenceOneTwoThree = Enumerable.Range(1, 3);
-        private static readonly IEnumerable<int> SequenceOfOne = Enumerable.Range(0, 1);
         private const string NullString = null;
         private static readonly IFixture Fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
         private static readonly IEnumerable<int> EmptyIntegerSequence = Enumerable.Empty<int>();
-        private static readonly IEnumerable<int> NullIntegerSequence;
-        
     }
 }

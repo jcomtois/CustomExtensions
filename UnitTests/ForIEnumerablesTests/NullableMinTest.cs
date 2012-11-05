@@ -24,6 +24,7 @@ using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -35,41 +36,60 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void NullableMin_OnEmptySequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => EmptyIntegerSequence.NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<GenericComparableStruct>();
+                Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
+
+                Assert.That(() => emptySequence.NullableMin(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullableMin_OnEmptySequence_WithSelector_ReturnsNull()
             {
-                Assert.That(() => EmptyIntegerSequence.NullableMin(Fixture.CreateAnonymous<Func<int, int>>()), Is.Null);
+                var emptySequence = Enumerable.Empty<GenericComparableStruct>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+
+                Assert.That(() => emptySequence.NullableMin(selector), Is.Null);
             }
 
             [Test]
             public void NullableMin_OnNullSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => NullIntegerSequence.NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<GenericComparableStruct> nullSequence = null;
+                Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
+
+                Assert.That(() => nullSequence.NullableMin(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void NullableMin_OnNullSequence_WithSelector_ThrowsValidationException()
             {
-                Assert.That(() => NullIntegerSequence.NullableMin(Fixture.CreateAnonymous<Func<int, int>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<GenericComparableStruct> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+
+                Assert.That(() => nullSequence.NullableMin(selector), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullableMin_OnSequence_WithNullSelector_ThrowsValidationException()
             {
-                Assert.That(() => SequenceOneTwoThree.NullableMin<int, int>(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<GenericComparableStruct>>();
+                Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
+
+                Assert.That(() => sequence.NullableMin(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
             public void NullableMin_OnSequence_WithSelector_ReturnsMin()
             {
-                var fixture = new Fixture();
-                fixture.Register(() => fixture.CreateMany<int>());
-                var integers = fixture.CreateAnonymous<IEnumerable<int>>().ToArray();
-                var func = fixture.CreateAnonymous<Func<int, decimal>>();
-                Assert.That(() => integers.NullableMin(func), Is.EqualTo(integers.Min(func)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<GenericComparableStruct>>();
+                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var min = sequence.Min(selector);
+
+                Assert.That(() => sequence.NullableMin(selector), Is.EqualTo(min));
             }
         }
     }

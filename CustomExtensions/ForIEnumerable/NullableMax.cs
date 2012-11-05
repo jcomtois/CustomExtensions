@@ -36,7 +36,7 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="selector">A transform function to apply to each element.</param>
         /// <returns>The nullable maximum value in the sequence.</returns>
         /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="selector"/> is null</exception>
-        public static TResult? NullableMax <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct 
+        public static TResult? NullableMax <TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct, IComparable<TResult>
         {
             Validate.Begin()
                 .IsNotNull(source, "source")
@@ -46,7 +46,7 @@ namespace CustomExtensions.ForIEnumerable
             return NullableMaxImplementation(source, selector);
         }
 
-        private static TResult? NullableMaxImplementation <TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
+        private static TResult? NullableMaxImplementation<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct, IComparable<TResult>
         {
             Debug.Assert(selector != null, "selector != null");
             Debug.Assert(source != null, "source != null");
