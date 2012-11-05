@@ -25,6 +25,7 @@ using CustomExtensions.Validation;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -39,39 +40,52 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void ForEach_OnEmptyStringSequence_PerformsNoActions()
+            public void ForEach_OnEmptySequence_PerformsNoActions()
             {
-                var mock = new Mock<IDoSomething<string>>();
-                mock.Setup(m => m.Do(It.IsAny<string>()));
-                EmptyStringSequence.ForEach(mock.Object.Do);
-                mock.Verify(m => m.Do(It.IsAny<string>()), Times.Never());
+                var mock = new Mock<IDoSomething<object>>();
+                var emptySequence = Enumerable.Empty<object>();
+                emptySequence.ForEach(mock.Object.Do);
+
+                mock.Verify(m => m.Do(It.IsAny<object>()), Times.Never());
             }
 
             [Test]
-            public void ForEach_OnEmptyStringSequence_WithNullAction_ThrowsValidationException()
+            public void ForEach_OnEmptySequence_WithNullAction_ThrowsValidationException()
             {
-                Assert.That(() => EmptyStringSequence.ForEach(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                Action<object> nullAction = null;
+
+                Assert.That(() => emptySequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ForEach_OnNullStringSequence_WithAction_ThrowsValidationException()
+            public void ForEach_OnNullSequence_WithAction_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ForEach(Fixture.CreateAnonymous<Action<string>>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var action = fixture.CreateAnonymous<Action<object>>();
+
+                Assert.That(() => nullSequence.ForEach(action), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ForEach_OnNullStringSequence_WithNullAction_ThrowsValidationException()
+            public void ForEach_OnNullSequence_WithNullAction_ThrowsValidationException()
             {
-                Assert.That(() => NullStringSequence.ForEach(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                IEnumerable<object> nullSequence = null;
+                Action<object> nullAction = null;
+
+                Assert.That(() => nullSequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void ForEach_OnSequence_PerformsActionForEach()
             {
                 var mock = new Mock<IDoSomething<object>>();
-                mock.Setup(m => m.Do(It.IsAny<object>()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
                 const int callCount = 3;
-                Fixture.CreateMany<object>(callCount).ForEach(mock.Object.Do);
+                fixture.RepeatCount = callCount;
+                fixture.CreateMany<object>(callCount).ForEach(mock.Object.Do);
+
                 mock.Verify(m => m.Do(It.IsAny<object>()), Times.Exactly(callCount));
             }
 
@@ -79,16 +93,22 @@ namespace UnitTests.ForIEnumerablesTests
             public void ForEach_OnSequence_PerformsActionWithEach()
             {
                 var list = new List<string>();
-                var guids = Fixture.CreateMany<Guid>(3).ToList();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var guids = fixture.CreateAnonymous<IList<Guid>>();
                 var expected = guids.Select(g => g.ToString());
                 guids.ForEach(g => list.Add(g.ToString()));
+
                 Assert.That(() => list, Is.EqualTo(expected));
             }
 
             [Test]
             public void ForEach_OnSequence_WithNullAction_ThrowsValidationException()
             {
-                Assert.That(() => Fixture.CreateMany<string>().ForEach(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+                Action<object> nullAction = null;
+
+                Assert.That(() => sequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
         }
     }

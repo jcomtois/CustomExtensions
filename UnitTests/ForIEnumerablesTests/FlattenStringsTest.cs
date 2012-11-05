@@ -17,6 +17,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using NUnit.Framework;
@@ -33,7 +34,7 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void FlattenStrings_OnEmptyStringSequence_ReturnsEmptyString()
             {
-                var emptyStringSequence = string.Empty.ToEnumerable();
+                var emptyStringSequence = Enumerable.Empty<string>();
 
                 Assert.That(emptyStringSequence.FlattenStrings(), Is.Empty);
             }
@@ -41,7 +42,7 @@ namespace UnitTests.ForIEnumerablesTests
             [Test]
             public void FlattenStrings_OnNullStringSequence_ReturnsEmptyString()
             {
-                var nullStringSequence = ((string)null).ToEnumerable();
+                IEnumerable<string> nullStringSequence = null;
 
                 Assert.That(nullStringSequence.FlattenStrings(), Is.Empty);
             }
