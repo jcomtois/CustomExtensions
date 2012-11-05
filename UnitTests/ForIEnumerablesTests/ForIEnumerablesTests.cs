@@ -18,10 +18,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -48,20 +44,21 @@ namespace UnitTests.ForIEnumerablesTests
 
         private struct GenericComparableStruct : IComparable<GenericComparableStruct>
         {
-            private int _id;
+            private readonly Guid _id;
 
-            public GenericComparableStruct(int id)
+            public GenericComparableStruct(Guid id)
             {
                 _id = id;
             }
+
+            #region IComparable<GenericComparableStruct> Members
 
             public int CompareTo(GenericComparableStruct other)
             {
                 return _id.CompareTo(other._id);
             }
-        }
 
-        private static readonly IFixture Fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
-        private static readonly IEnumerable<int> EmptyIntegerSequence = Enumerable.Empty<int>();
+            #endregion
+        }
     }
 }

@@ -72,6 +72,20 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
+            public void RandomElement_OnSequenceOfOne_AlwaysChoosesSameItem()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                var sequenceOfOne = objectValue.ToEnumerable();
+                var random = fixture.CreateAnonymous<Random>();
+
+                for (var i = 0; i < 10000; i++)
+                {
+                    Assert.That(() => sequenceOfOne.RandomElement(random), Is.EqualTo(objectValue));
+                }
+            }
+
+            [Test]
             public void RandomElement_OnSequence_EventuallyChoosesEachItem()
             {
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
@@ -91,20 +105,6 @@ namespace UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void RandomElement_OnSequenceOfOne_AlwaysChoosesSameItem()
-            {
-                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
-                var objectValue = fixture.CreateAnonymous<object>();
-                var sequenceOfOne = objectValue.ToEnumerable();
-                var random = fixture.CreateAnonymous<Random>();
-
-                for (var i = 0; i < 10000; i++)
-                {
-                    Assert.That(() => sequenceOfOne.RandomElement(random), Is.EqualTo(objectValue));
-                }
-            }
-
-            [Test]
             public void RandomElement_OnSequence_WithNullRandom_ThrowsValidationException()
             {
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
@@ -120,14 +120,14 @@ namespace UnitTests.ForIEnumerablesTests
                 var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
                 var seed = fixture.CreateAnonymous<int>();
                 const int numberItemsToCheck = 100;
-                var random = new Random(seed);                
+                var random = new Random(seed);
                 var integersFromSeed = Enumerable.Range(0, numberItemsToCheck).Select(i => random.Next(numberItemsToCheck)).ToArray();
-                
+
                 fixture.RepeatCount = numberItemsToCheck;
                 var checkList = fixture.CreateAnonymous<object[]>();
-                
+
                 random = new Random(seed);
-                
+
                 foreach (var i in integersFromSeed)
                 {
                     Assert.That(() => checkList.RandomElement(random), Is.EqualTo(checkList[i]));

@@ -23,6 +23,8 @@ using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,181 +34,338 @@ namespace UnitTests.ForIEnumerablesTests
         public class ReplaceTest
         {
             [Test]
-            public void ReplaceSourceElementProjectionIsLazy()
+            public void Replace_OnEmptySequence_WithElement_WithNullProjection_ThrowsValidationException()
             {
-                Assert.That(() => new BreakingSequence<int>().Replace(2, i => i + 1), Throws.Nothing);
-                Assert.That(() => new BreakingSequence<int>().Replace(2, i => i + 1).ToList(), Throws.TypeOf<InvalidOperationException>());
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                Func<object, object> nullFunc = null;
+
+                Assert.That(() => emptySequence.Replace(objectValue, nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ReplaceSourceElementReplacementIsLazy()
+            public void Replace_OnEmptySequence_WithElement_WithNullReplacement_ReturnsEmptySequence()
             {
-                Assert.That(() => new BreakingSequence<int>().Replace(2, 1), Throws.Nothing);
-                Assert.That(() => new BreakingSequence<int>().Replace(2, 1).ToList(), Throws.TypeOf<InvalidOperationException>());
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                object nullObject = null;
+
+                Assert.That(() => emptySequence.Replace(objectValue, nullObject), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementGoodProjectionGood()
+            public void Replace_OnEmptySequence_WithElement_WithProjection_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace("A", s => s + "B"), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => emptySequence.Replace(objectValue, objectFunc), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementGoodProjectionNull()
+            public void Replace_OnEmptySequence_WithElement_WithReplacement_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace("A", (Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => emptySequence.Replace(objectValue, objectValue), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementGoodReplacementGood()
+            public void Replace_OnEmptySequence_WithNullElement_WithNullProjection_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace("A", "B"), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                object nullObject = null;
+                Func<object, object> nullFunc = null;
+
+                Assert.That(() => emptySequence.Replace(nullObject, nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptyElementGoodReplacementNull()
+            public void Replace_OnEmptySequence_WithNullElement_WithNullReplacement_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace("A", (string)null), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                object nullObject = null;
+
+                Assert.That(() => emptySequence.Replace(nullObject, nullObject), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementNullProjectionGood()
+            public void Replace_OnEmptySequence_WithNullElement_WithProjection_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace(null, s => "A"), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                object nullObject = null;
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => emptySequence.Replace(nullObject, objectFunc), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementNullProjectionNull()
+            public void Replace_OnEmptySequence_WithNullElement_WithReplacement_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace(null, (Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                object nullObject = null;
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => emptySequence.Replace(nullObject, objectValue), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementNullReplacementGood()
+            public void Replace_OnNullSequence_WithElement_WithNullProjection_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace(null, "B"), Is.Empty);
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                Func<object, object> nullFunc = null;
+
+                Assert.That(() => nullSequence.Replace(objectValue, nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceEmptyElementNullReplacementNull()
+            public void Replace_OnNullSequence_WithElement_WithNullReplacement_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().Replace(null, (string)null), Is.Empty);
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                object nullObject = null;
+
+                Assert.That(() => nullSequence.Replace(objectValue, nullObject), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementGoodProjectionGood()
+            public void Replace_OnNullSequence_WithElement_WithProjection_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace("A", s => "AB"), Is.EquivalentTo(Enumerable.Repeat("AB", 3)));
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace("B", s => "AB"), Is.EquivalentTo(Enumerable.Repeat("A", 3)));
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
 
-                var object1 = new object();
-                var object2 = new object();
-                var object3 = new object();
-                var object4 = new object();
-
-                Assert.That(() => new[] {object1, object2, object3}.Replace(object1, o => null), Is.EquivalentTo(new[] {null, object2, object3}));
-                Assert.That(() => new[] {object1, object2, object3}.Replace(object4, o => null), Is.EquivalentTo(new[] {object1, object2, object3}));
+                Assert.That(() => nullSequence.Replace(objectValue, objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementGoodProjectionNull()
+            public void Replace_OnNullSequence_WithElement_WithReplacement_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace("A", (Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => nullSequence.Replace(objectValue, objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementGoodReplacementGood()
+            public void Replace_OnNullSequence_WithNullElement_WithNullProjection_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace("A", "B"), Is.EquivalentTo(Enumerable.Repeat("B", 3)));
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace("B", "A"), Is.EquivalentTo(Enumerable.Repeat("A", 3)));
+                IEnumerable<object> nullSequence = null;
+                object nullObject = null;
+                Func<object, object> nullFunc = null;
 
-                var object1 = new object();
-                var object2 = new object();
-                var object3 = new object();
-                var object4 = new object();
-
-                Assert.That(() => new[] {object1, object2, object3}.Replace(object1, object2), Is.EquivalentTo(new[] {object2, object2, object3}));
-                Assert.That(() => new[] {object1, object2, object3}.Replace(object4, object2), Is.EquivalentTo(new[] {object1, object2, object3}));
+                Assert.That(() => nullSequence.Replace(nullObject, nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceGoodElementGoodReplacementNull()
+            public void Replace_OnNullSequence_WithNullElement_WithNullReplacement_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace("A", (string)null), Is.EquivalentTo(Enumerable.Repeat((string)null, 3)));
+                IEnumerable<object> nullSequence = null;
+                object nullObject = null;
+
+                Assert.That(() => nullSequence.Replace(nullObject, nullObject), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNullProjectionGood()
+            public void Replace_OnNullSequence_WithNullElement_WithProjection_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace(null, s => "A"), Is.EquivalentTo(Enumerable.Repeat("A", 3)));
-                Assert.That(() => Enumerable.Repeat((string)null, 3).Replace(null, s => "A"), Is.EquivalentTo(Enumerable.Repeat("A", 3)));
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                object nullObject = null;
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => nullSequence.Replace(nullObject, objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNullProjectionNull()
+            public void Replace_OnNullSequence_WithNullElement_WithReplacement_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace(null, (Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                object nullObject = null;
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => nullSequence.Replace(nullObject, objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNullReplacementGood()
+            public void Replace_OnSequenceWithNulls_WithNullElement_WithNullReplacement_ReturnsOriginalSequence()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace(null, "B"), Is.EquivalentTo(Enumerable.Repeat("A", 3)));
-                Assert.That(() => Enumerable.Repeat((string)null, 3).Replace(null, "B"), Is.EquivalentTo(Enumerable.Repeat("B", 3)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+                sequence[1] = nullObject;
+
+                Assert.That(() => sequence.Replace(nullObject, nullObject), Is.EqualTo(sequence));
             }
 
             [Test]
-            public void SequenceGoodElementNullReplacementNull()
+            public void Replace_OnSequenceWithNulls_WithNullElement_WithReplacement_ReturnsOriginalSequence()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Replace(null, (string)null), Is.EquivalentTo(Enumerable.Repeat("A", 3)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+                sequence[0] = nullObject;
+                var objectValue = fixture.CreateAnonymous<object>();
+                var expected = new[] {objectValue, sequence[1], sequence[2]};
+
+                Assert.That(() => sequence.Replace(nullObject, objectValue), Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceNullElementGoodProjectionGood()
+            public void Replace_OnSequence_WithElement_WithNullProjection_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace("A", s => "AB"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+                Func<object, object> nullFunc = null;
+
+                Assert.That(() => sequence.Replace(objectValue, nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullElementGoodProjectionNull()
+            public void Replace_OnSequence_WithElement_WithNullReplacement_ReturnsWithNullAsReplacement()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace("A", (Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var objectValue = sequence[2];
+                object nullObject = null;
+                var expected = new[] {sequence[0], sequence[1], nullObject};
+
+                Assert.That(() => sequence.Replace(objectValue, nullObject), Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceNullElementGoodReplacementGood()
+            public void Replace_OnSequence_WithElement_WithProjection_ReturnsSequenceWithReplacement()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace("A", "B"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var objectValue = sequence[1];
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var projectedValue = objectFunc(objectValue);
+                var expected = new[] {sequence[0], projectedValue, sequence[2]};
+
+                Assert.That(() => sequence.Replace(objectValue, objectFunc), Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceNullElementGoodReplacementNull()
+            public void Replace_OnSequence_WithElement_WithReplacement_ReturnsSequenceWithReplacement()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace("A", (string)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var objectValue = sequence[0];
+                var replacementValue = fixture.CreateAnonymous<object>();
+                var expected = new[] {replacementValue, sequence[1], sequence[2]};
+
+                Assert.That(() => sequence.Replace(objectValue, replacementValue), Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceNullElementNullProjectionGood()
+            public void Replace_OnSequence_WithNoMatches_WithProjection_ReturnsOriginalSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace(null, s => "AB"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => sequence.Replace(objectValue, objectFunc), Is.EqualTo(sequence));
             }
 
             [Test]
-            public void SequenceNullElementNullProjectionNull()
+            public void Replace_OnSequence_WithNoMatches_WithReplacement_ReturnsOriginalSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace(null, (Func<string, string>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+                var replacementValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => sequence.Replace(objectValue, replacementValue), Is.EqualTo(sequence));
             }
 
             [Test]
-            public void SequenceNullElementNullReplacementGood()
+            public void Replace_OnSequence_WithNullElement_WithNullProjection_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace(null, "B"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+                Func<object, object> nullFunc = null;
+
+                Assert.That(() => sequence.Replace(nullObject, nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullElementNullReplacementNull()
+            public void Replace_OnSequence_WithNullElement_WithNullReplacement_ReturnsOriginalSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Replace(null, (string)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+
+                Assert.That(() => sequence.Replace(nullObject, nullObject), Is.EqualTo(sequence));
+            }
+
+            [Test]
+            public void Replace_OnSequence_WithNullElement_WithProjection_NullsReplacedInSequence()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+                sequence[1] = nullObject;
+                sequence[2] = nullObject;
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var expected = new[] {sequence[0], objectFunc(sequence[1]), objectFunc(sequence[2])};
+
+                Assert.That(() => sequence.Replace(nullObject, objectFunc), Is.EqualTo(expected));
+            }
+
+            [Test]
+            public void Replace_OnSequence_WithNullElement_WithReplacement_ReturnsOriginalSequence()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => sequence.Replace(nullObject, objectValue), Is.EqualTo(sequence));
+            }
+
+            [Test]
+            public void Replace_WithProjection_IsLazy()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => breakingSequence.Replace(objectValue, objectFunc), Throws.Nothing);
+            }
+
+            [Test]
+            public void Replace_WithReplacement_IsLazy()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => breakingSequence.Replace(objectValue, objectValue), Throws.Nothing);
             }
         }
     }
