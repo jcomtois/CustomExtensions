@@ -1,6 +1,7 @@
 # use glob syntax
 syntax: glob
 
+*_[Nn]crunch*
 *.obj
 *.pdb
 *.user
@@ -31,3 +32,13 @@ _ReSharper*/
 [Bb]uild[Ll]og.*
 *.[Pp]ublish.xml
 *.resharper
+[Pp]ackages/
+BuildProcessTemplates/*
+Published/*
+[Uu]pgradeLog*.[Xx][Mm][Ll]
+_[Uu]pgradeReport_Files*/
+*.build.csdef
+.nuget/[Nn]u[Gg]et.exe
+CurrentBuild/*.[Dd][Ll][Ll]
+CurrentBuild/*.[Xx][Mm][Ll]
+CurrentBuild/*.[Pp][Dd][Bb]
