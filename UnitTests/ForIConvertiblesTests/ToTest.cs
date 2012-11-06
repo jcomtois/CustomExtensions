@@ -21,6 +21,8 @@ using System;
 using CustomExtensions.ForIConvertible;
 using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIConvertiblesTests
 {
@@ -32,49 +34,74 @@ namespace UnitTests.ForIConvertiblesTests
             [Test]
             public void ToBool_OnNonNumericString_ThrowsFormatException()
             {
-                Assert.That(() => NonNumericString.To<bool>(), Throws.TypeOf<FormatException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.To<bool>(), Throws.TypeOf<FormatException>());
             }
 
             [Test]
             public void ToConvertible_OnNonNumericString_ThrowsInvalidCastException()
             {
-                Assert.That(() => NonNumericString.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
             }
 
             [Test]
-            public void ToFloat_OnTestDecimal_ReturnsTestFloat()
+            public void ToFloat_OnDecimal_ReturnsFloat()
             {
-                Assert.That(() => TestDecimal.To<float>(), Is.EqualTo(TestFloat));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+                float floatValue = Convert.ToSingle(decimalValue);
+
+                Assert.That(() => decimalValue.To<float>(), Is.EqualTo(floatValue));
             }
 
             [Test]
             public void ToInt_OnEmptyString_ThrowsFormatException()
             {
-                Assert.That(() => EmptyString.To<int>(), Throws.TypeOf<FormatException>());
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.To<int>(), Throws.TypeOf<FormatException>());
             }
 
             [Test]
-            public void ToInt_OnIntegerString_ReturnsTestInteger()
+            public void ToInt_OnIntegerString_ReturnsInteger()
             {
-                Assert.That(() => IntegerString.To<int>(), Is.EqualTo(TestInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var integerString = intValue.ToString();
+
+                Assert.That(() => integerString.To<int>(), Is.EqualTo(intValue));
             }
 
             [Test]
             public void ToInt_OnNonNumericString_ThrowsFormatException()
             {
-                Assert.That(() => NonNumericString.To<int>(), Throws.TypeOf<FormatException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.To<int>(), Throws.TypeOf<FormatException>());
             }
 
             [Test]
             public void ToInt_OnNullString_ThrowsInvalidCastException()
             {
-                Assert.That(() => NullString.To<int>(), Throws.TypeOf<InvalidCastException>());
+                string nullString = null;
+
+                Assert.That(() => nullString.To<int>(), Throws.TypeOf<InvalidCastException>());
             }
 
             [Test]
             public void ToInteger_OnDecimal_ReturnsInteger()
             {
-                Assert.That(() => TestDecimal.To<int>(), Is.EqualTo((int)TestDecimal));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+                int intValue = Convert.ToInt32(decimalValue);
+
+                Assert.That(() => decimalValue.To<int>(), Is.EqualTo(intValue));
             }
 
             [Test]
@@ -86,63 +113,91 @@ namespace UnitTests.ForIConvertiblesTests
             [Test]
             public void ToInteger_OnNonNullNullableInteger_ReturnsTestInteger()
             {
-                Assert.That(() => NonNullNullableInteger.To<int>(), Is.EqualTo(TestInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                int? nonNullNullableInt = intValue;
+
+                Assert.That(() => nonNullNullableInt.To<int>(), Is.EqualTo(intValue));
             }
 
             [Test]
             public void ToInteger_OnNullNullableInteger_ThrowsInvalidCastException()
             {
-                Assert.That(() => NullNullableInteger.To<int>(), Throws.TypeOf<InvalidCastException>());
+                int? nullNullableInteger = null;
+
+                Assert.That(() => nullNullableInteger.To<int>(), Throws.TypeOf<InvalidCastException>());
             }
 
             [Test]
             public void ToNullableInt_OnEmptyString_ThrowsFormatException()
             {
-                Assert.That(() => EmptyString.To<int?>(), Throws.TypeOf<FormatException>());
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.To<int?>(), Throws.TypeOf<FormatException>());
             }
 
             [Test]
-            public void ToNullableInt_OnIntegerString_ReturnsTestInteger()
+            public void ToNullableInt_OnIntegerString_ReturnsInteger()
             {
-                Assert.That(() => IntegerString.To<int?>(), Is.EqualTo(TestInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var intString = intValue.ToString();
+
+                Assert.That(() => intString.To<int?>(), Is.EqualTo(intValue));
             }
 
             [Test]
             public void ToNullableInt_OnNullString_ReturnsNull()
             {
-                Assert.That(() => NullString.To<int?>(), Is.Null);
+                string nullString = null;
+
+                Assert.That(() => nullString.To<int?>(), Is.Null);
             }
 
             [Test]
             public void ToNullableInteger_OnIntegerString_ReturnsNullableInteger()
             {
-                Assert.That(() => IntegerString.To<int?>(), Is.InstanceOf<int?>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var intString = intValue.ToString();
+
+                Assert.That(() => intString.To<int?>(), Is.EqualTo(intValue));
             }
 
             [Test]
             public void ToNullableInteger_OnNullNullableInteger_ReturnsNull()
             {
-                Assert.That(() => NullNullableInteger.To<int?>(), Is.Null);
+                int? nullNullableInteger = null;
+
+                Assert.That(() => nullNullableInteger.To<int?>(), Is.Null);
             }
 
             [Test]
             public void ToNullableInteger_OnNullNullableInteger_ReturnsNullNullableInteger()
             {
-                Assert.That(() => NullNullableInteger.To<int?>(), Is.EqualTo(NullNullableInteger));
+                int? nullNullableInteger = null;
+
+                Assert.That(() => nullNullableInteger.To<int?>(), Is.EqualTo(nullNullableInteger));
             }
 
             [Test]
             public void ToString_OnBadConvertible_ThrowsInvalidCastException()
             {
-                var mockConvertible = new Mock<IConvertible>();
+                var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
-                Assert.That(() => mockConvertible.Object.To<string>(), Throws.TypeOf<InvalidCastException>());
+                IConvertible convertible = mockConvertible.Object;
+
+                Assert.That(() => convertible.To<string>(), Throws.TypeOf<InvalidCastException>());
             }
 
             [Test]
             public void ToString_OnTestInteger_ReturnsTestIntegerString()
             {
-                Assert.That(() => TestInteger.To<string>(), Is.EqualTo(IntegerString));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var intString = intValue.ToString();
+
+                Assert.That(() => intValue.To<string>(), Is.EqualTo(intString));
             }
         }
     }
