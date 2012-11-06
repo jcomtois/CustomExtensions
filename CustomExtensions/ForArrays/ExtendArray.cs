@@ -1,5 +1,4 @@
 ﻿#region License and Terms
-
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
 // 
@@ -14,12 +13,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
-
-namespace UnitTests.ForIConvertablesTests
+namespace CustomExtensions.ForArrays
 {
-    public partial class ForIConvertibleTests
+    /// <summary>
+    /// Class contains extension methods pertaining to Arrays
+    /// </summary>
+    public static partial class ExtendArray
     {
     }
 }

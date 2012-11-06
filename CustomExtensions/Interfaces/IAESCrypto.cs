@@ -19,8 +19,14 @@
 
 namespace CustomExtensions.Interfaces
 {
+    /// <summary>
+    /// Base Interface for support AESCrytpo functions
+    /// </summary>
     public interface IAESCrypto
     {
+        /// <summary>
+        /// Retrieves minimum length of required password
+        /// </summary>
         int MinimumPasswordLength { get; }
     }
 }

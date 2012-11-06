@@ -61,7 +61,7 @@ namespace UnitTests.ForStringsTests
                 mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
                 string testString = TestStringLatin;
                 string testKey = ValidLengthKey;
-                var output = testString.Encrypt(testKey, mockEncryptor.Object);
+                testString.Encrypt(testKey, mockEncryptor.Object);
                 mockEncryptor.VerifyGet(m => m.MinimumPasswordLength, Times.AtLeastOnce());
             }
 

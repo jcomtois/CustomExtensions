@@ -22,7 +22,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
+using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,44 +34,81 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class ForEachTest
         {
+            public interface IDoSomething <T>
+            {
+                void Do(T t);
+            }
+
             [Test]
-            public void SequenceEmptyActionGood()
+            public void ForEach_OnEmptySequence_PerformsNoActions()
+            {
+                var mock = new Mock<IDoSomething<object>>();
+                var emptySequence = Enumerable.Empty<object>();
+                emptySequence.ForEach(mock.Object.Do);
+
+                mock.Verify(m => m.Do(It.IsAny<object>()), Times.Never());
+            }
+
+            [Test]
+            public void ForEach_OnEmptySequence_WithNullAction_ThrowsValidationException()
+            {
+                var emptySequence = Enumerable.Empty<object>();
+                Action<object> nullAction = null;
+
+                Assert.That(() => emptySequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void ForEach_OnNullSequence_WithAction_ThrowsValidationException()
+            {
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var action = fixture.CreateAnonymous<Action<object>>();
+
+                Assert.That(() => nullSequence.ForEach(action), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void ForEach_OnNullSequence_WithNullAction_ThrowsValidationException()
+            {
+                IEnumerable<object> nullSequence = null;
+                Action<object> nullAction = null;
+
+                Assert.That(() => nullSequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+            }
+
+            [Test]
+            public void ForEach_OnSequence_PerformsActionForEach()
+            {
+                var mock = new Mock<IDoSomething<object>>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                const int callCount = 3;
+                fixture.RepeatCount = callCount;
+                fixture.CreateMany<object>(callCount).ForEach(mock.Object.Do);
+
+                mock.Verify(m => m.Do(It.IsAny<object>()), Times.Exactly(callCount));
+            }
+
+            [Test]
+            public void ForEach_OnSequence_PerformsActionWithEach()
             {
                 var list = new List<string>();
-                Assert.That(() => Enumerable.Empty<string>().ForEach(list.Add), Throws.Nothing);
-                Assert.That(list, Is.Empty);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var guids = fixture.CreateAnonymous<IList<Guid>>();
+                var expected = guids.Select(g => g.ToString());
+                guids.ForEach(g => list.Add(g.ToString()));
+
+                Assert.That(() => list, Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceEmptyActionNull()
+            public void ForEach_OnSequence_WithNullAction_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().ForEach(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+                Action<object> nullAction = null;
 
-            [Test]
-            public void SequenceGoodActionGood()
-            {
-                var list = new List<string>();
-                Assert.That(() => Enumerable.Repeat("A", 3).ForEach(list.Add), Throws.Nothing);
-                Assert.That(list, Is.EquivalentTo(Enumerable.Repeat("A", 3)));
-            }
-
-            [Test]
-            public void SequenceGoodActionNull()
-            {
-                Assert.That(() => Enumerable.Repeat("A", 3).ForEach(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullActionGood()
-            {
-                Assert.That(() => NullSequence.Of<string>().ForEach(Console.WriteLine), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceNullActionNull()
-            {
-                Assert.That(() => NullSequence.Of<string>().ForEach(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                Assert.That(() => sequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
         }
     }

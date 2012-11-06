@@ -25,13 +25,20 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\CustomExtensions.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <CodeAnalysisLogFile>bin\Release\CustomExtensions.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <DocumentationFile>
+    </DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -120,6 +127,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForArrays\ExtendArray.cs" />
+    <Compile Include="ForArrays\ToHexString.cs">
+      <DependentUpon>ExtendArray.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForDateTime\ExtendDateTime.cs" />
     <Compile Include="ForDateTime\FormatyyyyMMdd.cs">
       <DependentUpon>ExtendDateTime.cs</DependentUpon>
@@ -236,9 +247,7 @@
     <Compile Include="ForStrings\Strip.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForStrings\ToNameValueCollection.cs">
-      <DependentUpon>ExtendString.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ForStrings\ToByteArray.cs" />
     <Compile Include="ForStrings\Truncate.cs">
       <DependentUpon>ExtendString.cs</DependentUpon>
     </Compile>

@@ -18,10 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,45 +34,72 @@ namespace UnitTests.ForIEnumerablesTests
         public class PrependTest
         {
             [Test]
-            public void PrependIsLazy()
+            public void Prepend_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<string>().Prepend("A"), Throws.Nothing);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+
+                Assert.That(() => breakingSequence.Prepend(breakingSequence), Throws.Nothing);
             }
 
             [Test]
-            public void SequenceEmptyElementGood()
+            public void Prepend_OnEmptySequence_WithElement_ReturnsSequenceOfElement()
             {
-                Assert.That(Enumerable.Empty<string>().Prepend("A"), Is.EqualTo(Enumerable.Repeat("A", 1)));
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(emptySequence.Prepend(objectValue), Is.EqualTo(objectValue.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceEmptyElementNull()
+            public void Prepend_OnEmptySequence_WithNullElement_ReturnsSequenceOfNullElement()
             {
-                Assert.That(Enumerable.Empty<string>().Prepend(null), Is.EqualTo(Enumerable.Repeat<string>(null, 1)));
+                var emptySequence = Enumerable.Empty<object>();
+                object nullObject = null;
+
+                Assert.That(emptySequence.Prepend(nullObject), Is.EqualTo(nullObject.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceGoodElementGood()
+            public void Prepend_OnNullSequence_WithElement_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Prepend("A"), Is.EqualTo(Enumerable.Repeat("A", 3)));
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => nullSequence.Prepend(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNull()
+            public void Prepend_OnNullSequence_WithNullElement_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Prepend(null), Is.EqualTo(new[] {null, "A", "A"}));
+                IEnumerable<object> nullSequence = null;
+                object nullObject = null;
+
+                Assert.That(() => nullSequence.Prepend(nullObject), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullElelmentNull()
+            public void Prepend_OnSequence_WithElement_ReturnsElementPrependedToSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Prepend(null), Throws.TypeOf<ValidationException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var element = fixture.CreateAnonymous<object>();
+                var expected = element.ToEnumerable().Concat(sequence);
+
+                Assert.That(sequence.Prepend(element), Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceNullElementGood()
+            public void Prepend_OnSequence_WithNullElement_ReturnsNullElelemntPrependedToSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Prepend("A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IList<object>>();
+                object nullObject = null;
+                var expected = nullObject.ToEnumerable().Concat(sequence);
+
+                Assert.That(sequence.Prepend(nullObject), Is.EqualTo(expected));
             }
         }
     }

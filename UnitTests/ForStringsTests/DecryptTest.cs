@@ -139,7 +139,7 @@ namespace UnitTests.ForStringsTests
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 string testString = ValidEncryptedTestString;
                 string testKey = ValidLengthKey;
-                var output = testString.Decrypt(testKey, mockDecryptor.Object);
+                testString.Decrypt(testKey, mockDecryptor.Object);
                 mockDecryptor.Verify(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
             }
 

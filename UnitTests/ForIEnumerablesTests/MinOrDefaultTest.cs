@@ -18,10 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -30,861 +33,1491 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class MinOrDefaultTest
         {
-            #region Setup/Teardown
+            [Test]
+            public void MinOrDefault_OnDecimalArray_ReturnsMin()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArrayMin = decimalArray.Min();
+
+                Assert.That(() => decimalArray.MinOrDefault(), Is.EqualTo(decimalArrayMin));
+            }
+
+            [Test]
+            public void MinOrDefault_OnDecimalArray_WithDecimalValue_ReturnsMin()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArrayMin = decimalArray.Min();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => decimalArray.MinOrDefault(decimalValue), Is.EqualTo(decimalArrayMin));
+            }
+
+            [Test]
+            public void MinOrDefault_OnDoubleArray_ReturnsDoubleArrayMin()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArrayMin = doubleArray.Min();
+
+                Assert.That(() => doubleArray.MinOrDefault(), Is.EqualTo(doubleArrayMin));
+            }
+
+            [Test]
+            public void MinOrDefault_OnDoubleArray_WithDoubleValue_ReturnsMin()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArrayMin = doubleArray.Min();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => doubleArray.MinOrDefault(doubleValue), Is.EqualTo(doubleArrayMin));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyDecimalSequence_ReturnsDefaultDecimal()
+            {
+                var emtpyDecimalSequence = Enumerable.Empty<decimal>();
+
+                Assert.That(() => emtpyDecimalSequence.MinOrDefault(), Is.EqualTo(default(decimal)));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emtpyDecimalSequence = Enumerable.Empty<decimal>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emtpyDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyDoubleSequence_ReturnsDefaultDouble()
+            {
+                var emptyDoubleSequence = Enumerable.Empty<double>();
+
+                Assert.That(() => emptyDoubleSequence.MinOrDefault(), Is.EqualTo(default(double)));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyDoubleSequence = Enumerable.Empty<double>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyFloatSequence_ReturnsDefaultFloat()
+            {
+                var emptyFloatSequence = Enumerable.Empty<float>();
+
+                Assert.That(() => emptyFloatSequence.MinOrDefault(), Is.EqualTo(default(float)));
+            }
+
+            [Test]
+            public void MinOrDefault_OnEmptyFloatSequence_WithFloatValue_ReturnsFloatvalue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyFloatSequence = Enumerable.Empty<float>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
+            }
 
-            [SetUp]
-            public void SetUp()
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_ReturnsDefault()
             {
-                _intArray = new[] {10, 20, 30};
-                _stringArray = new[] {"A", "B", "C"};
-                _nullableIntArray = _intArray.Select(x => (int?)x).ToArray();
-                _nullableFloatArray = _intArray.Select(x => (float?)x).ToArray();
-                _floatArray = _intArray.Select(x => (float)x).ToArray();
-                _nullableDecimalArray = _intArray.Select(x => (decimal?)x).ToArray();
-                _decimalArray = _intArray.Select(x => (decimal)x).ToArray();
-                _nullableDoubleArray = _intArray.Select(x => (double?)x).ToArray();
-                _doubleArray = _intArray.Select(x => (double)x).ToArray();
-                _nullableLongArray = _intArray.Select(x => (long?)x).ToArray();
-                _longArray = _intArray.Select(x => (long)x).ToArray();
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(), Is.EqualTo(default(GenericComparable)));
             }
 
-            #endregion
+            [Test]
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithFunc_ReturnsDefault()
+            {
+                //BUG: NCrunch
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
 
-            private int[] _intArray;
-            private string[] _stringArray;
-            private int?[] _nullableIntArray;
-            private const int DefaultIntValue = 9999;
-            private const double DefaultDoubleValue = DefaultIntValue;
-            private const decimal DefaultDecimalValue = DefaultIntValue;
-            private const long DefaultLongValue = DefaultIntValue;
-            private const float DefaultFloatValue = DefaultIntValue;
-            private long[] _longArray;
-            private long?[] _nullableLongArray;
-            private double[] _doubleArray;
-            private double?[] _nullableDoubleArray;
-            private decimal[] _decimalArray;
-            private decimal?[] _nullableDecimalArray;
-            private float[] _floatArray;
-            private float?[] _nullableFloatArray;
-            private readonly Func<int, decimal> _decimalFunc = x => (decimal)x;
-            private readonly Func<int, decimal?> _nullableDecimalFunc = x => (decimal?)x;
-            private readonly Func<int, double> _doubleFunc = x => (double)x;
-            private readonly Func<int, double?> _nullableDoubleFunc = x => (double?)x;
-            private readonly Func<int, long> _longFunc = x => (long)x;
-            private readonly Func<int, long?> _nullableLongFunc = x => (long?)x;
-            private readonly Func<int, float> _floatFunc = x => (float)x;
-            private readonly Func<int, float?> _nullableFloatFunc = x => (float?)x;
-            private readonly Func<int, int> _intFunc = x => x + x;
-            private readonly Func<int, int?> _nullableIntFunc = x => (int?)(x + x);
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
+            }
 
             [Test]
-            public void DecimalEmptyInputDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Empty<decimal>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void DecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullValue_ReturnsNull()
             {
-                Assert.That(Enumerable.Empty<decimal>().MinOrDefault(), Is.EqualTo(default(decimal)));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                var nullComparable = (GenericComparable)null;
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(nullComparable), Is.Null);
             }
 
             [Test]
-            public void DecimalGoodInputDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullValue_WithFunc_ReturnsNull()
             {
-                Assert.That(_decimalArray.MinOrDefault(DefaultDecimalValue), Is.EqualTo(_decimalArray.Min()));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                GenericComparable nullComparable = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc, nullComparable), Is.Null);
             }
 
             [Test]
-            public void DecimalGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(_decimalArray.MinOrDefault(), Is.EqualTo(_decimalArray.Min()));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                GenericComparable nullComparable = null;
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(nullFunc, nullComparable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void DecimalNullInputDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithValue_ReturnsValue()
             {
-                Assert.That(NullSequence.Of<decimal>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableValue), Is.EqualTo(comparableValue));
             }
 
             [Test]
-            public void DecimalNullInputNoDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithValue_WithFunc_ReturnsValue()
             {
-                Assert.That(NullSequence.Of<decimal>().MinOrDefault(), Is.EqualTo(default(decimal)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableValue));
             }
 
             [Test]
-            public void DoubleEmptyInputDefault()
+            public void MinOrDefault_OnEmptyGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Empty<double>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+                Assert.That(() => emptyGenericEnumerable.MinOrDefault(null, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void DoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(Enumerable.Empty<double>().MinOrDefault(), Is.EqualTo(default(double)));
+                var emptyIntSequence = Enumerable.Empty<int>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void DoubleGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(_doubleArray.MinOrDefault(DefaultDoubleValue), Is.EqualTo(_doubleArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void DoubleGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(_doubleArray.MinOrDefault(), Is.EqualTo(_doubleArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void DoubleNullInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(NullSequence.Of<double>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var emptyIntSequence = Enumerable.Empty<int>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(doubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void DoubleNullInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullSequence.Of<double>().MinOrDefault(), Is.EqualTo(default(double)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(doubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void FloatEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(Enumerable.Empty<float>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void FloatEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(Enumerable.Empty<float>().MinOrDefault(), Is.EqualTo(default(float)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void FloatGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(_floatArray.MinOrDefault(DefaultFloatValue), Is.EqualTo(_floatArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(intFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void FloatGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(_floatArray.MinOrDefault(), Is.EqualTo(_floatArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void FloatNullInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(NullSequence.Of<float>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void FloatNullInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<float>().MinOrDefault(), Is.EqualTo(default(float)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(longFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void IntegerEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void IntegerEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(), Is.EqualTo(default(int)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void IntegerGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(_intArray.MinOrDefault(DefaultIntValue), Is.EqualTo(_intArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void IntegerGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MinOrDefault(), Is.EqualTo(_intArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void IntegerNullInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableDuoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void IntegerNullInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(), Is.EqualTo(default(int)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void LongEmptyInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(Enumerable.Empty<long>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void LongEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(Enumerable.Empty<long>().MinOrDefault(), Is.EqualTo(default(long)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void LongGoodInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(_longArray.MinOrDefault(DefaultLongValue), Is.EqualTo(_longArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void LongGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(_longArray.MinOrDefault(), Is.EqualTo(_longArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void LongNullInputDefault()
+            public void MinOrDefault_OnEmptyIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullSequence.Of<long>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyIntSequence = Enumerable.Empty<int>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyIntSequence.MinOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void LongNullInputNoDefault()
+            public void MinOrDefault_OnEmptyLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<long>().MinOrDefault(), Is.EqualTo(default(long)));
+                var emptyLongSequence = Enumerable.Empty<long>();
+
+                Assert.That(() => emptyLongSequence.MinOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputDefault()
+            public void MinOrDefault_OnEmptyLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(Enumerable.Empty<decimal?>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyLongSequence = Enumerable.Empty<long>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void NullableDecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<decimal?>().MinOrDefault(), Is.EqualTo(default(decimal)));
+                var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
+
+                Assert.That(() => emptyNullableDecimalSequence.MinOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void NullableDecimalGoodInputDefault()
+            public void MinOrDefault_OnEmptyNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(_nullableDecimalArray.MinOrDefault(DefaultDecimalValue), Is.EqualTo(_nullableDecimalArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => emptyNullableDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void NullableDecimalGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(_nullableDecimalArray.MinOrDefault(), Is.EqualTo(_nullableDecimalArray.Min()));
+                var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
+
+                Assert.That(() => emptyNullableDoubleSequence.MinOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void NullableDecimalNullInputDefault()
+            public void MinOrDefault_OnEmptyNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullSequence.Of<decimal?>().MinOrDefault(DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => emptyNullableDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void NullableDecimalNullInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<decimal?>().MinOrDefault(), Is.EqualTo(default(decimal)));
+                var emptyNullableFloatSequence = Enumerable.Empty<float?>();
+
+                Assert.That(() => emptyNullableFloatSequence.MinOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputDefault()
+            public void MinOrDefault_OnEmptyNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(Enumerable.Empty<double?>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableFloatSequence = Enumerable.Empty<float?>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => emptyNullableFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void NullableDoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(Enumerable.Empty<double?>().MinOrDefault(), Is.EqualTo(default(double)));
+                var emptyNullableIntSequence = Enumerable.Empty<int?>();
+
+                Assert.That(() => emptyNullableIntSequence.MinOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void NullableDoubleGoodInputDefault()
+            public void MinOrDefault_OnEmptyNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(_nullableDoubleArray.MinOrDefault(DefaultDoubleValue), Is.EqualTo(_nullableDoubleArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableIntSequence = Enumerable.Empty<int?>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => emptyNullableIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void NullableDoubleGoodInputNoDefault()
+            public void MinOrDefault_OnEmptyNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(_nullableDoubleArray.MinOrDefault(), Is.EqualTo(_nullableDoubleArray.Min()));
+                var emptyNullableLongSequnce = Enumerable.Empty<long?>();
+
+                Assert.That(() => emptyNullableLongSequnce.MinOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void NullableDoubleNullInputDefault()
+            public void MinOrDefault_OnEmptyNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullSequence.Of<double?>().MinOrDefault(DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var emptyNullableLongSequnce = Enumerable.Empty<long?>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => emptyNullableLongSequnce.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void NullableDoubleNullInputNoDefault()
+            public void MinOrDefault_OnFloatArray_ReturnsFloatArrayMin()
             {
-                Assert.That(NullSequence.Of<double?>().MinOrDefault(), Is.EqualTo(default(double)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArrayMin = floatArray.Min();
+
+                Assert.That(() => floatArray.MinOrDefault(), Is.EqualTo(floatArrayMin));
             }
 
             [Test]
-            public void NullableFloatEmptyInputDefault()
+            public void MinOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayMin()
             {
-                Assert.That(Enumerable.Empty<float?>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArrayMin = floatArray.Min();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => floatArray.MinOrDefault(floatValue), Is.EqualTo(floatArrayMin));
             }
 
             [Test]
-            public void NullableFloatEmptyInputNoDefault()
+            public void MinOrDefault_OnGenericEnumerable_ReturnsGenericEnumerableMin()
             {
-                Assert.That(Enumerable.Empty<float?>().MinOrDefault(), Is.EqualTo(default(float)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArrayMin = comparableArray.Min();
+
+                Assert.That(() => comparableArray.MinOrDefault(), Is.EqualTo(comparableArrayMin));
             }
 
             [Test]
-            public void NullableFloatGoodInputDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithFunc_ReturnsGenericEnumerableMin()
             {
-                Assert.That(_nullableFloatArray.MinOrDefault(DefaultFloatValue), Is.EqualTo(_nullableFloatArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableArrayMin = comparableArray.Min(comparableFunc);
+
+                Assert.That(() => comparableArray.MinOrDefault(comparableFunc), Is.EqualTo(comparableArrayMin));
             }
 
             [Test]
-            public void NullableFloatGoodInputNoDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(_nullableFloatArray.MinOrDefault(), Is.EqualTo(_nullableFloatArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => comparableArray.MinOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void NullableFloatNullInputDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithNullValue_ReturnsGenericEnumerableMin()
             {
-                Assert.That(NullSequence.Of<float?>().MinOrDefault(DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                GenericComparable nullComparable = null;
+                var comparableArrayMin = comparableArray.Min();
+
+                Assert.That(() => comparableArray.MinOrDefault(nullComparable), Is.EqualTo(comparableArrayMin));
             }
 
             [Test]
-            public void NullableFloatNullInputNoDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithNullValue_WithFunc_ReturnsGenericEnumerableMin()
             {
-                Assert.That(NullSequence.Of<float?>().MinOrDefault(), Is.EqualTo(default(float)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                GenericComparable nullComparable = null;
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableArrayMin = comparableArray.Min(comparableFunc);
+
+                Assert.That(() => comparableArray.MinOrDefault(comparableFunc, nullComparable), Is.EqualTo(comparableArrayMin));
             }
 
             [Test]
-            public void NullableIntegerEmptyInputDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Empty<int?>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                GenericComparable nullComparable = null;
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => comparableArray.MinOrDefault(nullFunc, nullComparable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void NullableIntegerEmptyInputNoDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithValue_ReturnsGenericEnumerableMin()
             {
-                Assert.That(() => Enumerable.Empty<int?>().MinOrDefault(), Is.EqualTo(default(int)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArrayMin = comparableArray.Min();
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+                Assert.That(() => comparableArray.MinOrDefault(comparableValue), Is.EqualTo(comparableArrayMin));
             }
 
             [Test]
-            public void NullableIntegerGoodInputDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithValue_WithFunc_ReturnsGenericEnumerableMin()
             {
-                Assert.That(_nullableIntArray.MinOrDefault(DefaultIntValue), Is.EqualTo(_nullableIntArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableArrayMin = comparableArray.Min(comparableFunc);
+
+                Assert.That(() => comparableArray.MinOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableArrayMin));
             }
 
             [Test]
-            public void NullableIntegerGoodInputNoDefault()
+            public void MinOrDefault_OnGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(_nullableIntArray.MinOrDefault(), Is.EqualTo(_nullableIntArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => comparableArray.MinOrDefault(nullFunc, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void NullableIntegerNullInputDefault()
+            public void MinOrDefault_OnIntArray_ReturnsIntArrayMin()
             {
-                Assert.That(NullSequence.Of<int?>().MinOrDefault(DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intArrayMin = intArray.Min();
+
+                Assert.That(() => intArray.MinOrDefault(), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableIntegerNullInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithDecimalFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int?>().MinOrDefault(), Is.EqualTo(default(int)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArrayMin = intArray.Min(decimalFunc);
+
+                Assert.That(() => intArray.MinOrDefault(decimalFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableLongEmptyInputDefault()
+            public void MinOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<long?>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArrayMin = intArray.Min(decimalFunc);
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => intArray.MinOrDefault(decimalFunc, decimalValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableLongEmptyInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithDoubleFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<long?>().MinOrDefault(), Is.EqualTo(default(long)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArrayMin = intArray.Min(doubleFunc);
+
+                Assert.That(() => intArray.MinOrDefault(doubleFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableLongGoodInputDefault()
+            public void MinOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsMin()
             {
-                Assert.That(_nullableLongArray.MinOrDefault(DefaultLongValue), Is.EqualTo(_nullableLongArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArrayMin = intArray.Min(doubleFunc);
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => intArray.MinOrDefault(doubleFunc, doubleValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableLongGoodInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithFloatFunc_ReturnsMin()
             {
-                Assert.That(_nullableLongArray.MinOrDefault(), Is.EqualTo(_nullableLongArray.Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArrayMin = intArray.Min(floatFunc);
+
+                Assert.That(() => intArray.MinOrDefault(floatFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableLongNullInputDefault()
+            public void MinOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<long?>().MinOrDefault(DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArrayMin = intArray.Min(floatFunc);
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => intArray.MinOrDefault(floatFunc, floatValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void NullableLongNullInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithIntFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<long?>().MinOrDefault(), Is.EqualTo(default(long)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArrayMin = intArray.Min(intFunc);
+
+                Assert.That(() => intArray.MinOrDefault(intFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputDefault()
+            public void MinOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArrayMin = intArray.Min(intFunc);
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => intArray.MinOrDefault(intFunc, intValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var intValue = fixture.CreateAnonymous<int>();
+                var intArrayMin = intArray.Min();
+
+                Assert.That(() => intArray.MinOrDefault(intValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputDefault()
+            public void MinOrDefault_OnIntArray_WithLongFunc_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_decimalFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var intArrayMin = intArray.Min(longFunc);
+
+                Assert.That(() => intArray.MinOrDefault(longFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDecimalGoodInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_decimalFunc), Is.EqualTo(_intArray.Select(_decimalFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longValue = fixture.CreateAnonymous<long>();
+                var intArrayMin = intArray.Min(longFunc);
+
+                Assert.That(() => intArray.MinOrDefault(longFunc, longValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputDefault()
+            public void MinOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_decimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArrayMin = intArray.Min(nullableDecimalFunc);
+
+                Assert.That(() => intArray.MinOrDefault(nullableDecimalFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDecimalNullInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_decimalFunc), Is.EqualTo(default(decimal)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArrayMin = intArray.Min(nullableDecimalFunc);
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => intArray.MinOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputDefault()
+            public void MinOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArrayMin = intArray.Min(nullableDoubleFunc);
+
+                Assert.That(() => intArray.MinOrDefault(nullableDoubleFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArrayMin = intArray.Min(nullableDoubleFunc);
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => intArray.MinOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputDefault()
+            public void MinOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_doubleFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArrayMin = intArray.Min(nullableFloatFunc);
+
+                Assert.That(() => intArray.MinOrDefault(nullableFloatFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDoubleGoodInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsMin()
             {
-                Assert.That(_intArray.MinOrDefault(_doubleFunc), Is.EqualTo(_intArray.Select(_doubleFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArrayMin = intArray.Min(nullableFloatFunc);
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => intArray.MinOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputDefault()
+            public void MinOrDefault_OnIntArray_WithNullableIntFunc_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_doubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArrayMin = intArray.Min(nullableIntFunc);
+
+                Assert.That(() => intArray.MinOrDefault(nullableIntFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionDoubleNullInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsMin()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_doubleFunc), Is.EqualTo(default(double)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArrayMin = intArray.Min(nullableIntFunc);
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => intArray.MinOrDefault(nullableIntFunc, intValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputDefault()
+            public void MinOrDefault_OnIntArray_WithNullableLongFunc_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArrayMin = intArray.Min(nullableLongFunc);
+
+                Assert.That(() => intArray.MinOrDefault(nullableLongFunc), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionFloatEmptyInputNoDefault()
+            public void MinOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsMin()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intArray = fixture.CreateAnonymous<int[]>();
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArrayMin = intArray.Min(nullableLongFunc);
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => intArray.MinOrDefault(nullableLongFunc, longValue), Is.EqualTo(intArrayMin));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputDefault()
+            public void MinOrDefault_OnLongArray_ReturnsLongArrayMin()
             {
-                Assert.That(_intArray.MinOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_floatFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArrayMin = longArray.Min();
+
+                Assert.That(() => longArray.MinOrDefault(), Is.EqualTo(longArrayMin));
             }
 
             [Test]
-            public void ProjectionFloatGoodInputNoDefault()
+            public void MinOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayMin()
             {
-                Assert.That(_intArray.MinOrDefault(_floatFunc), Is.EqualTo(_intArray.Select(_floatFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArrayMin = longArray.Min();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => longArray.MinOrDefault(longValue), Is.EqualTo(longArrayMin));
             }
 
             [Test]
-            public void ProjectionFloatNullInputDefault()
+            public void MinOrDefault_OnNullDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_floatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                IEnumerable<decimal> nullDecimalSequence = null;
+
+                Assert.That(() => nullDecimalSequence.MinOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void ProjectionFloatNullInputNoDefault()
+            public void MinOrDefault_OnNullDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_floatFunc), Is.EqualTo(default(float)));
+                IEnumerable<decimal> nullDecimalSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputDefault()
+            public void MinOrDefault_OnNullDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                IEnumerable<double> nullDoubleSequence = null;
+
+                Assert.That(() => nullDoubleSequence.MinOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void ProjectionIntEmptyInputNoDefault()
+            public void MinOrDefault_OnNullDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_intFunc), Is.EqualTo(default(int)));
+                IEnumerable<double> nullDoubleSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void ProjectionIntGoodInputDefault()
+            public void MinOrDefault_OnNullFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(_intArray.MinOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_intFunc).Min()));
+                IEnumerable<float> nullFloatSequence = null;
+
+                Assert.That(() => nullFloatSequence.MinOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void ProjectionIntGoodInputNoDefault()
+            public void MinOrDefault_OnNullFloatSequence_WithFloatValue_RetursFloatValue()
             {
-                Assert.That(_intArray.MinOrDefault(_intFunc), Is.EqualTo(_intArray.Select(_intFunc).Min()));
+                IEnumerable<float> nullFloatSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void ProjectionIntNullInputDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithFunc_ReturnsDefault()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_intFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
             }
 
             [Test]
-            public void ProjectionIntNullInputNoDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_intFunc), Is.EqualTo(default(int)));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ProjectionLongEmptyInputDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullValue_ReturnsNull()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                GenericComparable nullComparable = null;
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(nullComparable), Is.Null);
             }
 
             [Test]
-            public void ProjectionLongEmptyInputNoDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullValue_WithFunc_ReturnsNull()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_longFunc), Is.EqualTo(default(long)));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                GenericComparable nullComparable = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc, nullComparable), Is.Null);
             }
 
             [Test]
-            public void ProjectionLongGoodInputDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(_intArray.MinOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_longFunc).Min()));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                GenericComparable nullComparable = null;
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(nullFunc, nullComparable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ProjectionLongGoodInputNoDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithValue_ReturnsValue()
             {
-                Assert.That(_intArray.MinOrDefault(_longFunc), Is.EqualTo(_intArray.Select(_longFunc).Min()));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableValue), Is.EqualTo(comparableValue));
             }
 
             [Test]
-            public void ProjectionLongNullInputDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithValue_WithFunc_ReturnsValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_longFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableValue));
             }
 
             [Test]
-            public void ProjectionLongNullInputNoDefault()
+            public void MinOrDefault_OnNullGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_longFunc), Is.EqualTo(default(long)));
+                IEnumerable<GenericComparable> nullComparableEnumerable = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                Func<GenericComparable, GenericComparable> nullFunc = null;
+
+                Assert.That(() => nullComparableEnumerable.MinOrDefault(nullFunc, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputDefault()
+            public void MinOrDefault_OnNullIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                IEnumerable<int> nullIntSequence = null;
+
+                Assert.That(() => nullIntSequence.MinOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void ProjectionNullableDecimalEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDecimalFunc), Is.EqualTo(_intArray.Select(_nullableDecimalFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(doubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDecimalFunc, DefaultDecimalValue), Is.EqualTo(DefaultDecimalValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubeValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(doubleFunc, doubeValue), Is.EqualTo(doubeValue));
             }
 
             [Test]
-            public void ProjectionNullableDecimalNullInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDecimalFunc), Is.EqualTo(default(decimal)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(intFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableDoubleFunc), Is.EqualTo(_intArray.Select(_nullableDoubleFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDoubleFunc, DefaultDoubleValue), Is.EqualTo(DefaultDoubleValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(longFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void ProjectionNullableDoubleNullInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableDoubleFunc), Is.EqualTo(default(double)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void ProjectionNullableFloatEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void ProjectionNullableFloatGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableFloatFunc), Is.EqualTo(_intArray.Select(_nullableFloatFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableFloatFunc, DefaultFloatValue), Is.EqualTo(DefaultFloatValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void ProjectionNullableFloatNullInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableFloatFunc), Is.EqualTo(default(float)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void ProjectionNullableIntEmptyInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(_intArray.Select(_nullableIntFunc).Min()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                IEnumerable<int> nullIntSequence = null;
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void ProjectionNullableIntGoodInputNoDefault()
+            public void MinOrDefault_OnNullIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableIntFunc), Is.EqualTo(_intArray.Select(_nullableIntFunc).Min()));
+                IEnumerable<int> nullIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullIntSequence.MinOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputDefault()
+            public void MinOrDefault_OnNullLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableIntFunc, DefaultIntValue), Is.EqualTo(DefaultIntValue));
+                IEnumerable<long> nullLongSequence = null;
+
+                Assert.That(() => nullLongSequence.MinOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void ProjectionNullableIntNullInputNoDefault()
+            public void MinOrDefault_OnNullLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableIntFunc), Is.EqualTo(default(int)));
+                IEnumerable<long> nullLongSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputDefault()
+            public void MinOrDefault_OnNullNullableDecimalSequence_ReturnsDefaultDecimal()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                IEnumerable<decimal> nullDecimalSequence = null;
+
+                Assert.That(() => nullDecimalSequence.MinOrDefault(), Is.EqualTo(default(decimal)));
             }
 
             [Test]
-            public void ProjectionNullableLongEmptyInputNoDefault()
+            public void MinOrDefault_OnNullNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                Assert.That(Enumerable.Empty<int>().MinOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                IEnumerable<decimal?> nullNullableDecimalSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+
+                Assert.That(() => nullNullableDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputDefault()
+            public void MinOrDefault_OnNullNullableDoubleSequence_ReturnsDefaultDouble()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(_intArray.Select(_nullableLongFunc).Min()));
+                IEnumerable<double?> nullNullableDoubleSequence = null;
+
+                Assert.That(() => nullNullableDoubleSequence.MinOrDefault(), Is.EqualTo(default(double)));
             }
 
             [Test]
-            public void ProjectionNullableLongGoodInputNoDefault()
+            public void MinOrDefault_OnNullNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                Assert.That(_intArray.MinOrDefault(_nullableLongFunc), Is.EqualTo(_intArray.Select(_nullableLongFunc).Min()));
+                IEnumerable<double?> nullNullableDoubleSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullNullableDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputDefault()
+            public void MinOrDefault_OnNullNullableFloatSequence_ReturnsDefaultFloat()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableLongFunc, DefaultLongValue), Is.EqualTo(DefaultLongValue));
+                IEnumerable<float?> nullNullableFloatSequence = null;
+
+                Assert.That(() => nullNullableFloatSequence.MinOrDefault(), Is.EqualTo(default(float)));
             }
 
             [Test]
-            public void ProjectionNullableLongNullInputNoDefault()
+            public void MinOrDefault_OnNullNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
-                Assert.That(NullSequence.Of<int>().MinOrDefault(_nullableLongFunc), Is.EqualTo(default(long)));
+                IEnumerable<float?> nullNullableFloatSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullNullableFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
 
             [Test]
-            public void SequenceEmptyDefaultValueEmpty()
+            public void MinOrDefault_OnNullNullableIntSequence_ReturnsDefaultInt()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(), Is.EqualTo(default(string)));
+                IEnumerable<int?> nullNullableIntSequence = null;
+
+                Assert.That(() => nullNullableIntSequence.MinOrDefault(), Is.EqualTo(default(int)));
             }
 
             [Test]
-            public void SequenceEmptyDefaultValueGood()
+            public void MinOrDefault_OnNullNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault("Z"), Is.EqualTo("Z"));
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault((string)null), Is.Null);
+                IEnumerable<int?> nullNullableIntSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullNullableIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
 
             [Test]
-            public void SequenceEmptySelectorGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullNullableLongSequence_ReturnsDefaultLong()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(s => s.First()), Is.EqualTo(default(char)));
+                IEnumerable<long?> nullNullableLongSequence = null;
+
+                Assert.That(() => nullNullableLongSequence.MinOrDefault(), Is.EqualTo(default(long)));
             }
 
             [Test]
-            public void SequenceEmptySelectorGoodDefaultValueGood()
+            public void MinOrDefault_OnNullNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(s => s.First(), 'Z'), Is.EqualTo('Z'));
-                Assert.That(() => Enumerable.Empty<string>().MinOrDefault(s => s, null), Is.Null);
+                IEnumerable<long?> nullNullableLongSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullNullableLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
 
             [Test]
-            public void SequenceGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault(), Is.EqualTo("A"));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+                var nullableDecimalArrayMin = nullableDecimalArray.Min();
+
+                Assert.That(() => nullableDecimalArray.MinOrDefault(), Is.EqualTo(nullableDecimalArrayMin));
             }
 
             [Test]
-            public void SequenceGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault("Z"), Is.EqualTo("A"));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalArrayMin = nullableDecimalArray.Min();
+
+                Assert.That(() => nullableDecimalArray.MinOrDefault(decimalValue), Is.EqualTo(nullableDecimalArrayMin));
             }
 
             [Test]
-            public void SequenceGoodSelectorGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault(s => s.First()), Is.EqualTo('A'));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArrayMin = nullableDoubleArray.Min();
+
+                Assert.That(() => nullableDoubleArray.MinOrDefault(), Is.EqualTo(nullableDoubleArrayMin));
             }
 
             [Test]
-            public void SequenceGoodSelectorGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayMin()
             {
-                Assert.That(() => _stringArray.MinOrDefault(s => s.First(), 'Z'), Is.EqualTo('A'));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArrayMin = nullableDoubleArray.Min();
+                var doubleValue = fixture.CreateAnonymous<double>();
+
+                Assert.That(() => nullableDoubleArray.MinOrDefault(doubleValue), Is.EqualTo(nullableDoubleArrayMin));
             }
 
             [Test]
-            public void SequenceNullDefaultValueEmpty()
+            public void MinOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(), Is.EqualTo(default(string)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArrayMin = nullableFloatArray.Min();
+
+                Assert.That(() => nullableFloatArray.MinOrDefault(), Is.EqualTo(nullableFloatArrayMin));
             }
 
             [Test]
-            public void SequenceNullDefaultValueGood()
+            public void MinOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault("Z"), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault("Z"), Is.EqualTo("Z"));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArrayMin = nullableFloatArray.Min();
+                var floatValue = fixture.CreateAnonymous<float>();
+
+                Assert.That(() => nullableFloatArray.MinOrDefault(floatValue), Is.EqualTo(nullableFloatArrayMin));
             }
 
             [Test]
-            public void SequenceNullSelectorGoodDefaultValueEmpty()
+            public void MinOrDefault_OnNullableIntArray_RetunrsNullableIntArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First()), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First()), Is.EqualTo(default(char)));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArrayMin = nullableIntArray.Min();
+
+                Assert.That(() => nullableIntArray.MinOrDefault(), Is.EqualTo(nullableIntArrayMin));
             }
 
             [Test]
-            public void SequenceNullSelectorGoodDefaultValueGood()
+            public void MinOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First(), 'Z'), Throws.Nothing);
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(s => s.First(), 'Z'), Is.EqualTo('Z'));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArrayMin = nullableIntArray.Min();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullableIntArray.MinOrDefault(intValue), Is.EqualTo(nullableIntArrayMin));
             }
 
             [Test]
-            public void SequenceNullSelectorNullDefaultValueEmpty()
+            public void MinOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault((Func<string, char>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArrayMin = nullableLongArray.Min();
+
+                Assert.That(() => nullableLongArray.MinOrDefault(), Is.EqualTo(nullableLongArrayMin));
             }
 
             [Test]
-            public void SequenceNullSelectorNullDefaultValueGood()
+            public void MinOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayMin()
             {
-                Assert.That(() => NullSequence.Of<string>().MinOrDefault(null, 'Z'), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArrayMin = nullableLongArray.Min();
+                var longValue = fixture.CreateAnonymous<long>();
+
+                Assert.That(() => nullableLongArray.MinOrDefault(longValue), Is.EqualTo(nullableLongArrayMin));
             }
         }
     }

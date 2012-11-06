@@ -18,10 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,45 +34,73 @@ namespace UnitTests.ForIEnumerablesTests
         public class AppendTest
         {
             [Test]
-            public void AppendIsLazy()
+            public void Append_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<string>().Append("A"), Throws.Nothing);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => breakingSequence.Append(objectValue), Throws.Nothing);
             }
 
             [Test]
-            public void SequenceEmptyElementGood()
+            public void Append_OnEmptySequence_WithElement_ReturnsSequenceWithElement()
             {
-                Assert.That(Enumerable.Empty<string>().Append("A"), Is.EqualTo(Enumerable.Repeat("A", 1)));
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => emptySequence.Append(objectValue), Is.EqualTo(objectValue.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceEmptyElementNull()
+            public void Append_OnEmptySequence_WithNull_ReturnsSequenceWithSingleNull()
             {
-                Assert.That(Enumerable.Empty<string>().Append(null), Is.EqualTo(Enumerable.Repeat<string>(null, 1)));
+                var emptySequence = Enumerable.Empty<object>();
+                object nullObject = null;
+
+                Assert.That(() => emptySequence.Append(nullObject), Is.EqualTo(nullObject.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceGoodElementGood()
+            public void Append_OnNullSequence_WithElelment_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Append("A"), Is.EqualTo(Enumerable.Repeat("A", 3)));
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => nullSequence.Append(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodElementNull()
+            public void Append_OnNullSequence_WithNullElement_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Repeat("A", 2).Append(null), Is.EqualTo(new[] {"A", "A", null}));
+                IEnumerable<object> nullSequence = null;
+                object nullObject = null;
+
+                Assert.That(() => nullSequence.Append(nullObject), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullElelmentNull()
+            public void Append_OnSequence_WithElement_ReturnsAppendedSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Append(null), Throws.TypeOf<ValidationException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectArray = fixture.CreateAnonymous<object[]>();
+                var objectValue = fixture.CreateAnonymous<object>();
+                var appendedSequence = objectArray.Concat(objectValue.ToEnumerable());
+
+                Assert.That(() => objectArray.Append(objectValue), Is.EqualTo(appendedSequence));
             }
 
             [Test]
-            public void SequenceNullElementGood()
+            public void Append_OnSequence_WithNullElement_ReturnsAppendedSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Append("A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectArray = fixture.CreateAnonymous<object[]>();
+                object nullValue = null;
+                var appendedSequence = objectArray.Concat(nullValue.ToEnumerable());
+
+                Assert.That(() => objectArray.Append(nullValue), Is.EqualTo(appendedSequence));
             }
         }
     }

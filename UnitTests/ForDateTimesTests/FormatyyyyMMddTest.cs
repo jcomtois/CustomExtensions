@@ -26,11 +26,31 @@ namespace UnitTests.ForDateTimesTests
     [TestFixture]
     public class FormatyyyyMMddTest
     {
+        private static readonly DateTime JanuaryFirstDateTime = new DateTime(2000, 1, 1);
+        private static readonly DateTime DecemberThirtyFirstDateTime = new DateTime(1999, 12, 31);
+
         [Test]
-        public void FormatyyyMMddCorrectOutput()
+        public void FormatyyyMMdd_OnJanuaryFirstDateTime_ReturnsCorrectOutput()
         {
-            Assert.That(new DateTime(2000, 1, 1).FormatyyyyMMdd(), Is.EqualTo("20000101"));
-            Assert.That(new DateTime(1999, 12, 31).FormatyyyyMMdd(), Is.EqualTo("19991231"));
+            Assert.That(JanuaryFirstDateTime.FormatyyyyMMdd(), Is.EqualTo("20000101"));
+        }
+
+        [Test]
+        public void FormatyyyMMdd_OnDecemberThirtyFirstDateTime_ReturnsCorrectOutput()
+        {
+            Assert.That(DecemberThirtyFirstDateTime.FormatyyyyMMdd(), Is.EqualTo("19991231"));
+        }
+
+        [Test]
+        public void FormatyyyMMdd_OnMinDateTime_ReturnsCorrectOutput()
+        {
+            Assert.That(DateTime.MinValue.FormatyyyyMMdd(), Is.EqualTo("00010101"));
+        }
+
+        [Test]
+        public void FormatyyyMMdd_OnMaxDateTime_ReturnsCorrectOutput()
+        {
+            Assert.That(DateTime.MaxValue.FormatyyyyMMdd(), Is.EqualTo("99991231"));
         }
     }
 }

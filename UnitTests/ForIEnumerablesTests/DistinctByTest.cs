@@ -18,10 +18,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
+using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,141 +35,195 @@ namespace UnitTests.ForIEnumerablesTests
         public class DistinctByTest
         {
             [Test]
-            public void DistinctByComparerIsLazy()
+            public void DistinctBy_IsLazy()
             {
-                Assert.That(() => new BreakingSequence<int>().DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Throws.Nothing);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => breakingSequence.DistinctBy(objectFunc), Throws.Nothing);
             }
 
             [Test]
-            public void DistinctByIsLazy()
+            public void DistinctBy_OnDoubledSequence_WithKeySelector_ReturnsSingleSequence()
             {
-                Assert.That(() => new BreakingSequence<string>().DistinctBy(s => s.Length), Throws.Nothing);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var singleSequence = fixture.CreateAnonymous<object[]>();
+                var doubleSequence = singleSequence.Concat(singleSequence);
+                Func<object, object> objectFunc = o => o;
+
+                Assert.That(() => doubleSequence.DistinctBy(objectFunc), Is.EqualTo(singleSequence));
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorGood()
+            public void DistinctBy_OnDoubledSequence_WithKeySelector_WithEqualityComparer_ReturnsSingleSequence()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(i => i.ToString()), Is.Empty);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var singleSequence = fixture.CreateAnonymous<object[]>();
+                var doubleSequence = singleSequence.Concat(singleSequence);
+                Func<object, object> objectFunc = o => o;
+
+                var mock = fixture.CreateAnonymous<Mock<IEqualityComparer<object>>>();
+                mock.Setup(e => e.GetHashCode()).Returns((object o) => o.GetHashCode());
+                mock.Setup(e => e.GetHashCode(It.IsAny<object>())).Returns((object o) => o.GetHashCode());
+                mock.Setup(e => e.Equals(It.IsAny<object>())).Returns((object o, object b) => o.GetHashCode() == b.GetHashCode());
+                mock.Setup(e => e.Equals(It.IsAny<object>(), It.IsAny<object>())).Returns((object o, object b) => o.GetHashCode() == b.GetHashCode());
+
+                var equalityComparer = mock.Object;
+
+                Assert.That(() => doubleSequence.DistinctBy(objectFunc, equalityComparer), Is.EqualTo(singleSequence));
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorGoodComparerGood()
+            public void DistinctBy_OnDoubledSequence_WithKeySelector_WithNullEqualityComparer_ReturnsSingleSequence()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Is.Empty);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var singleSequence = fixture.CreateAnonymous<object[]>();
+                var doubleSequence = singleSequence.Concat(singleSequence);
+                Func<object, object> objectFunc = o => o;
+
+                IEqualityComparer<object> nullEqualityComparer = null;
+
+                Assert.That(() => doubleSequence.DistinctBy(objectFunc, nullEqualityComparer), Is.EqualTo(singleSequence));
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorGoodComparerNull()
+            public void DistinctBy_OnEmptySequence_WithKeySelector_ReturnsNoElements()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(i => i.ToString(), null), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => emptySequence.DistinctBy(objectFunc), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorNull()
+            public void DistinctBy_OnEmptySequence_WithKeySelector_WithEqualityComparer_ReturnsNoElements()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy((Func<int, string>)null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+
+                Assert.That(() => emptySequence.DistinctBy(objectFunc, equalityComparer), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorNullComparerGood()
+            public void DistinctBy_OnEmptySequence_WithKeySelector_WithNullEqualityComparer_ReturnsNoElements()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy(null, StringComparer.OrdinalIgnoreCase),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                IEqualityComparer<object> nullEqualityComparer = null;
+
+                Assert.That(() => emptySequence.DistinctBy(objectFunc, nullEqualityComparer), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyKeySelectorNullComparerNull()
+            public void DistinctBy_OnEmptySequence_WithNullKeySelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().DistinctBy((Func<int, string>)null, null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptySequence = Enumerable.Empty<object>();
+                Func<object, object> nullObjectFunc = null;
+
+                Assert.That(() => emptySequence.DistinctBy(nullObjectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorGood()
+            public void DistinctBy_OnEmptySequence_WithNullKeySelector_WithEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(i => i.ToString()), Is.EqualTo(Enumerable.Repeat(1, 1)));
-                Assert.That(() => (Enumerable.Range(1, 3).Concat(Enumerable.Range(1, 3))).DistinctBy(i => i.ToString()),
-                            Is.EquivalentTo(Enumerable.Range(1, 3)));
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                Func<object, object> nullObjectFunc = null;
+                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+
+                Assert.That(() => emptySequence.DistinctBy(nullObjectFunc, equalityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorGoodComparerGood()
+            public void DistinctBy_OnEmptySequence_WithNullKeySelector_WithNullEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase), Is.EqualTo(Enumerable.Repeat(1, 1)));
-                Assert.That(() => (Enumerable.Range(1, 3).Concat(Enumerable.Range(1, 3))).DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase),
-                            Is.EquivalentTo(Enumerable.Range(1, 3)));
+                var emptySequence = Enumerable.Empty<object>();
+                Func<object, object> nullObjectFunc = null;
+                IEqualityComparer<object> nullEqualityComparer = null;
+
+                Assert.That(() => emptySequence.DistinctBy(nullObjectFunc, nullEqualityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorGoodComparerNull()
+            public void DistinctBy_OnNullSequence_WithKeySelector_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(i => i.ToString(), null), Is.EqualTo(Enumerable.Repeat(1, 1)));
-                Assert.That(() => (Enumerable.Range(1, 3).Concat(Enumerable.Range(1, 3))).DistinctBy(i => i.ToString(), null),
-                            Is.EquivalentTo(Enumerable.Range(1, 3)));
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+
+                Assert.That(() => nullSequence.DistinctBy(objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorNull()
+            public void DistinctBy_OnNullSequence_WithKeySelector_WithEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy((Func<int, string>)null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+
+                Assert.That(() => nullSequence.DistinctBy(objectFunc, equalityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorNullComparerGood()
+            public void DistinctBy_OnNullSequence_WithKeySelector_WithNullEqualityComparere_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy(null, StringComparer.OrdinalIgnoreCase),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                IEqualityComparer<object> nullEqualityComparer = null;
+
+                Assert.That(() => nullSequence.DistinctBy(objectFunc, nullEqualityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodKeySelectorNullComparerNull()
+            public void DistinctBy_OnNullSequence_WithNullKeySelector_ThrowsValidtationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 3).DistinctBy((Func<int, string>)null, null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                Func<object, object> nullObjectFunc = null;
+
+                Assert.That(() => nullSequence.DistinctBy(nullObjectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceNullKeySelectorGood()
+            public void DistinctBy_OnNullSequence_WithNullKeySelector_WithEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(i => i.ToString()),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                Func<object, object> nullObjectFunc = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+
+                Assert.That(() => nullSequence.DistinctBy(nullObjectFunc, equalityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceNullKeySelectorGoodComparerGood()
+            public void DistinctBy_OnNullSequence_WithNullKeySelector_WithNullEqualityComparer_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(i => i.ToString(), StringComparer.OrdinalIgnoreCase),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                Func<object, object> nullObjectFunc = null;
+                IEqualityComparer<object> nullEqualityComparer = null;
+
+                Assert.That(() => nullSequence.DistinctBy(nullObjectFunc, nullEqualityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceNullKeySelectorGoodComparerNull()
+            public void DistinctBy_WithEqualityComparer_IsLazy()
             {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(i => i.ToString(), null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
 
-            [Test]
-            public void SequenceNullKeySelectorNull()
-            {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy((Func<int, string>)null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-            }
-
-            [Test]
-            public void SequenceNullKeySelectorNullComparerGood()
-            {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy(null, StringComparer.OrdinalIgnoreCase),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-            }
-
-            [Test]
-            public void SequenceNullKeySelectorNullComparerNull()
-            {
-                Assert.That(() => NullSequence.Of<int>().DistinctBy((Func<int, string>)null, null),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                Assert.That(() => breakingSequence.DistinctBy(objectFunc, equalityComparer), Throws.Nothing);
             }
         }
     }

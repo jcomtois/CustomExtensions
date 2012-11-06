@@ -24,6 +24,5 @@ namespace CustomExtensions.ForStrings
     /// </summary>
     public static partial class ExtendString
     {
-        private const int MinSaltLength = 13;
     }
 }

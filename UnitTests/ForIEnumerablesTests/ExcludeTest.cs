@@ -18,10 +18,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,200 +34,361 @@ namespace UnitTests.ForIEnumerablesTests
         public class ExcludeTest
         {
             [Test]
-            public void ExcludeSourceElementIsLazy()
+            public void Exclude_OnEmptySequence_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => new BreakingSequence<int>().Exclude(2), Throws.Nothing);
-                Assert.That(() => new BreakingSequence<int>().Exclude(2).ToList(), Throws.TypeOf<InvalidOperationException>());
+                var emptySequence = Enumerable.Empty<object>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => emptySequence.Exclude(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ExcludeSourceExclusionsIsLazy()
+            public void Exclude_OnEmptySequence_WithNullSequence_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Range(1, 3).Exclude(new BreakingSequence<int>()), Throws.Nothing);
-                Assert.That(() => Enumerable.Range(1, 3).Exclude(new BreakingSequence<int>()).ToList(), Throws.TypeOf<InvalidOperationException>());
+                var emptySequence = Enumerable.Empty<object>();
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => emptySequence.Exclude(nullSequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ExcludeSourcePredicateIsLazy()
+            public void Exclude_OnEmptySequence_WithNull_ReturnsEmptySequence()
             {
-                Assert.That(() => new BreakingSequence<int>().Exclude(i => i == 2), Throws.Nothing);
-                Assert.That(() => new BreakingSequence<int>().Exclude(i => i == 2).ToList(), Throws.TypeOf<InvalidOperationException>());
+                var emptySequence = Enumerable.Empty<object>();
+                object nullObject = null;
+
+                Assert.That(() => emptySequence.Exclude(nullObject), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementGood()
+            public void Exclude_OnEmptySequence_WithPredicate_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Exclude("A"), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => emptySequence.Exclude(objectFunc), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyElementNull()
+            public void Exclude_OnEmptySequence_WithSequence_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Exclude((string)null), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+
+                Assert.That(() => emptySequence.Exclude(sequence), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyExclusionsGood()
+            public void Exclude_OnEmptySequence_WithSingleElement_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<string>().Exclude(new[] {"A"}), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => emptySequence.Exclude(objectValue), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyExclusionsNull()
+            public void Exclude_OnNullSequence_WithElement_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().Exclude(NullSequence.Of<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => nullSequence.Exclude(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmptyPredicateGood()
+            public void Exclude_OnNullSequence_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().Exclude(s => s == "A"), Is.Empty);
+                IEnumerable<object> nullSequence = null;
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => nullSequence.Exclude(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceEmptyPredicateNull()
+            public void Exclude_OnNullSequence_WithNullSequence_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<string>().Exclude((Func<string, bool>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => nullSequence.Exclude(nullSequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceGoodElementGood()
+            public void Exclude_OnNullSequence_WithNull_ThrowsValidationException()
             {
-                Assert.That(Enumerable.Range(1, 3).Exclude(2), Is.EquivalentTo(new[] {1, 3}));
+                IEnumerable<object> nullSequence = null;
+                object nullObject = null;
 
-                const string string1 = "A";
-                const string string2 = "A";
-                const string string3 = "B";
+                Assert.That(() => nullSequence.Exclude(nullObject), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
 
-                Assert.That(new[] {string1, string2, string3}.Exclude(string1), Is.EquivalentTo(new[] {string3}));
+            [Test]
+            public void Exclude_OnNullSequence_WithPredicate_ThrowsValidationException()
+            {
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectFunc = fixture.CreateAnonymous<Func<object, bool>>();
 
+                Assert.That(() => nullSequence.Exclude(objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void Exclude_OnNullSequence_WithSequence_ThrowsValidationException()
+            {
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+
+                Assert.That(() => nullSequence.Exclude(sequence), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void Exclude_OnSequenceContainingNullValue_WithNullAsSequence_ReturnsSequenceWithoutNullValue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var objects = fixture.CreateAnonymous<object[]>();
+                objects[1] = null;
+                var objectsNoNull = new[] {objects[0], objects[2]};
+                var nullInSequence = ((object)null).ToEnumerable();
+
+                Assert.That(() => objects.Exclude(nullInSequence), Is.EquivalentTo(objectsNoNull));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceContainingNullValue_WithNull_ReturnsSequenceWithoutNullValue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var objects = fixture.CreateAnonymous<object[]>();
+                objects[1] = null;
+                object nullObject = null;
+                var objectsNoNull = new[] {objects[0], objects[2]};
+
+                Assert.That(() => objects.Exclude(nullObject), Is.EquivalentTo(objectsNoNull));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceContainingNullValue_WithPredicate_ReturnsSequenceWithoutNullValue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var objects = fixture.CreateAnonymous<object[]>();
+                objects[1] = null;
+                object nullObject = null;
+                var objectsNoNull = new[] {objects[0], objects[2]};
+
+                Assert.That(() => objects.Exclude(s => s == nullObject), Is.EquivalentTo(objectsNoNull));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfObjects_ExcludeObjectAsSequence_ReturnsOnlyUnMatchedInstances_UsesReferenceComparison()
+            {
+                var object1 = new object();
+                var object2 = new object();
+                var object3 = new object();
+
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(object1.ToEnumerable()), Is.EquivalentTo(new[] {object2, object3}));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfObjects_ExcludeObjectReferenceAsSequence_ReturnsOnlyUnMatchedInstances_UsesReferenceComparison()
+            {
+                var object1 = new object();
+                var object2 = object1;
+                var object3 = new object();
+                var object4 = object1;
+
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(object4.ToEnumerable()), Is.EquivalentTo(new[] {object3}));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfObjects_ExcludeObjectReference_ReturnsOnlyUnMatchedInstances_UsesReferenceComparison()
+            {
+                var object1 = new object();
+                var object2 = object1;
+                var object3 = new object();
+                var object4 = object1;
+
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(object4), Is.EquivalentTo(new[] {object3}));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfObjects_ExcludeObject_ReturnsOnlyUnMatchedInstances_UsesReferenceComparison()
+            {
+                var object1 = new object();
+                var object2 = new object();
+                var object3 = new object();
+
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(object1), Is.EquivalentTo(new[] {object2, object3}));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfObjects_WithPredicateOnObjectReference_ReturnsOnlyUnMatchedInstances_UsesReferenceComparison()
+            {
+                var object1 = new object();
+                var object2 = object1;
+                var object3 = new object();
+                var object4 = object1;
+
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(o => o == object4), Is.EquivalentTo(new[] {object3}));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfObjects_WithPredicate_ReturnsOnlyUnMatchedInstances_UsesReferenceComparison()
+            {
+                var object1 = new object();
+                var object2 = new object();
+                var object3 = new object();
+
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(o => o == object1), Is.EquivalentTo(new[] {object2, object3}));
+            }
+
+            [Test]
+            public void Exclude_OnSequenceOfStringObjects_ExcludeObjectAsSequence_ReturnsOnlyUnMatchedInstances_UsesValueComparison()
+            {
                 object object1 = "A";
                 object object2 = "A";
                 object object3 = "B";
 
-                Assert.That(new[] {object1, object2, object3}.Exclude(object1), Is.EquivalentTo(new[] {object3}));
-
-                object1 = new object();
-                object2 = new object();
-                object3 = new object();
-
-                Assert.That(new[] {object1, object2, object3}.Exclude(object1), Is.EquivalentTo(new[] {object2, object3}));
-
-                object2 = object1;
-
-                Assert.That(new[] {object1, object2, object3}.Exclude(object1), Is.EquivalentTo(new[] {object3}));
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(object1.ToEnumerable()), Is.EquivalentTo(new[] {object3}));
             }
 
             [Test]
-            public void SequenceGoodElementNull()
+            public void Exclude_OnSequenceOfStringObjects_ExcludeObject_ReturnsOnlyUnMatchedInstances_UsesValueComparison()
             {
-                Assert.That(Enumerable.Repeat("A", 3).Exclude((string)null), Is.EqualTo(Enumerable.Repeat("A", 3)));
-                Assert.That(new[] {"A", null, "B"}.Exclude((string)null), Is.EquivalentTo(new[] {"A", "B"}));
-            }
-
-            [Test]
-            public void SequenceGoodExclusionsGood()
-            {
-                Assert.That(Enumerable.Range(1, 3).Exclude(new[] {2}), Is.EquivalentTo(new[] {1, 3}));
-
-                const string string1 = "A";
-                const string string2 = "A";
-                const string string3 = "B";
-
-                Assert.That(new[] {string1, string2, string3}.Exclude(new[] {string1}), Is.EquivalentTo(new[] {string3}));
-
                 object object1 = "A";
                 object object2 = "A";
                 object object3 = "B";
 
-                Assert.That(new[] {object1, object2, object3}.Exclude(new[] {object1}), Is.EquivalentTo(new[] {object3}));
-
-                object1 = new object();
-                object2 = new object();
-                object3 = new object();
-
-                Assert.That(new[] {object1, object2, object3}.Exclude(new[] {object1}), Is.EquivalentTo(new[] {object2, object3}));
-
-                object2 = object1;
-
-                Assert.That(new[] {object1, object2, object3}.Exclude(new[] {object1}), Is.EquivalentTo(new[] {object3}));
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(object1), Is.EquivalentTo(new[] {object3}));
             }
 
             [Test]
-            public void SequenceGoodExclusionsNull()
+            public void Exclude_OnSequenceOfStringObjects_WithPredicate_ReturnsOnlyUnMatchedInstances_UsesValueComparison()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Exclude(NullSequence.Of<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void SequenceGoodPredicateGood()
-            {
-                Assert.That(Enumerable.Range(1, 3).Exclude(i => i == 2), Is.EquivalentTo(new[] {1, 3}));
-
-                const string string1 = "A";
-                const string string2 = "A";
-                const string string3 = "B";
-
-                Assert.That(new[] {string1, string2, string3}.Exclude(s => s == string1), Is.EquivalentTo(new[] {string3}));
-
                 object object1 = "A";
                 object object2 = "A";
                 object object3 = "B";
 
-                var object4 = object1; // Avoid access to modified closure warning
-                Assert.That(new[] {object1, object2, object3}.Exclude(o => o == object4), Is.EquivalentTo(new[] {object3}));
-
-                object1 = new object();
-                object2 = new object();
-                object3 = new object();
-
-                Assert.That(new[] {object1, object2, object3}.Exclude(o => o == object1), Is.EquivalentTo(new[] {object2, object3}));
-
-                object2 = object1;
-
-                Assert.That(new[] {object1, object2, object3}.Exclude(o => o == object1), Is.EquivalentTo(new[] {object3}));
+                Assert.That(() => new[] {object1, object2, object3}.Exclude(o => o == object1), Is.EquivalentTo(new[] {object3}));
             }
 
             [Test]
-            public void SequenceGoodPredicateNull()
+            public void Exclude_OnSequenceOfStrings_WithPredicate_ReturnsOnlyUnMatchedInstances_UsesValueComparison()
             {
-                Assert.That(() => Enumerable.Repeat("A", 3).Exclude((Func<string, bool>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                const string string1 = "A";
+                const string string2 = "A";
+                const string string3 = "B";
+
+                Assert.That(() => new[] {string1, string2, string3}.Exclude(s => s == string1), Is.EquivalentTo(new[] {string3}));
             }
 
             [Test]
-            public void SequenceNullElementGood()
+            public void Exclude_OnSequence_ExcludeElementAsSequence_ReturnsOnlyUnMatchedInstances_UsesValueComparison()
             {
-                Assert.That(() => NullSequence.Of<string>().Exclude("A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                const string string1 = "A";
+                const string string2 = "A";
+                const string string3 = "B";
+
+                Assert.That(() => new[] {string1, string2, string3}.Exclude(string1.ToEnumerable()), Is.EquivalentTo((string3.ToEnumerable())));
             }
 
             [Test]
-            public void SequenceNullElementNull()
+            public void Exclude_OnSequence_ExcludeElement_ReturnsOnlyUnMatchedInstances_UsesValueComparison()
             {
-                Assert.That(() => NullSequence.Of<string>().Exclude((string)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                const string string1 = "A";
+                const string string2 = "A";
+                const string string3 = "B";
+
+                Assert.That(() => new[] {string1, string2, string3}.Exclude(string1), Is.EquivalentTo(string3.ToEnumerable()));
             }
 
             [Test]
-            public void SequenceNullExclusionsGood()
+            public void Exclude_OnSequence_WithMatchedPredicate_ReturnsSequenceWithoutMatches()
             {
-                Assert.That(() => NullSequence.Of<string>().Exclude(new[] {"A"}), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 3;
+                var objects = fixture.CreateAnonymous<object[]>();
+                var match = objects[1];
+                var expected = new[] {objects[0], objects[2]};
+
+                Assert.That(() => objects.Exclude(s => s == match), Is.EqualTo(expected));
             }
 
             [Test]
-            public void SequenceNullExclusionsNull()
+            public void Exclude_OnSequence_WithNullAsSequence_ReturnsSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Exclude(NullSequence.Of<string>()), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objects = fixture.CreateAnonymous<object[]>();
+                object nullObject = null;
+                var sequenceWithNullObject = nullObject.ToEnumerable();
+
+                Assert.That(() => objects.Exclude(sequenceWithNullObject), Is.EqualTo(objects));
             }
 
             [Test]
-            public void SequenceNullPredicateGood()
+            public void Exclude_OnSequence_WithNullPredicate_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<string>().Exclude(s => s == "A"), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+                Func<object, bool> nullPredicate = null;
+
+                Assert.That(() => sequence.Exclude(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceNullPredicateNull()
+            public void Exclude_OnSequence_WithNull_ReturnsSequence()
             {
-                Assert.That(() => NullSequence.Of<string>().Exclude((Func<string, bool>)null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objects = fixture.CreateAnonymous<object[]>();
+                object nullObject = null;
+
+                Assert.That(() => objects.Exclude(nullObject), Is.EqualTo(objects));
+            }
+
+            [Test]
+            public void Exclude_OnSequence_WithUnMatchedPredicate_ReturnsSequence()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objects = fixture.CreateAnonymous<object[]>();
+                object nullObject = null;
+
+                Assert.That(() => objects.Exclude(s => s == nullObject), Is.EqualTo(objects));
+            }
+
+            [Test]
+            public void Exclude_WithEnumerable_IsLazy()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+
+                Assert.That(() => sequence.Exclude(breakingSequence), Throws.Nothing);
+            }
+
+            [Test]
+            public void Exclude_WithPredicate_IsLazy()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+
+                Assert.That(() => breakingSequence.Exclude(predicate), Throws.Nothing);
+            }
+
+            [Test]
+            public void Exclude_WithSingleElement_IsLazy()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => breakingSequence.Exclude(objectValue), Throws.Nothing);
             }
         }
     }

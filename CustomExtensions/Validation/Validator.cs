@@ -22,17 +22,27 @@ using System.Collections.Generic;
 
 namespace CustomExtensions.Validation
 {
+    // Inspired by
     // http://blog.getpaint.net/2008/12/06/a-fluent-approach-to-c-parameter-validation/
 
+    /// <summary>
+    /// Class that can be used to store a list of <see cref="Exception"/> to validate parameters
+    /// </summary>
     public sealed class Validator
     {
         private readonly List<Exception> _exceptions;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Validator()
         {
             _exceptions = new List<Exception>(1); // optimize for only having 1 exception
         }
 
+        /// <summary>
+        /// Exceptions contained in this <see cref="Validator"/>
+        /// </summary>
         public IEnumerable<Exception> Exceptions
         {
             get
@@ -41,14 +51,19 @@ namespace CustomExtensions.Validation
             }
         }
 
-        public Validator AddException(Exception ex)
+        /// <summary>
+        /// Thread-safe addition of <see cref="Exception"/> to this <see cref="Validator"/>
+        /// </summary>
+        /// <param name="exception">Exception to add</param>
+        /// <returns>Reference to this <see cref="Validator"/></returns>
+        public Validator AddException(Exception exception)
         {
             lock (_exceptions)
             {
-                _exceptions.Add(ex);
+                _exceptions.Add(exception);
             }
 
             return this;
-        }
+        }       
     }
 }

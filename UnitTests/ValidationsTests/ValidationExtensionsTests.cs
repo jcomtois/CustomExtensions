@@ -208,7 +208,7 @@ namespace UnitTests.ValidationsTests
             [Test]
             public void IsNotEmptySequenceNullParameterNameEmpty()
             {
-                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), string.Empty), Throws.Nothing);
+                Assert.That(() => _validator.IsNotEmpty<int>(null, string.Empty), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
                 Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
                 var ex = (ArgumentException)_validator.Exceptions.Single();
@@ -218,7 +218,7 @@ namespace UnitTests.ValidationsTests
             [Test]
             public void IsNotEmptySequenceNullParameterNameGood()
             {
-                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), "goodName"), Throws.Nothing);
+                Assert.That(() => _validator.IsNotEmpty<int>(null, "goodName"), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
                 Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
                 var ex = (ArgumentException)_validator.Exceptions.Single();
@@ -228,7 +228,7 @@ namespace UnitTests.ValidationsTests
             [Test]
             public void IsNotEmptySequenceNullParameterNameNull()
             {
-                Assert.That(() => _validator.IsNotEmpty(NullSequence.Of<int>(), null), Throws.Nothing);
+                Assert.That(() => _validator.IsNotEmpty<int>(null, null), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Has.Count.EqualTo(1));
                 Assert.That(_validator.Exceptions.Single(), Is.TypeOf<ArgumentException>());
                 var ex = (ArgumentException)_validator.Exceptions.Single();
@@ -340,6 +340,43 @@ namespace UnitTests.ValidationsTests
                 var notNull = new object();
                 Assert.That(() => _validator.IsNotNull(notNull, null), Throws.Nothing);
                 Assert.That(_validator.Exceptions, Is.Empty);
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberLessThanMinimum_AddsException()
+            {
+                const string parameterName = "someParameter";
+                Assert.That(() => _validator.IsAtLeast(0, -1, parameterName).CheckForExceptions(),
+                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                    .With.InnerException.Property("ParamName").EqualTo(parameterName));
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberLessThanMinimumNullParameterName_AddsExceptionWithNullParameterName()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, -1, NullTestString).CheckForExceptions(),
+                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                    .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberLessThanMinimumEmptyParameterName_AddsExceptionWithNullParameterName()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, -1, EmptyTestString).CheckForExceptions(),
+                    Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                    .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberEqualsMinimum_AddsNothing()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, 0, GoodTestString).CheckForExceptions(), Throws.Nothing);
+            }
+
+            [Test]
+            public void IsAtLeast_OnNumberGreaterThanMinimum_AddsNothing()
+            {
+                Assert.That(() => _validator.IsAtLeast(0, 1, GoodTestString).CheckForExceptions(), Throws.Nothing);
             }
         }
     }

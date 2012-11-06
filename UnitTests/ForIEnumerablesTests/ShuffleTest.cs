@@ -23,6 +23,8 @@ using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -31,80 +33,128 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class ShuffleTest
         {
-            #region Setup/Teardown
-
-            [SetUp]
-            public void SetUp()
+            [Test]
+            public void Shuffle_OnEmptySequence_WithNullRandom_ThrowsValidationException()
             {
-                _random = new Random(seed);
-            }
+                var emptySequence = Enumerable.Empty<object>();
+                Random nullRandom = null;
 
-            #endregion
-
-            private Random _random;
-            private const int seed = 1;
-            private readonly IList<int> _first10RandomIntegers;
-
-            public ShuffleTest()
-            {
-                var rand = new Random(seed);
-                _first10RandomIntegers = Enumerable.Range(0, 10).Select(i => rand.Next(10)).ToList();
+                Assert.That(() => emptySequence.Shuffle(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceEmpty()
+            public void Shuffle_OnEmptySequence_WithRandom_ReturnsEmptySequence()
             {
-                Assert.That(() => Enumerable.Empty<int>().Shuffle(_random), Throws.Nothing);
-                Assert.That(() => Enumerable.Empty<int>().Shuffle(_random), Is.Empty);
+                var emptySequence = Enumerable.Empty<object>();
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var random = fixture.CreateAnonymous<Random>();
+
+                Assert.That(() => emptySequence.Shuffle(random), Is.Empty);
             }
 
             [Test]
-            public void SequenceEmptyRandomNull()
+            public void Shuffle_OnNullSequence_WithNullRandom_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Empty<int>().Shuffle(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<object> nullSequence = null;
+                Random nullRandom = null;
+
+                Assert.That(() => nullSequence.Shuffle(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void SequenceGoodRandomGood()
+            public void Shuffle_OnNullSequence_WithRandom_ThrowsValidationException()
             {
-                var checkList = Enumerable.Range(0, 10).ToList();
-                Assert.That(() => checkList.Shuffle(_random), Is.EquivalentTo(checkList));
-                Assert.That(() => checkList, Is.Ordered);
-                Assert.That(() => checkList.Shuffle(_random), Is.Not.Ordered);
+                IEnumerable<object> nullSequence = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var random = fixture.CreateAnonymous<Random>();
+
+                Assert.That(() => nullSequence.Shuffle(random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SequenceGoodRandomNull()
+            public void Shuffle_OnSequenceOfOne_WithRandom_ReturnsSequenceOfOne()
             {
-                Assert.That(() => Enumerable.Range(1, 10).Shuffle(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 1;
+                var sequenceOfOne = fixture.CreateAnonymous<object[]>();
+                var random = fixture.CreateAnonymous<Random>();
+
+                Assert.That(() => sequenceOfOne.Shuffle(random), Is.EqualTo(sequenceOfOne));
             }
 
             [Test]
-            public void SequenceNullRandomGood()
+            public void Shuffle_OnSequence_IsLazy()
             {
-                Assert.That(() => NullSequence.Of<int>().Shuffle(_random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var random = fixture.CreateAnonymous<Random>();
+
+                Assert.That(() => breakingSequence.Shuffle(random), Throws.Nothing);
             }
 
             [Test]
-            public void SequenceNullRandomNull()
+            public void Shuffle_OnSequence_WithNullRandom_ThrowsValidationException()
             {
-                Assert.That(() => NullSequence.Of<int>().Shuffle(null), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-                try
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+                Random nullRandom = null;
+
+                Assert.That(() => sequence.Shuffle(nullRandom), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void Shuffle_OnSequence_WithRandom_ReturnsAllOriginalElements()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                const int count = 100;
+                fixture.RepeatCount = count;
+                var sequence = fixture.CreateAnonymous<object[]>();
+                var random = fixture.CreateAnonymous<Random>();
+                var shuffled = sequence.Shuffle(random).ToArray();
+
+                Assert.That(() => shuffled, Is.EquivalentTo(sequence));
+            }
+
+            [Test]
+            public void Shuffle_OnSequence_WithRandom_ReturnsDifferentSequence()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                const int count = 100;
+                fixture.RepeatCount = count;
+                var sequence = fixture.CreateAnonymous<object[]>();
+                var random = fixture.CreateAnonymous<Random>();
+                var shuffled = sequence.Shuffle(random).ToArray();
+
+                var matches = 0;
+                for (var i = 0; i < count; i++)
                 {
-                    NullSequence.Of<int>().Shuffle(null);
-                    Assert.Fail();
-                }
-                catch (ValidationException vex)
-                {
-                    var multiException = vex.InnerException as MultiException;
-                    if (multiException == null)
+                    if (sequence[i] == shuffled[i])
                     {
-                        Assert.Fail();
+                        matches++;
                     }
-                    Assert.That(() => multiException.InnerExceptions.ToList(), Has.Count.EqualTo(2));
-                    Assert.That(() => multiException.InnerExceptions, Has.Some.InstanceOf<ArgumentNullException>());
-                    Assert.That(() => multiException.InnerExceptions, Has.Some.InstanceOf<ArgumentException>());
+                    else
+                    {
+                        break;
+                    }
                 }
+
+                Assert.That(() => matches, Is.LessThan(count));
+            }
+
+            [Test]
+            public void Shuffle_OnSequence_WithRandom_ReturnsSameSequenceWithKnownSeed()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                const int count = 100;
+                fixture.RepeatCount = count;
+                var seed = fixture.CreateAnonymous<int>();
+                var sequence = fixture.CreateAnonymous<object[]>();
+                var random = new Random(seed);
+                var shuffled1 = sequence.Shuffle(random).ToArray();
+                random = new Random(seed);
+                var shuffled2 = sequence.Shuffle(random).ToArray();
+
+                Assert.That(() => shuffled1, Is.EqualTo(shuffled2));
             }
         }
     }

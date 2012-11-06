@@ -17,9 +17,48 @@
 
 #endregion
 
+using System;
+
 namespace UnitTests.ForIEnumerablesTests
 {
     public partial class ForIEnumerablesTests
     {
+        private class GenericComparable : IComparable<GenericComparable>
+        {
+            private readonly Guid _id;
+
+            public GenericComparable()
+            {
+                _id = Guid.NewGuid();
+            }
+
+            #region IComparable<GenericComparable> Members
+
+            public int CompareTo(GenericComparable other)
+            {
+                return _id.CompareTo(other._id);
+            }
+
+            #endregion
+        }
+
+        private struct GenericComparableStruct : IComparable<GenericComparableStruct>
+        {
+            private readonly Guid _id;
+
+            public GenericComparableStruct(Guid id)
+            {
+                _id = id;
+            }
+
+            #region IComparable<GenericComparableStruct> Members
+
+            public int CompareTo(GenericComparableStruct other)
+            {
+                return _id.CompareTo(other._id);
+            }
+
+            #endregion
+        }
     }
 }

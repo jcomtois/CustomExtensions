@@ -19,8 +19,17 @@
 
 namespace CustomExtensions.Interfaces
 {
+    /// <summary>
+    /// Provides AES Decryption function
+    /// </summary>
     public interface IEncrypt : IAESCrypto
     {
+        /// <summary>
+        /// Encrypts <paramref name="source"/> using provided <paramref name="password"/>
+        /// </summary>
+        /// <param name="source">String to Encrypt</param>
+        /// <param name="password">Password to use for encryption</param>
+        /// <returns>Encrypted string.</returns>
         string EncryptAES(string source, string password);
     }
 }

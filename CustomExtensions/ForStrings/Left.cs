@@ -25,13 +25,13 @@ namespace CustomExtensions.ForStrings
     public static partial class ExtendString
     {
         /// <summary>
-        /// Returns the first <paramref name="length"/> characters of <paramref name="source"/>.
-        /// If the string's length is less than the given length the complete string is returned. If length is zero an empty string is returned.
+        /// Returns the first <paramref name="length"/> characters of a string.
+        /// If the string's source length is less than the given length the complete string is returned. If length is zero an empty string is returned.
         /// </summary>
-        /// <param name="source"> The string to process </param>
-        /// <param name="length"> Number of characters to return </param>
-        /// <returns>Sub-string containing <paramref name="length"/> characters</returns>
-        /// <exception cref="ValidationException">when <paramref name="source"/> is null or <paramref name="length"/> is less than 0</exception>
+        /// <param name="source"> the string to process </param>
+        /// <param name="length"> Number of characters to return from left end of string</param>
+        /// <returns>Returns the first <paramref name="length"/> characters of a string.</returns>
+        /// <exception cref="ValidationException">Thrown if <paramref name="source"/> is null or <paramref name="length"/>is negative.</exception>
         public static string Left(this string source, int length)
         {
             Validate.Begin()

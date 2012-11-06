@@ -69,7 +69,7 @@ namespace CustomExtensions.Validation
             }
 
             return (value == null || value.Length < length)
-                       ? (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException("parameterName", "Must not be null or < " + length))
+                       ? validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, "Must not be null or < " + length))
                        : validator;
         }
 
@@ -83,12 +83,12 @@ namespace CustomExtensions.Validation
         public static Validator IsNotEmpty <T>(this Validator validator, IEnumerable<T> sequence, string parameterName)
         {
             return (sequence == null || sequence.IsEmpty())
-                       ? (validator ?? new Validator()).AddException(new ArgumentException("Sequence cannot be empty.", parameterName))
+                       ? validator.AddCustomException(new ArgumentException("Sequence cannot be empty.", parameterName))
                        : validator;
         }
 
         /// <summary>
-        /// Adds exception to Validator if value is greater than or equal to 0
+        /// Adds exception to Validator if value is not greater than or equal to 0
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
         /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
@@ -96,9 +96,7 @@ namespace CustomExtensions.Validation
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsNotNegative(this Validator validator, long value, string parameterName)
         {
-            return value >= 0
-                       ? validator
-                       : (validator ?? new Validator()).AddException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= 0, but was {0}", value)));
+            return validator.IsAtLeast(0, value, parameterName);
         }
 
         /// <summary>
@@ -113,7 +111,34 @@ namespace CustomExtensions.Validation
         {
             return theObject != null
                        ? validator
-                       : (validator ?? new Validator()).AddException(new ArgumentNullException(parameterName));
+                       : validator.AddCustomException(new ArgumentNullException(parameterName));
         }
+
+        /// <summary>
+        /// Used to add any <see cref="Exception"/> to Validator
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="exception">Instance of <see cref="Exception"/> or derived classes.  If null, <see cref="ArgumentNullException"/> will be added</param>
+        /// <returns><see cref="Validator"/> reference</returns>
+        public static Validator AddCustomException(this Validator validator, Exception exception)
+        {
+            return (validator ?? new Validator()).AddException(exception ?? new ArgumentNullException("exception"));
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, long minimumValue, long value, string parameterName)
+        {
+            return value >= minimumValue
+                       ? validator
+                       : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= {0}, but was {1}", minimumValue, value)));
+        }
+
     }
 }

@@ -23,7 +23,10 @@ using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.Validation;
+using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIEnumerablesTests
 {
@@ -32,48 +35,155 @@ namespace UnitTests.ForIEnumerablesTests
         [TestFixture]
         public class IsEmptyTest
         {
-            //Class to test non-Generic ICollection
-            private sealed class TestObj <T> : ArrayList, IEnumerable<T>
+            [Test]
+            public void IsEmpty_OnGenericCollectionEmpty_ReturnsTrue()
             {
-                #region IEnumerable<T> Members
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                ICollection<object> emptyGenericCollection = fixture.CreateAnonymous<ICollection<object>>();
+                emptyGenericCollection.Clear();
 
-                IEnumerator<T> IEnumerable<T>.GetEnumerator()
-                {
-                    return this.OfType<T>().GetEnumerator();
-                }
-
-                #endregion
+                Assert.That(() => emptyGenericCollection.IsEmpty(), Is.True);
             }
 
             [Test]
-            public void IsEmptySequenceNull()
+            public void IsEmpty_OnGenericCollectionMultipleItem_ReturnsFalse()
             {
-                Assert.That(() => NullSequence.Of<int>().IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                ICollection<object> nonEmptyGenericCollection = fixture.CreateAnonymous<ICollection<object>>();
+
+                Assert.That(() => nonEmptyGenericCollection.IsEmpty(), Is.False);
             }
 
             [Test]
-            public void IsEmptySourceContainsOneItem()
+            public void IsEmpty_OnGenericCollectionNull_ThrowsValidationException()
             {
-                Assert.That(() => Enumerable.Repeat(1, 1).IsEmpty(), Is.False); // IEnumerable
-                Assert.That(() => Enumerable.Repeat(1, 1).ToList().IsEmpty(), Is.False); // Generic collection
-                var testObj = new TestObj<int> {1};
-                Assert.That(() => testObj.IsEmpty(), Is.False); // Non-Generic collection
+                ICollection<int> nullCollection = null;
+
+                Assert.That(() => nullCollection.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void IsEmptySourceContainsZeroItems()
+            public void IsEmpty_OnGenericCollectionSingleItem_ReturnsFalse()
             {
-                Assert.That(() => Enumerable.Empty<int>().IsEmpty(), Is.True); // IEnumerable
-                Assert.That(() => Enumerable.Empty<int>().ToList().IsEmpty(), Is.True); // Generic collection
-                var testObj = new TestObj<int>();
-                Assert.That(() => testObj.IsEmpty(), Is.True); // Non-Generic collection
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 1;
+                var singleItemCollection = fixture.CreateAnonymous<ICollection<object>>();
+
+                Assert.That(() => singleItemCollection.IsEmpty(), Is.False);
             }
 
             [Test]
-            public void TestTestObj()
+            public void IsEmpty_OnGenericEnumerableEmpty_ReturnsTrue()
             {
-                var testObj = new TestObj<int> {1};
-                Assert.That(() => testObj.ToList(), Throws.Nothing);
+                IEnumerable<object> emptyEnumerable = Enumerable.Empty<object>();
+
+                Assert.That(() => emptyEnumerable.IsEmpty(), Is.True);
+            }
+
+            [Test]
+            public void IsEmpty_OnGenericEnumerableMultipleItem_ReturnsFalse()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var nonEmptyEnumerable = fixture.CreateAnonymous<IEnumerable<object>>();
+
+                Assert.That(() => nonEmptyEnumerable.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnGenericEnumerableNull_ThrowsValidationException()
+            {
+                IEnumerable<object> nullSequence = null;
+
+                Assert.That(() => nullSequence.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void IsEmpty_OnGenericEnumerableSingleItem_ReturnsFalse()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 1;
+                var singleItemEnumerable = fixture.CreateAnonymous<IEnumerable<object>>();
+
+                Assert.That(() => singleItemEnumerable.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionEmpty_ReturnsTrue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                IEnumerable emptyNonGenericCollection = mock.Object;
+
+                Assert.That(() => emptyNonGenericCollection.IsEmpty(), Is.True);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionMultipleItem_ReturnsFalse()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                IEnumerable nonEmptyNonGenericCollection = fixture.CreateMany<object>();
+
+                Assert.That(() => nonEmptyNonGenericCollection.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionNull_ThrowsValidationException()
+            {
+                ICollection nullCollection = null;
+
+                Assert.That(() => nullCollection.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericCollectionSingleItem_ReturnsFalse()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var mock = fixture.CreateAnonymous<Mock<ICollection>>();
+                mock.Setup(m => m.Count).Returns(1);
+                mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateAnonymous<object>().ToEnumerable().GetEnumerator);
+                ICollection singleItemNonGenericCollection = mock.Object;
+
+                Assert.That(() => singleItemNonGenericCollection.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableEmpty_ReturnsTrue()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                IEnumerable emptyNonGenericEnumerable = mock.Object;
+
+                Assert.That(() => emptyNonGenericEnumerable.IsEmpty(), Is.True);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableMultipleItem_ReturnsFalse()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateMany<object>().GetEnumerator);
+                IEnumerable sequence = mock.Object;
+
+                Assert.That(() => sequence.IsEmpty(), Is.False);
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableNull_ThrowsValidationException()
+            {
+                IEnumerable nullCollection = null;
+
+                Assert.That(() => nullCollection.IsEmpty(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void IsEmpty_OnNonGenericEnumerableSingleItem_ReturnsFalse()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateAnonymous<object>().ToEnumerable().GetEnumerator);
+                IEnumerable sequence = mock.Object;
+
+                Assert.That(() => sequence.IsEmpty(), Is.False);
             }
         }
     }

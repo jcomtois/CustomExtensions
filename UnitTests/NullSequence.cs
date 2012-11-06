@@ -19,7 +19,7 @@
 
 using System.Collections.Generic;
 
-namespace UnitTests.ForIEnumerablesTests
+namespace UnitTests
 {
     /// <summary>
     /// Helper class for testing

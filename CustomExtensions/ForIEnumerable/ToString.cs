@@ -29,7 +29,23 @@ namespace CustomExtensions.ForIEnumerable
     public static partial class ExtendIEnumerable
     {
         /// <summary>
-        /// Uses a projection to transform a sequence into a seperated list
+        /// Transforms sequence of strings into seperated list string
+        /// </summary>
+        /// <param name="source"><see cref="IEnumerable"/> of type <see cref="string"/></param>
+        /// <param name="separator">String to seperate each element in result string</param>
+        /// <returns>String listing all elements</returns>
+        /// <exception cref="ValidationException"> if <paramref name="source"/> is null</exception>        
+        public static string ToString (this IEnumerable<string> source, string separator)
+        {
+            Validate.Begin()
+                .IsNotNull(source, "source")
+                .CheckForExceptions();
+
+            return ToStringImplementation(source, s => s, separator);
+        }
+
+        /// <summary>
+        /// Uses a projection to transform a sequence into a seperated list string
         /// </summary>
         /// <typeparam name="T">Type contained in <paramref name="source"/></typeparam>
         /// <param name="source"><see cref="IEnumerable"/> of type <typeparamref name="T"/></param>
@@ -47,7 +63,7 @@ namespace CustomExtensions.ForIEnumerable
             return ToStringImplementation(source, projection, separator);
         }
 
-        internal static string ToStringImplementation <T>(IEnumerable<T> source, Func<T, string> projection, string separator)
+        private static string ToStringImplementation <T>(IEnumerable<T> source, Func<T, string> projection, string separator)
         {
             Debug.Assert(source != null, "source cannot be null");
             Debug.Assert(projection != null, "projection cannot be null");

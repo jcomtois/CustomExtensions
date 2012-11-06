@@ -18,6 +18,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CustomExtensions.Validation;
 using NUnit.Framework;
@@ -46,8 +47,8 @@ namespace UnitTests.ValidationsTests
                 Assert.That(() => new MultiException(exceptionList), Throws.Nothing);
                 Assert.That(() => new MultiException(exceptionList).InnerException, Is.Not.Null);
                 Assert.That(() => new MultiException(exceptionList).InnerExceptions, Is.Not.Empty);
-                Assert.That(() => new MultiException(NullSequence.Of<Exception>()).InnerExceptions, Is.Not.Empty);
-                Assert.That(() => new MultiException(NullSequence.Of<Exception>()).InnerExceptions.Single(), Is.TypeOf<ArgumentNullException>());
+                Assert.That(() => new MultiException((IEnumerable<Exception>)null).InnerExceptions, Is.Not.Empty);
+                Assert.That(() => new MultiException((IEnumerable<Exception>)null).InnerExceptions.Single(), Is.TypeOf<ArgumentNullException>());
                 Assert.That(() => new MultiException(exceptionList).InnerException, Is.TypeOf<ArgumentNullException>());
                 Assert.That(() => new MultiException(exceptionList).Message, Is.EqualTo(new MultiException().Message));
             }

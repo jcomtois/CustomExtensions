@@ -112,6 +112,15 @@
     <Reference Include="nunit.mocks">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\packages\AutoFixture.2.13.3\lib\net35\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.AutoMoq">
+      <HintPath>..\packages\AutoFixture.AutoMoq.2.13.3\lib\net35\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.SemanticComparison">
+      <HintPath>..\packages\AutoFixture.2.13.3\lib\net35\Ploeh.SemanticComparison.dll</HintPath>
+    </Reference>
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
     </Reference>
@@ -123,20 +132,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForArrayTests\ArrayTests.cs" />
+    <Compile Include="ForArrayTests\ToHexStringTest.cs">
+      <DependentUpon>ArrayTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="ForDateTimesTests\FormatyyyyMMddTest.cs">
       <DependentUpon>ForDateTimeTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ForIConvertibleTests.cs" />
-    <Compile Include="ForIConvertablesTests\ToOrDefaultTest.cs">
+    <Compile Include="ForIConvertiblesTests\ForIConvertibleTests.cs" />
+    <Compile Include="ForIConvertiblesTests\ToOrDefaultTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ToOrNullTest.cs">
+    <Compile Include="ForIConvertiblesTests\ToOrNullTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ToOrOtherTest.cs">
+    <Compile Include="ForIConvertiblesTests\ToOrOtherTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForIConvertablesTests\ToTest.cs">
+    <Compile Include="ForIConvertiblesTests\ToTest.cs">
       <DependentUpon>ForIConvertibleTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ForIEnumerablesTests\AppendTest.cs">
@@ -208,6 +221,27 @@
     <Compile Include="ForStringsTests\LeftTest.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
+    <Compile Include="ForStringsTests\ParseTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\RightTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\SHA1HashTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\StripTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\ToByteArrayTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\TruncateTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ForStringsTests\TryToGuidTest.cs">
+      <DependentUpon>StringTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="NullSequence.cs" />
     <Compile Include="ForIEnumerablesTests\PrependTest.cs">
       <DependentUpon>ForIEnumerablesTests.cs</DependentUpon>
@@ -247,6 +281,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
