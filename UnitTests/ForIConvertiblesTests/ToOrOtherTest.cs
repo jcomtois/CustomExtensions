@@ -82,14 +82,14 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnMaxDoubleWithAnyObject_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => MaxDouble.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
+                Assert.That(() => double.MaxValue.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
             }
 
             [Test]
             public void ToOrOther_ToObject_OnMaxDoubleWithTestObject_OutTestObject()
             {
                 object outParameter;
-                MaxDouble.ToOrOther(out outParameter, TestObject);
+                double.MaxValue.ToOrOther(out outParameter, TestObject);
                 Assert.That(() => outParameter, Is.Not.EqualTo(TestObject));
             }
 
@@ -179,7 +179,8 @@ namespace UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrOther_ToString_OnMaxDouble_ReturnsMaxDoubleString()
             {
-                Assert.That(() => MaxDouble.ToOrOther(_fixture.CreateAnonymous<string>()), Is.EqualTo(MaxDouble.ToString()));
+                double maxDouble = double.MaxValue;
+                Assert.That(() => maxDouble.ToOrOther(_fixture.CreateAnonymous<string>()), Is.EqualTo(maxDouble.ToString()));
             }
         }
     }

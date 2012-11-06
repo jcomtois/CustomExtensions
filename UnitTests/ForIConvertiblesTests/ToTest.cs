@@ -80,7 +80,7 @@ namespace UnitTests.ForIConvertiblesTests
             [Test]
             public void ToInteger_OnMaxDouble_ThrowsOverFlowException()
             {
-                Assert.That(() => MaxDouble.To<int>(), Throws.TypeOf<OverflowException>());
+                Assert.That(() => double.MaxValue.To<int>(), Throws.TypeOf<OverflowException>());
             }
 
             [Test]

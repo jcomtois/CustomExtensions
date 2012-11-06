@@ -22,6 +22,7 @@ using CustomExtensions.ForIConvertible;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIConvertiblesTests
 {
@@ -30,36 +31,34 @@ namespace UnitTests.ForIConvertiblesTests
         [TestFixture]
         public class ToOrDefaultTest
         {
-            private Fixture _fixture;
-
-            [SetUp]
-            public void SetUp()
-            {
-                _fixture = new Fixture();
-            }
-
             [Test]
             public void ToOrDefault_ToBadConvertible_OnAnyInteger_OutNull()
             {
-                var mockConvertible = new Mock<IConvertible>();
-                var outParameter = mockConvertible.Object;
-                _fixture.CreateAnonymous<int>().ToOrDefault(out outParameter);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                IConvertible outParameter;
+                intValue.ToOrDefault(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
 
             [Test]
             public void ToOrDefault_ToBadConvertible_OnAnyInteger_ReturnsFalse()
             {
-                var mockConvertible = new Mock<IConvertible>();
-                var outParameter = mockConvertible.Object;
-                Assert.That(() => _fixture.CreateAnonymous<int>().ToOrDefault(out outParameter), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                IConvertible outParameter;
+                var actual = intValue.ToOrDefault(out outParameter);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToFloat_OnMaxDouble_OutPositiveInfinity()
             {
                 float outParameter;
-                MaxDouble.ToOrDefault(out outParameter);
+                double.MaxValue.ToOrDefault(out outParameter);
+
                 Assert.That(() => outParameter, Is.EqualTo(float.PositiveInfinity));
             }
 
@@ -67,7 +66,9 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToFloat_OnMaxDouble_ReturnsTrue()
             {
                 float outParameter;
-                Assert.That(() => MaxDouble.ToOrDefault(out outParameter), Is.True);
+                var actual = double.MaxValue.ToOrDefault(out outParameter);
+
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
@@ -76,6 +77,7 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
                 mockConvertible.Setup(c => c.ToInt32(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 int outParameter;
+
                 mockConvertible.Object.ToOrDefault(out outParameter);
                 mockConvertible.Verify(c => c.ToInt32(It.IsAny<IFormatProvider>()), Times.Once());
             }
@@ -87,7 +89,8 @@ namespace UnitTests.ForIConvertiblesTests
                 mockConvertible.Setup(c => c.ToInt32(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 int outParameter;
                 mockConvertible.Object.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(DefaultInteger));
+
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
             }
 
             [Test]
@@ -96,140 +99,185 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(c => c.ToInt32(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 int outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrDefault(out outParameter), Is.False);
+                var actual = mockConvertible.Object.ToOrDefault(out outParameter);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToInt_OnMaxDouble_OutDefaultInteger()
             {
                 int outParameter;
-                MaxDouble.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(DefaultInteger));
+                double.MaxValue.ToOrDefault(out outParameter);
+
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInt_OnMaxDouble_ReturnsDefaultInteger()
             {
-                Assert.That(() => MaxDouble.ToOrDefault<int>(), Is.EqualTo(DefaultInteger));
+                Assert.That(() => double.MaxValue.ToOrDefault<int>(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInt_OnMaxDouble_ReturnsFalse()
             {
                 int outParameter;
-                Assert.That(() => MaxDouble.ToOrDefault(out outParameter), Is.False);
+
+                Assert.That(() => double.MaxValue.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnEmptyString_OutDefaultInteger()
             {
                 int outParameter;
-                EmptyString.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(DefaultInteger));
+                var emptyString = string.Empty;
+                emptyString.ToOrDefault(out outParameter);
+
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnEmptyString_ReturnsDefaultInteger()
             {
-                Assert.That(() => EmptyString.ToOrDefault<int>(), Is.EqualTo(DefaultInteger));
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.ToOrDefault<int>(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnEmptyString_ReturnsFalse()
             {
                 int outParameter;
-                Assert.That(() => EmptyString.ToOrDefault(out outParameter), Is.False);
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnIntegerString_OutInteger()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var integerString = intValue.ToString();
                 int outParameter;
-                IntegerString.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(TestInteger));
+                integerString.ToOrDefault(out outParameter);
+
+                Assert.That(() => outParameter, Is.EqualTo(intValue));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnIntegerString_ReturnsInteger()
             {
-                Assert.That(() => IntegerString.ToOrDefault<int>(), Is.EqualTo(TestInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var integerString = intValue.ToString();
+
+                Assert.That(() => integerString.ToOrDefault<int>(), Is.EqualTo(intValue));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnIntegerString_ReturnsTrue()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var integerString = intValue.ToString();
                 int outParameter;
-                Assert.That(() => IntegerString.ToOrDefault(out outParameter), Is.True);
+
+                Assert.That(() => integerString.ToOrDefault(out outParameter), Is.True);
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNonNumericString_OutDefaultInteger()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
                 int outParameter;
-                NonNumericString.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(DefaultInteger));
+                stringValue.ToOrDefault(out outParameter);
+
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNonNumericString_ReturnsDefaultInteger()
             {
-                Assert.That(() => NonNumericString.ToOrDefault<int>(), Is.EqualTo(DefaultInteger));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.ToOrDefault<int>(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNonNumericString_ReturnsFalse()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
                 int outParameter;
-                Assert.That(() => NonNumericString.ToOrDefault(out outParameter), Is.False);
+                var actual = stringValue.ToOrDefault(out outParameter);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNullNullableInteger_OutDefaultInteger()
             {
+                int? nullNullableInteger = null;
                 int outParameter;
-                NullNullableInteger.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(DefaultInteger));
+                nullNullableInteger.ToOrDefault(out outParameter);
+
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNullNullableInteger_ReturnsDefaultInteger()
             {
-                Assert.That(() => NullNullableInteger.ToOrDefault<int>(), Is.EqualTo(DefaultInteger));
+                int? nullNullableInteger = null;
+
+                Assert.That(() => nullNullableInteger.ToOrDefault<int>(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNullNullableInteger_ReturnsFalse()
             {
+                int? nullNullableInteger = null;
                 int outParameter;
-                Assert.That(() => NullNullableInteger.ToOrDefault(out outParameter), Is.False);
+
+                Assert.That(() => nullNullableInteger.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNullString_OutDefaultInteger()
             {
                 int outParameter;
-                NullString.ToOrDefault(out outParameter);
-                Assert.That(() => outParameter, Is.EqualTo(DefaultInteger));
+                string nullString = null;
+                nullString.ToOrDefault(out outParameter);
+
+                Assert.That(() => outParameter, Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNullString_ReturnsDefaultInteger()
             {
-                Assert.That(() => NullString.ToOrDefault<int>(), Is.EqualTo(DefaultInteger));
+                string nullString = null;
+
+                Assert.That(() => nullString.ToOrDefault<int>(), Is.EqualTo(default(int)));
             }
 
             [Test]
             public void ToOrDefault_ToInteger_OnNullString_ReturnsFalse()
             {
                 int outParameter;
-                Assert.That(() => NullString.ToOrDefault(out outParameter), Is.False);
+                string nullString = null;
+
+                Assert.That(() => nullString.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToNullableInt_OnMaxDouble_OutNull()
             {
                 int? outParameter;
-                MaxDouble.ToOrDefault(out outParameter);
+                double.MaxValue.ToOrDefault(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
 
@@ -237,13 +285,14 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToNullableInt_OnMaxDouble_ReturnsFalse()
             {
                 int? outParameter;
-                Assert.That(() => MaxDouble.ToOrDefault(out outParameter), Is.False);
+
+                Assert.That(() => double.MaxValue.ToOrDefault(out outParameter), Is.False);
             }
 
             [Test]
             public void ToOrDefault_ToNullableInt_OnMaxDouble_ReturnsNull()
             {
-                Assert.That(() => MaxDouble.ToOrDefault<int?>(), Is.Null);
+                Assert.That(() => double.MaxValue.ToOrDefault<int?>(), Is.Null);
             }
 
             [Test]
@@ -252,6 +301,7 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
+
                 mockConvertible.Object.ToOrDefault(out outParameter);
                 mockConvertible.Verify(m => m.ToString(It.IsAny<IFormatProvider>()), Times.Once());
             }
@@ -262,7 +312,9 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrDefault(out outParameter), Is.False);
+                var actual = mockConvertible.Object.ToOrDefault(out outParameter);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
@@ -271,6 +323,7 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
                 string outParameter;
+
                 Assert.That(() => mockConvertible.Object.ToOrDefault(out outParameter), Throws.Exception);
             }
 
@@ -281,6 +334,7 @@ namespace UnitTests.ForIConvertiblesTests
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
                 mockConvertible.Object.ToOrDefault(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
         }

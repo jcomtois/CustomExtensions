@@ -21,8 +21,6 @@ namespace UnitTests.ForIConvertiblesTests
 {
     public partial class ForIConvertibleTests
     {
-        private const int DefaultInteger = default(int);
-        private const double MaxDouble = double.MaxValue;
         private const string NonNumericString = "ABC";
         private const string NullString = null;
         private const decimal TestDecimal = 1.1m;

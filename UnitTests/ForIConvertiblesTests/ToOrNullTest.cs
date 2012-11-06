@@ -87,7 +87,7 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrNull_ToObject_OnMaxDouble_OutObject()
             {
                 object outParameter;
-                MaxDouble.ToOrNull(out outParameter);
+                double.MaxValue.ToOrNull(out outParameter);
                 Assert.That(() => outParameter, Is.InstanceOf<object>());
             }
 
@@ -95,7 +95,7 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrNull_ToObject_OnMaxDouble_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => MaxDouble.ToOrNull(out outParameter), Is.True);
+                Assert.That(() => double.MaxValue.ToOrNull(out outParameter), Is.True);
             }
 
             [Test]
@@ -180,7 +180,8 @@ namespace UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrNull_ToString_OnMaxDouble_ReturnsString()
             {
-                Assert.That(() => MaxDouble.ToOrNull<string>(), Is.EqualTo(MaxDouble.ToString()));
+                double maxDouble = double.MaxValue;
+                Assert.That(() => maxDouble.ToOrNull<string>(), Is.EqualTo(maxDouble.ToString()));
             }
         }
     }
