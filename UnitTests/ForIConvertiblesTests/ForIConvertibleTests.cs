@@ -30,6 +30,5 @@ namespace UnitTests.ForIConvertiblesTests
         private static readonly string IntegerString = TestInteger.ToString();
         private static readonly int? NonNullNullableInteger = TestInteger;
         private static readonly int? NullNullableInteger;
-        private static readonly object TestObject = new object();
     }
 }

@@ -31,124 +31,149 @@ namespace UnitTests.ForIConvertiblesTests
         [TestFixture]
         public class ToOrOtherTest
         {
-            private IFixture _fixture;
-
-            [SetUp]
-            public void SetUp()
+            [Test]
+            public void ToOrOther_ToBadConvertible_OnIntegerWithAnyBadConvertible_ReturnsFalse()
             {
-                _fixture = new Fixture().Customize(new AutoMoqCustomization());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var convertible = fixture.CreateAnonymous<IConvertible>();
+                IConvertible outParameter;
+                var actual = intValue.ToOrOther(out outParameter, convertible);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
-            public void ToOrOther_ToBadConvertible_OnTestIntegerWithAnyBadConvertible_ReturnsFalse()
+            public void ToOrOther_ToBadConvertible_OnInteger_OutBadConvertible()
             {
-                var mockConvertible = new Mock<IConvertible>();
-                var outParameter = mockConvertible.Object;
-                Assert.That(() => TestInteger.ToOrOther(out outParameter, _fixture.CreateAnonymous<IConvertible>()), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var convertible = fixture.CreateAnonymous<IConvertible>();
+                IConvertible outParameter;
+                intValue.ToOrOther(out outParameter, convertible);
+
+                Assert.That(() => outParameter, Is.EqualTo(convertible));
             }
 
             [Test]
-            public void ToOrOther_ToBadConvertible_OnTestInteger_OutBadConvertible()
+            public void ToOrOther_ToInteger_OnNullStringWithInteger_OutInteger()
             {
-                var mockConvertible = new Mock<IConvertible>();
-                var outParameter = mockConvertible.Object;
-                TestInteger.ToOrOther(out outParameter, mockConvertible.Object);
-                Assert.That(() => outParameter, Is.EqualTo(mockConvertible.Object));
-            }
-
-            [Test]
-            public void ToOrOther_ToInteger_OnNullStringWithTestInteger_OutTestInteger()
-            {
+                string nullString = null;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
                 int outParameter;
-                NullString.ToOrOther(out outParameter, TestInteger);
-                Assert.That(() => outParameter, Is.EqualTo(TestInteger));
+                nullString.ToOrOther(out outParameter, intValue);
+
+                Assert.That(() => outParameter, Is.EqualTo(intValue));
             }
 
             [Test]
-            public void ToOrOther_ToObject_OnEmptyStringWithTestObject_OutStringAsObject()
+            public void ToOrOther_ToObject_OnEmptyStringWithObject_OutStringAsObject()
             {
+                var emptyStrying = string.Empty;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
                 object outParameter;
-                EmptyString.ToOrOther(out outParameter, TestObject);
-                Assert.That(() => outParameter, Is.Not.EqualTo(TestObject));
+                emptyStrying.ToOrOther(out outParameter, objectValue);
+
+                Assert.That(() => outParameter, Is.EqualTo(emptyStrying));
             }
 
             [Test]
-            public void ToOrOther_ToObject_OnEmptyStringWithTestObject_ReturnsTestObject()
+            public void ToOrOther_ToObject_OnEmptyStringWithObject_ReturnsEmptyStringAsObject()
             {
-                Assert.That(() => EmptyString.ToOrOther(TestObject), Is.InstanceOf<object>());
+                var emptyString = string.Empty;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+
+                Assert.That(() => emptyString.ToOrOther(objectValue), Is.EqualTo(emptyString));
             }
 
             [Test]
-            public void ToOrOther_ToObject_OnMaxDoubleWithAnyObject_ReturnsTrue()
+            public void ToOrOther_ToObject_OnIntWithObject_ReturnsIntAsObject()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => intValue.ToOrOther(objectValue), Is.EqualTo(intValue));
+            }
+
+            [Test]
+            public void ToOrOther_ToObject_OnMaxDoubleWithObject_OutMaxDoubleAsObject()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
                 object outParameter;
-                Assert.That(() => double.MaxValue.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
+                double.MaxValue.ToOrOther(out outParameter, objectValue);
+
+                Assert.That(() => outParameter, Is.EqualTo(double.MaxValue));
             }
 
             [Test]
-            public void ToOrOther_ToObject_OnMaxDoubleWithTestObject_OutTestObject()
+            public void ToOrOther_ToObject_OnMaxDouble_WithObject_ReturnsTrue()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
                 object outParameter;
-                double.MaxValue.ToOrOther(out outParameter, TestObject);
-                Assert.That(() => outParameter, Is.Not.EqualTo(TestObject));
+                var actual = double.MaxValue.ToOrOther(out outParameter, objectValue);
+
+                Assert.That(() => actual, Is.True);
+            }
+
+            [Test]
+            public void ToOrOther_ToObject_OnNullNullableIntWithObject_OutNull()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                int? nullNullableInt = null;
+                object outParameter;
+                nullNullableInt.ToOrOther(out outParameter, objectValue);
+
+                Assert.That(() => outParameter, Is.Null);
             }
 
             [Test]
             public void ToOrOther_ToObject_OnNullNullableIntegerWithAnyObject_ReturnsTrue()
             {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                int? nullNullabelInteger = null;
                 object outParameter;
-                Assert.That(() => NullNullableInteger.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
+
+                Assert.That(() => nullNullabelInteger.ToOrOther(out outParameter, objectValue), Is.True);
             }
 
             [Test]
-            public void ToOrOther_ToObject_OnNullNullableIntegerWithTestObject_OutNull()
+            public void ToOrOther_ToObject_OnNullNullableIntegerWithObject_ReturnsNull()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                int? nullNullableInt = null;
+
+                Assert.That(() => nullNullableInt.ToOrOther(objectValue), Is.Null);
+            }
+
+            [Test]
+            public void ToOrOther_ToObject_OnNullStringWithObject_ReturnsNull()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                string nullString = null;
+
+                Assert.That(() => nullString.ToOrOther(objectValue), Is.Null);
+            }
+
+            [Test]
+            public void ToOrOther_ToObject_OnNullStringWithObject_ReturnsTrue()
             {
                 object outParameter;
-                NullNullableInteger.ToOrOther(out outParameter, TestObject);
-                Assert.That(() => outParameter, Is.Null);
-            }
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                string nullString = null;
+                var actual = nullString.ToOrOther(out outParameter, objectValue);
 
-            [Test]
-            public void ToOrOther_ToObject_OnNullNullableIntegerWithTestObject_ReturnsNull()
-            {
-                Assert.That(() => NullNullableInteger.ToOrOther(TestObject), Is.Null);
-            }
-
-            [Test]
-            public void ToOrOther_ToObject_OnNullStringWithAnyObject_ReturnsTrue()
-            {
-                object outParameter;
-                Assert.That(() => NullString.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
-            }
-
-            [Test]
-            public void ToOrOther_ToObject_OnNullStringWithTestObject_ReturnsNull()
-            {
-                Assert.That(() => NullString.ToOrOther(TestObject), Is.Null);
-            }
-
-            [Test]
-            public void ToOrOther_ToObject_OnStringWithTestObject_ReturnsTestObject()
-            {
-                Assert.That(() => TestInteger.ToOrOther(TestObject), Is.Not.EqualTo(TestObject));
-            }
-
-            [Test]
-            public void ToOrOther_ToString_OnBadConvertibleWithAnyString_ReturnsFalse()
-            {
-                var mockConvertible = new Mock<IConvertible>();
-                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
-                string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, _fixture.CreateAnonymous<string>()), Is.False);
-            }
-
-            [Test]
-            public void ToOrOther_ToString_OnBadConvertibleWithAnyString_ThrowsUnexpectedExceptionType()
-            {
-                var mockConvertible = new Mock<IConvertible>();
-                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
-                string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrOther(out outParameter, _fixture.CreateAnonymous<string>()), Throws.Exception);
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
@@ -157,8 +182,12 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                mockConvertible.Object.ToOrOther(out outParameter, NonNumericString);
-                Assert.That(() => outParameter, Is.EqualTo(NonNumericString));
+                IConvertible convertible = mockConvertible.Object;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+                convertible.ToOrOther(out outParameter, stringValue);
+
+                Assert.That(() => outParameter, Is.EqualTo(stringValue));
             }
 
             [Test]
@@ -166,21 +195,62 @@ namespace UnitTests.ForIConvertiblesTests
             {
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
-                Assert.That(() => mockConvertible.Object.ToOrOther(NonNumericString), Is.EqualTo(NonNumericString));
+                IConvertible convertible = mockConvertible.Object;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => convertible.ToOrOther(stringValue), Is.EqualTo(stringValue));
+            }
+
+            [Test]
+            public void ToOrOther_ToString_OnBadConvertibleWith_String_ThrowsUnexpectedExceptionType()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
+                string outParameter;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+                IConvertible convertible = mockConvertible.Object;
+
+                Assert.That(() => convertible.ToOrOther(out outParameter, stringValue), Throws.Exception);
+            }
+
+            [Test]
+            public void ToOrOther_ToString_OnBadConvertible_WithString_ReturnsFalse()
+            {
+                var mockConvertible = new Mock<IConvertible>();
+                mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
+                string outParameter;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+                IConvertible convertible = mockConvertible.Object;
+                var actual = convertible.ToOrOther(out outParameter, stringValue);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
             public void ToOrOther_ToString_OnEmptyStringWithAnyObject_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => EmptyString.ToOrOther(out outParameter, _fixture.CreateAnonymous<object>()), Is.True);
+                var emptyString = string.Empty;
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var objectValue = fixture.CreateAnonymous<object>();
+                var actual = emptyString.ToOrOther(out outParameter, objectValue);
+
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
             public void ToOrOther_ToString_OnMaxDouble_ReturnsMaxDoubleString()
             {
                 double maxDouble = double.MaxValue;
-                Assert.That(() => maxDouble.ToOrOther(_fixture.CreateAnonymous<string>()), Is.EqualTo(maxDouble.ToString()));
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var stringValue = fixture.CreateAnonymous<string>();
+                var actual = maxDouble.ToOrOther(stringValue);
+                var expected = maxDouble.ToString();
+
+                Assert.That(() => actual, Is.EqualTo(expected));
             }
         }
     }
