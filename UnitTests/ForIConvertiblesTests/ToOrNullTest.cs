@@ -22,6 +22,7 @@ using CustomExtensions.ForIConvertible;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForIConvertiblesTests
 {
@@ -30,36 +31,33 @@ namespace UnitTests.ForIConvertiblesTests
         [TestFixture]
         public class ToOrNullTest
         {
-            private Fixture _fixture;
-
-            [SetUp]
-            public void SetUp()
-            {
-                _fixture = new Fixture();
-            }
-
             [Test]
             public void ToOrNull_ToBadConvertible_OnAnyInteger_OutNull()
             {
-                var mockConvertible = new Mock<IConvertible>();
-                var outParameter = mockConvertible.Object;
-                _fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                IConvertible outParameter;
+                fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
 
             [Test]
             public void ToOrNull_ToBadConvertible_OnAnyInteger_ReturnsFalse()
             {
-                var mockConvertible = new Mock<IConvertible>();
-                var outParameter = mockConvertible.Object;
-                Assert.That(() => _fixture.CreateAnonymous<int>().ToOrNull(out outParameter), Is.False);
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                IConvertible outParameter;
+                var actual = fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
             public void ToOrNull_ToInteger_OnNullString_OutNull()
             {
                 object outParameter;
-                NullString.ToOrNull(out outParameter);
+                string nullString = null;
+                nullString.ToOrNull(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
 
@@ -67,20 +65,28 @@ namespace UnitTests.ForIConvertiblesTests
             public void ToOrNull_ToObject_OnEmptyString_OutObject()
             {
                 object outParameter;
-                EmptyString.ToOrNull(out outParameter);
-                Assert.That(() => outParameter, Is.InstanceOf<object>());
+                var emptyString = string.Empty;
+                emptyString.ToOrNull(out outParameter);
+
+                Assert.That(() => outParameter, Is.Not.Null);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnEmptyString_ReturnsObject()
             {
-                Assert.That(() => EmptyString.ToOrNull<object>(), Is.InstanceOf<object>());
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.ToOrNull<object>(), Is.Not.Null);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnIntegerString_ReturnsObject()
             {
-                Assert.That(() => IntegerString.ToOrNull<object>(), Is.InstanceOf<object>());
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                var intValue = fixture.CreateAnonymous<int>();
+                var integerString = intValue.ToString();
+
+                Assert.That(() => integerString.ToOrNull<object>(), Is.Not.Null);
             }
 
             [Test]
@@ -88,48 +94,63 @@ namespace UnitTests.ForIConvertiblesTests
             {
                 object outParameter;
                 double.MaxValue.ToOrNull(out outParameter);
-                Assert.That(() => outParameter, Is.InstanceOf<object>());
+
+                Assert.That(() => outParameter, Is.Not.Null);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnMaxDouble_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => double.MaxValue.ToOrNull(out outParameter), Is.True);
+                var actual = double.MaxValue.ToOrNull(out outParameter);
+
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnNullNullableInteger_OutNull()
             {
                 object outParameter;
-                NullNullableInteger.ToOrNull(out outParameter);
+                int? nullNullableInteger = null;
+                nullNullableInteger.ToOrNull(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnNullNullableInteger_ReturnsNull()
             {
-                Assert.That(() => NullNullableInteger.ToOrNull<object>(), Is.Null);
+                int? nullNullableInteger = null;
+
+                Assert.That(() => nullNullableInteger.ToOrNull<object>(), Is.Null);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnNullNullableInteger_ReturnsTrue()
             {
+                int? nullNullableInteger = null;
                 object outParameter;
-                Assert.That(() => NullNullableInteger.ToOrNull(out outParameter), Is.True);
+                var actual = nullNullableInteger.ToOrNull(out outParameter);
+
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnNullString_ReturnsNull()
             {
-                Assert.That(() => NullString.ToOrNull<object>(), Is.Null);
+                string nullString = null;
+
+                Assert.That(() => nullString.ToOrNull<object>(), Is.Null);
             }
 
             [Test]
             public void ToOrNull_ToObject_OnNullString_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => NullString.ToOrNull(out outParameter), Is.True);
+                string nullString = null;
+                var actual = nullString.ToOrNull(out outParameter);
+
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
@@ -138,7 +159,9 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>(MockBehavior.Strict);
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                mockConvertible.Object.ToOrNull(out outParameter);
+                IConvertible convertible = mockConvertible.Object;
+                convertible.ToOrNull(out outParameter);
+
                 mockConvertible.Verify(m => m.ToString(It.IsAny<IFormatProvider>()), Times.Once());
             }
 
@@ -148,7 +171,9 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                mockConvertible.Object.ToOrNull(out outParameter);
+                IConvertible convertible = mockConvertible.Object;
+                convertible.ToOrNull(out outParameter);
+
                 Assert.That(() => outParameter, Is.Null);
             }
 
@@ -158,7 +183,10 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrNull(out outParameter), Is.False);
+                IConvertible convertible = mockConvertible.Object;
+                var actual = convertible.ToOrNull(out outParameter);
+
+                Assert.That(() => actual, Is.False);
             }
 
             [Test]
@@ -167,21 +195,28 @@ namespace UnitTests.ForIConvertiblesTests
                 var mockConvertible = new Mock<IConvertible>();
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
                 string outParameter;
-                Assert.That(() => mockConvertible.Object.ToOrNull(out outParameter), Throws.Exception);
+                IConvertible convertible = mockConvertible.Object;
+
+                Assert.That(() => convertible.ToOrNull(out outParameter), Throws.Exception);
             }
 
             [Test]
             public void ToOrNull_ToString_OnEmptyString_ReturnsTrue()
             {
                 object outParameter;
-                Assert.That(() => EmptyString.ToOrNull(out outParameter), Is.True);
+                string emptyString = string.Empty;
+                var actual = emptyString.ToOrNull(out outParameter);
+
+                Assert.That(() => actual, Is.True);
             }
 
             [Test]
             public void ToOrNull_ToString_OnMaxDouble_ReturnsString()
             {
-                double maxDouble = double.MaxValue;
-                Assert.That(() => maxDouble.ToOrNull<string>(), Is.EqualTo(maxDouble.ToString()));
+                var actual = double.MaxValue.ToOrNull<string>();
+                var expected = double.MaxValue.ToString();
+
+                Assert.That(() => actual, Is.EqualTo(expected));
             }
         }
     }
