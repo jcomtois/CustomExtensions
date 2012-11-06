@@ -1,4 +1,5 @@
 ﻿#region License and Terms
+
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
 // 
@@ -13,12 +14,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System;
 using CustomExtensions.ForArrays;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.AutoMoq;
 
 namespace UnitTests.ForArrayTests
 {
@@ -28,38 +32,49 @@ namespace UnitTests.ForArrayTests
         public class ToHexStringTest
         {
             [Test]
-            public void ToHexString_OnNullArray_ThrowsValidationException()
-            {
-                Assert.That(() => NullByteArray.ToHexString(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
-            }
-
-            [Test]
             public void ToHexString_OnEmptyArray_ThrowsValidationException()
             {
-                Assert.That(() => EmptyByteArray.ToHexString(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+                byte[] emptyByteArray = new byte[0];
+
+                Assert.That(() => emptyByteArray.ToHexString(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
 
             [Test]
-            public void ToHexString_OnValidArray_ConvertsToStringCorrectly()
+            public void ToHexString_OnNullArray_ThrowsValidationException()
             {
-                var expected = BitConverter.ToString(ValidByteArray).Replace("-", string.Empty).ToLowerInvariant();
-                Assert.That(() => ValidByteArray.ToHexString(), Is.EqualTo(expected));
+                byte[] nullByteArray = null;
+
+                Assert.That(() => nullByteArray.ToHexString(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void ToHexString_OnSingleHighByteArray_ConvertsToStringCorrectly()
             {
-                var expected = BitConverter.ToString(SingleHighByteArray).Replace("-", string.Empty).ToLowerInvariant();
-                Assert.That(() => SingleHighByteArray.ToHexString(), Is.EqualTo(expected));
+                var singleHighByteArray = new[] {byte.MaxValue};
+                var expected = BitConverter.ToString(singleHighByteArray).Replace("-", string.Empty).ToLowerInvariant();
+
+                Assert.That(() => singleHighByteArray.ToHexString(), Is.EqualTo(expected));
             }
 
             [Test]
             public void ToHexString_OnSingleLowByteArray_ConvertsToStringCorrectly()
             {
-                var expected = BitConverter.ToString(SingleLowByteArray).Replace("-", string.Empty).ToLowerInvariant();
-                Assert.That(() => SingleLowByteArray.ToHexString(), Is.EqualTo(expected));
+                var singleLowByteArray = new[] {byte.MinValue};
+                var expected = BitConverter.ToString(singleLowByteArray).Replace("-", string.Empty).ToLowerInvariant();
+
+                Assert.That(() => singleLowByteArray.ToHexString(), Is.EqualTo(expected));
             }
 
+            [Test]
+            public void ToHexString_OnValidArray_ConvertsToStringCorrectly()
+            {
+                var fixture = new Fixture().Customize(new CompositeCustomization(new MultipleCustomization(), new AutoMoqCustomization()));
+                fixture.RepeatCount = 512;
+                var validBytes = fixture.CreateAnonymous<byte[]>();
+                var expected = BitConverter.ToString(validBytes).Replace("-", string.Empty).ToLowerInvariant();
+
+                Assert.That(() => validBytes.ToHexString(), Is.EqualTo(expected));
+            }
         }
     }
 }
