@@ -60,7 +60,7 @@ namespace CustomExtensions.ForIEnumerable
             return ContainsOnlyOneImplementation(source);
         }
 
-        internal static bool ContainsOnlyOneImplementation <T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        private static bool ContainsOnlyOneImplementation <T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             Debug.Assert(source != null, "source cannot be null.");
             Debug.Assert(predicate != null, "predicate cannot be null.");
@@ -68,7 +68,7 @@ namespace CustomExtensions.ForIEnumerable
             return ContainsExactlyImplementation(source, 1, predicate);
         }
 
-        internal static bool ContainsOnlyOneImplementation <T>(this IEnumerable<T> source)
+        private static bool ContainsOnlyOneImplementation <T>(this IEnumerable<T> source)
         {
             Debug.Assert(source != null, "source cannot be null.");
 
