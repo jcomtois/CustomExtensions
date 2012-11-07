@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
@@ -17,7 +17,6 @@
 
 #endregion
 
-using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -25,12 +24,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("CustomExtensions")]
+[assembly: AssemblyTitle("CustomExtensions.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jonathan Comtois")]
-[assembly: AssemblyProduct("CustomExtensions")]
-[assembly: AssemblyCopyright("Copyright © 2012 Jonathan Comtois")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("CustomExtensions.UnitTests")]
+[assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -42,8 +41,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("bf012d58-d7e5-4e90-8707-fc565278cb1f")]
-[assembly: CLSCompliant(true)]
+[assembly: Guid("d3b2a9f9-8141-4cf2-8000-a76c8ee57874")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -55,5 +53,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.12.1107.1")]
-[assembly: AssemblyFileVersion("1.12.1107.1")]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
