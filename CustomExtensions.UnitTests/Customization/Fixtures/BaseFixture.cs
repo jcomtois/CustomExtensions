@@ -17,20 +17,23 @@
 
 #endregion
 
-using CustomExtensions.UnitTests.Customization.Customizations;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.Kernel;
 
 namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
-    public class MultipleMockingFixture : BaseFixture
+    public class BaseFixture : Fixture
     {
-        public MultipleMockingFixture() : this(3)
+        public BaseFixture()
         {
         }
 
-        public MultipleMockingFixture(int repeatCount)
+        public BaseFixture(DefaultRelays engineParts) : base(engineParts)
         {
-            Customize(new MultipleMockingCustomization());
-            RepeatCount = repeatCount;
+        }
+
+        public BaseFixture(ISpecimenBuilder engine, IMultiple multiple) : base(engine, multiple)
+        {
         }
     }
 }
