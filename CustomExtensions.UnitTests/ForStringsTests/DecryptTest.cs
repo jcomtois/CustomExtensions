@@ -21,9 +21,11 @@ using System;
 using System.Text;
 using CustomExtensions.ForStrings;
 using CustomExtensions.Interfaces;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using Moq;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -36,19 +38,23 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             private const string BadEncryptedTestString = "$%^#&@*(*%(#&@^!*@#";
 
             [Test]
-            public void Decrypt_OnBadStringWithGoodKey_DoesNotDecrypt()
+            public void Decrypt_OnBadString_WithGoodKey_DoesNotDecrypt()
             {
-                string testString = BadEncryptedTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Not.EqualTo(TestStringLatin));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var validKey = fixture.CreateAnonymous<string>();
+                
+                Assert.That(() => stringValue.Decrypt(validKey), Is.Not.EqualTo(stringValue));
             }
 
             [Test]
-            public void Decrypt_OnBadStringWithGoodKey_ReturnsNull()
+            public void Decrypt_OnBadString_WithGoodKey_ReturnsNull()
             {
-                string testString = BadEncryptedTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var validKey = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.Decrypt(validKey), Is.Null);
             }
 
             [Test]
@@ -56,90 +62,121 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var mockDecryptor = new Mock<IDecrypt>();
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = EmptyTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+                var emptyString = string.Empty;
+                var fixture = new LatinStringFixture();
+                var validKey = fixture.CreateAnonymous<string>();
+                IDecrypt decryptor = mockDecryptor.Object;
+
+                Assert.That(() => emptyString.Decrypt(validKey, decryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
 
             [Test]
-            public void Decrypt_OnGoodStringWithEmptyKey_ThrowsValidationError()
+            public void Decrypt_OnEncryptedString_WithEmptyKey_ThrowsValidationError()
             {
                 var mockDecryptor = new Mock<IDecrypt>();
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = ValidEncryptedTestString;
-                string testKey = EmptyKey;
-                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                var emptyKey = string.Empty;
+                IDecrypt decryptor = mockDecryptor.Object;
+
+                Assert.That(() => encryptedString.Decrypt(emptyKey, decryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
 
             [Test]
-            public void Decrypt_OnGoodStringWithGoodKey_ChecksMinimumSize()
+            public void Decrypt_OnEncryptedString_WithGoodKey_ChecksMinimumSize()
             {
                 var mockDecryptor = new Mock<IDecrypt>();
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 mockDecryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
-                string testString = ValidEncryptedTestString;
-                string testKey = ValidLengthKey;
-                var output = testString.Decrypt(testKey, mockDecryptor.Object);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                IDecrypt decryptor = mockDecryptor.Object;
+                encryptedString.Decrypt(encryptionKey, decryptor);
+                
                 mockDecryptor.VerifyGet(m => m.MinimumPasswordLength, Times.AtLeastOnce());
             }
 
             [Test]
-            public void Decrypt_OnGoodStringWithGoodKey_Decrypts()
+            public void Decrypt_OnEncryptedString_WithGoodKey_Decrypts()
             {
-                string testString = ValidEncryptedTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.EqualTo(TestStringLatin));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+
+                Assert.That(() => encryptedString.Decrypt(encryptionKey), Is.EqualTo(stringValue));
             }
 
             [Test]
-            public void Decrypt_OnGoodStringWithNullKey_ThrowsValidationError()
+            public void Decrypt_OnEncryptedString_WithNullKey_ThrowsValidationError()
             {
                 var mockDecryptor = new Mock<IDecrypt>();
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = ValidEncryptedTestString;
-                string testKey = NullKey;
-                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                string nullKey = null;
+                IDecrypt decryptor = mockDecryptor.Object;
+
+                Assert.That(() => encryptedString.Decrypt(nullKey, decryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Decrypt_OnGoodStringWithShortKey_ThrowsValidationError()
+            public void Decrypt_OnEncryptedString_WithShortKey_ThrowsValidationError()
+            {
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                var shortKey = encryptionKey.Substring(0, 3);
+                var mockDecryptor = new Mock<IDecrypt>();
+                mockDecryptor.SetupGet(m => m.MinimumPasswordLength).Returns(12);
+                IDecrypt decryptor = mockDecryptor.Object;
+
+                Assert.That(() => encryptedString.Decrypt(shortKey, decryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
+            }
+
+            [Test]
+            public void Decrypt_OnEncryptedString_WithWrongKey_DoesNotDecrypt()
+            {
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                var wrongKey = encryptionKey + encryptionKey;
+
+                Assert.That(() => encryptedString.Decrypt(wrongKey), Is.Not.EqualTo(stringValue));
+            }
+
+            [Test]
+            public void Decrypt_OnEncryptedString_WithWrongKey_ReturnsNull()
+            {
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                var wrongKey = encryptionKey + encryptionKey;
+
+                Assert.That(() => encryptedString.Decrypt(wrongKey), Is.Null);
+            }
+
+            [Test]
+            public void Decrypt_OnEncryptedString_DecryptIsCalled()
             {
                 var mockDecryptor = new Mock<IDecrypt>();
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                mockDecryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
-                string testString = ValidEncryptedTestString;
-                string testKey = ShortKey;
-                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
-            }
+                var fixture = new LatinStringFixture();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = fixture.CreateAnonymous<string>();
+                IDecrypt decryptor = mockDecryptor.Object;
+                encryptedString.Decrypt(encryptionKey, decryptor);
 
-            [Test]
-            public void Decrypt_OnGoodStringWithWrongKey_DoesNotDecrypt()
-            {
-                string testString = ValidEncryptedTestString;
-                string testKey = ValidLengthKey + ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Not.EqualTo(TestStringLatin));
-            }
-
-            [Test]
-            public void Decrypt_OnGoodStringWithWrongKey_ReturnsNull()
-            {
-                string testString = ValidEncryptedTestString;
-                string testKey = ValidLengthKey + ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
-            }
-
-            [Test]
-            public void Decrypt_OnGoodString_DecryptIsCalled()
-            {
-                var mockDecryptor = new Mock<IDecrypt>();
-                mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = ValidEncryptedTestString;
-                string testKey = ValidLengthKey;
-                testString.Decrypt(testKey, mockDecryptor.Object);
                 mockDecryptor.Verify(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
             }
 
@@ -148,28 +185,36 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var mockDecryptor = new Mock<IDecrypt>();
                 mockDecryptor.Setup(m => m.DecryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
-                string testString = NullTestString;
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey, mockDecryptor.Object),
-                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                string nullString = null;
+                var fixture = new LatinStringFixture();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                IDecrypt decryptor = mockDecryptor.Object;
+
+                Assert.That(() => nullString.Decrypt(encryptionKey, decryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Decrypt_OnShortStringWithGoodKey_ReturnsNull()
+            public void Decrypt_OnShortString_WithGoodKey_ReturnsNull()
             {
                 string testString = Convert.ToBase64String(Encoding.UTF8.GetBytes("b"));
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
+                var fixture = new LatinStringFixture();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => testString.Decrypt(encryptionKey), Is.Null);
             }
 
             [Test]
-            public void Decrypt_OnTamperedStringWithGoodKey_DoesNotDecrypt()
+            public void Decrypt_OnTamperedString_WithGoodKey_DoesNotDecrypt()
             {
-                var bytes = Convert.FromBase64String(ValidEncryptedTestString);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptionKey = fixture.CreateAnonymous<string>();
+                var encryptedString = stringValue.Encrypt(encryptionKey);
+                var bytes = Convert.FromBase64String(encryptedString);
                 bytes[0]++;
                 string testString = Convert.ToBase64String(bytes);
-                string testKey = ValidLengthKey;
-                Assert.That(() => testString.Decrypt(testKey), Is.Null);
+
+                Assert.That(() => testString.Decrypt(encryptionKey), Is.Null);
             }
         }
     }
