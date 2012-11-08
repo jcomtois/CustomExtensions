@@ -23,34 +23,37 @@ using NUnit.Framework;
 
 namespace CustomExtensions.UnitTests.ForDateTimesTests
 {
-    [TestFixture]
-    public class FormatyyyyMMddTest
+    public partial class ForDateTimeTests
     {
-        private static readonly DateTime JanuaryFirstDateTime = new DateTime(2000, 1, 1);
-        private static readonly DateTime DecemberThirtyFirstDateTime = new DateTime(1999, 12, 31);
-
-        [Test]
-        public void FormatyyyMMdd_OnDecemberThirtyFirstDateTime_ReturnsCorrectOutput()
+        [TestFixture]
+        public class FormatyyyyMMddTest
         {
-            Assert.That(DecemberThirtyFirstDateTime.FormatyyyyMMdd(), Is.EqualTo("19991231"));
-        }
+            private static readonly DateTime JanuaryFirstDateTime = new DateTime(2000, 1, 1);
+            private static readonly DateTime DecemberThirtyFirstDateTime = new DateTime(1999, 12, 31);
 
-        [Test]
-        public void FormatyyyMMdd_OnJanuaryFirstDateTime_ReturnsCorrectOutput()
-        {
-            Assert.That(JanuaryFirstDateTime.FormatyyyyMMdd(), Is.EqualTo("20000101"));
-        }
+            [Test]
+            public void FormatyyyMMdd_OnDecemberThirtyFirstDateTime_ReturnsCorrectOutput()
+            {
+                Assert.That(DecemberThirtyFirstDateTime.FormatyyyyMMdd(), Is.EqualTo("19991231"));
+            }
 
-        [Test]
-        public void FormatyyyMMdd_OnMaxDateTime_ReturnsCorrectOutput()
-        {
-            Assert.That(DateTime.MaxValue.FormatyyyyMMdd(), Is.EqualTo("99991231"));
-        }
+            [Test]
+            public void FormatyyyMMdd_OnJanuaryFirstDateTime_ReturnsCorrectOutput()
+            {
+                Assert.That(JanuaryFirstDateTime.FormatyyyyMMdd(), Is.EqualTo("20000101"));
+            }
 
-        [Test]
-        public void FormatyyyMMdd_OnMinDateTime_ReturnsCorrectOutput()
-        {
-            Assert.That(DateTime.MinValue.FormatyyyyMMdd(), Is.EqualTo("00010101"));
+            [Test]
+            public void FormatyyyMMdd_OnMaxDateTime_ReturnsCorrectOutput()
+            {
+                Assert.That(DateTime.MaxValue.FormatyyyyMMdd(), Is.EqualTo("99991231"));
+            }
+
+            [Test]
+            public void FormatyyyMMdd_OnMinDateTime_ReturnsCorrectOutput()
+            {
+                Assert.That(DateTime.MinValue.FormatyyyyMMdd(), Is.EqualTo("00010101"));
+            }
         }
     }
 }

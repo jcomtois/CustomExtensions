@@ -31,6 +31,11 @@ namespace CustomExtensions.UnitTests.Customization.Customizations
 
         public void Customize(IFixture fixture)
         {
+            if (fixture == null)
+            {
+                throw new ArgumentNullException("fixture");
+            }
+
             fixture.Register(() => _latinString);
         }
 

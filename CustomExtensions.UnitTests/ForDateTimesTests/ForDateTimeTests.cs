@@ -19,7 +19,7 @@
 
 namespace CustomExtensions.UnitTests.ForDateTimesTests
 {
-    public class ForDateTimeTests
+    public partial class ForDateTimeTests
     {
     }
 }
