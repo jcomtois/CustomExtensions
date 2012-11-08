@@ -37,7 +37,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnEmptySequence_WithElement_WithNullProjection_ThrowsValidationException()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 Func<object, object> nullFunc = null;
 
@@ -48,7 +48,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnEmptySequence_WithElement_WithNullReplacement_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 object nullObject = null;
 
@@ -59,7 +59,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnEmptySequence_WithElement_WithProjection_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
 
@@ -70,7 +70,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnEmptySequence_WithElement_WithReplacement_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
 
                 Assert.That(() => emptySequence.Replace(objectValue, objectValue), Is.Empty);
@@ -99,7 +99,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnEmptySequence_WithNullElement_WithProjection_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 object nullObject = null;
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
 
@@ -110,7 +110,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnEmptySequence_WithNullElement_WithReplacement_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 object nullObject = null;
                 var objectValue = fixture.CreateAnonymous<object>();
 
@@ -121,7 +121,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnNullSequence_WithElement_WithNullProjection_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 Func<object, object> nullFunc = null;
 
@@ -132,7 +132,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnNullSequence_WithElement_WithNullReplacement_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 object nullObject = null;
 
@@ -143,7 +143,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnNullSequence_WithElement_WithProjection_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
 
@@ -154,7 +154,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnNullSequence_WithElement_WithReplacement_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
 
                 Assert.That(() => nullSequence.Replace(objectValue, objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -183,7 +183,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnNullSequence_WithNullElement_WithProjection_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 object nullObject = null;
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
 
@@ -194,7 +194,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Replace_OnNullSequence_WithNullElement_WithReplacement_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 object nullObject = null;
                 var objectValue = fixture.CreateAnonymous<object>();
 
@@ -239,7 +239,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_OnSequence_WithElement_WithNullReplacement_ReturnsWithNullAsReplacement()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<IList<object>>();
                 var objectValue = sequence[2];
                 object nullObject = null;
@@ -251,7 +251,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_OnSequence_WithElement_WithProjection_ReturnsSequenceWithReplacement()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<IList<object>>();
                 var objectValue = sequence[1];
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
@@ -264,7 +264,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_OnSequence_WithElement_WithReplacement_ReturnsSequenceWithReplacement()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<IList<object>>();
                 var objectValue = sequence[0];
                 var replacementValue = fixture.CreateAnonymous<object>();
@@ -276,7 +276,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_OnSequence_WithNoMatches_WithProjection_ReturnsOriginalSequence()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<IList<object>>();
                 var objectValue = fixture.CreateAnonymous<object>();
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
@@ -287,7 +287,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_OnSequence_WithNoMatches_WithReplacement_ReturnsOriginalSequence()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<IList<object>>();
                 var objectValue = fixture.CreateAnonymous<object>();
                 var replacementValue = fixture.CreateAnonymous<object>();
@@ -319,7 +319,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_OnSequence_WithNullElement_WithProjection_NullsReplacedInSequence()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<IList<object>>();
                 object nullObject = null;
                 sequence[1] = nullObject;
@@ -344,7 +344,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_WithProjection_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var objectValue = fixture.CreateAnonymous<object>();
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
@@ -355,7 +355,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Replace_WithReplacement_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var objectValue = fixture.CreateAnonymous<object>();
 

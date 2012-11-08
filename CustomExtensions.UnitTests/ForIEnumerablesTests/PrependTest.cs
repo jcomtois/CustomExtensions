@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Prepend_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
 
                 Assert.That(() => breakingSequence.Prepend(breakingSequence), Throws.Nothing);
@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Prepend_OnEmptySequence_WithElement_ReturnsSequenceOfElement()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
 
                 Assert.That(emptySequence.Prepend(objectValue), Is.EqualTo(objectValue.ToEnumerable()));
@@ -65,7 +65,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Prepend_OnNullSequence_WithElement_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
 
                 Assert.That(() => nullSequence.Prepend(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());

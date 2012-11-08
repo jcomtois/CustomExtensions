@@ -70,7 +70,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             [Test]
             public void SHA1Hash_OnStringUsingHexEncoding_HashesProperly()
             {
-                Assert.That(() => TestString.SHA1Hash(ExtendString.OutputFormat.Hex), Is.EqualTo(KnownHashForTestString));
+                Assert.That(() => TestString.SHA1Hash(), Is.EqualTo(KnownHashForTestString));
             }
         }
     }

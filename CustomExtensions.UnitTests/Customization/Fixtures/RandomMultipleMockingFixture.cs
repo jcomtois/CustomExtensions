@@ -23,14 +23,9 @@ namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
     public class RandomMultipleMockingFixture : BaseFixture
     {
-        public RandomMultipleMockingFixture() : this(3)
-        {
-        }
-
-        public RandomMultipleMockingFixture(int repeatCount)
+        public RandomMultipleMockingFixture(int repeatCount = 3) : base(repeatCount)
         {
             Customize(new RandomMultipleMockingCustomization());
-            RepeatCount = repeatCount;
         }
     }
 }

@@ -1579,7 +1579,7 @@ System.Console.ReadLine();$END$</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D44BDCE4848FD349923A00DBEC36C8C0/Scope/=E6E678D4B937A84D8C4585DDD2F27DB0/Type/@EntryValue">InCSharpExpression</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D44BDCE4848FD349923A00DBEC36C8C0/Shortcut/@EntryValue">nf</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D44BDCE4848FD349923A00DBEC36C8C0/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D44BDCE4848FD349923A00DBEC36C8C0/Text/@EntryValue">var fixture = new Fixture().Customize(new Ploeh.AutoFixture.CompositeCustomization(new Ploeh.AutoFixture.MultipleCustomization(), new Ploeh.AutoFixture.AutoMoq.AutoMoqCustomization()));&#xD;
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D44BDCE4848FD349923A00DBEC36C8C0/Text/@EntryValue">var fixture = new Ploeh.AutoFixture.Fixture();&#xD;
 $END$</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D82A6E3F5728D3429726E443798C6971/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=D82A6E3F5728D3429726E443798C6971/Applicability/=Surround/@EntryIndexedValue">True</s:Boolean>

@@ -135,8 +135,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void IsEmpty_OnNonGenericCollectionSingleItem_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
-                var mock = fixture.CreateAnonymous<Mock<ICollection>>();
+                var fixture = new BaseFixture();
+                var mock = new Mock<ICollection>();
                 mock.Setup(m => m.Count).Returns(1);
                 mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateAnonymous<object>().ToEnumerable().GetEnumerator);
                 ICollection singleItemNonGenericCollection = mock.Object;
@@ -147,8 +147,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void IsEmpty_OnNonGenericEnumerableEmpty_ReturnsTrue()
             {
-                var fixture = new MultipleMockingFixture();
-                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                var mock = new Mock<IEnumerable>();
+                mock.Setup(m => m.GetEnumerator()).Returns(() => new Mock<IEnumerator>().Object);
                 IEnumerable emptyNonGenericEnumerable = mock.Object;
 
                 Assert.That(() => emptyNonGenericEnumerable.IsEmpty(), Is.True);
@@ -157,8 +157,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void IsEmpty_OnNonGenericEnumerableMultipleItem_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
-                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                var fixture = new BaseFixture();
+                var mock = new Mock<IEnumerable>();
                 mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateMany<object>().GetEnumerator);
                 IEnumerable sequence = mock.Object;
 
@@ -176,7 +176,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void IsEmpty_OnNonGenericEnumerableSingleItem_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
                 mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateAnonymous<object>().ToEnumerable().GetEnumerator);
                 IEnumerable sequence = mock.Object;

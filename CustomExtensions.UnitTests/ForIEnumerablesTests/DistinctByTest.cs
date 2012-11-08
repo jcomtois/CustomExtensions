@@ -37,7 +37,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void DistinctBy_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
 
                 var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
@@ -48,7 +48,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void DistinctBy_OnDoubledSequence_WithKeySelector_ReturnsSingleSequence()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var singleSequence = fixture.CreateAnonymous<object[]>();
                 var doubleSequence = singleSequence.Concat(singleSequence);
                 Func<object, object> objectFunc = o => o;
@@ -59,7 +59,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void DistinctBy_OnDoubledSequence_WithKeySelector_WithEqualityComparer_ReturnsSingleSequence()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var singleSequence = fixture.CreateAnonymous<object[]>();
                 var doubleSequence = singleSequence.Concat(singleSequence);
                 Func<object, object> objectFunc = o => o;
@@ -78,7 +78,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void DistinctBy_OnDoubledSequence_WithKeySelector_WithNullEqualityComparer_ReturnsSingleSequence()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var singleSequence = fixture.CreateAnonymous<object[]>();
                 var doubleSequence = singleSequence.Concat(singleSequence);
                 Func<object, object> objectFunc = o => o;

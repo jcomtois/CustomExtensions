@@ -17,23 +17,19 @@
 
 #endregion
 
+using System;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Kernel;
 
 namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
     public class BaseFixture : Fixture
     {
-        public BaseFixture()
-        {
-        }
+        private static readonly Random _random = new Random();
 
-        public BaseFixture(DefaultRelays engineParts) : base(engineParts)
+        public BaseFixture(int repeatCount = 3)
         {
-        }
-
-        public BaseFixture(ISpecimenBuilder engine, IMultiple multiple) : base(engine, multiple)
-        {
+            RepeatCount = repeatCount;
+            this.Register(() => _random);
         }
     }
 }

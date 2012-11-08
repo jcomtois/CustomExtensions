@@ -33,7 +33,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         [Test]
         public void ContainsOnlyOne_OnEmptySequence_MeetsPredicate_ReturnsFalse()
         {
-            var fixture = new MultipleMockingFixture();
+            var fixture = new BaseFixture();
             var emptySequence = Enumerable.Empty<object>();
             var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
@@ -69,7 +69,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         public void ContainsOnlyOne_OnNullSequence_WithMeetsPredicate_ThrowsValidationException()
         {
             IEnumerable<object> nullSequence = null;
-            var fixture = new MultipleMockingFixture();
+            var fixture = new BaseFixture();
             var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
             Assert.That(() => nullSequence.ContainsOnlyOne(predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -96,7 +96,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         [Test]
         public void ContainsOnlyOne_OnSequenceOfThree_AllMatchesPredicate_ReturnsFalse()
         {
-            var fixture = new MultipleMockingFixture(3);
+            var fixture = new MultipleMockingFixture();
             var sequenceOfThree = fixture.CreateAnonymous<object[]>();
             Func<object, bool> objectFunc = o => true;
 
@@ -106,7 +106,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         [Test]
         public void ContainsOnlyOne_OnSequenceOfThree_NoMatchesPredicate_ReturnsFalse()
         {
-            var fixture = new MultipleMockingFixture(3);
+            var fixture = new MultipleMockingFixture();
             var sequenceOfThree = fixture.CreateAnonymous<object[]>();
             Func<object, bool> objectFunc = o => false;
 
@@ -116,7 +116,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         [Test]
         public void ContainsOnlyOne_OnSequenceOfThree_OneMatchesPredicate_ReturnsTrue()
         {
-            var fixture = new MultipleMockingFixture(3);
+            var fixture = new MultipleMockingFixture();
             var sequenceOfThree = fixture.CreateAnonymous<object[]>();
             Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
 
@@ -126,7 +126,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         [Test]
         public void ContainsOnlyOne_OnSequenceOfThree_PredicateNull_ThrowsValidationException()
         {
-            var fixture = new MultipleMockingFixture(3);
+            var fixture = new MultipleMockingFixture();
             var sequenceOfThree = fixture.CreateAnonymous<object[]>();
             Func<object, bool> nullPredicate = null;
 
@@ -136,7 +136,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         [Test]
         public void ContainsOnlyOne_OnSequenceOfThree_ReturnsFalse()
         {
-            var fixture = new MultipleMockingFixture(3);
+            var fixture = new MultipleMockingFixture();
             var sequenceOfThree = fixture.CreateAnonymous<object[]>();
 
             Assert.That(() => sequenceOfThree.ContainsOnlyOne(), Is.False);

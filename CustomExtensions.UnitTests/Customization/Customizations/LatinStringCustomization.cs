@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
@@ -17,15 +17,23 @@
 
 #endregion
 
-using CustomExtensions.UnitTests.Customization.Customizations;
+using System;
+using System.Linq;
+using Ploeh.AutoFixture;
 
-namespace CustomExtensions.UnitTests.Customization.Fixtures
+namespace CustomExtensions.UnitTests.Customization.Customizations
 {
-    public class LatinStringFixture : BaseFixture
+    public class LatinStringCustomization : ICustomization
     {
-        public LatinStringFixture(int repeatCount = 3) : base(repeatCount)
+        private static readonly string _latinString = new string(Enumerable.Range(0, 256).Select(i => Convert.ToChar(Convert.ToByte(i))).ToArray());
+
+        #region ICustomization Members
+
+        public void Customize(IFixture fixture)
         {
-            Customize(new LatinStringCustomization());
+            fixture.Register(() => _latinString);
         }
+
+        #endregion
     }
 }

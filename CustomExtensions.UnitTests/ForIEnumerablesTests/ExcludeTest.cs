@@ -64,7 +64,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Exclude_OnEmptySequence_WithPredicate_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectFunc = fixture.CreateAnonymous<Func<object, bool>>();
 
                 Assert.That(() => emptySequence.Exclude(objectFunc), Is.Empty);
@@ -84,7 +84,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Exclude_OnEmptySequence_WithSingleElement_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
 
                 Assert.That(() => emptySequence.Exclude(objectValue), Is.Empty);
@@ -94,7 +94,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Exclude_OnNullSequence_WithElement_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
 
                 Assert.That(() => nullSequence.Exclude(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -130,7 +130,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Exclude_OnNullSequence_WithPredicate_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectFunc = fixture.CreateAnonymous<Func<object, bool>>();
 
                 Assert.That(() => nullSequence.Exclude(objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -149,7 +149,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_OnSequenceContainingNullValue_WithNullAsSequence_ReturnsSequenceWithoutNullValue()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var objects = fixture.CreateAnonymous<object[]>();
                 objects[1] = null;
                 var objectsNoNull = new[] {objects[0], objects[2]};
@@ -161,7 +161,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_OnSequenceContainingNullValue_WithNull_ReturnsSequenceWithoutNullValue()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var objects = fixture.CreateAnonymous<object[]>();
                 objects[1] = null;
                 object nullObject = null;
@@ -173,7 +173,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_OnSequenceContainingNullValue_WithPredicate_ReturnsSequenceWithoutNullValue()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var objects = fixture.CreateAnonymous<object[]>();
                 objects[1] = null;
                 object nullObject = null;
@@ -308,7 +308,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_OnSequence_WithMatchedPredicate_ReturnsSequenceWithoutMatches()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var objects = fixture.CreateAnonymous<object[]>();
                 var match = objects[1];
                 var expected = new[] {objects[0], objects[2]};
@@ -360,7 +360,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_WithEnumerable_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var sequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
 
@@ -370,7 +370,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_WithPredicate_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
@@ -380,7 +380,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Exclude_WithSingleElement_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var objectValue = fixture.CreateAnonymous<object>();
 

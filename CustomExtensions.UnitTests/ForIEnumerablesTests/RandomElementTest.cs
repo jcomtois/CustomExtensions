@@ -55,7 +55,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void RandomElement_OnCollectionSequence_ProducesRepeatableOutput_BasedOnKnownSeed()
             {
                 const int numberItemsToCheck = 100;
-                var fixture = new MultipleMockingFixture(numberItemsToCheck);
+                var fixture = new RandomMultipleMockingFixture(numberItemsToCheck);
                 var seed = fixture.CreateAnonymous<int>();
                 var random = new Random(seed);
                 var integersFromSeed = Enumerable.Range(0, numberItemsToCheck).Select(i => random.Next(numberItemsToCheck)).ToArray();
@@ -73,7 +73,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void RandomElement_OnEmptySequence_ThrowsValidationException()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var random = fixture.CreateAnonymous<Random>();
                 var emptySequence = Enumerable.Empty<object>();
 
@@ -92,7 +92,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void RandomElement_OnNonCollectionSequence_EventuallyChoosesEachItem()
             {
-                var fixture = new MultipleMockingFixture(10);
+                var fixture = new BaseFixture(10);
                 IEnumerable<object> checkList = fixture.CreateMany<object>().ToArray().Select(o => o);
                 var dic = checkList.ToDictionary(i => i, e => 0);
                 var random = fixture.CreateAnonymous<Random>();
@@ -111,7 +111,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void RandomElement_OnNonCollectionSequence_ProducesRepeatableOutput_BasedOnKnownSeed()
             {
                 const int numberItemsToCheck = 100;
-                var fixture = new MultipleMockingFixture(numberItemsToCheck);
+                var fixture = new RandomMultipleMockingFixture(numberItemsToCheck);
                 var seed = fixture.CreateAnonymous<int>();
                 IEnumerable<object> checkList = fixture.CreateAnonymous<object[]>().Select(o => o);
 
@@ -127,7 +127,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void RandomElement_OnNullSequence_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var random = fixture.CreateAnonymous<Random>();
 
                 Assert.That(() => nullSequence.RandomElement(random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
@@ -145,7 +145,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void RandomElement_OnSequenceOfOne_AlwaysChoosesSameItem()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var objectValue = fixture.CreateAnonymous<object>();
                 var sequenceOfOne = objectValue.ToEnumerable();
                 var random = fixture.CreateAnonymous<Random>();

@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
@@ -17,15 +17,14 @@
 
 #endregion
 
-using CustomExtensions.UnitTests.Customization.Customizations;
+using Ploeh.AutoFixture;
 
-namespace CustomExtensions.UnitTests.Customization.Fixtures
+namespace CustomExtensions.UnitTests.Customization.Customizations
 {
-    public class LatinStringFixture : BaseFixture
+    public class LatinMultipleMockingCustomization : CompositeCustomization
     {
-        public LatinStringFixture(int repeatCount = 3) : base(repeatCount)
+        public LatinMultipleMockingCustomization() : base(new MultipleMockingCustomization(), new LatinStringCustomization())
         {
-            Customize(new LatinStringCustomization());
         }
     }
 }

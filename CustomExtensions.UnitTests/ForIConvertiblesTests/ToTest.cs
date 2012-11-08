@@ -34,7 +34,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToBool_OnNonNumericString_ThrowsFormatException()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var stringValue = fixture.CreateAnonymous<string>();
 
                 Assert.That(() => stringValue.To<bool>(), Throws.TypeOf<FormatException>());
@@ -43,7 +43,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToConvertible_OnNonNumericString_ThrowsInvalidCastException()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var stringValue = fixture.CreateAnonymous<string>();
 
                 Assert.That(() => stringValue.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
@@ -52,7 +52,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToFloat_OnDecimal_ReturnsFloat()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
                 float floatValue = Convert.ToSingle(decimalValue);
 
@@ -70,7 +70,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToInt_OnIntegerString_ReturnsInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var integerString = intValue.ToString();
 
@@ -80,7 +80,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToInt_OnNonNumericString_ThrowsFormatException()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var stringValue = fixture.CreateAnonymous<string>();
 
                 Assert.That(() => stringValue.To<int>(), Throws.TypeOf<FormatException>());
@@ -97,7 +97,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToInteger_OnDecimal_ReturnsInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
                 int intValue = Convert.ToInt32(decimalValue);
 
@@ -113,7 +113,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToInteger_OnNonNullNullableInteger_ReturnsTestInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 int? nonNullNullableInt = intValue;
 
@@ -139,7 +139,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToNullableInt_OnIntegerString_ReturnsInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var intString = intValue.ToString();
 
@@ -157,7 +157,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToNullableInteger_OnIntegerString_ReturnsNullableInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var intString = intValue.ToString();
 
@@ -193,7 +193,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToString_OnTestInteger_ReturnsTestIntegerString()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var intString = intValue.ToString();
 

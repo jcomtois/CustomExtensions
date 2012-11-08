@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
 // Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
@@ -21,11 +21,11 @@ using CustomExtensions.UnitTests.Customization.Customizations;
 
 namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
-    public class LatinStringFixture : BaseFixture
+    public class LatinMultipleMockingFixture : BaseFixture
     {
-        public LatinStringFixture(int repeatCount = 3) : base(repeatCount)
+        public LatinMultipleMockingFixture(int repeatCount = 3) : base(repeatCount)
         {
-            Customize(new LatinStringCustomization());
+            Customize(new LatinMultipleMockingCustomization());
         }
     }
 }

@@ -35,7 +35,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnDecimalArray_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var decimalArray = fixture.CreateAnonymous<decimal[]>();
                 var decimalArrayAverage = decimalArray.Average();
 
@@ -45,7 +45,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnDecimalArray_WithDecimalValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var decimalArray = fixture.CreateAnonymous<decimal[]>();
                 var decimalArrayAverage = decimalArray.Average();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
@@ -56,7 +56,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnDoubleArray_ReturnsDoubleArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var doubleArray = fixture.CreateAnonymous<double[]>();
                 var doubleArrayAverage = doubleArray.Average();
 
@@ -66,7 +66,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnDoubleArray_WithDoubleValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var doubleArray = fixture.CreateAnonymous<double[]>();
                 var doubleArrayAverage = doubleArray.Average();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -85,7 +85,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emtpyDecimalSequence = Enumerable.Empty<decimal>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -103,7 +103,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyDoubleSequence = Enumerable.Empty<double>();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
@@ -121,7 +121,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyFloatSequence_WithFloatValue_ReturnsFloatvalue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyFloatSequence = Enumerable.Empty<float>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -139,7 +139,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
 
@@ -149,7 +149,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
@@ -160,7 +160,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
 
@@ -170,7 +170,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -181,7 +181,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
 
@@ -191,7 +191,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -202,7 +202,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
 
@@ -212,7 +212,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intValue = fixture.CreateAnonymous<int>();
@@ -223,7 +223,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -233,7 +233,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
 
@@ -243,7 +243,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -254,7 +254,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
 
@@ -264,7 +264,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
@@ -275,7 +275,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
 
@@ -285,7 +285,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableDuoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -296,7 +296,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
 
@@ -306,7 +306,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -317,7 +317,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
 
@@ -327,7 +327,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intValue = fixture.CreateAnonymous<int>();
@@ -338,7 +338,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
 
@@ -348,7 +348,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -367,7 +367,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyLongSequence_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyLongSequence = Enumerable.Empty<long>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -385,7 +385,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -403,7 +403,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
@@ -421,7 +421,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableFloatSequence = Enumerable.Empty<float?>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -439,7 +439,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableIntSequence = Enumerable.Empty<int?>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -457,7 +457,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnEmptyNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableLongSequnce = Enumerable.Empty<long?>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -467,7 +467,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnFloatArray_ReturnsFloatArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var floatArray = fixture.CreateAnonymous<float[]>();
                 var floatArrayAverage = floatArray.Average();
 
@@ -477,7 +477,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var floatArray = fixture.CreateAnonymous<float[]>();
                 var floatArrayAverage = floatArray.Average();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -488,7 +488,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_ReturnsIntArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intArrayAverage = intArray.Average();
 
@@ -498,7 +498,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithDecimalFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var intArrayAverage = intArray.Average(decimalFunc);
@@ -509,7 +509,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var intArrayAverage = intArray.Average(decimalFunc);
@@ -521,7 +521,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithDoubleFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var intArrayAverage = intArray.Average(doubleFunc);
@@ -532,7 +532,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var intArrayAverage = intArray.Average(doubleFunc);
@@ -544,7 +544,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithFloatFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var intArrayAverage = intArray.Average(floatFunc);
@@ -555,7 +555,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var intArrayAverage = intArray.Average(floatFunc);
@@ -567,7 +567,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithIntFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intArrayAverage = intArray.Average(intFunc);
@@ -578,7 +578,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intArrayAverage = intArray.Average(intFunc);
@@ -590,7 +590,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intValue = fixture.CreateAnonymous<int>();
                 var intArrayAverage = intArray.Average();
@@ -601,7 +601,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithLongFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var intArrayAverage = intArray.Average(longFunc);
@@ -612,7 +612,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -624,7 +624,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var intArrayAverage = intArray.Average(nullableDecimalFunc);
@@ -635,7 +635,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var intArrayAverage = intArray.Average(nullableDecimalFunc);
@@ -647,7 +647,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var intArrayAverage = intArray.Average(nullableDoubleFunc);
@@ -658,7 +658,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var intArrayAverage = intArray.Average(nullableDoubleFunc);
@@ -670,7 +670,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var intArrayAverage = intArray.Average(nullableFloatFunc);
@@ -681,7 +681,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var intArrayAverage = intArray.Average(nullableFloatFunc);
@@ -693,7 +693,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableIntFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intArrayAverage = intArray.Average(nullableIntFunc);
@@ -704,7 +704,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intArrayAverage = intArray.Average(nullableIntFunc);
@@ -716,7 +716,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableLongFunc_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var intArrayAverage = intArray.Average(nullableLongFunc);
@@ -727,7 +727,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var intArrayAverage = intArray.Average(nullableLongFunc);
@@ -739,7 +739,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnLongArray_ReturnsLongArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var longArray = fixture.CreateAnonymous<long[]>();
                 var longArrayAverage = longArray.Average();
 
@@ -749,7 +749,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var longArray = fixture.CreateAnonymous<long[]>();
                 var longArrayAverage = longArray.Average();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -769,7 +769,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<decimal> nullDecimalSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
                 Assert.That(() => nullDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
@@ -787,7 +787,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<double> nullDoubleSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
                 Assert.That(() => nullDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
@@ -805,7 +805,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullFloatSequence_WithFloatValue_RetursFloatValue()
             {
                 IEnumerable<float> nullFloatSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var floatValue = fixture.CreateAnonymous<float>();
 
                 Assert.That(() => nullFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
@@ -823,7 +823,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
@@ -833,7 +833,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -844,7 +844,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(doubleFunc), Is.EqualTo(default(double)));
@@ -854,7 +854,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var doubeValue = fixture.CreateAnonymous<double>();
 
@@ -865,7 +865,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(floatFunc), Is.EqualTo(default(float)));
@@ -875,7 +875,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -886,7 +886,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(intFunc), Is.EqualTo(default(int)));
@@ -896,7 +896,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -907,7 +907,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
@@ -917,7 +917,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(longFunc), Is.EqualTo(default(long)));
@@ -927,7 +927,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -938,7 +938,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
@@ -948,7 +948,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -959,7 +959,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
@@ -969,7 +969,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
@@ -980,7 +980,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
@@ -990,7 +990,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -1001,7 +1001,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
@@ -1011,7 +1011,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -1021,7 +1021,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 IEnumerable<int> nullIntSequence = null;
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
 
@@ -1032,7 +1032,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -1051,7 +1051,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullLongSequence_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<long> nullLongSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var longValue = fixture.CreateAnonymous<long>();
 
                 Assert.That(() => nullLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
@@ -1069,7 +1069,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<decimal?> nullNullableDecimalSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
                 Assert.That(() => nullNullableDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
@@ -1087,7 +1087,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<double?> nullNullableDoubleSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
                 Assert.That(() => nullNullableDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
@@ -1105,7 +1105,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
                 IEnumerable<float?> nullNullableFloatSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var floatValue = fixture.CreateAnonymous<float>();
 
                 Assert.That(() => nullNullableFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
@@ -1123,7 +1123,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int?> nullNullableIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
 
                 Assert.That(() => nullNullableIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
@@ -1141,7 +1141,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<long?> nullNullableLongSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var longValue = fixture.CreateAnonymous<long>();
 
                 Assert.That(() => nullNullableLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
@@ -1150,7 +1150,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
                 var nullableDecimalArrayAverage = nullableDecimalArray.Average();
 
@@ -1160,7 +1160,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
                 var nullableDecimalArrayAverage = nullableDecimalArray.Average();
@@ -1171,7 +1171,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
                 var nullableDoubleArrayAverage = nullableDoubleArray.Average();
 
@@ -1181,7 +1181,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
                 var nullableDoubleArrayAverage = nullableDoubleArray.Average();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -1192,7 +1192,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
                 var nullableFloatArrayAverage = nullableFloatArray.Average();
 
@@ -1202,7 +1202,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
                 var nullableFloatArrayAverage = nullableFloatArray.Average();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -1213,7 +1213,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableIntArray_RetunrsNullableIntArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableIntArray = fixture.CreateAnonymous<int?[]>();
                 var nullableIntArrayAverage = nullableIntArray.Average();
 
@@ -1223,7 +1223,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableIntArray = fixture.CreateAnonymous<int?[]>();
                 var nullableIntArrayAverage = nullableIntArray.Average();
                 var intValue = fixture.CreateAnonymous<int>();
@@ -1234,7 +1234,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableLongArray_ReturnsNullableLongArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableLongArray = fixture.CreateAnonymous<long?[]>();
                 var nullableLongArrayAverage = nullableLongArray.Average();
 
@@ -1244,7 +1244,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void AverageOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayAverage()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableLongArray = fixture.CreateAnonymous<long?[]>();
                 var nullableLongArrayAverage = nullableLongArray.Average();
                 var longValue = fixture.CreateAnonymous<long>();
