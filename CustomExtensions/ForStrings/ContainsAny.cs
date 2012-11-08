@@ -63,7 +63,8 @@ namespace CustomExtensions.ForStrings
             Debug.Assert(source != null, "source != null");
             Debug.Assert(characters != null, "characters != null");
 
-            return !characters.IsEmpty() && source.Any(characters.Contains);
+            var hs = new HashSet<char>(characters);
+            return !hs.IsEmpty() && source.Any(hs.Contains);
         }
     }
 }

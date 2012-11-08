@@ -18,9 +18,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using CustomExtensions.ForIEnumerable;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -30,131 +35,168 @@ namespace CustomExtensions.UnitTests.ForStringsTests
         public class ContainsAnyTest
         {
             [Test]
-            public void ContainsAnyCharacter_OnEmptyString_ReturnsFalse()
+            public void ContainsAny_OnCharacter_OnEmptyString_ReturnsFalse()
             {
-                string sourceString = EmptyTestString;
-                char toFind = 'Z';
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                var emptyString = string.Empty;
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+
+                Assert.That(() => emptyString.ContainsAny(charValue), Is.False);
             }
 
             [Test]
-            public void ContainsAnyCharacter_OnGoodString_FindsManyReturnsTrue()
+            public void ContainsAny_OnCharacter_OnNullString_ThrowsValidationException()
             {
-                string sourceString = "TEST";
-                char toFind = 'T';
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.True);
+                string nullString = null;
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+
+                Assert.That(() => nullString.ContainsAny(charValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsAnyCharacter_OnGoodString_FindsNoneReturnsFalse()
+            public void ContainsAny_OnCharacter_OnStringWithMany_ReturnsTrue()
             {
-                string sourceString = "TEST";
-                char toFind = 'Z';
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var charValue = fixture.CreateAnonymous<char>();
+                stringValue += new string(charValue, 10);
+
+                Assert.That(() => stringValue.ContainsAny(charValue), Is.True);
             }
 
             [Test]
-            public void ContainsAnyCharacter_OnGoodString_FindsOneReturnsTrue()
+            public void ContainsAny_OnCharacter_OnStringWithNone_ReturnsFalse()
             {
-                string sourceString = "TEST";
-                char toFind = 'E';
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.True);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var charValue = fixture.CreateAnonymous<char>();
+                stringValue = new string(stringValue.Exclude(charValue).ToArray());
+
+                Assert.That(() => stringValue.ContainsAny(charValue), Is.False);
             }
 
             [Test]
-            public void ContainsAnyCharacter_OnGoodString_IsCaseSensitive()
+            public void ContainsAny_OnCharacter_OnStringWithOne_ReturnsTrue()
             {
-                string sourceString = "TEST";
-                char toFind = 'e';
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var charValue = fixture.CreateAnonymous<char>();
+                stringValue = new string(stringValue.Exclude(charValue).ToArray());
+                stringValue += charValue.ToString();
+
+                Assert.That(() => stringValue.ContainsAny(charValue), Is.True);
             }
 
             [Test]
-            public void ContainsAnyCharacter_OnNullString_ThrowsValidationException()
+            public void ContainsAny_OnCharacter_OnString_IsCaseSensitive()
             {
-                string sourceString = NullTestString;
-                char toFind = 'Z';
-                Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var upperCaseChar = stringValue.First(char.IsUpper);
+                stringValue = stringValue.ToLowerInvariant();
+
+                Assert.That(() => stringValue.ContainsAny(upperCaseChar), Is.False);
             }
 
             [Test]
-            public void ContainsAnyCharacters_OnEmptyString_ReturnsFalse()
+            public void ContainsAny_OnEmptyCharacters_OnEmptyString_ReturnsFalse()
             {
-                string sourceString = EmptyTestString;
-                char[] toFind = {'t', 'e'};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                string emptyString = string.Empty;
+                var emptyCharacters = Enumerable.Empty<char>();
+
+                Assert.That(() => emptyString.ContainsAny(emptyCharacters), Is.False);
             }
 
             [Test]
-            public void ContainsAnyCharacters_OnGoodString_FindsManyReturnsTrue()
+            public void ContainsAny_OnEmptyCharacters_OnNullString_ThrowsValidationException()
             {
-                string sourceString = "TEST";
-                char[] toFind = {'T', 'Z'};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.True);
+                string nullString = null;
+                var emptyCharacters = Enumerable.Empty<char>();
+
+                Assert.That(() => nullString.ContainsAny(emptyCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsAnyCharacters_OnGoodString_FindsMultipleReturnsTrue()
+            public void ContainsAny_OnEmptyCharacters_OnString_ReturnsFalse()
             {
-                string sourceString = "TEST";
-                char[] toFind = {'T', 'E'};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.True);
+                var emptyCharacters = Enumerable.Empty<char>();
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.ContainsAny(emptyCharacters), Is.False);
             }
 
             [Test]
-            public void ContainsAnyCharacters_OnGoodString_FindsNoneReturnsFalse()
+            public void ContainsAny_OnEnumerableCharacters_OnEmptyString_ReturnsFalse()
             {
-                string sourceString = "TEST";
-                char[] toFind = {'t', 'e'};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                string emptyString = string.Empty;
+                var fixture = new MultipleMockingFixture();
+                var characters = fixture.CreateAnonymous<IEnumerable<char>>();
+
+                Assert.That(() => emptyString.ContainsAny(characters), Is.False);
             }
 
             [Test]
-            public void ContainsAnyCharacters_OnGoodString_FindsOneReturnsTrue()
+            public void ContainsAny_OnEnumerableCharacters_OnNullString_ThrowsValidationException()
             {
-                string sourceString = "TEST";
-                char[] toFind = {'E', 'Z'};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.True);
+                string nullString = null;
+                var fixture = new MultipleMockingFixture();
+                var characters = fixture.CreateAnonymous<char[]>();
+
+                Assert.That(() => nullString.ContainsAny(characters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void ContainsAnyCharacters_OnNullString_ThrowsValidationException()
+            public void ContainsAny_OnEnumerableCharacters_OnStringWithMany_ReturnsTrue()
             {
-                string sourceString = NullTestString;
-                char[] toFind = {'t', 'e'};
-                Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new LatinMultipleMockingFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var characters = fixture.CreateAnonymous<char[]>();
+                stringValue += new string(characters);
+
+                Assert.That(() => stringValue.ContainsAny(characters), Is.True);
             }
 
             [Test]
-            public void ContainsAnyEmptyCharacters_OnEmptyString_ReturnsFalse()
+            public void ContainsAny_OnEnumerableCharacters_OnStringWithNone_ReturnsFalse()
             {
-                string sourceString = EmptyTestString;
-                char[] toFind = {};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                var fixture = new LatinMultipleMockingFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var characters = fixture.CreateAnonymous<char[]>();
+                stringValue = new string(stringValue.Exclude(characters).ToArray());
+
+                Assert.That(() => stringValue.ContainsAny(characters), Is.False);
             }
 
             [Test]
-            public void ContainsAnyEmptyCharacters_OnGoodString_ReturnsFalse()
+            public void ContainsAny_OnEnumerableCharacters_OnStringWithOne_ReturnsTrue()
             {
-                string sourceString = TestStringLatin;
-                char[] toFind = {};
-                Assert.That(() => sourceString.ContainsAny(toFind), Is.False);
+                var fixture = new LatinMultipleMockingFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                stringValue = new string(stringValue.Distinct().ToArray());
+                var characters = stringValue.Take(1);
+
+                Assert.That(() => stringValue.ContainsAny(characters), Is.True);
             }
 
             [Test]
-            public void ContainsAnyNullCharacters_OnGoodString_ThrowsValidationException()
+            public void ContainsAny_OnNullCharacters_OnNullString_ThrowsValidationException()
             {
-                string sourceString = TestStringLatin;
-                char[] toFind = null;
-                Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                IEnumerable<char> nullChars = null;
+                string nullString = null;
+
+                Assert.That(() => nullString.ContainsAny(nullChars), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void ContainsAnyNullCharacters_OnNullString_ThrowsValidationException()
+            public void ContainsAny_OnNullCharacters_OnString_ThrowsValidationException()
             {
-                string sourceString = NullTestString;
-                char[] toFind = null;
-                Assert.That(() => sourceString.ContainsAny(toFind), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                IEnumerable<char> nullChars = null;
+
+                Assert.That(() => stringValue.ContainsAny(nullChars), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
         }
     }
