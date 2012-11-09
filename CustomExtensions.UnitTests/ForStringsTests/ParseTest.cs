@@ -19,8 +19,10 @@
 
 using System;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -29,194 +31,330 @@ namespace CustomExtensions.UnitTests.ForStringsTests
         [TestFixture]
         public class ParseTest
         {
-            private const int PositiveInteger = 123;
-            private const int NegativeInteger = -123;
-            private const float PositiveFloat = 123.4f;
-            private const decimal PositiveDecimal = 123.4m;
-            private const double PositiveDouble = 123.4d;
-            private const float NegativeFloat = -123.4f;
-            private const decimal NegativeDecimal = -123.4m;
-            private const double NegativeDouble = -123.4d;
-
-            private const string PositiveIntegerString = "123";
-            private const string NegativeIntegerString = "-123";
-            private const string ZeroIntegerString = "0";
-            private const string PositiveDecimalString = "123.4";
-            private const string NegativeDecimalString = "-123.4";
-            private const string ZeroDecimalString = "0.0";
-
             [Test]
             public void Parse_OnEmptyString_ThrowsValidationError()
             {
-                Assert.That(() => EmptyTestString.Parse<int>(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.Parse<object>(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
 
             [Test]
             public void Parse_OnNullString_ThrowsValidationError()
             {
-                Assert.That(() => NullTestString.Parse<int>(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                string nullString = null;
+
+                Assert.That(() => nullString.Parse<object>(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Parse_ToDecimalOnNegativeDecimal_ReturnsDecimal()
+            public void Parse_ToDecimal_OnNegativeDecimal_ReturnsDecimal()
             {
-                Assert.That(() => NegativeDecimalString.Parse<decimal>(), Is.EqualTo(NegativeDecimal));
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var negativeDecimal = -decimalValue / (decimalValue + 1);
+                var negativeDecimalString = negativeDecimal.ToString("F");
+                var converted = Convert.ToDecimal(negativeDecimalString);
+
+                Assert.That(() => negativeDecimalString.Parse<decimal>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDecimalOnNegativeInteger_ReturnsDecimal()
+            public void Parse_ToDecimal_OnNegativeInteger_ReturnsDecimal()
             {
-                Assert.That(() => NegativeIntegerString.Parse<decimal>(), Is.EqualTo(NegativeInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var negativeInt = -intValue / (intValue + 1);
+                var negativeIntString = negativeInt.ToString();
+                var converted = Convert.ToDecimal(negativeIntString);
+
+                Assert.That(() => negativeIntString.Parse<decimal>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDecimalOnPositiveDecimal_ReturnsDecimal()
+            public void Parse_ToDecimal_OnPositiveDecimal_ReturnsDecimal()
             {
-                Assert.That(() => PositiveDecimalString.Parse<decimal>(), Is.EqualTo(PositiveDecimal));
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var positiveDecimal = decimalValue / (decimalValue + 1);
+                var positiveDecimalString = positiveDecimal.ToString("F");
+                var converted = Convert.ToDecimal(positiveDecimalString);
+
+                Assert.That(() => positiveDecimalString.Parse<decimal>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDecimalOnPositiveInteger_ReturnsDecimal()
+            public void Parse_ToDecimal_OnPositiveInteger_ReturnsDecimal()
             {
-                Assert.That(() => PositiveIntegerString.Parse<decimal>(), Is.EqualTo(PositiveInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var positiveInt = intValue / (intValue + 1);
+                var positiveIntString = positiveInt.ToString();
+                var converted = Convert.ToDecimal(positiveIntString);
+
+                Assert.That(() => positiveIntString.Parse<decimal>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDecimalOnZeroDecimal_ReturnsDecimal()
+            public void Parse_ToDecimal_OnZeroDecimal_ReturnsDecimal()
             {
-                Assert.That(() => ZeroDecimalString.Parse<decimal>(), Is.EqualTo(0));
+                decimal zero = 0m;
+                var zeroDecimalString = zero.ToString("F");
+
+                Assert.That(() => zeroDecimalString.Parse<decimal>(), Is.EqualTo(zero));
             }
 
             [Test]
-            public void Parse_ToDecimalOnZeroInteger_ReturnsDecimal()
+            public void Parse_ToDecimal_OnZeroInteger_ReturnsDecimal()
             {
-                Assert.That(() => ZeroIntegerString.Parse<decimal>(), Is.EqualTo(0));
+                decimal zero = 0m;
+                int intZero = 0;
+                var zeroIntString = intZero.ToString();
+
+                Assert.That(() => zeroIntString.Parse<decimal>(), Is.EqualTo(zero));
             }
 
             [Test]
-            public void Parse_ToDoubleOnNegativeDecimal_ReturnsDouble()
+            public void Parse_ToDouble_OnNegativeDecimal_ReturnsDouble()
             {
-                Assert.That(() => NegativeDecimalString.Parse<double>(), Is.EqualTo(NegativeDouble));
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var negativeDecimal = -decimalValue / (decimalValue + 1);
+                var negativeDecimalString = negativeDecimal.ToString("F");
+                var converted = Convert.ToDouble(negativeDecimalString);
+
+                Assert.That(() => negativeDecimalString.Parse<double>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDoubleOnNegativeInteger_ReturnsDouble()
+            public void Parse_ToDouble_OnNegativeInteger_ReturnsDouble()
             {
-                Assert.That(() => NegativeIntegerString.Parse<double>(), Is.EqualTo(NegativeInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var negativeInt = -intValue / (intValue + 1);
+                var negativeIntString = negativeInt.ToString();
+                var converted = Convert.ToDouble(negativeIntString);
+
+                Assert.That(() => negativeIntString.Parse<double>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDoubleOnPositiveDecimal_ReturnsDouble()
+            public void Parse_ToDouble_OnPositiveDecimal_ReturnsDouble()
             {
-                Assert.That(() => PositiveDecimalString.Parse<double>(), Is.EqualTo(PositiveDouble));
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var positiveDecimal = decimalValue / (decimalValue + 1);
+                var positiveDecimalString = positiveDecimal.ToString("F");
+                var converted = Convert.ToDouble(positiveDecimalString);
+
+                Assert.That(() => positiveDecimalString.Parse<double>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDoubleOnPositiveInteger_ReturnsDouble()
+            public void Parse_ToDouble_OnPositiveInteger_ReturnsDouble()
             {
-                Assert.That(() => PositiveIntegerString.Parse<double>(), Is.EqualTo(PositiveInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var positiveInt = intValue / (intValue + 1);
+                var positiveIntString = positiveInt.ToString();
+                var converted = Convert.ToDouble(positiveIntString);
+
+                Assert.That(() => positiveIntString.Parse<double>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToDoubleOnZeroDecimal_ReturnsDouble()
+            public void Parse_ToDouble_OnZeroDecimal_ReturnsDouble()
             {
-                Assert.That(() => ZeroDecimalString.Parse<double>(), Is.EqualTo(0));
+                decimal zero = 0m;
+                double doubleZero = 0d;
+                var zeroDecimalString = zero.ToString("F");
+
+                Assert.That(() => zeroDecimalString.Parse<double>(), Is.EqualTo(doubleZero));
             }
 
             [Test]
-            public void Parse_ToDoubleOnZeroInteger_ReturnsDouble()
+            public void Parse_ToDouble_OnZeroInteger_ReturnsDouble()
             {
-                Assert.That(() => ZeroIntegerString.Parse<double>(), Is.EqualTo(0));
+                int zero = 0;
+                double doubleZero = 0d;
+                var zeroIntString = zero.ToString();
+
+                Assert.That(() => zeroIntString.Parse<double>(), Is.EqualTo(doubleZero));
             }
 
             [Test]
-            public void Parse_ToFloatOnNegativeDecimal_ReturnsFloat()
+            public void Parse_ToFloat_OnNegativeDecimal_ReturnsFloat()
             {
-                Assert.That(() => NegativeDecimalString.Parse<float>(), Is.EqualTo(NegativeFloat));
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var negativeDecimal = -decimalValue / (decimalValue + 1);
+                var negativeDecimalString = negativeDecimal.ToString("F");
+                var converted = Convert.ToSingle(negativeDecimalString);
+
+                Assert.That(() => negativeDecimalString.Parse<float>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToFloatOnNegativeInteger_ReturnsFloat()
+            public void Parse_ToFloat_OnNegativeInteger_ReturnsFloat()
             {
-                Assert.That(() => NegativeIntegerString.Parse<float>(), Is.EqualTo(NegativeInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var negativeInt = -intValue / (intValue + 1);
+                var negativeIntString = negativeInt.ToString();
+                var converted = Convert.ToSingle(negativeIntString);
+
+                Assert.That(() => negativeIntString.Parse<float>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToFloatOnPositiveDecimal_ReturnsFloat()
+            public void Parse_ToFloat_OnPositiveDecimal_ReturnsFloat()
             {
-                Assert.That(() => PositiveDecimalString.Parse<float>(), Is.EqualTo(PositiveFloat));
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var positiveDecimal = decimalValue / (decimalValue + 1);
+                var positiveDecimalString = positiveDecimal.ToString("F");
+                var converted = Convert.ToSingle(positiveDecimalString);
+
+                Assert.That(() => positiveDecimalString.Parse<float>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToFloatOnPositiveInteger_ReturnsFloat()
+            public void Parse_ToFloat_OnPositiveInteger_ReturnsFloat()
             {
-                Assert.That(() => PositiveIntegerString.Parse<float>(), Is.EqualTo(PositiveInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var positiveInt = intValue / (intValue + 1);
+                var positiveIntString = positiveInt.ToString();
+                var converted = Convert.ToSingle(positiveIntString);
+
+                Assert.That(() => positiveIntString.Parse<float>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToFloatOnZeroDecimal_ReturnsFloat()
+            public void Parse_ToFloat_OnZeroDecimal_ReturnsFloat()
             {
-                Assert.That(() => ZeroDecimalString.Parse<float>(), Is.EqualTo(0));
+                decimal zero = 0m;
+                float floatZero = 0f;
+                var zeroDecimalString = zero.ToString("F");
+
+                Assert.That(() => zeroDecimalString.Parse<float>(), Is.EqualTo(floatZero));
             }
 
             [Test]
-            public void Parse_ToFloatOnZeroInteger_ReturnsFloat()
+            public void Parse_ToFloat_OnZeroInteger_ReturnsFloat()
             {
-                Assert.That(() => ZeroIntegerString.Parse<float>(), Is.EqualTo(0));
+                int zero = 0;
+                float floatZero = 0f;
+                var zeroIntString = zero.ToString();
+
+                Assert.That(() => zeroIntString.Parse<float>(), Is.EqualTo(floatZero));
             }
 
             [Test]
-            public void Parse_ToIntegerOnBogusString_ThrowsNotSupportedException()
+            public void Parse_ToInteger_OnBogusString_ThrowsNotSupportedException()
             {
-                Assert.That(() => TestStringLatin.Parse<int>(), Throws.TypeOf<NotSupportedException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.Parse<int>(), Throws.TypeOf<NotSupportedException>());
             }
 
             [Test]
-            public void Parse_ToIntegerOnNegativeDecimal_ThrowsNotSupportedException()
+            public void Parse_ToInteger_OnNegativeDecimal_ThrowsNotSupportedException()
             {
-                Assert.That(() => NegativeDecimalString.Parse<int>(), Throws.TypeOf<NotSupportedException>());
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var negativeDecimal = -decimalValue / (decimalValue + 1);
+                var negativeDecimalString = negativeDecimal.ToString("F");
+
+                Assert.That(() => negativeDecimalString.Parse<int>(), Throws.TypeOf<NotSupportedException>());
             }
 
             [Test]
-            public void Parse_ToIntegerOnNegativeInteger_ReturnsInteger()
+            public void Parse_ToInteger_OnNegativeInteger_ReturnsInteger()
             {
-                Assert.That(() => NegativeIntegerString.Parse<int>(), Is.EqualTo(NegativeInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var negativeInt = -intValue / (intValue + 1);
+                var negativeIntString = negativeInt.ToString();
+                var converted = Convert.ToInt32(negativeIntString);
+
+                Assert.That(() => negativeIntString.Parse<int>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToIntegerOnPositiveDecimal_ThrowsNotSupportedException()
+            public void Parse_ToInteger_OnPositiveDecimal_ThrowsNotSupportedException()
             {
-                Assert.That(() => PositiveDecimalString.Parse<int>(), Throws.TypeOf<NotSupportedException>());
+                var fixture = new RandomNumberFixture();
+                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                decimalValue++;
+                var positiveDecimal = decimalValue / (decimalValue + 1);
+                var positiveDecimalString = positiveDecimal.ToString("F");
+
+                Assert.That(() => positiveDecimalString.Parse<int>(), Throws.TypeOf<NotSupportedException>());
             }
 
             [Test]
-            public void Parse_ToIntegerOnPositiveInteger_ReturnsInteger()
+            public void Parse_ToInteger_OnPositiveInteger_ReturnsInteger()
             {
-                Assert.That(() => PositiveIntegerString.Parse<int>(), Is.EqualTo(PositiveInteger));
+                var fixture = new RandomNumberFixture();
+                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                intValue++;
+                var positiveInt = intValue / (intValue + 1);
+                var positiveIntString = positiveInt.ToString();
+                var converted = Convert.ToInt32(positiveIntString);
+
+                Assert.That(() => positiveIntString.Parse<int>(), Is.EqualTo(converted));
             }
 
             [Test]
-            public void Parse_ToIntegerOnZeroDecimal_ThrowsNotSupportedException()
+            public void Parse_ToInteger_OnZeroDecimal_ThrowsNotSupportedException()
             {
-                Assert.That(() => ZeroDecimalString.Parse<int>(), Throws.TypeOf<NotSupportedException>());
+                decimal zero = 0m;
+                var zeroDecimalString = zero.ToString("F");
+
+                Assert.That(() => zeroDecimalString.Parse<int>(), Throws.TypeOf<NotSupportedException>());
             }
 
             [Test]
-            public void Parse_ToIntegerOnZeroInteger_ReturnsInteger()
+            public void Parse_ToInteger_OnZeroInteger_ReturnsInteger()
             {
-                Assert.That(() => ZeroIntegerString.Parse<int>(), Is.EqualTo(0));
+                int zero = 0;
+                var zeroIntString = zero.ToString();
+
+                Assert.That(() => zeroIntString.Parse<int>(), Is.EqualTo(zero));
             }
 
             [Test]
             public void Parse_ToString_ReturnsSameString()
             {
-                Assert.That(() => TestStringLatin.Parse<string>(), Is.EqualTo(TestStringLatin));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.Parse<string>(), Is.EqualTo(stringValue));
             }
 
             [Test]
-            public void Parse_UnsupportedConversionTypeOnBogusString_ThrowsNotSupportedException()
+            public void Parse_UnsupportedConversionType_OnBogusString_ThrowsNotSupportedException()
             {
-                Assert.That(() => TestStringLatin.Parse<ParseTest>(), Throws.TypeOf<NotSupportedException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.Parse<ParseTest>(), Throws.TypeOf<NotSupportedException>());
             }
         }
     }
