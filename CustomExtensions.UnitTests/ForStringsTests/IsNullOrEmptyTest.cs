@@ -18,7 +18,9 @@
 #endregion
 
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -30,19 +32,24 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             [Test]
             public void IsNullOrEmpty_OnEmptyString_ReturnsTrue()
             {
-                Assert.That(() => EmptyTestString.IsNullOrEmpty(), Is.True);
+                var emptyString = string.Empty;
+                Assert.That(() => emptyString.IsNullOrEmpty(), Is.True);
             }
 
             [Test]
             public void IsNullOrEmpty_OnNullString_ReturnsTrue()
             {
-                Assert.That(() => NullTestString.IsNullOrEmpty(), Is.True);
+                string nullString = null;
+                Assert.That(() => nullString.IsNullOrEmpty(), Is.True);
             }
 
             [Test]
             public void IsNullOrEmpty_OnValidString_ReturnsFalse()
             {
-                Assert.That(() => TestStringLatin.IsNullOrEmpty(), Is.False);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.IsNullOrEmpty(), Is.False);
             }
         }
     }
