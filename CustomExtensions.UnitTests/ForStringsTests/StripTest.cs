@@ -18,10 +18,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using CustomExtensions.ForIEnumerable;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -30,163 +34,230 @@ namespace CustomExtensions.UnitTests.ForStringsTests
         [TestFixture]
         public class StripTest
         {
-            private static readonly char[] SingleCharacterArray = new[] {'a'};
-            private static readonly char[] MultiCharacterArray = new[] {'a', 'b', 'c'};
-            private static readonly char[] NullCharacterArray;
-            private static readonly char[] EmptyCharacterArray = new char[] {};
-            private const char SingleCharacter = 'a';
-            private const string SubString = "abc";
-
             [Test]
-            public void Strip_OnEmptySourceEmptyCharacters_ReturnsEmptyString()
+            public void Strip_OnEmptySource_WithEmptyCharacters_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Strip(EmptyCharacterArray), Is.Empty);
+                var emptyString = string.Empty;
+                var emptyChars = Enumerable.Empty<char>();
+
+                Assert.That(() => emptyString.Strip(emptyChars), Is.Empty);
             }
 
             [Test]
-            public void Strip_OnEmptySourceEmptyString_ReturnsEmptyString()
+            public void Strip_OnEmptySource_WithEmptyString_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Strip(EmptyTestString), Is.Empty);
-            }
+                var emptyString = string.Empty;
 
-            // empty
-
-            [Test]
-            public void Strip_OnEmptySourceMultiCharacters_ReturnsEmptyString()
-            {
-                Assert.That(() => EmptyTestString.Strip(MultiCharacterArray), Is.Empty);
+                Assert.That(() => emptyString.Strip(emptyString), Is.Empty);
             }
 
             [Test]
-            public void Strip_OnEmptySourceNullCharacters_ThrowsValidationException()
+            public void Strip_OnEmptySource_WithMultiCharacters_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Strip(NullCharacterArray), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptyString = string.Empty;
+                var fixture = new MultipleMockingFixture();
+                var multipleCharacters = fixture.CreateAnonymous<IEnumerable<char>>();
+
+                Assert.That(() => emptyString.Strip(multipleCharacters), Is.Empty);
             }
 
             [Test]
-            public void Strip_OnEmptySourceNullString_ThrowsValidationException()
+            public void Strip_OnEmptySource_WithNullCharacters_ThrowsValidationException()
             {
-                Assert.That(() => EmptyTestString.Strip(NullTestString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var emptyString = string.Empty;
+                IEnumerable<char> nullCharacters = null;
+
+                Assert.That(() => emptyString.Strip(nullCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnEmptySourceSingleCharacterArray_ReturnsEmptyString()
+            public void Strip_OnEmptySource_WithNullString_ThrowsValidationException()
             {
-                Assert.That(() => EmptyTestString.Strip(SingleCharacterArray), Is.Empty);
+                var emptyString = string.Empty;
+                string nullString = null;
+
+                Assert.That(() => emptyString.Strip(nullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnEmptySourceSingleCharacter_ReturnsEmptyString()
+            public void Strip_OnEmptySource_WithSingleCharacterEnumerable_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Strip(SingleCharacter), Is.Empty);
+                var emptyString = string.Empty;
+                var fixture = new MultipleMockingFixture(1);
+                var singleCharEnumerable = fixture.CreateAnonymous<IEnumerable<char>>();
+
+                Assert.That(() => emptyString.Strip(singleCharEnumerable), Is.Empty);
             }
 
             [Test]
-            public void Strip_OnEmptySourceSubString_ReturnsEmptyString()
+            public void Strip_OnEmptySource_WithSingleCharacter_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Strip(SubString), Is.Empty);
+                var emptyString = string.Empty;
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+
+                Assert.That(() => emptyString.Strip(charValue), Is.Empty);
             }
 
             [Test]
-            public void Strip_OnNullSourceEmptyCharacters_ThrowsValidationException()
+            public void Strip_OnNullSource_WithEmptyCharacters_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(EmptyCharacterArray), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                string nullString = null;
+                var emptyChars = Enumerable.Empty<char>();
+
+                Assert.That(() => nullString.Strip(emptyChars), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceEmptyString_ThrowsValidationException()
+            public void Strip_OnNullSource_WithEmptyString_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(EmptyTestString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                string nullString = null;
+                var emptyString = string.Empty;
+
+                Assert.That(() => nullString.Strip(emptyString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceMultiCharacters_ThrowsValidationException()
+            public void Strip_OnNullSource_WithMultiCharacters_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(MultiCharacterArray), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                string nullString = null;
+                var fixture = new MultipleMockingFixture();
+                var multipleCharacters = fixture.CreateAnonymous<IEnumerable<char>>();
+
+                Assert.That(() => nullString.Strip(multipleCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceNullCharacters_ThrowsValidationException()
+            public void Strip_OnNullSource_WithNullCharacters_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(NullCharacterArray), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                string nullString = null;
+                IEnumerable<char> nullCharacters = null;
+
+                Assert.That(() => nullString.Strip(nullCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceNullString_ThrowsValidationException()
+            public void Strip_OnNullSource_WithNullString_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(NullTestString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                string nullString = null;
+
+                Assert.That(() => nullString.Strip(nullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceSingleCharacterArray_ThrowsValidationException()
+            public void Strip_OnNullSource_WithSingleCharacterEnumerable_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(SingleCharacterArray), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                string nullString = null;
+                var fixture = new MultipleMockingFixture(1);
+                var singleCharEnumerable = fixture.CreateAnonymous<IEnumerable<char>>();
+
+                Assert.That(() => nullString.Strip(singleCharEnumerable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceSingleCharacter_ThrowsValidationException()
+            public void Strip_OnNullSource_WithSingleCharacter_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Strip(SingleCharacter), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                string nullString = null;
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+
+                Assert.That(() => nullString.Strip(charValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnNullSourceSubString_ThrowsValidationException()
+            public void Strip_OnSource_WithEmptyCharacters_ReturnsSameString()
             {
-                Assert.That(() => NullTestString.Strip(SubString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var emptyChars = Enumerable.Empty<char>();
+
+                Assert.That(() => stringValue.Strip(emptyChars), Is.EqualTo(stringValue));
             }
 
             [Test]
-            public void Strip_OnValidSourceEmptyCharacters_ReturnsSameString()
+            public void Strip_OnSource_WithEmptyString_ReturnsSameString()
             {
-                Assert.That(() => TestStringLatin.Strip(EmptyCharacterArray), Is.EqualTo(TestStringLatin));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var emptyString = string.Empty;
+
+                Assert.That(() => stringValue.Strip(emptyString), Is.EqualTo(stringValue));
             }
 
             [Test]
-            public void Strip_OnValidSourceEmptyString_ReturnsSameString()
+            public void Strip_OnSource_WithMultiCharacters_ReturnsStrippedString()
             {
-                Assert.That(() => TestStringLatin.Strip(EmptyTestString), Is.EqualTo(TestStringLatin));
-            }
+                var fixture = new LatinMultipleMockingFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                stringValue = stringValue + stringValue;
+                var multichars = stringValue.Take(5);
+                var expected = new string(stringValue.Exclude(multichars).ToArray());
 
-            // Latin
-
-            [Test]
-            public void Strip_OnValidSourceMultiCharacters_ReturnsStrippedString()
-            {
-                var expected = MultiCharacterArray.Aggregate(TestStringLatin, (current, c) => current.Replace(c.ToString(), string.Empty));
-                Assert.That(() => TestStringLatin.Strip(MultiCharacterArray), Is.EqualTo(expected));
+                Assert.That(() => stringValue.Strip(multichars), Is.EqualTo(expected));
             }
 
             [Test]
-            public void Strip_OnValidSourceNullCharacters_ThrowsValidationException()
+            public void Strip_OnSource_WithNoMatches_ReturnsSource()
             {
-                Assert.That(() => TestStringLatin.Strip(NullCharacterArray), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var first10 = stringValue.Take(10);
+                var excluded = new string(stringValue.Exclude(first10).ToArray());
+
+                Assert.That(() => excluded.Strip(first10), Is.EqualTo(excluded));
             }
 
             [Test]
-            public void Strip_OnValidSourceNullString_ThrowsValidationException()
+            public void Strip_OnSource_WithNullCharacters_ThrowsValidationException()
             {
-                Assert.That(() => TestStringLatin.Strip(NullTestString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                IEnumerable<char> nullCharacters = null;
+
+                Assert.That(() => stringValue.Strip(nullCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnValidSourceSingleCharacterArray_ReturnsStrippedString()
+            public void Strip_OnSource_WithNullString_ThrowsValidationException()
             {
-                var expected = SingleCharacterArray.Aggregate(TestStringLatin, (current, c) => current.Replace(c.ToString(), string.Empty));
-                Assert.That(() => TestStringLatin.Strip(SingleCharacterArray), Is.EqualTo(expected));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                string nullString = null;
+
+                Assert.That(() => stringValue.Strip(nullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Strip_OnValidSourceSingleCharacter_ReturnsStrippedString()
+            public void Strip_OnSource_WithSingleCharacterEnumerable_ReturnsStrippedString()
             {
-                var expected = TestStringLatin.Replace(SingleCharacter.ToString(), string.Empty);
-                Assert.That(() => TestStringLatin.Strip(SingleCharacter), Is.EqualTo(expected));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                stringValue = stringValue + stringValue;
+                var singleCharEnumerable = stringValue.Take(1);
+                var expected = new string(stringValue.Exclude(singleCharEnumerable).ToArray());
+
+                Assert.That(() => stringValue.Strip(singleCharEnumerable), Is.EqualTo(expected));
             }
 
             [Test]
-            public void Strip_OnValidSourceSubString_ReturnsStrippedString()
+            public void Strip_OnSource_WithSingleCharacter_ReturnsStrippedString()
             {
-                var expected = TestStringLatin.Replace(SubString, string.Empty);
-                Assert.That(() => TestStringLatin.Strip(SubString), Is.EqualTo(expected));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                stringValue = stringValue + stringValue;
+                var singleChar = stringValue.Last();
+                var expected = stringValue.Replace(singleChar.ToString(), string.Empty);
+
+                Assert.That(() => stringValue.Strip(singleChar), Is.EqualTo(expected));
+            }
+
+            [Test]
+            public void Strip_OnSource_WithSourceString_ReturnsEmptyString()
+            {
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.Strip(stringValue), Is.Empty);
             }
         }
     }
