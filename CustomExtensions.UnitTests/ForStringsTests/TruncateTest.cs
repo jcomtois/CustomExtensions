@@ -19,8 +19,10 @@
 
 using System;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -31,88 +33,111 @@ namespace CustomExtensions.UnitTests.ForStringsTests
         {
             private const string Ellipsis = "...";
             private static readonly int ValidLength = Ellipsis.Length + 1;
-            private static readonly int InvalidLength = ValidLength - 1;
-            private static readonly string ShortString = new string('a', InvalidLength);
-            private static readonly string EqualString = new string('a', ValidLength);
-            private static readonly string LongString = new string('a', ValidLength + 1);
 
             [Test]
-            public void Truncate_OnEmptyStringWithInValidLength_ThrowsValidationException()
+            public void Truncate_OnEmptyString_WithInvalidLength_ThrowsValidationException()
             {
-                Assert.That(() => EmptyTestString.Truncate(InvalidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.Truncate(ValidLength - 1), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
             }
 
             [Test]
-            public void Truncate_OnEmptyStringWithValidLength_ReturnsEmptyString()
+            public void Truncate_OnEmptyString_WithValidLength_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Truncate(ValidLength), Is.Empty);
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.Truncate(ValidLength), Is.Empty);
             }
 
             [Test]
-            public void Truncate_OnEqualStringLengthIsEqualToEllipsis_ReturnsString()
+            public void Truncate_OnNullString_WithInValidLength_ThrowsValidationException()
             {
-                Assert.That(() => EqualString.Truncate(ValidLength), Is.EqualTo(EqualString));
+                string nullString = null;
+                var maxLength = ValidLength - 1;
+
+                Assert.That(() => nullString.Truncate(maxLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Truncate_OnEqualStringLengthIsGreaterThanEllipses_ReturnsString()
+            public void Truncate_OnNullString_WithValidLength_ThrowsValidationException()
             {
-                Assert.That(() => EqualString.Truncate(ValidLength + 1), Is.EqualTo(EqualString));
+                string nullString = null;
+
+                Assert.That(() => nullString.Truncate(ValidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Truncate_OnEqualStringWithInvalidLength_ThrowsValidationException()
+            public void Truncate_OnString_LengthIsGreaterThanElpises_ReturnsString()
             {
-                Assert.That(() => EqualString.Truncate(InvalidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+                var maxLength = ValidLength - 1;
+                var shortString = new string(charValue, maxLength);
+
+                Assert.That(() => shortString.Truncate(ValidLength + 1), Is.EqualTo(shortString));
             }
 
             [Test]
-            public void Truncate_OnNullStringWithInValidLength_ThrowsValidationException()
+            public void Truncate_OnString_WithInvalidLength_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Truncate(InvalidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+                var maxLength = ValidLength - 1;
+                var equalString = new string(charValue, maxLength);
+
+                Assert.That(() => equalString.Truncate(maxLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
             }
 
             [Test]
-            public void Truncate_OnNullStringWithValidLength_ThrowsValidationException()
+            public void Truncate_OnString_WithLengthEqualToString_ReturnsString()
             {
-                Assert.That(() => NullTestString.Truncate(ValidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.Truncate(stringValue.Length), Is.EqualTo(stringValue));
             }
 
             [Test]
-            public void Truncate_OnShortStringLengthIsGreaterThanElpises_ReturnsString()
+            public void Truncate_OnString_WithLengthIsEqualToEllipsis_ReturnsString()
             {
-                Assert.That(() => ShortString.Truncate(ValidLength + 1), Is.EqualTo(ShortString));
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+                var equalString = new string(charValue, ValidLength);
+
+                Assert.That(() => equalString.Truncate(ValidLength), Is.EqualTo(equalString));
             }
 
             [Test]
-            public void Truncate_OnShortStringWithInvalidLength_ThrowsValidationException()
+            public void Truncate_OnString_WithLengthIsGreaterThanEllipsis_ReturnsString()
             {
-                Assert.That(() => ShortString.Truncate(InvalidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+                var maxLength = ValidLength + 1;
+                var equalString = new string(charValue, maxLength);
+
+                Assert.That(() => equalString.Truncate(maxLength), Is.EqualTo(equalString));
             }
 
             [Test]
-            public void Truncate_OnShortStringWithValidLength_ReturnsString()
+            public void Truncate_OnString_WithValidLength_ReturnsString()
             {
-                Assert.That(() => ShortString.Truncate(ValidLength), Is.EqualTo(ShortString));
+                var fixture = new BaseFixture();
+                var charValue = fixture.CreateAnonymous<char>();
+                var maxLength = ValidLength - 1;
+                var shortString = new string(charValue, maxLength);
+
+                Assert.That(() => shortString.Truncate(ValidLength), Is.EqualTo(shortString));
             }
 
             [Test]
-            public void Truncate_OnValidStringWithInvalidLength_ThrowsValidationException()
+            public void Truncate_OnString_WithValidLength_ReturnsTruncatedString()
             {
-                Assert.That(() => LongString.Truncate(InvalidLength), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
-            }
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var expected = stringValue.Substring(0, ValidLength - Ellipsis.Length) + Ellipsis;
 
-            [Test]
-            public void Truncate_OnValidStringWithLengthEqualToString_ReturnsString()
-            {
-                Assert.That(() => TestStringLatin.Truncate(TestStringLatin.Length), Is.EqualTo(TestStringLatin));
-            }
-
-            [Test]
-            public void Truncate_OnValidStringWithValidLength_ReturnsTruncatedString()
-            {
-                var expected = LongString.Substring(0, ValidLength - Ellipsis.Length) + Ellipsis;
-                Assert.That(() => LongString.Truncate(ValidLength), Is.EqualTo(expected));
+                Assert.That(() => stringValue.Truncate(ValidLength), Is.EqualTo(expected));
             }
         }
     }
