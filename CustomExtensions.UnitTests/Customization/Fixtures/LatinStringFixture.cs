@@ -17,31 +17,15 @@
 
 #endregion
 
-using System;
-using System.Linq;
-using Ploeh.AutoFixture;
+using CustomExtensions.UnitTests.Customization.Customizations;
 
 namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
-    public class LatinStringFixture : MultipleMockingFixture
+    public class LatinStringFixture : BaseFixture
     {
-        private static readonly string _latinString = new string(Enumerable.Range(0, 256).Select(i => Convert.ToChar(Convert.ToByte(i))).ToArray());
-
-        public LatinStringFixture() : this(3)
+        public LatinStringFixture(int repeatCount = 3) : base(repeatCount)
         {
-        }
-
-        public LatinStringFixture(int repeatCount) : base(repeatCount)
-        {
-            this.Register(() => LatinString);
-        }
-
-        public static string LatinString
-        {
-            get
-            {
-                return _latinString;
-            }
+            Customize(new LatinStringCustomization());
         }
     }
 }

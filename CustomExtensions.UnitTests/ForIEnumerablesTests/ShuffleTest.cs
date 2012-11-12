@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Shuffle_OnEmptySequence_WithRandom_ReturnsEmptySequence()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var random = fixture.CreateAnonymous<Random>();
 
                 Assert.That(() => emptySequence.Shuffle(random), Is.Empty);
@@ -65,7 +65,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Shuffle_OnNullSequence_WithRandom_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var random = fixture.CreateAnonymous<Random>();
 
                 Assert.That(() => nullSequence.Shuffle(random), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -84,7 +84,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void Shuffle_OnSequence_IsLazy()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
                 var random = fixture.CreateAnonymous<Random>();
 
@@ -142,7 +142,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Shuffle_OnSequence_WithRandom_ReturnsSameSequenceWithKnownSeed()
             {
                 const int count = 100;
-                var fixture = new MultipleMockingFixture(count);
+                var fixture = new RandomMultipleMockingFixture(count);
                 var seed = fixture.CreateAnonymous<int>();
                 var sequence = fixture.CreateAnonymous<object[]>();
                 var random = new Random(seed);

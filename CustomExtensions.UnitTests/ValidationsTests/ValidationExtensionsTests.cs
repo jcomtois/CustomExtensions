@@ -49,7 +49,6 @@ namespace CustomExtensions.UnitTests.ValidationsTests
             private const string GoodTestString = "Test";
             private const string EmptyTestString = "";
             private const string NullTestString = null;
-            private const string SingleCharacterTestString = "T";
             private const string TestParameterName = "TestParameter";
 
             [Test]

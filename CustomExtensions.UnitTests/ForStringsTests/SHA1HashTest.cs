@@ -21,8 +21,10 @@ using System;
 using System.Linq;
 using CustomExtensions.ForIEnumerable;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -36,27 +38,35 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             private const string KnownHashForTestString = "7110eda4d09e062aa5e4a390b0a572ac0d2c0220"; // http://www.fileformat.info/tool/hash.htm?text=1234
 
             [Test]
-            public void SHA1Hash_OnAllLatinString_HandlesAllCharacters()
+            public void SHA1Hash_OnAllLatinString_HandlesAllLatinCharacters()
             {
-                Assert.That(() => TestStringLatin.SHA1Hash(), Throws.Nothing);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.SHA1Hash(), Throws.Nothing);
             }
 
             [Test]
             public void SHA1Hash_OnEmptyString_ThrowsValidationException()
             {
-                Assert.That(() => EmptyTestString.SHA1Hash(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.SHA1Hash(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
 
             [Test]
             public void SHA1Hash_OnNullString_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.SHA1Hash(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                string nullString = null;
+
+                Assert.That(() => nullString.SHA1Hash(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
             public void SHA1Hash_OnStringUsingBase64Encoding_HashesProperly()
             {
                 var base64String = Convert.ToBase64String(BytesOfKnownHashForTestString);
+
                 Assert.That(() => TestString.SHA1Hash(ExtendString.OutputFormat.Base64), Is.EqualTo(base64String));
             }
 
@@ -64,13 +74,14 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void SHA1Hash_OnStringUsingDigitEncoding_HashesProperly()
             {
                 var expected = BytesOfKnownHashForTestString.Select(b => b.ToString("d3")).FlattenStrings();
+
                 Assert.That(() => TestString.SHA1Hash(ExtendString.OutputFormat.Digit), Is.EqualTo(expected));
             }
 
             [Test]
             public void SHA1Hash_OnStringUsingHexEncoding_HashesProperly()
             {
-                Assert.That(() => TestString.SHA1Hash(ExtendString.OutputFormat.Hex), Is.EqualTo(KnownHashForTestString));
+                Assert.That(() => TestString.SHA1Hash(), Is.EqualTo(KnownHashForTestString));
             }
         }
     }

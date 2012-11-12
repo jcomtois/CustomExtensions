@@ -31,7 +31,7 @@ namespace CustomExtensions.ForStrings
         /// <summary>
         /// Adapted from http://stackoverflow.com/a/10366194/213169
         /// </summary>
-        private class AESEncryption : IEncrypt, IDecrypt
+        private sealed class AESEncryption : IEncrypt, IDecrypt
         {
             private static class AESEncryptionImplementation
             {

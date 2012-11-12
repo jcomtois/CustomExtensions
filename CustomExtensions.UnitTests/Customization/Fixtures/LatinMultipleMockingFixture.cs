@@ -17,9 +17,15 @@
 
 #endregion
 
-namespace CustomExtensions.UnitTests.ForDateTimesTests
+using CustomExtensions.UnitTests.Customization.Customizations;
+
+namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
-    public partial class ForDateTimeTests
+    public class LatinMultipleMockingFixture : BaseFixture
     {
+        public LatinMultipleMockingFixture(int repeatCount = 3) : base(repeatCount)
+        {
+            Customize(new LatinMultipleMockingCustomization());
+        }
     }
 }

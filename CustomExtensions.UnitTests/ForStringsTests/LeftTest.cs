@@ -19,8 +19,10 @@
 
 using System;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -32,47 +34,74 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             [Test]
             public void Left_OnEmptyString_ReturnsEmptyString()
             {
-                Assert.That(() => EmptyTestString.Left(5), Is.Empty);
-            }
+                var emptyString = string.Empty;
+                var fixture = new RandomNumberFixture();
+                var intValue = fixture.CreateAnonymous<int>();
 
-            [Test]
-            public void Left_OnGoodStringWithNegativeLength_ThrowsValidationExceptions()
-            {
-                Assert.That(() => TestStringLatin.Left(-5), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
-            }
-
-            [Test]
-            public void Left_OnNullStringWithNegativeLength_ThrowsValidationExceptions()
-            {
-                Assert.That(() => NullTestString.Left(-5), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
+                Assert.That(() => emptyString.Left(intValue), Is.Empty);
             }
 
             [Test]
             public void Left_OnNullString_ThrowsValidationException()
             {
-                Assert.That(() => NullTestString.Left(5), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
+                string nullString = null;
+                var fixture = new RandomNumberFixture();
+                var intValue = fixture.CreateAnonymous<int>();
+
+                Assert.That(() => nullString.Left(intValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
 
             [Test]
-            public void Left_OnValidStringLengthEqualToStringLength_ReturnsCorrectSubstring()
+            public void Left_OnNullString_WithNegativeLength_ThrowsValidationException()
             {
-                var testlength = TestStringLatin.Length;
-                Assert.That(() => TestStringLatin.Left(testlength), Is.EqualTo(TestStringLatin));
+                string nullString = null;
+                var fixture = new RandomNumberFixture();
+                var intValue = fixture.CreateAnonymous<int>();
+                intValue = -intValue;
+
+                Assert.That(() => nullString.Left(intValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
 
             [Test]
-            public void Left_OnValidStringLengthGreaterThanStringLength_ReturnsCorrectSubstring()
+            public void Left_OnString_LengthEqualToStringLength_ReturnsCorrectSubstring()
             {
-                var testlength = TestStringLatin.Length + 1;
-                Assert.That(() => TestStringLatin.Left(testlength), Is.EqualTo(TestStringLatin));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var length = stringValue.Length;
+
+                Assert.That(() => stringValue.Left(length), Is.EqualTo(stringValue));
             }
 
             [Test]
-            public void Left_OnValidStringLengthLessThanStringLength_ReturnsCorrectSubstring()
+            public void Left_OnString_LengthGreaterThanStringLength_ReturnsCorrectSubstring()
             {
-                var testlength = TestStringLatin.Length - 1;
-                var expected = TestStringLatin.Substring(0, testlength);
-                Assert.That(() => TestStringLatin.Left(testlength), Is.EqualTo(expected));
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var length = stringValue.Length + 1;
+
+                Assert.That(() => stringValue.Left(length), Is.EqualTo(stringValue));
+            }
+
+            [Test]
+            public void Left_OnString_LengthLessThanStringLength_ReturnsCorrectSubstring()
+            {
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var length = stringValue.Length - 1;
+                var expected = stringValue.Substring(0, length);
+
+                Assert.That(() => stringValue.Left(length), Is.EqualTo(expected));
+            }
+
+            [Test]
+            public void Left_OnString_WithNegativeLength_ThrowsValidationException()
+            {
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                var intValue = fixture.CreateAnonymous<int>();
+                intValue = -intValue;
+
+                Assert.That(() => stringValue.Left(intValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());
             }
         }
     }

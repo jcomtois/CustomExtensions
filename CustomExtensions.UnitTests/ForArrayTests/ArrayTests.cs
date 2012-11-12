@@ -17,12 +17,9 @@
 
 #endregion
 
-using System.Linq;
-
 namespace CustomExtensions.UnitTests.ForArrayTests
 {
     public partial class ArrayTests
     {
-        internal static readonly byte[] ValidByteArray = Enumerable.Range(0, 256).Select(i => (byte)i).ToArray();
     }
 }

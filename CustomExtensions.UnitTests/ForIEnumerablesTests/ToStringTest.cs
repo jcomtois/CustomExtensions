@@ -47,7 +47,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnEmptySequence_WithNullProjection_WithSeparator_ThrowsValidationException()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 Func<object, string> nullProjection = null;
                 var separator = fixture.CreateAnonymous<string>();
 
@@ -58,7 +58,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnEmptySequence_WithProjection_WithNullSeparator_ReturnsEmptyString()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var projection = fixture.CreateAnonymous<Func<object, string>>();
                 string nullSeparator = null;
 
@@ -69,7 +69,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnEmptySequence_WithProjection_WithSeparator_ReturnsEmptyString()
             {
                 var emptySequence = Enumerable.Empty<object>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var projection = fixture.CreateAnonymous<Func<object, string>>();
                 var separator = fixture.CreateAnonymous<string>();
 
@@ -89,7 +89,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnEmptyStringSequence_WithSeparator_ReturnsEmptyString()
             {
                 var emptySequence = Enumerable.Empty<string>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var separator = fixture.CreateAnonymous<string>();
 
                 Assert.That(() => emptySequence.ToString(separator), Is.Empty);
@@ -109,7 +109,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnNullSequence_WithNullProjection_WithSeparator_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 Func<object, string> nullProjection = null;
                 var separator = fixture.CreateAnonymous<string>();
 
@@ -120,7 +120,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnNullSequence_WithProjection_WithSeparator_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var projection = fixture.CreateAnonymous<Func<object, string>>();
                 var separator = fixture.CreateAnonymous<string>();
 
@@ -140,7 +140,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToString_OnNullStringSequence_WithSeparator_ThrowsValidationException()
             {
                 IEnumerable<string> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var separator = fixture.CreateAnonymous<string>();
 
                 Assert.That(() => nullSequence.ToString(separator), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -149,7 +149,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnSequenceOfOne_WithProjection_WithSeparator_ReturnsNonSeparatedString()
             {
-                var fixture = new MultipleMockingFixture(1);
+                var fixture = new LatinMultipleMockingFixture(1);
                 var sequence = fixture.CreateAnonymous<object[]>();
                 var projection = fixture.CreateAnonymous<Func<object, string>>();
                 var separator = fixture.CreateAnonymous<string>();
@@ -161,7 +161,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnSequence_WithNullProjection_WithNullSeparator_ThrowsValidationException()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<object[]>();
                 Func<object, string> nullProjection = null;
                 string nullSeparator = null;
@@ -172,7 +172,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnSequence_WithNullProjection_WithSeparator_ThrowsValidationException()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new LatinMultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<object[]>();
                 Func<object, string> nullProjection = null;
                 var separator = fixture.CreateAnonymous<string>();
@@ -183,7 +183,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnSequence_WithProjection_WithNullSeparator_ReturnsNonSeparatedString()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<object[]>();
                 var projection = fixture.CreateAnonymous<Func<object, string>>();
                 string nullSeparator = null;
@@ -195,7 +195,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnSequence_WithProjection_WithSeparator_ReturnsSeparatedString()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new LatinMultipleMockingFixture();
                 var sequence = fixture.CreateAnonymous<object[]>();
                 var projection = fixture.CreateAnonymous<Func<object, string>>();
                 var separator = fixture.CreateAnonymous<string>();
@@ -207,7 +207,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnStringSequenceOfOne_WithSeparator_ReturnsNonSeparatedString()
             {
-                var fixture = new MultipleMockingFixture(1);
+                var fixture = new LatinMultipleMockingFixture(1);
                 var stringSequence = fixture.CreateAnonymous<string[]>();
                 var separator = fixture.CreateAnonymous<string>();
 
@@ -219,7 +219,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnStringSequence_WithNullSeparator_ReturnsNonSeparatedString()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new LatinMultipleMockingFixture();
                 var stringSequence = fixture.CreateAnonymous<string[]>();
                 string nullSeparator = null;
                 var expected = stringSequence[0] + stringSequence[1] + stringSequence[2];
@@ -230,7 +230,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ToString_OnStringSequence_WithSeparator_ReturnsSeparatedString()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new LatinMultipleMockingFixture();
                 var stringSequence = fixture.CreateAnonymous<string[]>();
                 var separator = fixture.CreateAnonymous<string>();
 

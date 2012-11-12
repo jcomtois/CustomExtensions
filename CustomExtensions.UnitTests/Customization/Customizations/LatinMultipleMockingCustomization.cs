@@ -17,9 +17,14 @@
 
 #endregion
 
-namespace CustomExtensions.UnitTests.ForDateTimesTests
+using Ploeh.AutoFixture;
+
+namespace CustomExtensions.UnitTests.Customization.Customizations
 {
-    public partial class ForDateTimeTests
+    public class LatinMultipleMockingCustomization : CompositeCustomization
     {
+        public LatinMultipleMockingCustomization() : base(new MultipleMockingCustomization(), new LatinStringCustomization())
+        {
+        }
     }
 }

@@ -18,7 +18,9 @@
 #endregion
 
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -30,61 +32,73 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             [Test]
             public void IsValidUrl_OnEmptyString_ReturnsFalse()
             {
-                Assert.That(() => EmptyTestString.IsValidUrl(), Is.False);
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.IsValidUrl(), Is.False);
             }
 
             [Test]
             public void IsValidUrl_OnMailTo_ReturnsTrue()
             {
-                var testString = "mailto:fake@madeup.com";
+                const string testString = "mailto:fake@madeup.com";
+
                 Assert.That(() => testString.IsValidUrl(), Is.True);
             }
 
             [Test]
             public void IsValidUrl_OnNormalTextString_ReturnsFalse()
             {
-                var testString = TestStringLatin;
-                Assert.That(() => testString.IsValidUrl(), Is.False);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.IsValidUrl(), Is.False);
             }
 
             [Test]
             public void IsValidUrl_OnNullString_ReturnsFalse()
             {
-                Assert.That(() => NullTestString.IsValidUrl(), Is.False);
+                string nullString = null;
+
+                Assert.That(() => nullString.IsValidUrl(), Is.False);
             }
 
             [Test]
             public void IsValidUrl_OnWebAddressMinusProtocol_ReturnsFalse()
             {
-                var testString = "www.google.com";
+                const string testString = "www.google.com";
+
                 Assert.That(() => testString.IsValidUrl(), Is.False);
             }
 
             [Test]
             public void IsValidUrl_OnWebAddressWithMadeUpProtocol_ReturnsTrue()
             {
-                var testString = "madeup://www.google.com";
+                const string testString = "madeup://www.google.com";
+
                 Assert.That(() => testString.IsValidUrl(), Is.True);
             }
 
             [Test]
             public void IsValidUrl_OnWebAddressWithftpProtocol_ReturnsTrue()
             {
-                var testString = "ftp://www.google.com";
+                const string testString = "ftp://www.google.com";
+
                 Assert.That(() => testString.IsValidUrl(), Is.True);
             }
 
             [Test]
             public void IsValidUrl_OnWebAddressWithhttpProtocol_ReturnsTrue()
             {
-                var testString = "http://www.google.com";
+                const string testString = "http://www.google.com";
+
                 Assert.That(() => testString.IsValidUrl(), Is.True);
             }
 
             [Test]
             public void IsValidUrl_OnWebAddressWithhttpsProtocol_ReturnsTrue()
             {
-                var testString = "https://www.google.com";
+                const string testString = "https://www.google.com";
+
                 Assert.That(() => testString.IsValidUrl(), Is.True);
             }
         }

@@ -17,9 +17,15 @@
 
 #endregion
 
-namespace CustomExtensions.UnitTests.ForDateTimesTests
+using Ploeh.AutoFixture;
+
+namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
-    public partial class ForDateTimeTests
+    public class RandomNumberFixture : BaseFixture
     {
+        public RandomNumberFixture(int repeatCount = 3) : base(repeatCount)
+        {
+            Customize(new RandomNumericSequenceCustomization());
+        }
     }
 }

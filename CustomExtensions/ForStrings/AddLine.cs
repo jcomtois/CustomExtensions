@@ -27,7 +27,7 @@ namespace CustomExtensions.ForStrings
 {
     public static partial class ExtendStringBuilder
     {
-        private class ConsoleLineWriter : ILineWriter
+        private sealed class ConsoleLineWriter : ILineWriter
         {
             private static readonly ConsoleLineWriter _consoleLineWriter;
 

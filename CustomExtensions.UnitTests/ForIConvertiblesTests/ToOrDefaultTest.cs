@@ -34,7 +34,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToBadConvertible_OnAnyInteger_OutNull()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 IConvertible outParameter;
                 intValue.ToOrDefault(out outParameter);
@@ -45,7 +45,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToBadConvertible_OnAnyInteger_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 IConvertible outParameter;
                 var actual = intValue.ToOrDefault(out outParameter);
@@ -157,7 +157,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToInteger_OnIntegerString_OutInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var integerString = intValue.ToString();
                 int outParameter;
@@ -169,7 +169,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToInteger_OnIntegerString_ReturnsInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var integerString = intValue.ToString();
 
@@ -179,7 +179,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToInteger_OnIntegerString_ReturnsTrue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var integerString = intValue.ToString();
                 int outParameter;
@@ -190,7 +190,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToInteger_OnNonNumericString_OutDefaultInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var stringValue = fixture.CreateAnonymous<string>();
                 int outParameter;
                 stringValue.ToOrDefault(out outParameter);
@@ -201,7 +201,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToInteger_OnNonNumericString_ReturnsDefaultInteger()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var stringValue = fixture.CreateAnonymous<string>();
 
                 Assert.That(() => stringValue.ToOrDefault<int>(), Is.EqualTo(default(int)));
@@ -210,7 +210,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrDefault_ToInteger_OnNonNumericString_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new LatinStringFixture();
                 var stringValue = fixture.CreateAnonymous<string>();
                 int outParameter;
                 var actual = stringValue.ToOrDefault(out outParameter);

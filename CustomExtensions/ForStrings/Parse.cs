@@ -53,7 +53,7 @@ namespace CustomExtensions.ForStrings
             T result;
             try
             {
-                result = (T)typeConverter.ConvertFrom(source);
+                result = (T)typeConverter.ConvertFromString(source);
             }
             catch (Exception ex)
             {

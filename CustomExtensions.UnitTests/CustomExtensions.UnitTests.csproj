@@ -128,11 +128,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Customization\Customizations\LatinMultipleMockingCustomization.cs" />
+    <Compile Include="Customization\Customizations\LatinStringCustomization.cs" />
+    <Compile Include="Customization\Fixtures\BaseFixture.cs" />
+    <Compile Include="Customization\Fixtures\LatinMultipleMockingFixture.cs" />
     <Compile Include="Customization\Fixtures\LatinStringFixture.cs" />
     <Compile Include="Customization\Customizations\MultipleMockingCustomization.cs" />
     <Compile Include="Customization\Fixtures\MultipleMockingFixture.cs" />
     <Compile Include="Customization\Fixtures\RandomMultipleMockingFixture.cs" />
     <Compile Include="Customization\Customizations\RandomMultipleMockingCustomization.cs" />
+    <Compile Include="Customization\Fixtures\RandomNumberFixture.cs" />
     <Compile Include="ForArrayTests\ArrayTests.cs" />
     <Compile Include="ForArrayTests\ToHexStringTest.cs">
       <DependentUpon>ArrayTests.cs</DependentUpon>
@@ -205,9 +210,6 @@
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStringsTests\DecryptTest.cs">
-      <DependentUpon>StringTests.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ForStringsTests\EncryptionTestBase.cs">
       <DependentUpon>StringTests.cs</DependentUpon>
     </Compile>
     <Compile Include="ForStringsTests\EncryptTest.cs">

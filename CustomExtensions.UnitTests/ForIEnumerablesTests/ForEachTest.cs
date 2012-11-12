@@ -62,7 +62,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ForEach_OnNullSequence_WithAction_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var action = fixture.CreateAnonymous<Action<object>>();
 
                 Assert.That(() => nullSequence.ForEach(action), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());

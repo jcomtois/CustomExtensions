@@ -19,7 +19,9 @@
 
 using System;
 using CustomExtensions.ForStrings;
+using CustomExtensions.UnitTests.Customization.Fixtures;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ForStringsTests
 {
@@ -28,19 +30,13 @@ namespace CustomExtensions.UnitTests.ForStringsTests
         [TestFixture]
         public class TryToGuidTest
         {
-            private const string LowerCaseGuidNoDashesOrBraces = "ca761232ed4211cebacd00aa0057b223";
-            private const string UpperCaseGuidWithDashesNoBraces = "CA761232-ED42-11CE-BACD-00AA0057B223";
-            private const string UpperCaseGuidWithDashesWithBraces = "{CA761232-ED42-11CE-BACD-00AA0057B223}";
-            private static readonly Guid GoodGuid = new Guid(UpperCaseGuidWithDashesWithBraces);
-            private static readonly string LowerCaseGuidWithDashesWithBraces = UpperCaseGuidWithDashesWithBraces.ToLowerInvariant();
-            private const string UpperCaseGuidWithDashesWithParenthesis = "(CA761232-ED42-11CE-BACD-00AA0057B223)";
-            private const string UpperCaseGuidHex = "{0xCA761232, 0xED42, 0x11CE, {0xBA, 0xCD, 0x00, 0xAA, 0x00, 0x57, 0xB2, 0x23}}";
-
             [Test]
             public void TryToGuid_OnEmptyString_OutputsEmptyGuid()
             {
                 Guid guid;
-                var actual = NullTestString.TryToGuid(out guid);
+                var emptyString = string.Empty;
+                emptyString.TryToGuid(out guid);
+
                 Assert.That(() => guid, Is.EqualTo(Guid.Empty));
             }
 
@@ -48,14 +44,19 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void TryToGuid_OnEmptyString_ReturnsFalse()
             {
                 Guid guid;
-                Assert.That(() => EmptyTestString.TryToGuid(out guid), Is.False);
+                var emptyString = string.Empty;
+
+                Assert.That(() => emptyString.TryToGuid(out guid), Is.False);
             }
 
             [Test]
             public void TryToGuid_OnInvalidString_OutputsEmptyGuid()
             {
                 Guid guid;
-                var actual = TestStringLatin.TryToGuid(out guid);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+                stringValue.TryToGuid(out guid);
+
                 Assert.That(() => guid, Is.EqualTo(Guid.Empty));
             }
 
@@ -63,44 +64,59 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void TryToGuid_OnInvalidString_ReturnsFalse()
             {
                 Guid guid;
-                Assert.That(() => TestStringLatin.TryToGuid(out guid), Is.False);
+                var fixture = new LatinStringFixture();
+                var stringValue = fixture.CreateAnonymous<string>();
+
+                Assert.That(() => stringValue.TryToGuid(out guid), Is.False);
             }
 
             [Test]
             public void TryToGuid_OnLowerCaseGuidNoDashesOrBraces_OutputsGuid()
             {
                 Guid guid;
-                var actual = LowerCaseGuidNoDashesOrBraces.TryToGuid(out guid);
-                Assert.That(() => guid, Is.EqualTo(GoodGuid));
+                const string lowerCaseGuidNoDashesOrBraces = "ca761232ed4211cebacd00aa0057b223";
+                lowerCaseGuidNoDashesOrBraces.TryToGuid(out guid);
+                var expected = new Guid("{CA761232-ED42-11CE-BACD-00AA0057B223}");
+
+                Assert.That(() => guid, Is.EqualTo(expected));
             }
 
             [Test]
             public void TryToGuid_OnLowerCaseGuidNoDashesOrBraces_ReturnsTrue()
             {
                 Guid guid;
-                Assert.That(() => LowerCaseGuidNoDashesOrBraces.TryToGuid(out guid), Is.True);
+                const string lowerCaseGuidNoDashesOrBraces = "ca761232ed4211cebacd00aa0057b223";
+
+                Assert.That(() => lowerCaseGuidNoDashesOrBraces.TryToGuid(out guid), Is.True);
             }
 
             [Test]
             public void TryToGuid_OnLowerCaseGuidWithDashesWithBraces_OutputsGuid()
             {
                 Guid guid;
-                var actual = LowerCaseGuidWithDashesWithBraces.TryToGuid(out guid);
-                Assert.That(() => guid, Is.EqualTo(GoodGuid));
+                const string newGuid = "{CA761232-ED42-11CE-BACD-00AA0057B223}";
+                newGuid.ToLowerInvariant().TryToGuid(out guid);
+                var expected = new Guid(newGuid);
+
+                Assert.That(() => guid, Is.EqualTo(expected));
             }
 
             [Test]
             public void TryToGuid_OnLowerCaseGuidWithDashesWithBraces_ReturnsTrue()
             {
                 Guid guid;
-                Assert.That(() => LowerCaseGuidWithDashesWithBraces.TryToGuid(out guid), Is.True);
+                const string newGuid = "{CA761232-ED42-11CE-BACD-00AA0057B223}";
+
+                Assert.That(() => newGuid.ToLowerInvariant().TryToGuid(out guid), Is.True);
             }
 
             [Test]
             public void TryToGuid_OnNullString_OutputsEmptyGuid()
             {
                 Guid guid;
-                var actual = NullTestString.TryToGuid(out guid);
+                string nullString = null;
+                nullString.TryToGuid(out guid);
+
                 Assert.That(() => guid, Is.EqualTo(Guid.Empty));
             }
 
@@ -108,67 +124,88 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void TryToGuid_OnNullString_ReturnsFalse()
             {
                 Guid guid;
-                Assert.That(() => NullTestString.TryToGuid(out guid), Is.False);
+                string nullString = null;
+
+                Assert.That(() => nullString.TryToGuid(out guid), Is.False);
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidHex_OutputsGuid()
             {
                 Guid guid;
-                var actual = UpperCaseGuidHex.TryToGuid(out guid);
-                Assert.That(() => guid, Is.EqualTo(GoodGuid));
+                const string hexGuid = "{0xCA761232, 0xED42, 0x11CE, {0xBA, 0xCD, 0x00, 0xAA, 0x00, 0x57, 0xB2, 0x23}}";
+                hexGuid.TryToGuid(out guid);
+                var expected = new Guid("{CA761232-ED42-11CE-BACD-00AA0057B223}");
+
+                Assert.That(() => guid, Is.EqualTo(expected));
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidHex_ReturnsTrue()
             {
                 Guid guid;
-                Assert.That(() => UpperCaseGuidHex.TryToGuid(out guid), Is.True);
+                const string hexGuid = "{0xCA761232, 0xED42, 0x11CE, {0xBA, 0xCD, 0x00, 0xAA, 0x00, 0x57, 0xB2, 0x23}}";
+
+                Assert.That(() => hexGuid.TryToGuid(out guid), Is.True);
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidWithDashesNoBraces_OutputsGuid()
             {
                 Guid guid;
-                var actual = UpperCaseGuidWithDashesNoBraces.TryToGuid(out guid);
-                Assert.That(() => guid, Is.EqualTo(GoodGuid));
+                const string newGuid = "CA761232-ED42-11CE-BACD-00AA0057B223";
+                newGuid.TryToGuid(out guid);
+                var expected = new Guid("{CA761232-ED42-11CE-BACD-00AA0057B223}");
+
+                Assert.That(() => guid, Is.EqualTo(expected));
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidWithDashesNoBraces_ReturnsTrue()
             {
                 Guid guid;
-                Assert.That(() => UpperCaseGuidWithDashesNoBraces.TryToGuid(out guid), Is.True);
+                const string newGuid = "CA761232-ED42-11CE-BACD-00AA0057B223";
+
+                Assert.That(() => newGuid.TryToGuid(out guid), Is.True);
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidWithDashesWithBraces_OutputsGuid()
             {
                 Guid guid;
-                var actual = UpperCaseGuidWithDashesWithBraces.TryToGuid(out guid);
-                Assert.That(() => guid, Is.EqualTo(GoodGuid));
+                const string newGuid = "{CA761232-ED42-11CE-BACD-00AA0057B223}";
+                newGuid.TryToGuid(out guid);
+
+                Assert.That(() => guid, Is.EqualTo(new Guid(newGuid)));
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidWithDashesWithBraces_ReturnsTrue()
             {
                 Guid guid;
-                Assert.That(() => UpperCaseGuidWithDashesWithBraces.TryToGuid(out guid), Is.True);
+                const string newGuid = "{CA761232-ED42-11CE-BACD-00AA0057B223}";
+
+                Assert.That(() => newGuid.TryToGuid(out guid), Is.True);
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidWithDashesWithParenthesis_OutputsGuid()
             {
                 Guid guid;
-                var actual = UpperCaseGuidWithDashesWithParenthesis.TryToGuid(out guid);
-                Assert.That(() => guid, Is.EqualTo(GoodGuid));
+                const string newGuid = "(CA761232-ED42-11CE-BACD-00AA0057B223)";
+                newGuid.TryToGuid(out guid);
+                var expected = new Guid("{CA761232-ED42-11CE-BACD-00AA0057B223}");
+
+                Assert.That(() => guid, Is.EqualTo(expected));
             }
 
             [Test]
             public void TryToGuid_OnUpperCaseGuidWithDashesWithParenthesis_ReturnsTrue()
             {
                 Guid guid;
-                Assert.That(() => UpperCaseGuidWithDashesWithParenthesis.TryToGuid(out guid), Is.True);
+                const string newGuid = "(CA761232-ED42-11CE-BACD-00AA0057B223)";
+
+                Assert.That(() => newGuid.TryToGuid(out guid), Is.True);
             }
         }
     }

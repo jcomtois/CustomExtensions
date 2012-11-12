@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnEmptySequence_OnOne_MeetsPredicate_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptySequence = Enumerable.Empty<object>();
                 var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
@@ -54,7 +54,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnEmptySequence_OnZero_MeetsPredicate_ReturnsTrue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptySequence = Enumerable.Empty<object>();
                 var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
@@ -90,7 +90,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ContainsExactly_OnNullSequence_OnZero_WithMeetsPredicate_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var predicate = fixture.CreateAnonymous<Func<object, bool>>();
 
                 Assert.That(() => nullSequence.ContainsExactly(0, predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -135,7 +135,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnFour_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
 
                 Assert.That(() => sequenceOfThree.ContainsExactly(4), Is.False);
@@ -144,7 +144,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnOnThree_PredicateNull_ThrowsValidationException()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> nullPredicate = null;
 
@@ -154,7 +154,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnOne_AllMatchesPredicate_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> objectFunc = o => true;
 
@@ -164,7 +164,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnOne_NoMatchesPredicate_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> objectFunc = o => false;
 
@@ -174,7 +174,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnOne_OneMatchesPredicate_ReturnsTrue()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
 
@@ -184,7 +184,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnThree_AllMatchesPredicate_ReturnsTrue()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> objectFunc = o => true;
 
@@ -194,7 +194,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnThree_NoMatchesPredicate_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> objectFunc = o => false;
 
@@ -204,7 +204,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnThree_OneMatchesPredicate_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
                 Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
 
@@ -214,7 +214,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void ContainsExactly_OnSequenceOfThree_OnThree_ReturnsTrue()
             {
-                var fixture = new MultipleMockingFixture(3);
+                var fixture = new MultipleMockingFixture();
                 var sequenceOfThree = fixture.CreateAnonymous<object[]>();
 
                 Assert.That(() => sequenceOfThree.ContainsExactly(3), Is.True);

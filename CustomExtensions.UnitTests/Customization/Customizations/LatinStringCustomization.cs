@@ -17,16 +17,28 @@
 
 #endregion
 
-namespace CustomExtensions.UnitTests.ForStringsTests
+using System;
+using System.Linq;
+using Ploeh.AutoFixture;
+
+namespace CustomExtensions.UnitTests.Customization.Customizations
 {
-    public partial class StringTests
+    public class LatinStringCustomization : ICustomization
     {
-        public class EncryptionTestBase
+        private static readonly string _latinString = new string(Enumerable.Range(0, 256).Select(i => Convert.ToChar(Convert.ToByte(i))).ToArray());
+
+        #region ICustomization Members
+
+        public void Customize(IFixture fixture)
         {
-            protected const string EmptyKey = "";
-            protected const string NullKey = null;
-            protected const string ShortKey = "short";
-            protected const string ValidLengthKey = "0123456789ABCDEF";
+            if (fixture == null)
+            {
+                throw new ArgumentNullException("fixture");
+            }
+
+            fixture.Register(() => _latinString);
         }
+
+        #endregion
     }
 }

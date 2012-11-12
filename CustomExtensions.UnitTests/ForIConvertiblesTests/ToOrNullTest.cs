@@ -34,7 +34,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrNull_ToBadConvertible_OnAnyInteger_OutNull()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 IConvertible outParameter;
                 fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
 
@@ -44,7 +44,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrNull_ToBadConvertible_OnAnyInteger_ReturnsFalse()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 IConvertible outParameter;
                 var actual = fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
 
@@ -82,7 +82,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             [Test]
             public void ToOrNull_ToObject_OnIntegerString_ReturnsObject()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
                 var integerString = intValue.ToString();
 

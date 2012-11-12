@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnDecimalArray_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var decimalArray = fixture.CreateAnonymous<decimal[]>();
                 var decimalArrayMin = decimalArray.Min();
 
@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnDecimalArray_WithDecimalValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var decimalArray = fixture.CreateAnonymous<decimal[]>();
                 var decimalArrayMin = decimalArray.Min();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
@@ -57,7 +57,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnDoubleArray_ReturnsDoubleArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var doubleArray = fixture.CreateAnonymous<double[]>();
                 var doubleArrayMin = doubleArray.Min();
 
@@ -67,7 +67,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnDoubleArray_WithDoubleValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var doubleArray = fixture.CreateAnonymous<double[]>();
                 var doubleArrayMin = doubleArray.Min();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -86,7 +86,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emtpyDecimalSequence = Enumerable.Empty<decimal>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -104,7 +104,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyDoubleSequence = Enumerable.Empty<double>();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
@@ -122,7 +122,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyFloatSequence_WithFloatValue_ReturnsFloatvalue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyFloatSequence = Enumerable.Empty<float>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -141,7 +141,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 //BUG: NCrunch
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
@@ -169,7 +169,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
                 GenericComparable nullComparable = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc, nullComparable), Is.Null);
@@ -189,7 +189,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnEmptyGenericEnumerable_WithValue_ReturnsValue()
             {
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableValue = fixture.CreateAnonymous<GenericComparable>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableValue), Is.EqualTo(comparableValue));
@@ -198,7 +198,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyGenericEnumerable_WithValue_WithFunc_ReturnsValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
                 var comparableValue = fixture.CreateAnonymous<GenericComparable>();
                 var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
@@ -209,7 +209,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
                 var comparableValue = fixture.CreateAnonymous<GenericComparable>();
 
@@ -227,7 +227,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
 
@@ -237,7 +237,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
@@ -248,7 +248,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
 
@@ -258,7 +258,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -269,7 +269,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
 
@@ -279,7 +279,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -290,7 +290,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
 
@@ -300,7 +300,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intValue = fixture.CreateAnonymous<int>();
@@ -311,7 +311,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -321,7 +321,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
 
@@ -331,7 +331,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -342,7 +342,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
 
@@ -352,7 +352,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
@@ -363,7 +363,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
 
@@ -373,7 +373,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableDuoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -384,7 +384,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
 
@@ -394,7 +394,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -405,7 +405,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
 
@@ -415,7 +415,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intValue = fixture.CreateAnonymous<int>();
@@ -426,7 +426,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
 
@@ -436,7 +436,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -455,7 +455,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyLongSequence_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyLongSequence = Enumerable.Empty<long>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -473,7 +473,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -491,7 +491,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
@@ -509,7 +509,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableFloatSequence = Enumerable.Empty<float?>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -527,7 +527,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableIntSequence = Enumerable.Empty<int?>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -545,7 +545,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnEmptyNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var emptyNullableLongSequnce = Enumerable.Empty<long?>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -555,7 +555,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnFloatArray_ReturnsFloatArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var floatArray = fixture.CreateAnonymous<float[]>();
                 var floatArrayMin = floatArray.Min();
 
@@ -565,7 +565,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var floatArray = fixture.CreateAnonymous<float[]>();
                 var floatArrayMin = floatArray.Min();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -675,7 +675,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_ReturnsIntArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intArrayMin = intArray.Min();
 
@@ -685,7 +685,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithDecimalFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var intArrayMin = intArray.Min(decimalFunc);
@@ -696,7 +696,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var intArrayMin = intArray.Min(decimalFunc);
@@ -708,7 +708,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithDoubleFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var intArrayMin = intArray.Min(doubleFunc);
@@ -719,7 +719,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var intArrayMin = intArray.Min(doubleFunc);
@@ -731,7 +731,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithFloatFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var intArrayMin = intArray.Min(floatFunc);
@@ -742,7 +742,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var intArrayMin = intArray.Min(floatFunc);
@@ -754,7 +754,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithIntFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intArrayMin = intArray.Min(intFunc);
@@ -765,7 +765,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intArrayMin = intArray.Min(intFunc);
@@ -777,7 +777,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var intValue = fixture.CreateAnonymous<int>();
                 var intArrayMin = intArray.Min();
@@ -788,7 +788,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithLongFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var intArrayMin = intArray.Min(longFunc);
@@ -799,7 +799,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -811,7 +811,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var intArrayMin = intArray.Min(nullableDecimalFunc);
@@ -822,7 +822,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var intArrayMin = intArray.Min(nullableDecimalFunc);
@@ -834,7 +834,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var intArrayMin = intArray.Min(nullableDoubleFunc);
@@ -845,7 +845,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var intArrayMin = intArray.Min(nullableDoubleFunc);
@@ -857,7 +857,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var intArrayMin = intArray.Min(nullableFloatFunc);
@@ -868,7 +868,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var intArrayMin = intArray.Min(nullableFloatFunc);
@@ -880,7 +880,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableIntFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intArrayMin = intArray.Min(nullableIntFunc);
@@ -891,7 +891,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intArrayMin = intArray.Min(nullableIntFunc);
@@ -903,7 +903,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableLongFunc_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var intArrayMin = intArray.Min(nullableLongFunc);
@@ -914,7 +914,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var intArray = fixture.CreateAnonymous<int[]>();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var intArrayMin = intArray.Min(nullableLongFunc);
@@ -926,7 +926,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnLongArray_ReturnsLongArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var longArray = fixture.CreateAnonymous<long[]>();
                 var longArrayMin = longArray.Min();
 
@@ -936,7 +936,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var longArray = fixture.CreateAnonymous<long[]>();
                 var longArrayMin = longArray.Min();
                 var longValue = fixture.CreateAnonymous<long>();
@@ -956,7 +956,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<decimal> nullDecimalSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
                 Assert.That(() => nullDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
@@ -974,7 +974,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<double> nullDoubleSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
                 Assert.That(() => nullDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
@@ -992,7 +992,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullFloatSequence_WithFloatValue_RetursFloatValue()
             {
                 IEnumerable<float> nullFloatSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var floatValue = fixture.CreateAnonymous<float>();
 
                 Assert.That(() => nullFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
@@ -1002,7 +1002,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullGenericEnumerable_WithFunc_ReturnsDefault()
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
@@ -1031,7 +1031,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
                 GenericComparable nullComparable = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc, nullComparable), Is.Null);
@@ -1051,7 +1051,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullGenericEnumerable_WithValue_ReturnsValue()
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableValue = fixture.CreateAnonymous<GenericComparable>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableValue), Is.EqualTo(comparableValue));
@@ -1061,7 +1061,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullGenericEnumerable_WithValue_WithFunc_ReturnsValue()
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableValue = fixture.CreateAnonymous<GenericComparable>();
                 var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
 
@@ -1072,7 +1072,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var comparableValue = fixture.CreateAnonymous<GenericComparable>();
                 Func<GenericComparable, GenericComparable> nullFunc = null;
 
@@ -1091,7 +1091,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithDecimalFunc_ReturnsDefaultDecimal()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
@@ -1101,7 +1101,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -1112,7 +1112,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(doubleFunc), Is.EqualTo(default(double)));
@@ -1122,7 +1122,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
                 var doubeValue = fixture.CreateAnonymous<double>();
 
@@ -1133,7 +1133,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithFloatFunc_ReturnsDefaultFloat()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(floatFunc), Is.EqualTo(default(float)));
@@ -1143,7 +1143,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -1154,7 +1154,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithIntFunc_ReturnsDefaultInt()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(intFunc), Is.EqualTo(default(int)));
@@ -1164,7 +1164,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithIntFunc_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intFunc = fixture.CreateAnonymous<Func<int, int>>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -1175,7 +1175,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
@@ -1185,7 +1185,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithLongFunc_ReturnsDefaultLong()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(longFunc), Is.EqualTo(default(long)));
@@ -1195,7 +1195,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithLongFunc_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var longFunc = fixture.CreateAnonymous<Func<int, long>>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -1206,7 +1206,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableDecimalFunc_ReturnsDefaultDecimal()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
@@ -1216,7 +1216,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableDecimalFunc_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
@@ -1227,7 +1227,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableDoubleFunc_ReturnsDefaultDouble()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
@@ -1237,7 +1237,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
@@ -1248,7 +1248,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableFloatFunc_ReturnsDefaultFloat()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
@@ -1258,7 +1258,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableFloatFunc_WithFloatValue_ReturnsFloatValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
                 var floatValue = fixture.CreateAnonymous<float>();
 
@@ -1269,7 +1269,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableIntFunc_ReturnsDefaultInt()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
@@ -1279,7 +1279,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableIntFunc_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
                 var intValue = fixture.CreateAnonymous<int>();
 
@@ -1289,7 +1289,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullIntSequence_WithNullableLongFunc_ReturnsDefaultLong()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new BaseFixture();
                 IEnumerable<int> nullIntSequence = null;
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
 
@@ -1300,7 +1300,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullIntSequence_WithNullableLongFunc_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<int> nullIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
                 var longValue = fixture.CreateAnonymous<long>();
 
@@ -1319,7 +1319,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullLongSequence_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<long> nullLongSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var longValue = fixture.CreateAnonymous<long>();
 
                 Assert.That(() => nullLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
@@ -1337,7 +1337,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullNullableDecimalSequence_WithDecimalValue_ReturnsDecimalValue()
             {
                 IEnumerable<decimal?> nullNullableDecimalSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
 
                 Assert.That(() => nullNullableDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
@@ -1355,7 +1355,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullNullableDoubleSequence_WithDoubleValue_ReturnsDoubleValue()
             {
                 IEnumerable<double?> nullNullableDoubleSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var doubleValue = fixture.CreateAnonymous<double>();
 
                 Assert.That(() => nullNullableDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
@@ -1373,7 +1373,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullNullableFloatSequence_WithFloatValue_ReturnsFloatValue()
             {
                 IEnumerable<float?> nullNullableFloatSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var floatValue = fixture.CreateAnonymous<float>();
 
                 Assert.That(() => nullNullableFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
@@ -1391,7 +1391,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullNullableIntSequence_WithIntValue_ReturnsIntValue()
             {
                 IEnumerable<int?> nullNullableIntSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var intValue = fixture.CreateAnonymous<int>();
 
                 Assert.That(() => nullNullableIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
@@ -1409,7 +1409,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullNullableLongSequence_WithLongValue_ReturnsLongValue()
             {
                 IEnumerable<long?> nullNullableLongSequence = null;
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomNumberFixture();
                 var longValue = fixture.CreateAnonymous<long>();
 
                 Assert.That(() => nullNullableLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
@@ -1418,7 +1418,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
                 var nullableDecimalArrayMin = nullableDecimalArray.Min();
 
@@ -1428,7 +1428,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
                 var decimalValue = fixture.CreateAnonymous<decimal>();
                 var nullableDecimalArrayMin = nullableDecimalArray.Min();
@@ -1439,7 +1439,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
                 var nullableDoubleArrayMin = nullableDoubleArray.Min();
 
@@ -1449,7 +1449,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
                 var nullableDoubleArrayMin = nullableDoubleArray.Min();
                 var doubleValue = fixture.CreateAnonymous<double>();
@@ -1460,7 +1460,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
                 var nullableFloatArrayMin = nullableFloatArray.Min();
 
@@ -1470,7 +1470,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
                 var nullableFloatArrayMin = nullableFloatArray.Min();
                 var floatValue = fixture.CreateAnonymous<float>();
@@ -1481,7 +1481,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableIntArray_RetunrsNullableIntArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableIntArray = fixture.CreateAnonymous<int?[]>();
                 var nullableIntArrayMin = nullableIntArray.Min();
 
@@ -1491,7 +1491,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableIntArray = fixture.CreateAnonymous<int?[]>();
                 var nullableIntArrayMin = nullableIntArray.Min();
                 var intValue = fixture.CreateAnonymous<int>();
@@ -1502,7 +1502,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableLongArray = fixture.CreateAnonymous<long?[]>();
                 var nullableLongArrayMin = nullableLongArray.Min();
 
@@ -1512,7 +1512,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             [Test]
             public void MinOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayMin()
             {
-                var fixture = new MultipleMockingFixture();
+                var fixture = new RandomMultipleMockingFixture();
                 var nullableLongArray = fixture.CreateAnonymous<long?[]>();
                 var nullableLongArrayMin = nullableLongArray.Min();
                 var longValue = fixture.CreateAnonymous<long>();

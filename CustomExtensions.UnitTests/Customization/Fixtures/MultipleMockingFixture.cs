@@ -18,20 +18,14 @@
 #endregion
 
 using CustomExtensions.UnitTests.Customization.Customizations;
-using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.Customization.Fixtures
 {
-    public class MultipleMockingFixture : Fixture
+    public class MultipleMockingFixture : BaseFixture
     {
-        public MultipleMockingFixture() : this(3)
-        {
-        }
-
-        public MultipleMockingFixture(int repeatCount)
+        public MultipleMockingFixture(int repeatCount = 3) : base(repeatCount)
         {
             Customize(new MultipleMockingCustomization());
-            RepeatCount = repeatCount;
         }
     }
 }
