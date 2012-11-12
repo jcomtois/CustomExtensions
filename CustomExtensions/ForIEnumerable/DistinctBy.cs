@@ -20,17 +20,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using CustomExtensions.Validation;
-using MoreLinq;
 
 namespace CustomExtensions.ForIEnumerable
 {
     public static partial class ExtendIEnumerable
     {
+        // Inspired by Morelinq
+
         /// <summary>
-        /// WRAPPER FOR MORELINQ.DISTINCTBY
-        /// Returns all distinct elements of the given source, where "distinctness"
-        /// is determined via a projection and the default eqaulity comparer for the projected type.
+        /// Returns all distinct elements of the given source, where they are distinct according to
+        /// a projection and the default eqaulity comparer for the projected type.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results, although
@@ -52,13 +53,12 @@ namespace CustomExtensions.ForIEnumerable
                 .IsNotNull(keySelector, "keySelector")
                 .CheckForExceptions();
 
-            return DistinctByImplementation(source, keySelector);
+            return DistinctByImplementation(source, keySelector, null);
         }
 
         /// <summary>
-        /// WRAPPER FOR MORELINQ.DISTINCTBY
-        /// Returns all distinct elements of the given source, where "distinctness"
-        /// is determined via a projection and the specified comparer for the projected type.
+        /// Returns all distinct elements of the given source,  where they are distinct according to
+        /// a projection and the specified comparer for the projected type.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results, although
@@ -70,7 +70,7 @@ namespace CustomExtensions.ForIEnumerable
         /// <param name="source">Source sequence</param>
         /// <param name="keySelector">Projection for determining "distinctness"</param>
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-        /// If null, the default equality comparer for <c>TSource</c> is used.</param>
+        /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
         /// <exception cref="ValidationException"> if <paramref name="source"/> is null or <paramref name="keySelector"/> is null</exception>
@@ -91,16 +91,8 @@ namespace CustomExtensions.ForIEnumerable
             Debug.Assert(source != null, "source cannot be null");
             Debug.Assert(keySelector != null, "keySelector cannot be null");
 
-            return MoreEnumerable.DistinctBy(source, keySelector, comparer);
-        }
-
-        private static IEnumerable<TSource> DistinctByImplementation <TSource, TKey>(this IEnumerable<TSource> source,
-                                                                                     Func<TSource, TKey> keySelector)
-        {
-            Debug.Assert(source != null, "source cannot be null");
-            Debug.Assert(keySelector != null, "keySelector cannot be null");
-
-            return MoreEnumerable.DistinctBy(source, keySelector, null);
+            var knownKeys = new HashSet<TKey>(comparer);
+            return source.Where(element => knownKeys.Add(keySelector(element)));
         }
     }
 }
