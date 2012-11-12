@@ -21,14 +21,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CustomExtensions.Validation;
-using MoreLinq;
 
 namespace CustomExtensions.ForIEnumerable
 {
     public static partial class ExtendIEnumerable
     {
         /// <summary>
-        /// Wrapper for Morelinq.ForEach
         /// Performs an action on each element in <paramref name="source"/>
         /// </summary>
         /// <typeparam name="T">Type contained in <paramref name="source"/></typeparam>
@@ -50,7 +48,10 @@ namespace CustomExtensions.ForIEnumerable
             Debug.Assert(action != null, "action != null");
             Debug.Assert(source != null, "source != null");
 
-            MoreEnumerable.ForEach(source, action);
+            foreach (var element in source)
+            {
+                action(element);
+            }
         }
     }
 }
