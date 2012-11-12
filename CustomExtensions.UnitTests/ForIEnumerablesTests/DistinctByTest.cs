@@ -172,7 +172,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             }
 
             [Test]
-            public void DistinctBy_OnNullSequence_WithKeySelector_WithNullEqualityComparere_ThrowsValidationException()
+            public void DistinctBy_OnNullSequence_WithKeySelector_WithNullEqualityComparer_ThrowsValidationException()
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new MultipleMockingFixture();
