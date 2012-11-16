@@ -12,9 +12,7 @@
     <description>
 	CustomExtensions - Custom Extension Methods For C#
 
-	This is an open-source library of C# extension methods used to add
-	functionality to commonly used classes and to enhance LINQ.
-
+	This is an open-source library of C# extension methods used to add functionality to commonly used classes and to enhance LINQ.
 	</description>    
     <copyright>Copyright 2012</copyright>
     <tags>c# extension extensionmethod linq</tags>
