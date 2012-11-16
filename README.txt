@@ -1,4 +1,23 @@
 CustomExtensions - Custom Extension Methods For C#
+
+This is an open-source library of C# extension methods used to add
+functionality to commonly used classes and to enhance LINQ.
+
+Inspiration for some methods comes from John Skeet's Morelinq library:
+http://code.google.com/p/morelinq/
+
+XML docmumentation is in place, but need to work on a wiki or other project
+documentation.
+
+
+
+
+
+
+
+License:
+
+CustomExtensions - Custom Extension Methods For C#
 Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
