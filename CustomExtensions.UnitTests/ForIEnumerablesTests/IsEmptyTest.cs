@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnGenericCollectionEmpty_ReturnsTrue()
             {
                 var fixture = new MultipleMockingFixture();
-                ICollection<object> emptyGenericCollection = fixture.CreateAnonymous<ICollection<object>>();
+                ICollection<object> emptyGenericCollection = fixture.Create<ICollection<object>>();
                 emptyGenericCollection.Clear();
 
                 Assert.That(() => emptyGenericCollection.IsEmpty(), Is.True);
@@ -49,7 +49,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnGenericCollectionMultipleItem_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture();
-                ICollection<object> nonEmptyGenericCollection = fixture.CreateAnonymous<ICollection<object>>();
+                ICollection<object> nonEmptyGenericCollection = fixture.Create<ICollection<object>>();
 
                 Assert.That(() => nonEmptyGenericCollection.IsEmpty(), Is.False);
             }
@@ -66,7 +66,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnGenericCollectionSingleItem_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture(1);
-                var singleItemCollection = fixture.CreateAnonymous<ICollection<object>>();
+                var singleItemCollection = fixture.Create<ICollection<object>>();
 
                 Assert.That(() => singleItemCollection.IsEmpty(), Is.False);
             }
@@ -83,7 +83,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnGenericEnumerableMultipleItem_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture();
-                var nonEmptyEnumerable = fixture.CreateAnonymous<IEnumerable<object>>();
+                var nonEmptyEnumerable = fixture.Create<IEnumerable<object>>();
 
                 Assert.That(() => nonEmptyEnumerable.IsEmpty(), Is.False);
             }
@@ -100,7 +100,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnGenericEnumerableSingleItem_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture(1);
-                var singleItemEnumerable = fixture.CreateAnonymous<IEnumerable<object>>();
+                var singleItemEnumerable = fixture.Create<IEnumerable<object>>();
 
                 Assert.That(() => singleItemEnumerable.IsEmpty(), Is.False);
             }
@@ -109,7 +109,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnNonGenericCollectionEmpty_ReturnsTrue()
             {
                 var fixture = new MultipleMockingFixture();
-                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
+                var mock = fixture.Create<Mock<IEnumerable>>();
                 IEnumerable emptyNonGenericCollection = mock.Object;
 
                 Assert.That(() => emptyNonGenericCollection.IsEmpty(), Is.True);
@@ -138,7 +138,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
                 var fixture = new BaseFixture();
                 var mock = new Mock<ICollection>();
                 mock.Setup(m => m.Count).Returns(1);
-                mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateAnonymous<object>().ToEnumerable().GetEnumerator);
+                mock.Setup(m => m.GetEnumerator()).Returns(fixture.Create<object>().ToEnumerable().GetEnumerator);
                 ICollection singleItemNonGenericCollection = mock.Object;
 
                 Assert.That(() => singleItemNonGenericCollection.IsEmpty(), Is.False);
@@ -177,8 +177,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void IsEmpty_OnNonGenericEnumerableSingleItem_ReturnsFalse()
             {
                 var fixture = new BaseFixture();
-                var mock = fixture.CreateAnonymous<Mock<IEnumerable>>();
-                mock.Setup(m => m.GetEnumerator()).Returns(fixture.CreateAnonymous<object>().ToEnumerable().GetEnumerator);
+                var mock = fixture.Create<Mock<IEnumerable>>();
+                mock.Setup(m => m.GetEnumerator()).Returns(fixture.Create<object>().ToEnumerable().GetEnumerator);
                 IEnumerable sequence = mock.Object;
 
                 Assert.That(() => sequence.IsEmpty(), Is.False);

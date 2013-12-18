@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 var fixture = new RandomNumberFixture();
                 IConvertible outParameter;
-                fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+                fixture.Create<int>().ToOrNull(out outParameter);
 
                 Assert.That(() => outParameter, Is.Null);
             }
@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 var fixture = new RandomNumberFixture();
                 IConvertible outParameter;
-                var actual = fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+                var actual = fixture.Create<int>().ToOrNull(out outParameter);
 
                 Assert.That(() => actual, Is.False);
             }
@@ -83,7 +83,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrNull_ToObject_OnIntegerString_ReturnsObject()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var integerString = intValue.ToString();
 
                 Assert.That(() => integerString.ToOrNull<object>(), Is.Not.Null);

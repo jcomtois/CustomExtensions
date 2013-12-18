@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
 
                 Assert.That(() => emptyString.ContainsAny(charValue), Is.False);
             }
@@ -49,7 +49,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
 
                 Assert.That(() => nullString.ContainsAny(charValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -58,8 +58,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnCharacter_OnStringWithMany_ReturnsTrue()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var charValue = fixture.CreateAnonymous<char>();
+                var stringValue = fixture.Create<string>();
+                var charValue = fixture.Create<char>();
                 stringValue += new string(charValue, 10);
 
                 Assert.That(() => stringValue.ContainsAny(charValue), Is.True);
@@ -69,8 +69,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnCharacter_OnStringWithNone_ReturnsFalse()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var charValue = fixture.CreateAnonymous<char>();
+                var stringValue = fixture.Create<string>();
+                var charValue = fixture.Create<char>();
                 stringValue = new string(stringValue.Exclude(charValue).ToArray());
 
                 Assert.That(() => stringValue.ContainsAny(charValue), Is.False);
@@ -80,8 +80,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnCharacter_OnStringWithOne_ReturnsTrue()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var charValue = fixture.CreateAnonymous<char>();
+                var stringValue = fixture.Create<string>();
+                var charValue = fixture.Create<char>();
                 stringValue = new string(stringValue.Exclude(charValue).ToArray());
                 stringValue += charValue.ToString();
 
@@ -92,7 +92,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnCharacter_OnString_IsCaseSensitive()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var upperCaseChar = stringValue.First(char.IsUpper);
                 stringValue = stringValue.ToLowerInvariant();
 
@@ -122,7 +122,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyCharacters = Enumerable.Empty<char>();
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.ContainsAny(emptyCharacters), Is.False);
             }
@@ -132,7 +132,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string emptyString = string.Empty;
                 var fixture = new MultipleMockingFixture();
-                var characters = fixture.CreateAnonymous<IEnumerable<char>>();
+                var characters = fixture.Create<IEnumerable<char>>();
 
                 Assert.That(() => emptyString.ContainsAny(characters), Is.False);
             }
@@ -142,7 +142,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new MultipleMockingFixture();
-                var characters = fixture.CreateAnonymous<char[]>();
+                var characters = fixture.Create<char[]>();
 
                 Assert.That(() => nullString.ContainsAny(characters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -151,8 +151,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnEnumerableCharacters_OnStringWithMany_ReturnsTrue()
             {
                 var fixture = new LatinMultipleMockingFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var characters = fixture.CreateAnonymous<char[]>();
+                var stringValue = fixture.Create<string>();
+                var characters = fixture.Create<char[]>();
                 stringValue += new string(characters);
 
                 Assert.That(() => stringValue.ContainsAny(characters), Is.True);
@@ -162,8 +162,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnEnumerableCharacters_OnStringWithNone_ReturnsFalse()
             {
                 var fixture = new LatinMultipleMockingFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var characters = fixture.CreateAnonymous<char[]>();
+                var stringValue = fixture.Create<string>();
+                var characters = fixture.Create<char[]>();
                 stringValue = new string(stringValue.Exclude(characters).ToArray());
 
                 Assert.That(() => stringValue.ContainsAny(characters), Is.False);
@@ -173,7 +173,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnEnumerableCharacters_OnStringWithOne_ReturnsTrue()
             {
                 var fixture = new LatinMultipleMockingFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 stringValue = new string(stringValue.Distinct().ToArray());
                 var characters = stringValue.Take(1);
 
@@ -193,7 +193,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ContainsAny_OnNullCharacters_OnString_ThrowsValidationException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 IEnumerable<char> nullChars = null;
 
                 Assert.That(() => stringValue.ContainsAny(nullChars), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());

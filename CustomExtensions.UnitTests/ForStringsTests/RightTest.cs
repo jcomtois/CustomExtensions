@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyString.Right(intValue), Is.Empty);
             }
@@ -45,7 +45,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Right_OnNullString_ThrowsValidationException()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 string nullString = null;
 
@@ -56,7 +56,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Right_OnNullString_WithNegativeLength_ThrowsValidationExceptions()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 intValue = -intValue;
                 string nullString = null;
@@ -68,7 +68,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Right_OnString_LengthEqualToStringLength_ReturnsCorrectSubstring()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var length = stringValue.Length;
 
                 Assert.That(() => stringValue.Right(length), Is.EqualTo(stringValue));
@@ -78,7 +78,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Right_OnString_LengthGreaterThanStringLength_ReturnsCorrectSubstring()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var length = stringValue.Length + 1;
 
                 Assert.That(() => stringValue.Right(length), Is.EqualTo(stringValue));
@@ -88,7 +88,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Right_OnString_LengthLessThanStringLength_ReturnsCorrectSubstring()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var length = stringValue.Length - 1;
                 var expected = stringValue.Substring(1);
 
@@ -99,8 +99,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Right_OnString_WithNegativeLength_ThrowsValidationException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var stringValue = fixture.Create<string>();
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 intValue = -intValue;
 

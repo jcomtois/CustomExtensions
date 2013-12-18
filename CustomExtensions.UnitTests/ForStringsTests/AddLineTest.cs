@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilderWithGoodString_WithLineWriter_ReturnsStringBuilder()
             {
                 var fixture = new LatinStringFixture();
-                var testString = fixture.CreateAnonymous<string>();
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var testString = fixture.Create<string>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 var mockLineWriter = new Mock<ILineWriter>();
                 ILineWriter lineWriter = mockLineWriter.Object;
                 var actual = stringBuilder.AddLine(testString, lineWriter);
@@ -51,7 +51,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilder_WithEmptyString_NoLineWriter_ReturnsStringBuilder()
             {
                 var fixture = new BaseFixture();
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 var emptyString = string.Empty;
 
                 var actual = stringBuilder.AddLine(emptyString);
@@ -65,7 +65,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
                 var mockLineWriter = new Mock<ILineWriter>(MockBehavior.Strict);
                 var emptyString = string.Empty;
                 var fixture = new BaseFixture();
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 mockLineWriter.Setup(m => m.WriteLine());
                 ILineWriter lineWriter = mockLineWriter.Object;
                 stringBuilder.AddLine(emptyString, lineWriter);
@@ -79,7 +79,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
                 var mockLineWriter = new Mock<ILineWriter>();
                 var emptyString = string.Empty;
                 var fixture = new BaseFixture();
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 ILineWriter lineWriter = mockLineWriter.Object;
                 var actual = stringBuilder.AddLine(emptyString, lineWriter);
 
@@ -102,8 +102,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilder_WithGoodString_NoLineWriter_ReturnsStringBuilder()
             {
                 var fixture = new LatinStringFixture();
-                var testString = fixture.CreateAnonymous<string>();
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var testString = fixture.Create<string>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 var actual = stringBuilder.AddLine(testString);
 
                 Assert.That(() => actual, Is.EqualTo(stringBuilder));
@@ -113,8 +113,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilder_WithGoodString_WithLineWriter_CallsWriteLineWithString()
             {
                 var fixture = new LatinStringFixture();
-                var testString = fixture.CreateAnonymous<string>();
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var testString = fixture.Create<string>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 var mockLineWriter = new Mock<ILineWriter>();
                 ILineWriter lineWriter = mockLineWriter.Object;
                 stringBuilder.AddLine(testString, lineWriter);
@@ -126,7 +126,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void AddLine_OnGoodStringBuilder_WithGoodString_WithLineWriter_StringBuilderContainsStringAndNewLine()
             {
                 var fixture = new LatinStringFixture();
-                var testString = fixture.CreateAnonymous<string>();
+                var testString = fixture.Create<string>();
                 var stringBuilder = new StringBuilder();
                 var mockLineWriter = new Mock<ILineWriter>();
                 ILineWriter lineWriter = mockLineWriter.Object;
@@ -140,7 +140,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var fixture = new BaseFixture();
                 string nullString = null;
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 var mockLineWriter = new Mock<ILineWriter>();
                 ILineWriter lineWriter = mockLineWriter.Object;
                 stringBuilder.AddLine(nullString, lineWriter);
@@ -153,7 +153,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var fixture = new BaseFixture();
                 string nullString = null;
-                var stringBuilder = fixture.CreateAnonymous<StringBuilder>();
+                var stringBuilder = fixture.Create<StringBuilder>();
                 var mockLineWriter = new Mock<ILineWriter>();
                 ILineWriter lineWriter = mockLineWriter.Object;
                 var actual = stringBuilder.AddLine(nullString, lineWriter);
@@ -177,8 +177,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void AddLine_OnNullStringBuilder_WithGoodString_WithLineWriter_ThrowsValidationException()
             {
                 var fixture = new LatinMultipleMockingFixture();
-                var testString = fixture.CreateAnonymous<string>();
-                ILineWriter lineWriter = fixture.CreateAnonymous<ILineWriter>();
+                var testString = fixture.Create<string>();
+                ILineWriter lineWriter = fixture.Create<ILineWriter>();
                 StringBuilder testBuilder = null;
                 Assert.That(() => testBuilder.AddLine(testString, lineWriter), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }

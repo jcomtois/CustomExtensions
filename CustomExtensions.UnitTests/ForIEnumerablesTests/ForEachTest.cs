@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new BaseFixture();
-                var action = fixture.CreateAnonymous<Action<object>>();
+                var action = fixture.Create<Action<object>>();
 
                 Assert.That(() => nullSequence.ForEach(action), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -93,7 +93,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var list = new List<string>();
                 var fixture = new MultipleMockingFixture();
-                var guids = fixture.CreateAnonymous<IList<Guid>>();
+                var guids = fixture.Create<IList<Guid>>();
                 var expected = guids.Select(g => g.ToString());
                 guids.ForEach(g => list.Add(g.ToString()));
 
@@ -104,7 +104,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ForEach_OnSequence_WithNullAction_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IEnumerable<object>>();
+                var sequence = fixture.Create<IEnumerable<object>>();
                 Action<object> nullAction = null;
 
                 Assert.That(() => sequence.ForEach(nullAction), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());

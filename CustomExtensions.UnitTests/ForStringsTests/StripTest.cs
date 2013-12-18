@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new MultipleMockingFixture();
-                var multipleCharacters = fixture.CreateAnonymous<IEnumerable<char>>();
+                var multipleCharacters = fixture.Create<IEnumerable<char>>();
 
                 Assert.That(() => emptyString.Strip(multipleCharacters), Is.Empty);
             }
@@ -84,7 +84,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new MultipleMockingFixture(1);
-                var singleCharEnumerable = fixture.CreateAnonymous<IEnumerable<char>>();
+                var singleCharEnumerable = fixture.Create<IEnumerable<char>>();
 
                 Assert.That(() => emptyString.Strip(singleCharEnumerable), Is.Empty);
             }
@@ -94,7 +94,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
 
                 Assert.That(() => emptyString.Strip(charValue), Is.Empty);
             }
@@ -122,7 +122,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new MultipleMockingFixture();
-                var multipleCharacters = fixture.CreateAnonymous<IEnumerable<char>>();
+                var multipleCharacters = fixture.Create<IEnumerable<char>>();
 
                 Assert.That(() => nullString.Strip(multipleCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -149,7 +149,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new MultipleMockingFixture(1);
-                var singleCharEnumerable = fixture.CreateAnonymous<IEnumerable<char>>();
+                var singleCharEnumerable = fixture.Create<IEnumerable<char>>();
 
                 Assert.That(() => nullString.Strip(singleCharEnumerable), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -159,7 +159,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
 
                 Assert.That(() => nullString.Strip(charValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -168,7 +168,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithEmptyCharacters_ReturnsSameString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var emptyChars = Enumerable.Empty<char>();
 
                 Assert.That(() => stringValue.Strip(emptyChars), Is.EqualTo(stringValue));
@@ -178,7 +178,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithEmptyString_ReturnsSameString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var emptyString = string.Empty;
 
                 Assert.That(() => stringValue.Strip(emptyString), Is.EqualTo(stringValue));
@@ -188,7 +188,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithMultiCharacters_ReturnsStrippedString()
             {
                 var fixture = new LatinMultipleMockingFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 stringValue = stringValue + stringValue;
                 var multichars = stringValue.Take(5);
                 var expected = new string(stringValue.Exclude(multichars).ToArray());
@@ -200,7 +200,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithNoMatches_ReturnsSource()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var first10 = stringValue.Take(10);
                 var excluded = new string(stringValue.Exclude(first10).ToArray());
 
@@ -211,7 +211,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithNullCharacters_ThrowsValidationException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 IEnumerable<char> nullCharacters = null;
 
                 Assert.That(() => stringValue.Strip(nullCharacters), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -221,7 +221,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithNullString_ThrowsValidationException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 string nullString = null;
 
                 Assert.That(() => stringValue.Strip(nullString), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -231,7 +231,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithSingleCharacterEnumerable_ReturnsStrippedString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 stringValue = stringValue + stringValue;
                 var singleCharEnumerable = stringValue.Take(1);
                 var expected = new string(stringValue.Exclude(singleCharEnumerable).ToArray());
@@ -243,7 +243,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithSingleCharacter_ReturnsStrippedString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 stringValue = stringValue + stringValue;
                 var singleChar = stringValue.Last();
                 var expected = stringValue.Replace(singleChar.ToString(), string.Empty);
@@ -255,7 +255,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Strip_OnSource_WithSourceString_ReturnsEmptyString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Strip(stringValue), Is.Empty);
             }

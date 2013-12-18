@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         {
             var fixture = new BaseFixture();
             var emptySequence = Enumerable.Empty<object>();
-            var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+            var predicate = fixture.Create<Func<object, bool>>();
 
             Assert.That(() => emptySequence.ContainsOnlyOne(predicate), Is.False);
         }
@@ -70,7 +70,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         {
             IEnumerable<object> nullSequence = null;
             var fixture = new BaseFixture();
-            var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+            var predicate = fixture.Create<Func<object, bool>>();
 
             Assert.That(() => nullSequence.ContainsOnlyOne(predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
         }
@@ -97,7 +97,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         public void ContainsOnlyOne_OnSequenceOfThree_AllMatchesPredicate_ReturnsFalse()
         {
             var fixture = new MultipleMockingFixture();
-            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            var sequenceOfThree = fixture.Create<object[]>();
             Func<object, bool> objectFunc = o => true;
 
             Assert.That(() => sequenceOfThree.ContainsOnlyOne(objectFunc), Is.False);
@@ -107,7 +107,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         public void ContainsOnlyOne_OnSequenceOfThree_NoMatchesPredicate_ReturnsFalse()
         {
             var fixture = new MultipleMockingFixture();
-            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            var sequenceOfThree = fixture.Create<object[]>();
             Func<object, bool> objectFunc = o => false;
 
             Assert.That(() => sequenceOfThree.ContainsOnlyOne(objectFunc), Is.False);
@@ -117,7 +117,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         public void ContainsOnlyOne_OnSequenceOfThree_OneMatchesPredicate_ReturnsTrue()
         {
             var fixture = new MultipleMockingFixture();
-            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            var sequenceOfThree = fixture.Create<object[]>();
             Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
 
             Assert.That(() => sequenceOfThree.ContainsOnlyOne(objectFunc), Is.True);
@@ -127,7 +127,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         public void ContainsOnlyOne_OnSequenceOfThree_PredicateNull_ThrowsValidationException()
         {
             var fixture = new MultipleMockingFixture();
-            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            var sequenceOfThree = fixture.Create<object[]>();
             Func<object, bool> nullPredicate = null;
 
             Assert.That(() => sequenceOfThree.ContainsOnlyOne(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -137,7 +137,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
         public void ContainsOnlyOne_OnSequenceOfThree_ReturnsFalse()
         {
             var fixture = new MultipleMockingFixture();
-            var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+            var sequenceOfThree = fixture.Create<object[]>();
 
             Assert.That(() => sequenceOfThree.ContainsOnlyOne(), Is.False);
         }

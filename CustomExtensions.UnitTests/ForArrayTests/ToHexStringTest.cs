@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ namespace CustomExtensions.UnitTests.ForArrayTests
             public void ToHexString_OnValidArray_ConvertsToStringCorrectly()
             {
                 var fixture = new MultipleMockingFixture(512);
-                var validBytes = fixture.CreateAnonymous<byte[]>();
+                var validBytes = fixture.Create<byte[]>();
                 var expected = BitConverter.ToString(validBytes).Replace("-", string.Empty).ToLowerInvariant();
 
                 Assert.That(() => validBytes.ToHexString(), Is.EqualTo(expected));

@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Prepend_IsLazy()
             {
                 var fixture = new BaseFixture();
-                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var breakingSequence = fixture.Create<BreakingSequence<object>>();
 
                 Assert.That(() => breakingSequence.Prepend(breakingSequence), Throws.Nothing);
             }
@@ -47,7 +47,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<object>();
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(emptySequence.Prepend(objectValue), Is.EqualTo(objectValue.ToEnumerable()));
             }
@@ -66,7 +66,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(() => nullSequence.Prepend(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -84,8 +84,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Prepend_OnSequence_WithElement_ReturnsElementPrependedToSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IList<object>>();
-                var element = fixture.CreateAnonymous<object>();
+                var sequence = fixture.Create<IList<object>>();
+                var element = fixture.Create<object>();
                 var expected = element.ToEnumerable().Concat(sequence);
 
                 Assert.That(sequence.Prepend(element), Is.EqualTo(expected));
@@ -95,7 +95,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Prepend_OnSequence_WithNullElement_ReturnsNullElelemntPrependedToSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IList<object>>();
+                var sequence = fixture.Create<IList<object>>();
                 object nullObject = null;
                 var expected = nullObject.ToEnumerable().Concat(sequence);
 

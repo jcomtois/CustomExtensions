@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,8 +35,8 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToBadConvertible_OnIntegerWithAnyBadConvertible_ReturnsFalse()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intValue = fixture.CreateAnonymous<int>();
-                var convertible = fixture.CreateAnonymous<IConvertible>();
+                var intValue = fixture.Create<int>();
+                var convertible = fixture.Create<IConvertible>();
                 IConvertible outParameter;
                 var actual = intValue.ToOrOther(out outParameter, convertible);
 
@@ -47,8 +47,8 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToBadConvertible_OnInteger_OutBadConvertible()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intValue = fixture.CreateAnonymous<int>();
-                var convertible = fixture.CreateAnonymous<IConvertible>();
+                var intValue = fixture.Create<int>();
+                var convertible = fixture.Create<IConvertible>();
                 IConvertible outParameter;
                 intValue.ToOrOther(out outParameter, convertible);
 
@@ -60,7 +60,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 string nullString = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 int outParameter;
                 nullString.ToOrOther(out outParameter, intValue);
 
@@ -72,7 +72,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 var emptyStrying = string.Empty;
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 object outParameter;
                 emptyStrying.ToOrOther(out outParameter, objectValue);
 
@@ -84,7 +84,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 var emptyString = string.Empty;
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(() => emptyString.ToOrOther(objectValue), Is.EqualTo(emptyString));
             }
@@ -93,8 +93,8 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnIntWithObject_ReturnsIntAsObject()
             {
                 var fixture = new RandomNumberFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var objectValue = fixture.Create<object>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => intValue.ToOrOther(objectValue), Is.EqualTo(intValue));
             }
@@ -103,7 +103,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnMaxDoubleWithObject_OutMaxDoubleAsObject()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 object outParameter;
                 double.MaxValue.ToOrOther(out outParameter, objectValue);
 
@@ -114,7 +114,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnMaxDouble_WithObject_ReturnsTrue()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 object outParameter;
                 var actual = double.MaxValue.ToOrOther(out outParameter, objectValue);
 
@@ -125,7 +125,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnNullNullableIntWithObject_OutNull()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 int? nullNullableInt = null;
                 object outParameter;
                 nullNullableInt.ToOrOther(out outParameter, objectValue);
@@ -137,7 +137,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnNullNullableIntegerWithAnyObject_ReturnsTrue()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 int? nullNullabelInteger = null;
                 object outParameter;
 
@@ -148,7 +148,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnNullNullableIntegerWithObject_ReturnsNull()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 int? nullNullableInt = null;
 
                 Assert.That(() => nullNullableInt.ToOrOther(objectValue), Is.Null);
@@ -158,7 +158,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrOther_ToObject_OnNullStringWithObject_ReturnsNull()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 string nullString = null;
 
                 Assert.That(() => nullString.ToOrOther(objectValue), Is.Null);
@@ -169,7 +169,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 object outParameter;
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 string nullString = null;
                 var actual = nullString.ToOrOther(out outParameter, objectValue);
 
@@ -184,7 +184,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
                 string outParameter;
                 IConvertible convertible = mockConvertible.Object;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 convertible.ToOrOther(out outParameter, stringValue);
 
                 Assert.That(() => outParameter, Is.EqualTo(stringValue));
@@ -197,7 +197,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 IConvertible convertible = mockConvertible.Object;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => convertible.ToOrOther(stringValue), Is.EqualTo(stringValue));
             }
@@ -209,7 +209,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<Exception>();
                 string outParameter;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 IConvertible convertible = mockConvertible.Object;
 
                 Assert.That(() => convertible.ToOrOther(out outParameter, stringValue), Throws.Exception);
@@ -222,7 +222,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
                 mockConvertible.Setup(m => m.ToString(It.IsAny<IFormatProvider>())).Throws<InvalidCastException>();
                 string outParameter;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 IConvertible convertible = mockConvertible.Object;
                 var actual = convertible.ToOrOther(out outParameter, stringValue);
 
@@ -235,7 +235,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
                 object outParameter;
                 var emptyString = string.Empty;
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
                 var actual = emptyString.ToOrOther(out outParameter, objectValue);
 
                 Assert.That(() => actual, Is.True);
@@ -246,7 +246,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 const double maxDouble = double.MaxValue;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var actual = maxDouble.ToOrOther(stringValue);
                 var expected = maxDouble.ToString();
 

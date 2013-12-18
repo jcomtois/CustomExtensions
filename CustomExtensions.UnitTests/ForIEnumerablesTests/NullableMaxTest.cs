@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<GenericComparableStruct>();
                 var fixture = new BaseFixture();
-                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var selector = fixture.Create<Func<GenericComparableStruct, GenericComparableStruct>>();
 
                 Assert.That(() => emptySequence.NullableMax(selector), Is.Null);
             }
@@ -66,7 +66,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparableStruct> nullSequence = null;
                 var fixture = new BaseFixture();
-                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var selector = fixture.Create<Func<GenericComparableStruct, GenericComparableStruct>>();
 
                 Assert.That(() => nullSequence.NullableMax(selector), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -75,7 +75,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void NullableMax_OnSequence_WithNullSelector_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IEnumerable<GenericComparableStruct>>();
+                var sequence = fixture.Create<IEnumerable<GenericComparableStruct>>();
                 Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
 
                 Assert.That(() => sequence.NullableMax(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -85,8 +85,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void NullableMax_OnSequence_WithSelector_ReturnsMax()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IList<GenericComparableStruct>>();
-                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var sequence = fixture.Create<IList<GenericComparableStruct>>();
+                var selector = fixture.Create<Func<GenericComparableStruct, GenericComparableStruct>>();
                 var max = sequence.Max(selector);
 
                 Assert.That(() => sequence.NullableMax(selector), Is.EqualTo(max));
