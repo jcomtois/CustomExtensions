@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,17 @@ namespace CustomExtensions.Validation
     /// </summary>
     public static class ValidationExtensions
     {
+        /// <summary>
+        /// Used to add any <see cref="Exception"/> to Validator
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="exception">Instance of <see cref="Exception"/> or derived classes.  If null, <see cref="ArgumentNullException"/> will be added</param>
+        /// <returns><see cref="Validator"/> reference</returns>
+        public static Validator AddCustomException(this Validator validator, Exception exception)
+        {
+            return (validator ?? new Validator()).AddException(exception ?? new ArgumentNullException("exception"));
+        }
+
         /// <summary>
         /// This method will throw any exceptions contained in <paramref name="validator"/>.  This method must be called 
         /// otherwise exceptions will not be thrown.
@@ -69,8 +80,153 @@ namespace CustomExtensions.Validation
             }
 
             return (value == null || value.Length < length)
-                       ? validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, "Must not be null or < " + length))
-                       : validator;
+                ? validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, "Must not be null or < " + length))
+                : validator;
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast <T>(this Validator validator, T minimumValue, T value, string parameterName) where T : IComparable<T>
+        {
+            return value.CompareTo(minimumValue) >= 0
+                ? validator
+                : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= {0}, but was {1}", minimumValue, value)));
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, long minimumValue, long value, string parameterName)
+        {
+            return validator.IsAtLeast<long>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, int minimumValue, int value, string parameterName)
+        {
+            return validator.IsAtLeast<int>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, double minimumValue, double value, string parameterName)
+        {
+            return validator.IsAtLeast<double>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, decimal minimumValue, decimal value, string parameterName)
+        {
+            return validator.IsAtLeast<decimal>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, short minimumValue, short value, string parameterName)
+        {
+            return validator.IsAtLeast<short>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, float minimumValue, float value, string parameterName)
+        {
+            return validator.IsAtLeast<float>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, uint minimumValue, uint value, string parameterName)
+        {
+            return validator.IsAtLeast<uint>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, byte minimumValue, byte value, string parameterName)
+        {
+            return validator.IsAtLeast<byte>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, ushort minimumValue, ushort value, string parameterName)
+        {
+            return validator.IsAtLeast<ushort>(minimumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtLeast(this Validator validator, ulong minimumValue, ulong value, string parameterName)
+        {
+            return validator.IsAtLeast<ulong>(minimumValue, value, parameterName);
         }
 
         /// <summary>
@@ -83,8 +239,8 @@ namespace CustomExtensions.Validation
         public static Validator IsNotEmpty <T>(this Validator validator, IEnumerable<T> sequence, string parameterName)
         {
             return (sequence == null || sequence.IsEmpty())
-                       ? validator.AddCustomException(new ArgumentException("Sequence cannot be empty.", parameterName))
-                       : validator;
+                ? validator.AddCustomException(new ArgumentException("Sequence cannot be empty.", parameterName))
+                : validator;
         }
 
         /// <summary>
@@ -110,35 +266,8 @@ namespace CustomExtensions.Validation
         public static Validator IsNotNull <T>(this Validator validator, T theObject, string parameterName) where T : class
         {
             return theObject != null
-                       ? validator
-                       : validator.AddCustomException(new ArgumentNullException(parameterName));
+                ? validator
+                : validator.AddCustomException(new ArgumentNullException(parameterName));
         }
-
-        /// <summary>
-        /// Used to add any <see cref="Exception"/> to Validator
-        /// </summary>
-        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="exception">Instance of <see cref="Exception"/> or derived classes.  If null, <see cref="ArgumentNullException"/> will be added</param>
-        /// <returns><see cref="Validator"/> reference</returns>
-        public static Validator AddCustomException(this Validator validator, Exception exception)
-        {
-            return (validator ?? new Validator()).AddException(exception ?? new ArgumentNullException("exception"));
-        }
-
-        /// <summary>
-        /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
-        /// </summary>
-        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
-        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
-        /// <returns><see cref="Validator"/> reference or null.</returns>
-        public static Validator IsAtLeast(this Validator validator, long minimumValue, long value, string parameterName)
-        {
-            return value >= minimumValue
-                       ? validator
-                       : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be >= {0}, but was {1}", minimumValue, value)));
-        }
-
     }
 }

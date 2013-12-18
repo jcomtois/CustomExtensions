@@ -1,7 +1,7 @@
 ﻿#region License and Terms
 
 // CustomExtensions - Custom Extension Methods For C#
-// Copyright (c) 2011 - 2012 Jonathan Comtois. All rights reserved.
+// Copyright (c) 2011 - 2013 Jonathan Comtois. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using System;
 using System.Linq;
 using CustomExtensions.Validation;
 using NUnit.Framework;
+using Ploeh.AutoFixture;
 
 namespace CustomExtensions.UnitTests.ValidationsTests
 {
@@ -29,8 +30,6 @@ namespace CustomExtensions.UnitTests.ValidationsTests
         [TestFixture]
         public class ValidationExtensionsTest
         {
-            #region Setup/Teardown
-
             [SetUp]
             public void SetupValidator()
             {
@@ -42,8 +41,6 @@ namespace CustomExtensions.UnitTests.ValidationsTests
             {
                 _validator = null;
             }
-
-            #endregion
 
             private Validator _validator;
             private const string GoodTestString = "Test";
@@ -155,38 +152,323 @@ namespace CustomExtensions.UnitTests.ValidationsTests
             [Test]
             public void IsAtLeast_OnNumberEqualsMinimum_AddsNothing()
             {
-                Assert.That(() => _validator.IsAtLeast(0, 0, GoodTestString).CheckForExceptions(), Throws.Nothing);
+                var fixture = new Fixture();
+
+                var numberInt = fixture.Create<int>();
+                var numberLong = fixture.Create<long>();
+                var numberShort = fixture.Create<short>();
+                var numberByte = fixture.Create<byte>();
+                var numberULong = fixture.Create<ulong>();
+                var numberUShort = fixture.Create<ushort>();
+                var numberUInt = fixture.Create<uint>();
+                var numberDouble = fixture.Create<double>();
+                var numberFloat = fixture.Create<float>();
+                var numberDecimal = fixture.Create<decimal>();
+                var testString = fixture.Create<string>();
+
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, numberInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<int>(numberInt, numberInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberLong, numberLong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<long>(numberLong, numberLong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<short>(numberShort, numberShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberShort, numberShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<byte>(numberByte, numberByte, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberByte, numberByte, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ulong>(numberULong, numberULong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberULong, numberULong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ushort>(numberUShort, numberUShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUShort, numberUShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<uint>(numberUInt, numberUInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUInt, numberUInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<double>(numberDouble, numberDouble, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDouble, numberDouble, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<float>(numberFloat, numberFloat, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberFloat, numberFloat, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<decimal>(numberDecimal, numberDecimal, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDecimal, numberDecimal, testString).CheckForExceptions(), Throws.Nothing);
             }
 
             [Test]
             public void IsAtLeast_OnNumberGreaterThanMinimum_AddsNothing()
             {
-                Assert.That(() => _validator.IsAtLeast(0, 1, GoodTestString).CheckForExceptions(), Throws.Nothing);
+                var fixture = new Fixture();
+
+                var numberInt = fixture.Create<int>();
+                var numberLong = fixture.Create<long>();
+                var numberShort = fixture.Create<short>();
+                var numberByte = fixture.Create<byte>();
+                var numberULong = fixture.Create<ulong>();
+                var numberUShort = fixture.Create<ushort>();
+                var numberUInt = fixture.Create<uint>();
+                var numberDouble = fixture.Create<double>();
+                var numberFloat = fixture.Create<float>();
+                var numberDecimal = fixture.Create<decimal>();
+                var testString = fixture.Create<string>();
+
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, ++numberInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<int>(numberInt, ++numberInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<long>(numberLong, ++numberLong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberLong, ++numberLong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<short>(numberShort, ++numberShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberShort, ++numberShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<byte>(numberByte, ++numberByte, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberByte, ++numberByte, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ulong>(numberULong, ++numberULong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberULong, ++numberULong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ushort>(numberUShort, ++numberUShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUShort, ++numberUShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<uint>(numberUInt, ++numberUInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUInt, ++numberUInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<double>(numberDouble, ++numberDouble, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDouble, ++numberDouble, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<float>(numberFloat, ++numberFloat, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberFloat, ++numberFloat, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<decimal>(numberDecimal, ++numberDecimal, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDecimal, ++numberDecimal, testString).CheckForExceptions(), Throws.Nothing);
             }
 
             [Test]
-            public void IsAtLeast_OnNumberLessThanMinimumEmptyParameterName_AddsExceptionWithNullParameterName()
+            public void IsAtLeast_OnNumberLessThanMinimumEmptyParameterName_AddsExceptionWithEmptyParameterName()
             {
-                Assert.That(() => _validator.IsAtLeast(0, -1, EmptyTestString).CheckForExceptions(),
+                var fixture = new Fixture();
+
+                var numberInt = fixture.Create<int>();
+                var numberLong = fixture.Create<long>();
+                var numberShort = fixture.Create<short>();
+                var numberByte = fixture.Create<byte>();
+                var numberULong = fixture.Create<ulong>();
+                var numberUShort = fixture.Create<ushort>();
+                var numberUInt = fixture.Create<uint>();
+                var numberDouble = fixture.Create<double>();
+                var numberFloat = fixture.Create<float>();
+                var numberDecimal = fixture.Create<decimal>();
+
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, --numberInt, EmptyTestString).CheckForExceptions(),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
-                                .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, --numberInt, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberLong, --numberLong, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberShort, --numberShort, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberByte, --numberByte, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberULong, --numberULong, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUShort, --numberUShort, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUInt, --numberUInt, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDouble, --numberDouble, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberFloat, --numberFloat, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDecimal, --numberDecimal, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<int>(numberInt, --numberInt, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<long>(numberLong, --numberLong, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<short>(numberShort, --numberShort, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<byte>(numberByte, --numberByte, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ulong>(numberULong, --numberULong, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ushort>(numberUShort, --numberUShort, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<uint>(numberUInt, --numberUInt, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<double>(numberDouble, --numberDouble, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<float>(numberFloat, --numberFloat, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<decimal>(numberDecimal, --numberDecimal, EmptyTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(EmptyTestString));
             }
 
             [Test]
             public void IsAtLeast_OnNumberLessThanMinimumNullParameterName_AddsExceptionWithNullParameterName()
             {
-                Assert.That(() => _validator.IsAtLeast(0, -1, NullTestString).CheckForExceptions(),
+                var fixture = new Fixture();
+
+                var numberInt = fixture.Create<int>();
+                var numberLong = fixture.Create<long>();
+                var numberShort = fixture.Create<short>();
+                var numberByte = fixture.Create<byte>();
+                var numberULong = fixture.Create<ulong>();
+                var numberUShort = fixture.Create<ushort>();
+                var numberUInt = fixture.Create<uint>();
+                var numberDouble = fixture.Create<double>();
+                var numberFloat = fixture.Create<float>();
+                var numberDecimal = fixture.Create<decimal>();
+
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, --numberInt, NullTestString).CheckForExceptions(),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
-                                .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, --numberInt, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberLong, --numberLong, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberShort, --numberShort, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberByte, --numberByte, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberULong, --numberULong, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUShort, --numberUShort, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUInt, --numberUInt, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDouble, --numberDouble, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberFloat, --numberFloat, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDecimal, --numberDecimal, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<int>(numberInt, --numberInt, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<long>(numberLong, --numberLong, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<short>(numberShort, --numberShort, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<byte>(numberByte, --numberByte, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ulong>(numberULong, --numberULong, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ushort>(numberUShort, --numberUShort, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<uint>(numberUInt, --numberUInt, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<double>(numberDouble, --numberDouble, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<float>(numberFloat, --numberFloat, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<decimal>(numberDecimal, --numberDecimal, NullTestString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(NullTestString));
             }
 
             [Test]
             public void IsAtLeast_OnNumberLessThanMinimum_AddsException()
             {
-                const string parameterName = "someParameter";
-                Assert.That(() => _validator.IsAtLeast(0, -1, parameterName).CheckForExceptions(),
+                var fixture = new Fixture();
+
+                var numberInt = fixture.Create<int>();
+                var numberLong = fixture.Create<long>();
+                var numberShort = fixture.Create<short>();
+                var numberByte = fixture.Create<byte>();
+                var numberULong = fixture.Create<ulong>();
+                var numberUShort = fixture.Create<ushort>();
+                var numberUInt = fixture.Create<uint>();
+                var numberDouble = fixture.Create<double>();
+                var numberFloat = fixture.Create<float>();
+                var numberDecimal = fixture.Create<decimal>();
+                var testString = fixture.Create<string>();
+
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, --numberInt, testString).CheckForExceptions(),
                             Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
-                                .With.InnerException.Property("ParamName").EqualTo(parameterName));
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberInt, --numberInt, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberLong, --numberLong, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberShort, --numberShort, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberByte, --numberByte, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberULong, --numberULong, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUShort, --numberUShort, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberUInt, --numberUInt, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDouble, --numberDouble, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberFloat, --numberFloat, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast(numberDecimal, --numberDecimal, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<int>(numberInt, --numberInt, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<long>(numberLong, --numberLong, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<short>(numberShort, --numberShort, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<byte>(numberByte, --numberByte, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ulong>(numberULong, --numberULong, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<ushort>(numberUShort, --numberUShort, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<uint>(numberUInt, --numberUInt, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<double>(numberDouble, --numberDouble, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<float>(numberFloat, --numberFloat, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsAtLeast<decimal>(numberDecimal, --numberDecimal, testString).CheckForExceptions(),
+                            Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                  .With.InnerException.Property("ParamName").EqualTo(testString));
             }
 
             [Test]
