@@ -397,7 +397,67 @@ namespace CustomExtensions.Validation
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsNotNegative(this Validator validator, long value, string parameterName)
         {
-            return validator.IsAtLeast(0, value, parameterName);
+            return validator.IsAtLeast<long>(0, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to 0
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="value">Actual <see cref="short"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotNegative(this Validator validator, short value, string parameterName)
+        {
+            return validator.IsAtLeast<short>(0, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to 0
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="value">Actual <see cref="int"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotNegative(this Validator validator, int value, string parameterName)
+        {
+            return validator.IsAtLeast<int>(0, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to 0
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="value">Actual <see cref="float"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotNegative(this Validator validator, float value, string parameterName)
+        {
+            return validator.IsAtLeast<float>(0, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to 0
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="value">Actual <see cref="double"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotNegative(this Validator validator, double value, string parameterName)
+        {
+            return validator.IsAtLeast<double>(0, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not greater than or equal to 0
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="value">Actual <see cref="decimal"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsNotNegative(this Validator validator, decimal value, string parameterName)
+        {
+            return validator.IsAtLeast<decimal>(0, value, parameterName);
         }
 
         /// <summary>

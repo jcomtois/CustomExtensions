@@ -926,6 +926,127 @@ namespace CustomExtensions.UnitTests.ValidationsTests
             }
 
             [Test]
+            public void IsNotNegative_OnNumberEqualsZero_AddsNothing()
+            {
+                var fixture = new Fixture();
+
+                const int numberInt = 0;
+                const long numberLong = 0;
+                const short numberShort = 0;
+                const double numberDouble = 0;
+                const float numberFloat = 0;
+                const decimal numberDecimal = 0;
+                var testString = fixture.Create<string>();
+
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberLong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDouble, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberFloat, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDecimal, testString).CheckForExceptions(), Throws.Nothing);
+            }
+
+            [Test]
+            public void IsNotNegative_OnNumberGreaterThanZero_AddsNothing()
+            {
+                var fixture = new Fixture();
+
+                const int numberInt = 1;
+                const long numberLong = 1;
+                const short numberShort = 1;
+                const double numberDouble = 1;
+                const float numberFloat = 1;
+                const decimal numberDecimal = 1;
+                var testString = fixture.Create<string>();
+
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberInt, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberLong, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberShort, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDouble, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberFloat, testString).CheckForExceptions(), Throws.Nothing);
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDecimal, testString).CheckForExceptions(), Throws.Nothing);
+            }
+
+            [Test]
+            public void IsNotNegative_OnNumberLessThanZero_AddsException()
+            {
+                var fixture = new Fixture();
+
+                const int numberInt = -1;
+                const long numberLong = -1;
+                const short numberShort = -1;
+                const double numberDouble = -1;
+                const float numberFloat = -1;
+                const decimal numberDecimal = -1;
+                var testString = fixture.Create<string>();
+
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberInt, testString).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                               .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberLong, testString).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberShort, testString).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                 .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDouble, testString).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                  .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberFloat, testString).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                 .With.InnerException.Property("ParamName").EqualTo(testString));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDecimal, testString).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                   .With.InnerException.Property("ParamName").EqualTo(testString));
+            }
+
+            [Test]
+            public void IsNotNegative_OnNumberLessThanZero_WithEmptyParemeterName_AddsExceptionWithEmptyParameterName()
+            {
+                var fixture = new Fixture();
+
+                const int numberInt = -1;
+                const long numberLong = -1;
+                const short numberShort = -1;
+                const double numberDouble = -1;
+                const float numberFloat = -1;
+                const decimal numberDecimal = -1;
+
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberInt, string.Empty).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                 .With.InnerException.Property("ParamName").EqualTo(string.Empty));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberLong, string.Empty).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                  .With.InnerException.Property("ParamName").EqualTo(string.Empty));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberShort, string.Empty).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                   .With.InnerException.Property("ParamName").EqualTo(string.Empty));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDouble, string.Empty).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                    .With.InnerException.Property("ParamName").EqualTo(string.Empty));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberFloat, string.Empty).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                   .With.InnerException.Property("ParamName").EqualTo(string.Empty));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDecimal, string.Empty).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                                     .With.InnerException.Property("ParamName").EqualTo(string.Empty));
+            }
+
+            [Test]
+            public void IsNotNegative_OnNumberLessThanZero_WithNullParemeterName_AddsExceptionWithNullParameterName()
+            {
+                var fixture = new Fixture();
+
+                const int numberInt = -1;
+                const long numberLong = -1;
+                const short numberShort = -1;
+                const double numberDouble = -1;
+                const float numberFloat = -1;
+                const decimal numberDecimal = -1;
+
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberInt, null).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                         .With.InnerException.Property("ParamName").EqualTo(null));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberLong, null).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                          .With.InnerException.Property("ParamName").EqualTo(null));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberShort, null).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                           .With.InnerException.Property("ParamName").EqualTo(null));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDouble, null).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                            .With.InnerException.Property("ParamName").EqualTo(null));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberFloat, null).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                           .With.InnerException.Property("ParamName").EqualTo(null));
+                Assert.That(() => fixture.Create<Validator>().IsNotNegative(numberDecimal, null).CheckForExceptions(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>()
+                                                                                                                             .With.InnerException.Property("ParamName").EqualTo(null));
+            }
+
+            [Test]
             public void IsNotNullFalseParameterNameEmpty()
             {
                 object isNull = null;
