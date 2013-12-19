@@ -85,11 +85,156 @@ namespace CustomExtensions.Validation
         }
 
         /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual {T} parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual {T} parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost <T>(this Validator validator, T maximumValue, T value, string parameterName) where T : IComparable<T>
+        {
+            return value.CompareTo(maximumValue) <= 0
+                ? validator
+                : validator.AddCustomException(new ArgumentOutOfRangeException(parameterName, string.Format(CultureInfo.InvariantCulture, "Must be <= {0}, but was {1}", maximumValue, value)));
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, long maximumValue, long value, string parameterName)
+        {
+            return validator.IsAtMost<long>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="int"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="int"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, int maximumValue, int value, string parameterName)
+        {
+            return validator.IsAtMost<int>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="double"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="double"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, double maximumValue, double value, string parameterName)
+        {
+            return validator.IsAtMost<double>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="decimal"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="decimal"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, decimal maximumValue, decimal value, string parameterName)
+        {
+            return validator.IsAtMost<decimal>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="short"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="short"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, short maximumValue, short value, string parameterName)
+        {
+            return validator.IsAtMost<short>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="float"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="float"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, float maximumValue, float value, string parameterName)
+        {
+            return validator.IsAtMost<float>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="uint"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="uint"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, uint maximumValue, uint value, string parameterName)
+        {
+            return validator.IsAtMost<uint>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="byte"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="byte"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, byte maximumValue, byte value, string parameterName)
+        {
+            return validator.IsAtMost<byte>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="ushort"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="ushort"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, ushort maximumValue, ushort value, string parameterName)
+        {
+            return validator.IsAtMost<ushort>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
+        /// Adds exception to Validator if value is not less than or equal to <paramref name="maximumValue"/>
+        /// </summary>
+        /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
+        /// <param name="maximumValue">Actual <see cref="ulong"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="ulong"/> parameter to be checked.</param>
+        /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
+        /// <returns><see cref="Validator"/> reference or null.</returns>
+        public static Validator IsAtMost(this Validator validator, ulong maximumValue, ulong value, string parameterName)
+        {
+            return validator.IsAtMost<ulong>(maximumValue, value, parameterName);
+        }
+
+        /// <summary>
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual T parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual T parameter to be checked.</param>
+        /// <param name="minimumValue">Actual {T} parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual {T} parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast <T>(this Validator validator, T minimumValue, T value, string parameterName) where T : IComparable<T>
