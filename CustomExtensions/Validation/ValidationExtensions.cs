@@ -88,8 +88,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual T parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual T parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast <T>(this Validator validator, T minimumValue, T value, string parameterName) where T : IComparable<T>
@@ -116,8 +116,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="int"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="int"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, int minimumValue, int value, string parameterName)
@@ -129,8 +129,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="double"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="double"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, double minimumValue, double value, string parameterName)
@@ -142,8 +142,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="decimal"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="decimal"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, decimal minimumValue, decimal value, string parameterName)
@@ -155,8 +155,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="short"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="short"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, short minimumValue, short value, string parameterName)
@@ -168,8 +168,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="float"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="float"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, float minimumValue, float value, string parameterName)
@@ -181,8 +181,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="uint"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="uint"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, uint minimumValue, uint value, string parameterName)
@@ -194,8 +194,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="byte"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="byte"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, byte minimumValue, byte value, string parameterName)
@@ -207,8 +207,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="ushort"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="ushort"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, ushort minimumValue, ushort value, string parameterName)
@@ -220,8 +220,8 @@ namespace CustomExtensions.Validation
         /// Adds exception to Validator if value is not greater than or equal to <paramref name="minimumValue"/>
         /// </summary>
         /// <param name="validator">Reference to <see cref="Validator"/>.  May be null.</param>
-        /// <param name="minimumValue">Actual <see cref="long"/> parameter to be used as a minimum value.</param>
-        /// <param name="value">Actual <see cref="long"/> parameter to be checked.</param>
+        /// <param name="minimumValue">Actual <see cref="ulong"/> parameter to be used as a minimum value.</param>
+        /// <param name="value">Actual <see cref="ulong"/> parameter to be checked.</param>
         /// <param name="parameterName">Name of parameter to include in exception message if necessary.</param>
         /// <returns><see cref="Validator"/> reference or null.</returns>
         public static Validator IsAtLeast(this Validator validator, ulong minimumValue, ulong value, string parameterName)

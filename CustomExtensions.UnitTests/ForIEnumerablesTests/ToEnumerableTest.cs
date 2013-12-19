@@ -42,7 +42,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ToEnumerable_OnObject_CreatesEnumerable()
             {
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(() => objectValue.ToEnumerable(), Is.InstanceOf<IEnumerable<object>>());
             }

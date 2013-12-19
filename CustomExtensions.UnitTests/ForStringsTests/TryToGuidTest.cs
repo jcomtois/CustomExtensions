@@ -54,7 +54,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 Guid guid;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 stringValue.TryToGuid(out guid);
 
                 Assert.That(() => guid, Is.EqualTo(Guid.Empty));
@@ -65,7 +65,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 Guid guid;
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.TryToGuid(out guid), Is.False);
             }

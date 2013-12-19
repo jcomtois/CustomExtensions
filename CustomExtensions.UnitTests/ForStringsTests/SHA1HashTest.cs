@@ -41,7 +41,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void SHA1Hash_OnAllLatinString_HandlesAllLatinCharacters()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.SHA1Hash(), Throws.Nothing);
             }

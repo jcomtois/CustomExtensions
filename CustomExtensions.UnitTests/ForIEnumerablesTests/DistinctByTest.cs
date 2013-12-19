@@ -38,9 +38,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void DistinctBy_IsLazy()
             {
                 var fixture = new BaseFixture();
-                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
+                var breakingSequence = fixture.Create<BreakingSequence<object>>();
 
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
 
                 Assert.That(() => breakingSequence.DistinctBy(objectFunc), Throws.Nothing);
             }
@@ -49,7 +49,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void DistinctBy_OnDoubledSequence_WithKeySelector_ReturnsSingleSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var singleSequence = fixture.CreateAnonymous<object[]>();
+                var singleSequence = fixture.Create<object[]>();
                 var doubleSequence = singleSequence.Concat(singleSequence);
                 Func<object, object> objectFunc = o => o;
 
@@ -60,11 +60,11 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void DistinctBy_OnDoubledSequence_WithKeySelector_WithEqualityComparer_ReturnsSingleSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var singleSequence = fixture.CreateAnonymous<object[]>();
+                var singleSequence = fixture.Create<object[]>();
                 var doubleSequence = singleSequence.Concat(singleSequence);
                 Func<object, object> objectFunc = o => o;
 
-                var mock = fixture.CreateAnonymous<Mock<IEqualityComparer<object>>>();
+                var mock = fixture.Create<Mock<IEqualityComparer<object>>>();
                 mock.Setup(e => e.GetHashCode()).Returns((object o) => o.GetHashCode());
                 mock.Setup(e => e.GetHashCode(It.IsAny<object>())).Returns((object o) => o.GetHashCode());
                 mock.Setup(e => e.Equals(It.IsAny<object>())).Returns((object o, object b) => o.GetHashCode() == b.GetHashCode());
@@ -79,7 +79,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void DistinctBy_OnDoubledSequence_WithKeySelector_WithNullEqualityComparer_ReturnsSingleSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var singleSequence = fixture.CreateAnonymous<object[]>();
+                var singleSequence = fixture.Create<object[]>();
                 var doubleSequence = singleSequence.Concat(singleSequence);
                 Func<object, object> objectFunc = o => o;
 
@@ -93,7 +93,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<object>();
                 var fixture = new MultipleMockingFixture();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
 
                 Assert.That(() => emptySequence.DistinctBy(objectFunc), Is.Empty);
             }
@@ -103,8 +103,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<object>();
                 var fixture = new MultipleMockingFixture();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
-                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
+                var equalityComparer = fixture.Create<IEqualityComparer<object>>();
 
                 Assert.That(() => emptySequence.DistinctBy(objectFunc, equalityComparer), Is.Empty);
             }
@@ -114,7 +114,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<object>();
                 var fixture = new MultipleMockingFixture();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
                 IEqualityComparer<object> nullEqualityComparer = null;
 
                 Assert.That(() => emptySequence.DistinctBy(objectFunc, nullEqualityComparer), Is.Empty);
@@ -135,7 +135,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
                 var emptySequence = Enumerable.Empty<object>();
                 var fixture = new MultipleMockingFixture();
                 Func<object, object> nullObjectFunc = null;
-                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+                var equalityComparer = fixture.Create<IEqualityComparer<object>>();
 
                 Assert.That(() => emptySequence.DistinctBy(nullObjectFunc, equalityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -155,7 +155,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new MultipleMockingFixture();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
 
                 Assert.That(() => nullSequence.DistinctBy(objectFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -165,8 +165,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new MultipleMockingFixture();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
-                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
+                var equalityComparer = fixture.Create<IEqualityComparer<object>>();
 
                 Assert.That(() => nullSequence.DistinctBy(objectFunc, equalityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -176,7 +176,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new MultipleMockingFixture();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
                 IEqualityComparer<object> nullEqualityComparer = null;
 
                 Assert.That(() => nullSequence.DistinctBy(objectFunc, nullEqualityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -197,7 +197,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
                 IEnumerable<object> nullSequence = null;
                 Func<object, object> nullObjectFunc = null;
                 var fixture = new MultipleMockingFixture();
-                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+                var equalityComparer = fixture.Create<IEqualityComparer<object>>();
 
                 Assert.That(() => nullSequence.DistinctBy(nullObjectFunc, equalityComparer), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
@@ -216,9 +216,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void DistinctBy_WithEqualityComparer_IsLazy()
             {
                 var fixture = new MultipleMockingFixture();
-                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
-                var objectFunc = fixture.CreateAnonymous<Func<object, object>>();
-                var equalityComparer = fixture.CreateAnonymous<IEqualityComparer<object>>();
+                var breakingSequence = fixture.Create<BreakingSequence<object>>();
+                var objectFunc = fixture.Create<Func<object, object>>();
+                var equalityComparer = fixture.Create<IEqualityComparer<object>>();
 
                 Assert.That(() => breakingSequence.DistinctBy(objectFunc, equalityComparer), Throws.Nothing);
             }

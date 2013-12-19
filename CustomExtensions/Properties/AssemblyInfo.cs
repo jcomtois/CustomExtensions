@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jonathan Comtois")]
 [assembly: AssemblyProduct("CustomExtensions")]
-[assembly: AssemblyCopyright("Copyright © 2012 Jonathan Comtois")]
+[assembly: AssemblyCopyright("Copyright © 2012-2013 Jonathan Comtois")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -43,7 +43,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("bf012d58-d7e5-4e90-8707-fc565278cb1f")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -55,5 +55,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.12.1116.0")]
-[assembly: AssemblyFileVersion("1.12.1116.0")]
+[assembly: AssemblyVersion("1.13.1219.0")]
+[assembly: AssemblyFileVersion("1.13.1219.0")]

@@ -37,8 +37,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Append_IsLazy()
             {
                 var fixture = new BaseFixture();
-                var breakingSequence = fixture.CreateAnonymous<BreakingSequence<object>>();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var breakingSequence = fixture.Create<BreakingSequence<object>>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(() => breakingSequence.Append(objectValue), Throws.Nothing);
             }
@@ -48,7 +48,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<object>();
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(() => emptySequence.Append(objectValue), Is.EqualTo(objectValue.ToEnumerable()));
             }
@@ -67,7 +67,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new BaseFixture();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectValue = fixture.Create<object>();
 
                 Assert.That(() => nullSequence.Append(objectValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -85,8 +85,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Append_OnSequence_WithElement_ReturnsAppendedSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var objectArray = fixture.CreateAnonymous<object[]>();
-                var objectValue = fixture.CreateAnonymous<object>();
+                var objectArray = fixture.Create<object[]>();
+                var objectValue = fixture.Create<object>();
                 var appendedSequence = objectArray.Concat(objectValue.ToEnumerable());
 
                 Assert.That(() => objectArray.Append(objectValue), Is.EqualTo(appendedSequence));
@@ -96,7 +96,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void Append_OnSequence_WithNullElement_ReturnsAppendedSequence()
             {
                 var fixture = new MultipleMockingFixture();
-                var objectArray = fixture.CreateAnonymous<object[]>();
+                var objectArray = fixture.Create<object[]>();
                 object nullValue = null;
                 var appendedSequence = objectArray.Concat(nullValue.ToEnumerable());
 

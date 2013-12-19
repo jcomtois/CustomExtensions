@@ -35,7 +35,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToBool_OnNonNumericString_ThrowsFormatException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.To<bool>(), Throws.TypeOf<FormatException>());
             }
@@ -44,7 +44,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToConvertible_OnNonNumericString_ThrowsInvalidCastException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.To<IConvertible>(), Throws.TypeOf<InvalidCastException>());
             }
@@ -53,7 +53,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToFloat_OnDecimal_ReturnsFloat()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
                 float floatValue = Convert.ToSingle(decimalValue);
 
                 Assert.That(() => decimalValue.To<float>(), Is.EqualTo(floatValue));
@@ -71,7 +71,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToInt_OnIntegerString_ReturnsInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var integerString = intValue.ToString();
 
                 Assert.That(() => integerString.To<int>(), Is.EqualTo(intValue));
@@ -81,7 +81,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToInt_OnNonNumericString_ThrowsFormatException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.To<int>(), Throws.TypeOf<FormatException>());
             }
@@ -98,7 +98,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToInteger_OnDecimal_ReturnsInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
                 int intValue = Convert.ToInt32(decimalValue);
 
                 Assert.That(() => decimalValue.To<int>(), Is.EqualTo(intValue));
@@ -114,7 +114,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToInteger_OnNonNullNullableInteger_ReturnsTestInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 int? nonNullNullableInt = intValue;
 
                 Assert.That(() => nonNullNullableInt.To<int>(), Is.EqualTo(intValue));
@@ -140,7 +140,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToNullableInt_OnIntegerString_ReturnsInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var intString = intValue.ToString();
 
                 Assert.That(() => intString.To<int?>(), Is.EqualTo(intValue));
@@ -158,7 +158,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToNullableInteger_OnIntegerString_ReturnsNullableInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var intString = intValue.ToString();
 
                 Assert.That(() => intString.To<int?>(), Is.EqualTo(intValue));
@@ -194,7 +194,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToString_OnTestInteger_ReturnsTestIntegerString()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var intString = intValue.ToString();
 
                 Assert.That(() => intValue.To<string>(), Is.EqualTo(intString));

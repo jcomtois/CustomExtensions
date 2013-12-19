@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyString.Left(intValue), Is.Empty);
             }
@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullString.Left(intValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -56,7 +56,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 intValue = -intValue;
 
                 Assert.That(() => nullString.Left(intValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
@@ -66,7 +66,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Left_OnString_LengthEqualToStringLength_ReturnsCorrectSubstring()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var length = stringValue.Length;
 
                 Assert.That(() => stringValue.Left(length), Is.EqualTo(stringValue));
@@ -76,7 +76,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Left_OnString_LengthGreaterThanStringLength_ReturnsCorrectSubstring()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var length = stringValue.Length + 1;
 
                 Assert.That(() => stringValue.Left(length), Is.EqualTo(stringValue));
@@ -86,7 +86,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Left_OnString_LengthLessThanStringLength_ReturnsCorrectSubstring()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var length = stringValue.Length - 1;
                 var expected = stringValue.Substring(0, length);
 
@@ -97,8 +97,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Left_OnString_WithNegativeLength_ThrowsValidationException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var stringValue = fixture.Create<string>();
+                var intValue = fixture.Create<int>();
                 intValue = -intValue;
 
                 Assert.That(() => stringValue.Left(intValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentOutOfRangeException>());

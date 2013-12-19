@@ -38,8 +38,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new LatinMultipleMockingFixture();
-                var encryptor = fixture.CreateAnonymous<IEncrypt>();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptor = fixture.Create<IEncrypt>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => emptyString.Encrypt(stringValue, encryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
@@ -49,8 +49,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new LatinMultipleMockingFixture();
-                var encryptor = fixture.CreateAnonymous<IEncrypt>();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptor = fixture.Create<IEncrypt>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => nullString.Encrypt(stringValue, encryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
@@ -61,7 +61,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
                 var mockEncryptor = new Mock<IEncrypt>();
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 IEncrypt encrypt = mockEncryptor.Object;
                 stringValue.Encrypt(stringValue, encrypt);
 
@@ -72,7 +72,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Encrypt_OnString_KeyIsCaseSensitive()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var upperKey = stringValue.ToUpperInvariant();
                 var lowerKey = stringValue.ToLowerInvariant();
                 var encryptedWithUpper = stringValue.Encrypt(upperKey);
@@ -85,7 +85,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Encrypt_OnString_OutputIsInCorrectFormat()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var output = stringValue.Encrypt(stringValue);
                 Assert.That(() => Convert.FromBase64String(output), Throws.Nothing);
             }
@@ -94,7 +94,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Encrypt_OnString_OutputMutatesOnSubsequentCallsWithSameInput()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var lastTry = stringValue.Encrypt(stringValue);
                 string currentTry = null;
                 for (var i = 0; i < 10; i++)
@@ -112,7 +112,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Encrypt_OnString_SourceIsCaseSensitive()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var upperSource = stringValue.ToUpperInvariant();
                 var lowerSource = stringValue.ToLowerInvariant();
                 var encryptedWithUpper = upperSource.Encrypt(stringValue);
@@ -125,7 +125,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Encrypt_OnString_StringIsEncrypted()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var output = stringValue.Encrypt(stringValue);
 
                 Assert.That(() => output, Is.Not.EqualTo(stringValue));
@@ -136,8 +136,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 var emptyString = string.Empty;
                 var fixture = new LatinMultipleMockingFixture();
-                var encryptor = fixture.CreateAnonymous<IEncrypt>();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptor = fixture.Create<IEncrypt>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Encrypt(emptyString, encryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentException>());
             }
@@ -149,7 +149,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 IEncrypt encryptor = mockEncryptor.Object;
                 stringValue.Encrypt(stringValue, encryptor);
 
@@ -161,8 +161,8 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             {
                 string nullString = null;
                 var fixture = new LatinMultipleMockingFixture();
-                var encryptor = fixture.CreateAnonymous<IEncrypt>();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var encryptor = fixture.Create<IEncrypt>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Encrypt(nullString, encryptor), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<MultiException>());
             }
@@ -174,7 +174,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
                 mockEncryptor.Setup(m => m.EncryptAES(It.IsAny<string>(), It.IsAny<string>())).Returns(It.IsAny<string>());
                 mockEncryptor.Setup(m => m.MinimumPasswordLength).Returns(12);
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var shortKey = stringValue.Substring(0, 3);
                 IEncrypt encrypt = mockEncryptor.Object;
 

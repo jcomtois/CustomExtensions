@@ -35,7 +35,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToBadConvertible_OnAnyInteger_OutNull()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 IConvertible outParameter;
                 intValue.ToOrDefault(out outParameter);
 
@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToBadConvertible_OnAnyInteger_ReturnsFalse()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 IConvertible outParameter;
                 var actual = intValue.ToOrDefault(out outParameter);
 
@@ -158,7 +158,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToInteger_OnIntegerString_OutInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var integerString = intValue.ToString();
                 int outParameter;
                 integerString.ToOrDefault(out outParameter);
@@ -170,7 +170,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToInteger_OnIntegerString_ReturnsInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var integerString = intValue.ToString();
 
                 Assert.That(() => integerString.ToOrDefault<int>(), Is.EqualTo(intValue));
@@ -180,7 +180,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToInteger_OnIntegerString_ReturnsTrue()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var integerString = intValue.ToString();
                 int outParameter;
 
@@ -191,7 +191,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToInteger_OnNonNumericString_OutDefaultInteger()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 int outParameter;
                 stringValue.ToOrDefault(out outParameter);
 
@@ -202,7 +202,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToInteger_OnNonNumericString_ReturnsDefaultInteger()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.ToOrDefault<int>(), Is.EqualTo(default(int)));
             }
@@ -211,7 +211,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrDefault_ToInteger_OnNonNumericString_ReturnsFalse()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 int outParameter;
                 var actual = stringValue.ToOrDefault(out outParameter);
 

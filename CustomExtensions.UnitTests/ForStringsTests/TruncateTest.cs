@@ -71,7 +71,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_LengthIsGreaterThanElpises_ReturnsString()
             {
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
                 var maxLength = ValidLength - 1;
                 var shortString = new string(charValue, maxLength);
 
@@ -82,7 +82,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_WithInvalidLength_ThrowsValidationException()
             {
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
                 var maxLength = ValidLength - 1;
                 var equalString = new string(charValue, maxLength);
 
@@ -93,7 +93,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_WithLengthEqualToString_ReturnsString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Truncate(stringValue.Length), Is.EqualTo(stringValue));
             }
@@ -102,7 +102,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_WithLengthIsEqualToEllipsis_ReturnsString()
             {
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
                 var equalString = new string(charValue, ValidLength);
 
                 Assert.That(() => equalString.Truncate(ValidLength), Is.EqualTo(equalString));
@@ -112,7 +112,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_WithLengthIsGreaterThanEllipsis_ReturnsString()
             {
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
                 var maxLength = ValidLength + 1;
                 var equalString = new string(charValue, maxLength);
 
@@ -123,7 +123,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_WithValidLength_ReturnsString()
             {
                 var fixture = new BaseFixture();
-                var charValue = fixture.CreateAnonymous<char>();
+                var charValue = fixture.Create<char>();
                 var maxLength = ValidLength - 1;
                 var shortString = new string(charValue, maxLength);
 
@@ -134,7 +134,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Truncate_OnString_WithValidLength_ReturnsTruncatedString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
                 var expected = stringValue.Substring(0, ValidLength - Ellipsis.Length) + Ellipsis;
 
                 Assert.That(() => stringValue.Truncate(ValidLength), Is.EqualTo(expected));

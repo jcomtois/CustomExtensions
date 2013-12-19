@@ -69,7 +69,7 @@ namespace CustomExtensions.UnitTests.ForArrayTests
             public void ToHexString_OnValidArray_ConvertsToStringCorrectly()
             {
                 var fixture = new MultipleMockingFixture(512);
-                var validBytes = fixture.CreateAnonymous<byte[]>();
+                var validBytes = fixture.Create<byte[]>();
                 var expected = BitConverter.ToString(validBytes).Replace("-", string.Empty).ToLowerInvariant();
 
                 Assert.That(() => validBytes.ToHexString(), Is.EqualTo(expected));

@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 var fixture = new RandomNumberFixture();
                 IConvertible outParameter;
-                fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+                fixture.Create<int>().ToOrNull(out outParameter);
 
                 Assert.That(() => outParameter, Is.Null);
             }
@@ -46,7 +46,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             {
                 var fixture = new RandomNumberFixture();
                 IConvertible outParameter;
-                var actual = fixture.CreateAnonymous<int>().ToOrNull(out outParameter);
+                var actual = fixture.Create<int>().ToOrNull(out outParameter);
 
                 Assert.That(() => actual, Is.False);
             }
@@ -83,7 +83,7 @@ namespace CustomExtensions.UnitTests.ForIConvertiblesTests
             public void ToOrNull_ToObject_OnIntegerString_ReturnsObject()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
                 var integerString = intValue.ToString();
 
                 Assert.That(() => integerString.ToOrNull<object>(), Is.Not.Null);

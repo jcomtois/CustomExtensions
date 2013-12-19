@@ -38,7 +38,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptySequence = Enumerable.Empty<object>();
-                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+                var predicate = fixture.Create<Func<object, bool>>();
 
                 Assert.That(() => emptySequence.ContainsNone(predicate), Is.True);
             }
@@ -73,7 +73,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<object> nullSequence = null;
                 var fixture = new BaseFixture();
-                var predicate = fixture.CreateAnonymous<Func<object, bool>>();
+                var predicate = fixture.Create<Func<object, bool>>();
 
                 Assert.That(() => nullSequence.ContainsNone(predicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -100,7 +100,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ContainsNone_OnSequenceOfThree_AllMatchesPredicate_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                var sequenceOfThree = fixture.Create<object[]>();
                 Func<object, bool> objectFunc = o => true;
 
                 Assert.That(() => sequenceOfThree.ContainsNone(objectFunc), Is.False);
@@ -110,7 +110,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ContainsNone_OnSequenceOfThree_NoMatchesPredicate_ReturnsTrue()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                var sequenceOfThree = fixture.Create<object[]>();
                 Func<object, bool> objectFunc = o => false;
 
                 Assert.That(() => sequenceOfThree.ContainsNone(objectFunc), Is.True);
@@ -120,7 +120,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ContainsNone_OnSequenceOfThree_OneMatchesPredicate_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                var sequenceOfThree = fixture.Create<object[]>();
                 Func<object, bool> objectFunc = o => o == sequenceOfThree.First();
 
                 Assert.That(() => sequenceOfThree.ContainsNone(objectFunc), Is.False);
@@ -130,7 +130,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ContainsNone_OnSequenceOfThree_PredicateNull_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                var sequenceOfThree = fixture.Create<object[]>();
                 Func<object, bool> nullPredicate = null;
 
                 Assert.That(() => sequenceOfThree.ContainsNone(nullPredicate), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -140,7 +140,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void ContainsNone_OnSequenceOfThree_ReturnsFalse()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequenceOfThree = fixture.CreateAnonymous<object[]>();
+                var sequenceOfThree = fixture.Create<object[]>();
 
                 Assert.That(() => sequenceOfThree.ContainsNone(), Is.False);
             }

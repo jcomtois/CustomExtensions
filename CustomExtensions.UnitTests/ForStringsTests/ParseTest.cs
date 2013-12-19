@@ -51,7 +51,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDecimal_OnNegativeDecimal_ReturnsDecimal()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var negativeDecimal = -decimalValue / (decimalValue + 1);
                 var negativeDecimalString = negativeDecimal.ToString("F");
@@ -64,7 +64,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDecimal_OnNegativeInteger_ReturnsDecimal()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var negativeInt = -intValue / (intValue + 1);
                 var negativeIntString = negativeInt.ToString();
@@ -77,7 +77,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDecimal_OnPositiveDecimal_ReturnsDecimal()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var positiveDecimal = decimalValue / (decimalValue + 1);
                 var positiveDecimalString = positiveDecimal.ToString("F");
@@ -90,7 +90,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDecimal_OnPositiveInteger_ReturnsDecimal()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var positiveInt = intValue / (intValue + 1);
                 var positiveIntString = positiveInt.ToString();
@@ -122,7 +122,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDouble_OnNegativeDecimal_ReturnsDouble()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var negativeDecimal = -decimalValue / (decimalValue + 1);
                 var negativeDecimalString = negativeDecimal.ToString("F");
@@ -135,7 +135,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDouble_OnNegativeInteger_ReturnsDouble()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var negativeInt = -intValue / (intValue + 1);
                 var negativeIntString = negativeInt.ToString();
@@ -148,7 +148,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDouble_OnPositiveDecimal_ReturnsDouble()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var positiveDecimal = decimalValue / (decimalValue + 1);
                 var positiveDecimalString = positiveDecimal.ToString("F");
@@ -161,7 +161,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToDouble_OnPositiveInteger_ReturnsDouble()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var positiveInt = intValue / (intValue + 1);
                 var positiveIntString = positiveInt.ToString();
@@ -194,7 +194,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToFloat_OnNegativeDecimal_ReturnsFloat()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var negativeDecimal = -decimalValue / (decimalValue + 1);
                 var negativeDecimalString = negativeDecimal.ToString("F");
@@ -207,7 +207,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToFloat_OnNegativeInteger_ReturnsFloat()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var negativeInt = -intValue / (intValue + 1);
                 var negativeIntString = negativeInt.ToString();
@@ -220,7 +220,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToFloat_OnPositiveDecimal_ReturnsFloat()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var positiveDecimal = decimalValue / (decimalValue + 1);
                 var positiveDecimalString = positiveDecimal.ToString("F");
@@ -233,7 +233,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToFloat_OnPositiveInteger_ReturnsFloat()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var positiveInt = intValue / (intValue + 1);
                 var positiveIntString = positiveInt.ToString();
@@ -266,7 +266,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToInteger_OnBogusString_ThrowsNotSupportedException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Parse<int>(), Throws.TypeOf<NotSupportedException>());
             }
@@ -275,7 +275,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToInteger_OnNegativeDecimal_ThrowsNotSupportedException()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var negativeDecimal = -decimalValue / (decimalValue + 1);
                 var negativeDecimalString = negativeDecimal.ToString("F");
@@ -287,7 +287,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToInteger_OnNegativeInteger_ReturnsInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var negativeInt = -intValue / (intValue + 1);
                 var negativeIntString = negativeInt.ToString();
@@ -300,7 +300,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToInteger_OnPositiveDecimal_ThrowsNotSupportedException()
             {
                 var fixture = new RandomNumberFixture();
-                var decimalValue = Math.Abs(fixture.CreateAnonymous<decimal>());
+                var decimalValue = Math.Abs(fixture.Create<decimal>());
                 decimalValue++;
                 var positiveDecimal = decimalValue / (decimalValue + 1);
                 var positiveDecimalString = positiveDecimal.ToString("F");
@@ -312,7 +312,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToInteger_OnPositiveInteger_ReturnsInteger()
             {
                 var fixture = new RandomNumberFixture();
-                var intValue = Math.Abs(fixture.CreateAnonymous<int>());
+                var intValue = Math.Abs(fixture.Create<int>());
                 intValue++;
                 var positiveInt = intValue / (intValue + 1);
                 var positiveIntString = positiveInt.ToString();
@@ -343,7 +343,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_ToString_ReturnsSameString()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Parse<string>(), Is.EqualTo(stringValue));
             }
@@ -352,7 +352,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void Parse_UnsupportedConversionType_OnBogusString_ThrowsNotSupportedException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.Parse<ParseTest>(), Throws.TypeOf<NotSupportedException>());
             }

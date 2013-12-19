@@ -47,7 +47,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void IsNullOrEmpty_OnValidString_ReturnsFalse()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.IsNullOrEmpty(), Is.False);
             }

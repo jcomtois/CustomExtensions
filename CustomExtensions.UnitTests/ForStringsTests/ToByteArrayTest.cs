@@ -51,7 +51,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ToByteArray_OnNonHexString_ThrowsValidationException()
             {
                 var fixture = new LatinStringFixture();
-                var stringValue = fixture.CreateAnonymous<string>();
+                var stringValue = fixture.Create<string>();
 
                 Assert.That(() => stringValue.ToByteArray(), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<FormatException>());
             }
@@ -68,7 +68,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ToByteArray_OnValidHexString_ReturnsProperByteArray()
             {
                 var fixture = new MultipleMockingFixture(256);
-                var bytes = fixture.CreateAnonymous<byte[]>();
+                var bytes = fixture.Create<byte[]>();
                 var hexString = BitConverter.ToString(bytes).Strip('-');
 
                 Assert.That(() => hexString.ToByteArray(), Is.EqualTo(bytes));
@@ -78,7 +78,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ToByteArray_OnValidLowerHexString_ReturnsProperByteArray()
             {
                 var fixture = new MultipleMockingFixture(256);
-                var bytes = fixture.CreateAnonymous<byte[]>();
+                var bytes = fixture.Create<byte[]>();
                 var hexString = BitConverter.ToString(bytes).Strip('-').ToLowerInvariant();
 
                 Assert.That(() => hexString.ToLowerInvariant().ToByteArray(), Is.EqualTo(bytes));
@@ -88,7 +88,7 @@ namespace CustomExtensions.UnitTests.ForStringsTests
             public void ToByteArray_OnValidUpperHexString_ReturnsProperByteArray()
             {
                 var fixture = new MultipleMockingFixture(256);
-                var bytes = fixture.CreateAnonymous<byte[]>();
+                var bytes = fixture.Create<byte[]>();
                 var hexString = BitConverter.ToString(bytes).Strip('-').ToUpperInvariant();
 
                 Assert.That(() => hexString.ToUpperInvariant().ToByteArray(), Is.EqualTo(bytes));

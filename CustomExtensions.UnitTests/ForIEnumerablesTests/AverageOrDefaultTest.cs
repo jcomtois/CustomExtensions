@@ -36,7 +36,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnDecimalArray_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArray = fixture.Create<decimal[]>();
                 var decimalArrayAverage = decimalArray.Average();
 
                 Assert.That(() => decimalArray.AverageOrDefault(), Is.EqualTo(decimalArrayAverage));
@@ -46,9 +46,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnDecimalArray_WithDecimalValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArray = fixture.Create<decimal[]>();
                 var decimalArrayAverage = decimalArray.Average();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => decimalArray.AverageOrDefault(decimalValue), Is.EqualTo(decimalArrayAverage));
             }
@@ -57,7 +57,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnDoubleArray_ReturnsDoubleArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArray = fixture.Create<double[]>();
                 var doubleArrayAverage = doubleArray.Average();
 
                 Assert.That(() => doubleArray.AverageOrDefault(), Is.EqualTo(doubleArrayAverage));
@@ -67,9 +67,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnDoubleArray_WithDoubleValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArray = fixture.Create<double[]>();
                 var doubleArrayAverage = doubleArray.Average();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => doubleArray.AverageOrDefault(doubleValue), Is.EqualTo(doubleArrayAverage));
             }
@@ -87,7 +87,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emtpyDecimalSequence = Enumerable.Empty<decimal>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emtpyDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -105,7 +105,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyDoubleSequence = Enumerable.Empty<double>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -123,7 +123,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyFloatSequence = Enumerable.Empty<float>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -141,7 +141,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -151,8 +151,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -161,7 +161,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
                 var fixture = new BaseFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(doubleFunc), Is.EqualTo(default(double)));
@@ -171,9 +171,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
                 var fixture = new RandomNumberFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(doubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
@@ -183,7 +183,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatFunc = fixture.Create<Func<int, float>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
@@ -193,8 +193,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatFunc = fixture.Create<Func<int, float>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -204,7 +204,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intFunc = fixture.Create<Func<int, int>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(intFunc), Is.EqualTo(default(int)));
             }
@@ -214,8 +214,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intFunc = fixture.Create<Func<int, int>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
@@ -225,7 +225,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -235,7 +235,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longFunc = fixture.Create<Func<int, long>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(longFunc), Is.EqualTo(default(long)));
             }
@@ -245,8 +245,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longFunc = fixture.Create<Func<int, long>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
@@ -256,7 +256,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -266,8 +266,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -277,7 +277,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
@@ -287,8 +287,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
@@ -298,7 +298,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
@@ -308,8 +308,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -319,7 +319,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
@@ -329,8 +329,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
@@ -340,7 +340,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
@@ -350,8 +350,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyIntSequence.AverageOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
@@ -369,7 +369,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyLongSequence = Enumerable.Empty<long>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -387,7 +387,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emptyNullableDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -405,7 +405,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyNullableDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -423,7 +423,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableFloatSequence = Enumerable.Empty<float?>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyNullableFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -441,7 +441,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableIntSequence = Enumerable.Empty<int?>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyNullableIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -459,7 +459,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableLongSequnce = Enumerable.Empty<long?>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyNullableLongSequnce.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -468,7 +468,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnFloatArray_ReturnsFloatArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArray = fixture.Create<float[]>();
                 var floatArrayAverage = floatArray.Average();
 
                 Assert.That(() => floatArray.AverageOrDefault(), Is.EqualTo(floatArrayAverage));
@@ -478,9 +478,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArray = fixture.Create<float[]>();
                 var floatArrayAverage = floatArray.Average();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => floatArray.AverageOrDefault(floatValue), Is.EqualTo(floatArrayAverage));
             }
@@ -489,7 +489,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_ReturnsIntArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
+                var intArray = fixture.Create<int[]>();
                 var intArrayAverage = intArray.Average();
 
                 Assert.That(() => intArray.AverageOrDefault(), Is.EqualTo(intArrayAverage));
@@ -499,8 +499,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithDecimalFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArray = fixture.Create<int[]>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
                 var intArrayAverage = intArray.Average(decimalFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(decimalFunc), Is.EqualTo(intArrayAverage));
@@ -510,10 +510,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArray = fixture.Create<int[]>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
                 var intArrayAverage = intArray.Average(decimalFunc);
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => intArray.AverageOrDefault(decimalFunc, decimalValue), Is.EqualTo(intArrayAverage));
             }
@@ -522,8 +522,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithDoubleFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArray = fixture.Create<int[]>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var intArrayAverage = intArray.Average(doubleFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(doubleFunc), Is.EqualTo(intArrayAverage));
@@ -533,10 +533,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArray = fixture.Create<int[]>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var intArrayAverage = intArray.Average(doubleFunc);
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => intArray.AverageOrDefault(doubleFunc, doubleValue), Is.EqualTo(intArrayAverage));
             }
@@ -545,8 +545,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithFloatFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArray = fixture.Create<int[]>();
+                var floatFunc = fixture.Create<Func<int, float>>();
                 var intArrayAverage = intArray.Average(floatFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(floatFunc), Is.EqualTo(intArrayAverage));
@@ -556,10 +556,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArray = fixture.Create<int[]>();
+                var floatFunc = fixture.Create<Func<int, float>>();
                 var intArrayAverage = intArray.Average(floatFunc);
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => intArray.AverageOrDefault(floatFunc, floatValue), Is.EqualTo(intArrayAverage));
             }
@@ -568,8 +568,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithIntFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArray = fixture.Create<int[]>();
+                var intFunc = fixture.Create<Func<int, int>>();
                 var intArrayAverage = intArray.Average(intFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(intFunc), Is.EqualTo(intArrayAverage));
@@ -579,10 +579,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArray = fixture.Create<int[]>();
+                var intFunc = fixture.Create<Func<int, int>>();
                 var intArrayAverage = intArray.Average(intFunc);
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => intArray.AverageOrDefault(intFunc, intValue), Is.EqualTo(intArrayAverage));
             }
@@ -591,8 +591,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intArray = fixture.Create<int[]>();
+                var intValue = fixture.Create<int>();
                 var intArrayAverage = intArray.Average();
 
                 Assert.That(() => intArray.AverageOrDefault(intValue), Is.EqualTo(intArrayAverage));
@@ -602,8 +602,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithLongFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var intArray = fixture.Create<int[]>();
+                var longFunc = fixture.Create<Func<int, long>>();
                 var intArrayAverage = intArray.Average(longFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(longFunc), Is.EqualTo(intArrayAverage));
@@ -613,9 +613,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var intArray = fixture.Create<int[]>();
+                var longFunc = fixture.Create<Func<int, long>>();
+                var longValue = fixture.Create<long>();
                 var intArrayAverage = intArray.Average(longFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(longFunc, longValue), Is.EqualTo(intArrayAverage));
@@ -625,8 +625,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
                 var intArrayAverage = intArray.Average(nullableDecimalFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(intArrayAverage));
@@ -636,10 +636,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
                 var intArrayAverage = intArray.Average(nullableDecimalFunc);
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => intArray.AverageOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(intArrayAverage));
             }
@@ -648,8 +648,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
                 var intArrayAverage = intArray.Average(nullableDoubleFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(intArrayAverage));
@@ -659,10 +659,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
                 var intArrayAverage = intArray.Average(nullableDoubleFunc);
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => intArray.AverageOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(intArrayAverage));
             }
@@ -671,8 +671,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
                 var intArrayAverage = intArray.Average(nullableFloatFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(nullableFloatFunc), Is.EqualTo(intArrayAverage));
@@ -682,10 +682,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
                 var intArrayAverage = intArray.Average(nullableFloatFunc);
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => intArray.AverageOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(intArrayAverage));
             }
@@ -694,8 +694,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableIntFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
                 var intArrayAverage = intArray.Average(nullableIntFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(nullableIntFunc), Is.EqualTo(intArrayAverage));
@@ -705,10 +705,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
                 var intArrayAverage = intArray.Average(nullableIntFunc);
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => intArray.AverageOrDefault(nullableIntFunc, intValue), Is.EqualTo(intArrayAverage));
             }
@@ -717,8 +717,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableLongFunc_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
                 var intArrayAverage = intArray.Average(nullableLongFunc);
 
                 Assert.That(() => intArray.AverageOrDefault(nullableLongFunc), Is.EqualTo(intArrayAverage));
@@ -728,10 +728,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
                 var intArrayAverage = intArray.Average(nullableLongFunc);
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => intArray.AverageOrDefault(nullableLongFunc, longValue), Is.EqualTo(intArrayAverage));
             }
@@ -740,7 +740,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnLongArray_ReturnsLongArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArray = fixture.Create<long[]>();
                 var longArrayAverage = longArray.Average();
 
                 Assert.That(() => longArray.AverageOrDefault(), Is.EqualTo(longArrayAverage));
@@ -750,9 +750,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArray = fixture.Create<long[]>();
                 var longArrayAverage = longArray.Average();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => longArray.AverageOrDefault(longValue), Is.EqualTo(longArrayAverage));
             }
@@ -770,7 +770,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<decimal> nullDecimalSequence = null;
                 var fixture = new RandomNumberFixture();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -788,7 +788,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<double> nullDoubleSequence = null;
                 var fixture = new RandomNumberFixture();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -806,7 +806,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<float> nullFloatSequence = null;
                 var fixture = new RandomNumberFixture();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -824,7 +824,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -834,8 +834,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -845,7 +845,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(doubleFunc), Is.EqualTo(default(double)));
             }
@@ -855,8 +855,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
-                var doubeValue = fixture.CreateAnonymous<double>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
+                var doubeValue = fixture.Create<double>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(doubleFunc, doubeValue), Is.EqualTo(doubeValue));
             }
@@ -866,7 +866,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatFunc = fixture.Create<Func<int, float>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
@@ -876,8 +876,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatFunc = fixture.Create<Func<int, float>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -887,7 +887,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intFunc = fixture.Create<Func<int, int>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(intFunc), Is.EqualTo(default(int)));
             }
@@ -897,8 +897,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intFunc = fixture.Create<Func<int, int>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
@@ -908,7 +908,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -918,7 +918,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longFunc = fixture.Create<Func<int, long>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(longFunc), Is.EqualTo(default(long)));
             }
@@ -928,8 +928,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longFunc = fixture.Create<Func<int, long>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
@@ -939,7 +939,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -949,8 +949,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -960,7 +960,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
@@ -970,8 +970,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
@@ -981,7 +981,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
@@ -991,8 +991,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -1002,7 +1002,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
@@ -1012,8 +1012,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
@@ -1023,7 +1023,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 IEnumerable<int> nullIntSequence = null;
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
@@ -1033,8 +1033,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullIntSequence.AverageOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
@@ -1052,7 +1052,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<long> nullLongSequence = null;
                 var fixture = new RandomNumberFixture();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -1070,7 +1070,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<decimal?> nullNullableDecimalSequence = null;
                 var fixture = new RandomNumberFixture();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullNullableDecimalSequence.AverageOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -1088,7 +1088,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<double?> nullNullableDoubleSequence = null;
                 var fixture = new RandomNumberFixture();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullNullableDoubleSequence.AverageOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -1106,7 +1106,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<float?> nullNullableFloatSequence = null;
                 var fixture = new RandomNumberFixture();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullNullableFloatSequence.AverageOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -1124,7 +1124,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int?> nullNullableIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullNullableIntSequence.AverageOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -1142,7 +1142,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<long?> nullNullableLongSequence = null;
                 var fixture = new RandomNumberFixture();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullNullableLongSequence.AverageOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -1151,7 +1151,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+                var nullableDecimalArray = fixture.Create<decimal?[]>();
                 var nullableDecimalArrayAverage = nullableDecimalArray.Average();
 
                 Assert.That(() => nullableDecimalArray.AverageOrDefault(), Is.EqualTo(nullableDecimalArrayAverage));
@@ -1161,8 +1161,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalArray = fixture.Create<decimal?[]>();
+                var decimalValue = fixture.Create<decimal>();
                 var nullableDecimalArrayAverage = nullableDecimalArray.Average();
 
                 Assert.That(() => nullableDecimalArray.AverageOrDefault(decimalValue), Is.EqualTo(nullableDecimalArrayAverage));
@@ -1172,7 +1172,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArray = fixture.Create<double?[]>();
                 var nullableDoubleArrayAverage = nullableDoubleArray.Average();
 
                 Assert.That(() => nullableDoubleArray.AverageOrDefault(), Is.EqualTo(nullableDoubleArrayAverage));
@@ -1182,9 +1182,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArray = fixture.Create<double?[]>();
                 var nullableDoubleArrayAverage = nullableDoubleArray.Average();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullableDoubleArray.AverageOrDefault(doubleValue), Is.EqualTo(nullableDoubleArrayAverage));
             }
@@ -1193,7 +1193,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArray = fixture.Create<float?[]>();
                 var nullableFloatArrayAverage = nullableFloatArray.Average();
 
                 Assert.That(() => nullableFloatArray.AverageOrDefault(), Is.EqualTo(nullableFloatArrayAverage));
@@ -1203,9 +1203,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArray = fixture.Create<float?[]>();
                 var nullableFloatArrayAverage = nullableFloatArray.Average();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullableFloatArray.AverageOrDefault(floatValue), Is.EqualTo(nullableFloatArrayAverage));
             }
@@ -1214,7 +1214,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableIntArray_RetunrsNullableIntArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArray = fixture.Create<int?[]>();
                 var nullableIntArrayAverage = nullableIntArray.Average();
 
                 Assert.That(() => nullableIntArray.AverageOrDefault(), Is.EqualTo(nullableIntArrayAverage));
@@ -1224,9 +1224,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArray = fixture.Create<int?[]>();
                 var nullableIntArrayAverage = nullableIntArray.Average();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullableIntArray.AverageOrDefault(intValue), Is.EqualTo(nullableIntArrayAverage));
             }
@@ -1235,7 +1235,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableLongArray_ReturnsNullableLongArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArray = fixture.Create<long?[]>();
                 var nullableLongArrayAverage = nullableLongArray.Average();
 
                 Assert.That(() => nullableLongArray.AverageOrDefault(), Is.EqualTo(nullableLongArrayAverage));
@@ -1245,9 +1245,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void AverageOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayAverage()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArray = fixture.Create<long?[]>();
                 var nullableLongArrayAverage = nullableLongArray.Average();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullableLongArray.AverageOrDefault(longValue), Is.EqualTo(nullableLongArrayAverage));
             }

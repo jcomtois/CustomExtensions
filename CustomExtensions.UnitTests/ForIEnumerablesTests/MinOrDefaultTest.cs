@@ -37,7 +37,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnDecimalArray_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArray = fixture.Create<decimal[]>();
                 var decimalArrayMin = decimalArray.Min();
 
                 Assert.That(() => decimalArray.MinOrDefault(), Is.EqualTo(decimalArrayMin));
@@ -47,9 +47,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnDecimalArray_WithDecimalValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var decimalArray = fixture.CreateAnonymous<decimal[]>();
+                var decimalArray = fixture.Create<decimal[]>();
                 var decimalArrayMin = decimalArray.Min();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => decimalArray.MinOrDefault(decimalValue), Is.EqualTo(decimalArrayMin));
             }
@@ -58,7 +58,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnDoubleArray_ReturnsDoubleArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArray = fixture.Create<double[]>();
                 var doubleArrayMin = doubleArray.Min();
 
                 Assert.That(() => doubleArray.MinOrDefault(), Is.EqualTo(doubleArrayMin));
@@ -68,9 +68,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnDoubleArray_WithDoubleValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var doubleArray = fixture.CreateAnonymous<double[]>();
+                var doubleArray = fixture.Create<double[]>();
                 var doubleArrayMin = doubleArray.Min();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => doubleArray.MinOrDefault(doubleValue), Is.EqualTo(doubleArrayMin));
             }
@@ -88,7 +88,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emtpyDecimalSequence = Enumerable.Empty<decimal>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emtpyDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -106,7 +106,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyDoubleSequence = Enumerable.Empty<double>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -124,7 +124,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyFloatSequence = Enumerable.Empty<float>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -142,7 +142,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
                 //BUG: NCrunch
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
                 var fixture = new BaseFixture();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
             }
@@ -170,7 +170,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
                 GenericComparable nullComparable = null;
                 var fixture = new BaseFixture();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc, nullComparable), Is.Null);
             }
@@ -190,7 +190,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
                 var fixture = new BaseFixture();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableValue = fixture.Create<GenericComparable>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableValue), Is.EqualTo(comparableValue));
             }
@@ -200,8 +200,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableValue = fixture.Create<GenericComparable>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableValue));
             }
@@ -211,7 +211,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyGenericEnumerable = Enumerable.Empty<GenericComparable>();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableValue = fixture.Create<GenericComparable>();
 
                 Assert.That(() => emptyGenericEnumerable.MinOrDefault(null, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -229,7 +229,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -239,8 +239,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -249,7 +249,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnEmptyIntSequence_WithDoubleFunc_ReturnsDefaultDouble()
             {
                 var fixture = new BaseFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(doubleFunc), Is.EqualTo(default(double)));
@@ -259,9 +259,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnEmptyIntSequence_WithDoubleFunc_WithDoubleValue_ReturnsDoubleValue()
             {
                 var fixture = new RandomNumberFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(doubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
@@ -271,7 +271,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatFunc = fixture.Create<Func<int, float>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
@@ -281,8 +281,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatFunc = fixture.Create<Func<int, float>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -292,7 +292,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intFunc = fixture.Create<Func<int, int>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(intFunc), Is.EqualTo(default(int)));
             }
@@ -302,8 +302,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intFunc = fixture.Create<Func<int, int>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
@@ -313,7 +313,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -323,7 +323,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longFunc = fixture.Create<Func<int, long>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(longFunc), Is.EqualTo(default(long)));
             }
@@ -333,8 +333,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longFunc = fixture.Create<Func<int, long>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
@@ -344,7 +344,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -354,8 +354,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -365,7 +365,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
@@ -375,8 +375,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
@@ -386,7 +386,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
@@ -396,8 +396,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -407,7 +407,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
@@ -417,8 +417,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
@@ -428,7 +428,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
@@ -438,8 +438,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyIntSequence = Enumerable.Empty<int>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyIntSequence.MinOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
@@ -457,7 +457,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyLongSequence = Enumerable.Empty<long>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -475,7 +475,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableDecimalSequence = Enumerable.Empty<decimal?>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => emptyNullableDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -493,7 +493,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableDoubleSequence = Enumerable.Empty<double?>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => emptyNullableDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -511,7 +511,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableFloatSequence = Enumerable.Empty<float?>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => emptyNullableFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -529,7 +529,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableIntSequence = Enumerable.Empty<int?>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => emptyNullableIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -547,7 +547,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new RandomNumberFixture();
                 var emptyNullableLongSequnce = Enumerable.Empty<long?>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => emptyNullableLongSequnce.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -556,7 +556,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnFloatArray_ReturnsFloatArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArray = fixture.Create<float[]>();
                 var floatArrayMin = floatArray.Min();
 
                 Assert.That(() => floatArray.MinOrDefault(), Is.EqualTo(floatArrayMin));
@@ -566,9 +566,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnFloatArray_WithFloatValue_ReturnsFloatArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var floatArray = fixture.CreateAnonymous<float[]>();
+                var floatArray = fixture.Create<float[]>();
                 var floatArrayMin = floatArray.Min();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => floatArray.MinOrDefault(floatValue), Is.EqualTo(floatArrayMin));
             }
@@ -577,7 +577,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_ReturnsGenericEnumerableMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
                 var comparableArrayMin = comparableArray.Min();
 
                 Assert.That(() => comparableArray.MinOrDefault(), Is.EqualTo(comparableArrayMin));
@@ -587,8 +587,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithFunc_ReturnsGenericEnumerableMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
                 var comparableArrayMin = comparableArray.Min(comparableFunc);
 
                 Assert.That(() => comparableArray.MinOrDefault(comparableFunc), Is.EqualTo(comparableArrayMin));
@@ -598,7 +598,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithNullFunc_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
                 Func<GenericComparable, GenericComparable> nullFunc = null;
 
                 Assert.That(() => comparableArray.MinOrDefault(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -608,7 +608,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithNullValue_ReturnsGenericEnumerableMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
                 GenericComparable nullComparable = null;
                 var comparableArrayMin = comparableArray.Min();
 
@@ -619,9 +619,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithNullValue_WithFunc_ReturnsGenericEnumerableMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
                 GenericComparable nullComparable = null;
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
                 var comparableArrayMin = comparableArray.Min(comparableFunc);
 
                 Assert.That(() => comparableArray.MinOrDefault(comparableFunc, nullComparable), Is.EqualTo(comparableArrayMin));
@@ -631,7 +631,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithNullValue_WithNullFunc_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
                 GenericComparable nullComparable = null;
                 Func<GenericComparable, GenericComparable> nullFunc = null;
 
@@ -642,9 +642,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithValue_ReturnsGenericEnumerableMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
                 var comparableArrayMin = comparableArray.Min();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableValue = fixture.Create<GenericComparable>();
 
                 Assert.That(() => comparableArray.MinOrDefault(comparableValue), Is.EqualTo(comparableArrayMin));
             }
@@ -653,9 +653,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithValue_WithFunc_ReturnsGenericEnumerableMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
+                var comparableValue = fixture.Create<GenericComparable>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
                 var comparableArrayMin = comparableArray.Min(comparableFunc);
 
                 Assert.That(() => comparableArray.MinOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableArrayMin));
@@ -665,8 +665,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnGenericEnumerable_WithValue_WithNullFunc_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var comparableArray = fixture.CreateAnonymous<GenericComparable[]>();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableArray = fixture.Create<GenericComparable[]>();
+                var comparableValue = fixture.Create<GenericComparable>();
                 Func<GenericComparable, GenericComparable> nullFunc = null;
 
                 Assert.That(() => comparableArray.MinOrDefault(nullFunc, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -676,7 +676,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_ReturnsIntArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
+                var intArray = fixture.Create<int[]>();
                 var intArrayMin = intArray.Min();
 
                 Assert.That(() => intArray.MinOrDefault(), Is.EqualTo(intArrayMin));
@@ -686,8 +686,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithDecimalFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArray = fixture.Create<int[]>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
                 var intArrayMin = intArray.Min(decimalFunc);
 
                 Assert.That(() => intArray.MinOrDefault(decimalFunc), Is.EqualTo(intArrayMin));
@@ -697,10 +697,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithDecimalFunc_WithDecimalvalue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var intArray = fixture.Create<int[]>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
                 var intArrayMin = intArray.Min(decimalFunc);
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => intArray.MinOrDefault(decimalFunc, decimalValue), Is.EqualTo(intArrayMin));
             }
@@ -709,8 +709,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithDoubleFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArray = fixture.Create<int[]>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var intArrayMin = intArray.Min(doubleFunc);
 
                 Assert.That(() => intArray.MinOrDefault(doubleFunc), Is.EqualTo(intArrayMin));
@@ -720,10 +720,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithDoubleFunc_WithDoubleValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var intArray = fixture.Create<int[]>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
                 var intArrayMin = intArray.Min(doubleFunc);
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => intArray.MinOrDefault(doubleFunc, doubleValue), Is.EqualTo(intArrayMin));
             }
@@ -732,8 +732,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithFloatFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArray = fixture.Create<int[]>();
+                var floatFunc = fixture.Create<Func<int, float>>();
                 var intArrayMin = intArray.Min(floatFunc);
 
                 Assert.That(() => intArray.MinOrDefault(floatFunc), Is.EqualTo(intArrayMin));
@@ -743,10 +743,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithFloatFunc_WithFloatValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var intArray = fixture.Create<int[]>();
+                var floatFunc = fixture.Create<Func<int, float>>();
                 var intArrayMin = intArray.Min(floatFunc);
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => intArray.MinOrDefault(floatFunc, floatValue), Is.EqualTo(intArrayMin));
             }
@@ -755,8 +755,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithIntFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArray = fixture.Create<int[]>();
+                var intFunc = fixture.Create<Func<int, int>>();
                 var intArrayMin = intArray.Min(intFunc);
 
                 Assert.That(() => intArray.MinOrDefault(intFunc), Is.EqualTo(intArrayMin));
@@ -766,10 +766,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithIntFunc_WithIntValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intArray = fixture.Create<int[]>();
+                var intFunc = fixture.Create<Func<int, int>>();
                 var intArrayMin = intArray.Min(intFunc);
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => intArray.MinOrDefault(intFunc, intValue), Is.EqualTo(intArrayMin));
             }
@@ -778,8 +778,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithIntValue_ReturnsIntArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intArray = fixture.Create<int[]>();
+                var intValue = fixture.Create<int>();
                 var intArrayMin = intArray.Min();
 
                 Assert.That(() => intArray.MinOrDefault(intValue), Is.EqualTo(intArrayMin));
@@ -789,8 +789,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithLongFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var intArray = fixture.Create<int[]>();
+                var longFunc = fixture.Create<Func<int, long>>();
                 var intArrayMin = intArray.Min(longFunc);
 
                 Assert.That(() => intArray.MinOrDefault(longFunc), Is.EqualTo(intArrayMin));
@@ -800,9 +800,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithLongfunc_WithLongValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var intArray = fixture.Create<int[]>();
+                var longFunc = fixture.Create<Func<int, long>>();
+                var longValue = fixture.Create<long>();
                 var intArrayMin = intArray.Min(longFunc);
 
                 Assert.That(() => intArray.MinOrDefault(longFunc, longValue), Is.EqualTo(intArrayMin));
@@ -812,8 +812,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableDecimalFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
                 var intArrayMin = intArray.Min(nullableDecimalFunc);
 
                 Assert.That(() => intArray.MinOrDefault(nullableDecimalFunc), Is.EqualTo(intArrayMin));
@@ -823,10 +823,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableDecimalFunc_WithDecimalValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
                 var intArrayMin = intArray.Min(nullableDecimalFunc);
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => intArray.MinOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(intArrayMin));
             }
@@ -835,8 +835,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableDoubleFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
                 var intArrayMin = intArray.Min(nullableDoubleFunc);
 
                 Assert.That(() => intArray.MinOrDefault(nullableDoubleFunc), Is.EqualTo(intArrayMin));
@@ -846,10 +846,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableDoubleFunc_WithDoubleValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
                 var intArrayMin = intArray.Min(nullableDoubleFunc);
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => intArray.MinOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(intArrayMin));
             }
@@ -858,8 +858,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableFloatFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
                 var intArrayMin = intArray.Min(nullableFloatFunc);
 
                 Assert.That(() => intArray.MinOrDefault(nullableFloatFunc), Is.EqualTo(intArrayMin));
@@ -869,10 +869,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableFloatFunc_WithFloatValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
                 var intArrayMin = intArray.Min(nullableFloatFunc);
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => intArray.MinOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(intArrayMin));
             }
@@ -881,8 +881,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableIntFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
                 var intArrayMin = intArray.Min(nullableIntFunc);
 
                 Assert.That(() => intArray.MinOrDefault(nullableIntFunc), Is.EqualTo(intArrayMin));
@@ -892,10 +892,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableIntFunc_WithIntValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
                 var intArrayMin = intArray.Min(nullableIntFunc);
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => intArray.MinOrDefault(nullableIntFunc, intValue), Is.EqualTo(intArrayMin));
             }
@@ -904,8 +904,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableLongFunc_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
                 var intArrayMin = intArray.Min(nullableLongFunc);
 
                 Assert.That(() => intArray.MinOrDefault(nullableLongFunc), Is.EqualTo(intArrayMin));
@@ -915,10 +915,10 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnIntArray_WithNullableLongFunc_WithLongValue_ReturnsMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var intArray = fixture.CreateAnonymous<int[]>();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var intArray = fixture.Create<int[]>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
                 var intArrayMin = intArray.Min(nullableLongFunc);
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => intArray.MinOrDefault(nullableLongFunc, longValue), Is.EqualTo(intArrayMin));
             }
@@ -927,7 +927,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnLongArray_ReturnsLongArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArray = fixture.Create<long[]>();
                 var longArrayMin = longArray.Min();
 
                 Assert.That(() => longArray.MinOrDefault(), Is.EqualTo(longArrayMin));
@@ -937,9 +937,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnLongArray_WithLongValue_ReturnsLongArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var longArray = fixture.CreateAnonymous<long[]>();
+                var longArray = fixture.Create<long[]>();
                 var longArrayMin = longArray.Min();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => longArray.MinOrDefault(longValue), Is.EqualTo(longArrayMin));
             }
@@ -957,7 +957,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<decimal> nullDecimalSequence = null;
                 var fixture = new RandomNumberFixture();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -975,7 +975,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<double> nullDoubleSequence = null;
                 var fixture = new RandomNumberFixture();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -993,7 +993,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<float> nullFloatSequence = null;
                 var fixture = new RandomNumberFixture();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -1003,7 +1003,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
                 var fixture = new BaseFixture();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc), Is.EqualTo(default(GenericComparable)));
             }
@@ -1032,7 +1032,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
                 GenericComparable nullComparable = null;
                 var fixture = new BaseFixture();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc, nullComparable), Is.Null);
             }
@@ -1052,7 +1052,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
                 var fixture = new BaseFixture();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableValue = fixture.Create<GenericComparable>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableValue), Is.EqualTo(comparableValue));
             }
@@ -1062,8 +1062,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
                 var fixture = new BaseFixture();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
-                var comparableFunc = fixture.CreateAnonymous<Func<GenericComparable, GenericComparable>>();
+                var comparableValue = fixture.Create<GenericComparable>();
+                var comparableFunc = fixture.Create<Func<GenericComparable, GenericComparable>>();
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(comparableFunc, comparableValue), Is.EqualTo(comparableValue));
             }
@@ -1073,7 +1073,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparable> nullComparableEnumerable = null;
                 var fixture = new BaseFixture();
-                var comparableValue = fixture.CreateAnonymous<GenericComparable>();
+                var comparableValue = fixture.Create<GenericComparable>();
                 Func<GenericComparable, GenericComparable> nullFunc = null;
 
                 Assert.That(() => nullComparableEnumerable.MinOrDefault(nullFunc, comparableValue), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -1092,7 +1092,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(decimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -1102,8 +1102,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var decimalFunc = fixture.CreateAnonymous<Func<int, decimal>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalFunc = fixture.Create<Func<int, decimal>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(decimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -1113,7 +1113,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(doubleFunc), Is.EqualTo(default(double)));
             }
@@ -1123,8 +1123,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var doubleFunc = fixture.CreateAnonymous<Func<int, double>>();
-                var doubeValue = fixture.CreateAnonymous<double>();
+                var doubleFunc = fixture.Create<Func<int, double>>();
+                var doubeValue = fixture.Create<double>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(doubleFunc, doubeValue), Is.EqualTo(doubeValue));
             }
@@ -1134,7 +1134,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
+                var floatFunc = fixture.Create<Func<int, float>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(floatFunc), Is.EqualTo(default(float)));
             }
@@ -1144,8 +1144,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var floatFunc = fixture.CreateAnonymous<Func<int, float>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatFunc = fixture.Create<Func<int, float>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(floatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -1155,7 +1155,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
+                var intFunc = fixture.Create<Func<int, int>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(intFunc), Is.EqualTo(default(int)));
             }
@@ -1165,8 +1165,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var intFunc = fixture.CreateAnonymous<Func<int, int>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intFunc = fixture.Create<Func<int, int>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(intFunc, intValue), Is.EqualTo(intValue));
             }
@@ -1176,7 +1176,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -1186,7 +1186,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
+                var longFunc = fixture.Create<Func<int, long>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(longFunc), Is.EqualTo(default(long)));
             }
@@ -1196,8 +1196,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var longFunc = fixture.CreateAnonymous<Func<int, long>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longFunc = fixture.Create<Func<int, long>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(longFunc, longValue), Is.EqualTo(longValue));
             }
@@ -1207,7 +1207,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableDecimalFunc), Is.EqualTo(default(decimal)));
             }
@@ -1217,8 +1217,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableDecimalFunc = fixture.CreateAnonymous<Func<int, decimal?>>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalFunc = fixture.Create<Func<int, decimal?>>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableDecimalFunc, decimalValue), Is.EqualTo(decimalValue));
             }
@@ -1228,7 +1228,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableDoubleFunc), Is.EqualTo(default(double)));
             }
@@ -1238,8 +1238,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableDoubleFunc = fixture.CreateAnonymous<Func<int, double?>>();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var nullableDoubleFunc = fixture.Create<Func<int, double?>>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableDoubleFunc, doubleValue), Is.EqualTo(doubleValue));
             }
@@ -1249,7 +1249,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableFloatFunc), Is.EqualTo(default(float)));
             }
@@ -1259,8 +1259,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableFloatFunc = fixture.CreateAnonymous<Func<int, float?>>();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var nullableFloatFunc = fixture.Create<Func<int, float?>>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableFloatFunc, floatValue), Is.EqualTo(floatValue));
             }
@@ -1270,7 +1270,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new BaseFixture();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableIntFunc), Is.EqualTo(default(int)));
             }
@@ -1280,8 +1280,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableIntFunc = fixture.CreateAnonymous<Func<int, int?>>();
-                var intValue = fixture.CreateAnonymous<int>();
+                var nullableIntFunc = fixture.Create<Func<int, int?>>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableIntFunc, intValue), Is.EqualTo(intValue));
             }
@@ -1291,7 +1291,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var fixture = new BaseFixture();
                 IEnumerable<int> nullIntSequence = null;
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableLongFunc), Is.EqualTo(default(long)));
             }
@@ -1301,8 +1301,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int> nullIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var nullableLongFunc = fixture.CreateAnonymous<Func<int, long?>>();
-                var longValue = fixture.CreateAnonymous<long>();
+                var nullableLongFunc = fixture.Create<Func<int, long?>>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullIntSequence.MinOrDefault(nullableLongFunc, longValue), Is.EqualTo(longValue));
             }
@@ -1320,7 +1320,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<long> nullLongSequence = null;
                 var fixture = new RandomNumberFixture();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -1338,7 +1338,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<decimal?> nullNullableDecimalSequence = null;
                 var fixture = new RandomNumberFixture();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var decimalValue = fixture.Create<decimal>();
 
                 Assert.That(() => nullNullableDecimalSequence.MinOrDefault(decimalValue), Is.EqualTo(decimalValue));
             }
@@ -1356,7 +1356,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<double?> nullNullableDoubleSequence = null;
                 var fixture = new RandomNumberFixture();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullNullableDoubleSequence.MinOrDefault(doubleValue), Is.EqualTo(doubleValue));
             }
@@ -1374,7 +1374,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<float?> nullNullableFloatSequence = null;
                 var fixture = new RandomNumberFixture();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullNullableFloatSequence.MinOrDefault(floatValue), Is.EqualTo(floatValue));
             }
@@ -1392,7 +1392,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<int?> nullNullableIntSequence = null;
                 var fixture = new RandomNumberFixture();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullNullableIntSequence.MinOrDefault(intValue), Is.EqualTo(intValue));
             }
@@ -1410,7 +1410,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<long?> nullNullableLongSequence = null;
                 var fixture = new RandomNumberFixture();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullNullableLongSequence.MinOrDefault(longValue), Is.EqualTo(longValue));
             }
@@ -1419,7 +1419,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableDecimalArray_ReturnsNullableDecimalArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
+                var nullableDecimalArray = fixture.Create<decimal?[]>();
                 var nullableDecimalArrayMin = nullableDecimalArray.Min();
 
                 Assert.That(() => nullableDecimalArray.MinOrDefault(), Is.EqualTo(nullableDecimalArrayMin));
@@ -1429,8 +1429,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableDecimalArray_WithDecimalValue_ReturnsNullableDecimalArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDecimalArray = fixture.CreateAnonymous<decimal?[]>();
-                var decimalValue = fixture.CreateAnonymous<decimal>();
+                var nullableDecimalArray = fixture.Create<decimal?[]>();
+                var decimalValue = fixture.Create<decimal>();
                 var nullableDecimalArrayMin = nullableDecimalArray.Min();
 
                 Assert.That(() => nullableDecimalArray.MinOrDefault(decimalValue), Is.EqualTo(nullableDecimalArrayMin));
@@ -1440,7 +1440,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableDoubleArray_ReturnsNullableDoubleArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArray = fixture.Create<double?[]>();
                 var nullableDoubleArrayMin = nullableDoubleArray.Min();
 
                 Assert.That(() => nullableDoubleArray.MinOrDefault(), Is.EqualTo(nullableDoubleArrayMin));
@@ -1450,9 +1450,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableDoubleArray_WithDoubleValue_ReturnsNullableDoubleArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableDoubleArray = fixture.CreateAnonymous<double?[]>();
+                var nullableDoubleArray = fixture.Create<double?[]>();
                 var nullableDoubleArrayMin = nullableDoubleArray.Min();
-                var doubleValue = fixture.CreateAnonymous<double>();
+                var doubleValue = fixture.Create<double>();
 
                 Assert.That(() => nullableDoubleArray.MinOrDefault(doubleValue), Is.EqualTo(nullableDoubleArrayMin));
             }
@@ -1461,7 +1461,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableFloatArray_ReturnsNullableFloatArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArray = fixture.Create<float?[]>();
                 var nullableFloatArrayMin = nullableFloatArray.Min();
 
                 Assert.That(() => nullableFloatArray.MinOrDefault(), Is.EqualTo(nullableFloatArrayMin));
@@ -1471,9 +1471,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableFloatArray_WithFloatValue_ReturnsNullableFloatArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableFloatArray = fixture.CreateAnonymous<float?[]>();
+                var nullableFloatArray = fixture.Create<float?[]>();
                 var nullableFloatArrayMin = nullableFloatArray.Min();
-                var floatValue = fixture.CreateAnonymous<float>();
+                var floatValue = fixture.Create<float>();
 
                 Assert.That(() => nullableFloatArray.MinOrDefault(floatValue), Is.EqualTo(nullableFloatArrayMin));
             }
@@ -1482,7 +1482,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableIntArray_RetunrsNullableIntArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArray = fixture.Create<int?[]>();
                 var nullableIntArrayMin = nullableIntArray.Min();
 
                 Assert.That(() => nullableIntArray.MinOrDefault(), Is.EqualTo(nullableIntArrayMin));
@@ -1492,9 +1492,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableIntArray_WithIntValue_ReturnsNullableIntArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableIntArray = fixture.CreateAnonymous<int?[]>();
+                var nullableIntArray = fixture.Create<int?[]>();
                 var nullableIntArrayMin = nullableIntArray.Min();
-                var intValue = fixture.CreateAnonymous<int>();
+                var intValue = fixture.Create<int>();
 
                 Assert.That(() => nullableIntArray.MinOrDefault(intValue), Is.EqualTo(nullableIntArrayMin));
             }
@@ -1503,7 +1503,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableLongArray_ReturnsNullableLongArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArray = fixture.Create<long?[]>();
                 var nullableLongArrayMin = nullableLongArray.Min();
 
                 Assert.That(() => nullableLongArray.MinOrDefault(), Is.EqualTo(nullableLongArrayMin));
@@ -1513,9 +1513,9 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void MinOrDefault_OnNullableLongArray_WithLongValue_ReturnsNullableLongArrayMin()
             {
                 var fixture = new RandomMultipleMockingFixture();
-                var nullableLongArray = fixture.CreateAnonymous<long?[]>();
+                var nullableLongArray = fixture.Create<long?[]>();
                 var nullableLongArrayMin = nullableLongArray.Min();
-                var longValue = fixture.CreateAnonymous<long>();
+                var longValue = fixture.Create<long>();
 
                 Assert.That(() => nullableLongArray.MinOrDefault(longValue), Is.EqualTo(nullableLongArrayMin));
             }

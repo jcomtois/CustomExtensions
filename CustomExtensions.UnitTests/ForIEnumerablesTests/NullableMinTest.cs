@@ -47,7 +47,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 var emptySequence = Enumerable.Empty<GenericComparableStruct>();
                 var fixture = new BaseFixture();
-                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var selector = fixture.Create<Func<GenericComparableStruct, GenericComparableStruct>>();
 
                 Assert.That(() => emptySequence.NullableMin(selector), Is.Null);
             }
@@ -66,7 +66,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             {
                 IEnumerable<GenericComparableStruct> nullSequence = null;
                 var fixture = new BaseFixture();
-                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var selector = fixture.Create<Func<GenericComparableStruct, GenericComparableStruct>>();
 
                 Assert.That(() => nullSequence.NullableMin(selector), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
             }
@@ -75,7 +75,7 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void NullableMin_OnSequence_WithNullSelector_ThrowsValidationException()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IEnumerable<GenericComparableStruct>>();
+                var sequence = fixture.Create<IEnumerable<GenericComparableStruct>>();
                 Func<GenericComparableStruct, GenericComparableStruct> nullFunc = null;
 
                 Assert.That(() => sequence.NullableMin(nullFunc), Throws.TypeOf<ValidationException>().With.InnerException.TypeOf<ArgumentNullException>());
@@ -85,8 +85,8 @@ namespace CustomExtensions.UnitTests.ForIEnumerablesTests
             public void NullableMin_OnSequence_WithSelector_ReturnsMin()
             {
                 var fixture = new MultipleMockingFixture();
-                var sequence = fixture.CreateAnonymous<IList<GenericComparableStruct>>();
-                var selector = fixture.CreateAnonymous<Func<GenericComparableStruct, GenericComparableStruct>>();
+                var sequence = fixture.Create<IList<GenericComparableStruct>>();
+                var selector = fixture.Create<Func<GenericComparableStruct, GenericComparableStruct>>();
                 var min = sequence.Min(selector);
 
                 Assert.That(() => sequence.NullableMin(selector), Is.EqualTo(min));
