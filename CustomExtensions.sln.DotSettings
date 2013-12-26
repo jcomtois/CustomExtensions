@@ -296,6 +296,7 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
 &#xD;
 &lt;/Patterns&gt;&#xD;
 </s:String>
+	<s:String x:Key="/Default/CodeStyle/CSharpMemberOrderPattern/LayoutType/@EntryValue">CustomLayout</s:String>
 	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderRegionName/@EntryValue">License and Terms</s:String>
 	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">CustomExtensions - Custom Extension Methods For C#&#xD;
 Copyright (c) 2011 - $CURRENT_YEAR$ Jonathan Comtois. All rights reserved.&#xD;
